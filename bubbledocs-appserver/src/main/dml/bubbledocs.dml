@@ -1,0 +1,15 @@
+package pt.tecnico.bubbledocs;
+
+class FolhaCalculo{
+	String h;
+}
+
+
+relation RootHasFolhaCalculo{
+	.pt.ist.fenixframework.DomainRoot playsRole root{
+		multiplicity 0..1;
+	}
+	FolhaCalculo playsRole folhaCalculo{
+		multiplicity 0..1;
+	}
+}
