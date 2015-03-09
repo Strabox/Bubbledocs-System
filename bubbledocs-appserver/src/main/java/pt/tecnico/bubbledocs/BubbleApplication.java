@@ -8,7 +8,12 @@ public class BubbleApplication {
 	public static void main(String[] args){
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");
 		
-		FolhaCalculo folha = FolhaCalculo.getInstance();
+		SistemaLogin l = SistemaLogin.getInstance();
+		FolhaCalculo f = new FolhaCalculo("Hoi");
+		System.out.println(f.getDataCriacao());
+		System.out.println(f.getId());
+		FolhaCalculo f1 = new FolhaCalculo("Hoi");
+		System.out.println(f1.getId());
 	}
 
 }

@@ -1,20 +1,31 @@
 package pt.tecnico.bubbledocs;
 
-import pt.ist.fenixframework.FenixFramework;
+import java.util.Date;
+
 
 public class FolhaCalculo extends FolhaCalculo_Base {
 	
-    private FolhaCalculo(String g) {
+	private static int uniqueId = 0;
+	
+	private Date dataCriacao;
+	
+	
+    public FolhaCalculo(String nome) {
         super();
-        FenixFramework.getDomainRoot().setFolhaCalculo(this);
-        setH(g);
+        this.setNome(nome);
+        this.setId(uniqueId++);
+        this.dataCriacao = new Date();
     }
-    
-    public static FolhaCalculo getInstance(){
-    	FolhaCalculo folha = FenixFramework.getDomainRoot().getFolhaCalculo();
-    	if(folha == null)
-    		folha = new FolhaCalculo("a");
-    	return folha;
-    }
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+	
+	
+	
     
 }

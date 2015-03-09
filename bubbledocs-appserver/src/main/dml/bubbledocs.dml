@@ -1,15 +1,109 @@
 package pt.tecnico.bubbledocs;
 
-class FolhaCalculo{
-	String h;
+//------------------ ES Stuff -------------------------
+
+class SistemaLogin{
 }
 
+class Utilizador{
+	String nome;
+	String username;
+	String password;
+}
 
-relation RootHasFolhaCalculo{
+//------------------ PO Stuff -------------------------
+
+class FolhaCalculo{
+	int id;
+	String nome;
+}
+
+class Conteudo{
+	int resultado;
+}
+
+class Literal extends Conteudo;
+
+class Referencia extends Conteudo{
+	int linha;
+	int coluna;
+}
+
+class Celula;
+
+class Funcao extends Conteudo;
+
+class FuncaoBinaria extends Funcao;
+
+class FuncaoGama extends Funcao{
+	int top;
+	int bottom;
+	int left;
+	int right;
+}
+
+class ADD extends FuncaoBinaria;
+
+class SUB extends FuncaoBinaria;
+
+class MUL extends FuncaoBinaria;
+
+class DIV extends FuncaoBinaria;
+
+class AVG extends FuncaoGama;
+
+class PRD extends FuncaoGama;
+
+
+//================ Relations ==========================
+
+
+// A Root tem um Sistema de Login.
+relation RootHasSistemaLogin{
 	.pt.ist.fenixframework.DomainRoot playsRole root{
 		multiplicity 0..1;
 	}
-	FolhaCalculo playsRole folhaCalculo{
+	SistemaLogin playsRole sistemaLogin{
 		multiplicity 0..1;
 	}
 }
+
+// O Sistema de Login tem um conjunto de 0 ou mais utilizadores.
+relation SistemaLoginHasUtilizadores{
+	SistemaLogin playsRole sistemaLogin;
+	Utilizador playsRole utilizador{
+		multiplicity *;
+	}
+}
+
+
+
+// Cada Celula tem um Conteudo.
+relation CelulaHasConteudo{
+	Celula playsRole celula{
+		multiplicity 0..1;
+	}
+	Conteudo playsRole conteudo{
+		multiplicity 0..1;
+	}
+}
+
+// Cada Referencia tem uma Celula.
+relation ReferenciaHasCelula{
+	Referencia playsRole referencia{
+		multiplicity 0..1;
+	}
+	Celula playsRole refcelula{
+		multiplicity 0..1;
+	}
+}
+
+// Cada FuncaoBinaria tem 2 Conteudos.
+relation FuncaoBinariaHas2Arguments{
+	FuncaoBinaria playsRole funcaoBinaria;
+	Conteudo playsRole arguments{
+		multiplicity 2;
+	}
+}
+
+//----------------------- END -----------------------
