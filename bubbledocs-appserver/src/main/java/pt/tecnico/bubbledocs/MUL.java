@@ -2,8 +2,9 @@ package pt.tecnico.bubbledocs;
 
 public class MUL extends MUL_Base {
     
-    public MUL() {
+    public MUL(Conteudo arg1,Conteudo arg2) {
         super();
+        super.init(arg1,arg2);
     }
     
     @Override

@@ -1,31 +1,24 @@
 package pt.tecnico.bubbledocs;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 
 public class FolhaCalculo extends FolhaCalculo_Base {
 	
-	private static int uniqueId = 0;
 	
-	private Date dataCriacao;
-	
-	
-    public FolhaCalculo(String nome) {
+    public FolhaCalculo(Utilizador owner,String nome,int linhas,int colunas) {
         super();
         this.setNome(nome);
-        this.setId(uniqueId++);
-        this.dataCriacao = new Date();
+        this.setLinhas(linhas);
+        this.setColunas(colunas);
+        this.setOwner(owner);
+        this.setDataCriacao(new LocalDate());
     }
-
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
 	
-	
-	
+    @Override
+    public String toString(){
+    	String s = "Nome: "+getNome()+"\nData Criação: "+getDataCriacao().toString()+"\nDono: "+getOwner().getNome();
+    	return s;
+    }
     
 }

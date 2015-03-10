@@ -2,7 +2,11 @@ package pt.tecnico.bubbledocs;
 
 //------------------ ES Stuff -------------------------
 
-class SistemaLogin{
+enum ModoAcesso as modoAcesso;
+
+// Class representa o sistema.
+class Bubbledocs{
+	int uniqueId;
 }
 
 class Utilizador{
@@ -11,11 +15,19 @@ class Utilizador{
 	String password;
 }
 
+class TipoAcesso{
+	modoAcesso modo;
+}
+
+
 //------------------ PO Stuff -------------------------
 
 class FolhaCalculo{
 	int id;
 	String nome;
+	LocalDate dataCriacao;
+	int linhas;
+	int colunas;
 }
 
 class Conteudo{
@@ -54,55 +66,112 @@ class AVG extends FuncaoGama;
 
 class PRD extends FuncaoGama;
 
-
+//====================================================
 //================ Relations ==========================
 
 
-// A Root tem um Sistema de Login.
-relation RootHasSistemaLogin{
+// A Root tem uma instância de Bubbledocs.
+relation RootHasBubbledocs{
 	.pt.ist.fenixframework.DomainRoot playsRole root{
 		multiplicity 0..1;
 	}
-	SistemaLogin playsRole sistemaLogin{
-		multiplicity 0..1;
+	Bubbledocs playsRole bubbledocs{
+		multiplicity 1;
 	}
 }
 
-// O Sistema de Login tem um conjunto de 0 ou mais utilizadores.
-relation SistemaLoginHasUtilizadores{
-	SistemaLogin playsRole sistemaLogin;
+// O  Bubbledocs tem um conjunto de 0 ou mais utilizadores.
+relation BubbledocsHasUtilizadores{
+	Bubbledocs playsRole bubbledocsUtilizadores{
+		multiplicity 1;
+	}
 	Utilizador playsRole utilizador{
 		multiplicity *;
 	}
 }
 
+// O  Bubbledocs tem um conjunto de 0 ou mais documentos/folhas.
+relation BubbledocsHasFolhas{
+	Bubbledocs playsRole bubbledocsFolhas{
+		multiplicity 1;
+	}
+	FolhaCalculo playsRole folhaCalculo{
+		multiplicity 0..*;
+	}
+}
 
+// Cada folha tem um Dono, mas um utilizador pode ser dono
+// de várias folhas.
+relation FolhasHasOwner{
+	FolhaCalculo playsRole owned{
+		multiplicity 0..*;
+	}
+	Utilizador playsRole owner{
+		multiplicity 1;
+	}
+}
+
+// Um utilizador tem um conjunto de modos de acesso 
+// um para cada folha que pode usar.
+relation UtilizadorHasTiposAcesso{
+	Utilizador playsRole uses{
+		multiplicity 1;
+	}
+	TipoAcesso playsRole usedBy{
+		multiplicity 0..*;
+	}
+}
+
+// Uma folha tem exclusivamente um tipo de acesso.
+relation TipoAcessoHasFolhaCalculo{
+	TipoAcesso playsRole tipo{
+		multiplicity 1;
+	}
+	FolhaCalculo playsRole folha{
+		multiplicity 1;
+	}
+}
+
+
+// ############ Estrutura da Folha ##############
 
 // Cada Celula tem um Conteudo.
 relation CelulaHasConteudo{
 	Celula playsRole celula{
-		multiplicity 0..1;
+		multiplicity 1;
 	}
 	Conteudo playsRole conteudo{
-		multiplicity 0..1;
+		multiplicity 1;
 	}
 }
 
 // Cada Referencia tem uma Celula.
 relation ReferenciaHasCelula{
 	Referencia playsRole referencia{
-		multiplicity 0..1;
+		multiplicity 1;
 	}
 	Celula playsRole refcelula{
 		multiplicity 0..1;
 	}
 }
 
-// Cada FuncaoBinaria tem 2 Conteudos.
-relation FuncaoBinariaHas2Arguments{
-	FuncaoBinaria playsRole funcaoBinaria;
-	Conteudo playsRole arguments{
-		multiplicity 2;
+// 1º Argumento da Funcao Binaria
+relation FuncaoBinariaFirstArgument{
+	FuncaoBinaria playsRole funcaoBinaria1{
+		multiplicity 1;
+	}
+	Conteudo playsRole argument1{
+		multiplicity 1;
+	}
+}
+
+// 2º Argumento da Funcao Binaria
+relation FuncaoBinariaSecondArgument{
+	FuncaoBinaria playsRole funcaoBinaria2{
+		multiplicity 1;
+	}
+	Conteudo playsRole argument2{
+		multiplicity 1;
 	}
 }
 

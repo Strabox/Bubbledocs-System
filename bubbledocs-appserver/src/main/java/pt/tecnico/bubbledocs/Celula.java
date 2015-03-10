@@ -7,9 +7,4 @@ public class Celula extends Celula_Base {
         this.setConteudo(conteudo);
     }
     
-    public void apagarConteudo(){
-    	setConteudo(null);
-    }
-    
-    
 }

@@ -9,5 +9,15 @@ public class Utilizador extends Utilizador_Base {
         setPassword(password);
     }
    
+    public void listarFolhas(){
+    	for(FolhaCalculo f: getOwnedSet())
+    		System.out.println(f);
+    }
+    
+    @Override
+    public String toString(){
+    	String s = "Nome: "+getNome()+"\nUsername: "+getUsername()+"\n";
+    	return s;
+    }
     
 }

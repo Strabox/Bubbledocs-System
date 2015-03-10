@@ -2,8 +2,9 @@ package pt.tecnico.bubbledocs;
 
 public class SUB extends SUB_Base {
     
-    public SUB() {
+    public SUB(Conteudo arg1,Conteudo arg2) {
         super();
+        super.init(arg1,arg2);
     }
     
     @Override

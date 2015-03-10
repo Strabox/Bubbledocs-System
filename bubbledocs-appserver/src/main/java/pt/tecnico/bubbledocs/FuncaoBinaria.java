@@ -6,11 +6,16 @@ public abstract class FuncaoBinaria extends FuncaoBinaria_Base {
         super();
     }
     
+    public void init(Conteudo arg1,Conteudo arg2){
+    	setArgument1(arg1);
+    	setArgument1(arg2);
+    }
+    
     @Override
 	public int getResult(){
     	// FIX-ME
-		this.setResultado(calcula(1,1));
-		return this.getResultado();
+		setResultado(calcula(getArgument1().getResult(),getArgument2().getResult()));
+		return getResultado();
 	}
     
     /* 
