@@ -7,3 +7,4 @@ public abstract class AVG extends AVG_Base {
     }
     
 }
+
