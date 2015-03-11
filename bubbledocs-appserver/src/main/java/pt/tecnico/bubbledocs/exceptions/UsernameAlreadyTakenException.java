@@ -1,6 +1,6 @@
 package pt.tecnico.bubbledocs.exceptions;
 
-public class UsernameAlreadyTakenException extends Exception{
+public class UsernameAlreadyTakenException extends IllegalArgumentException{
 
 	private String username;
 		

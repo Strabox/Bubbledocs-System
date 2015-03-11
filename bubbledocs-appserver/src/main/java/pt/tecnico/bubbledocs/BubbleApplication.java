@@ -10,12 +10,10 @@ public class BubbleApplication {
 		Bubbledocs bubble = Bubbledocs.getInstance();
 		// v---Testes----v
 		try{
-			Utilizador u = new Utilizador("Badeh","Bad","badutss");
-			FolhaCalculo f = new FolhaCalculo(u,"Coisa",22,22);
-			u.listarFolhas();
-			bubble.adicionaUtilizador(u);
-			bubble.listarUtilizadores();
-			bubble.listarFolhas();
+			Utilizador u = new Utilizador("Nome","Ai","badutss");
+			Utilizador u2 = new Utilizador("Nome","Ab","badutss");
+			u2.setUsername("hua");
+			
 		}
 		catch(Exception e){
 			System.out.println(e);
