@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs;
+package pt.tecnico.bubbledocs.domain;
 
 public class Literal extends Literal_Base {
     

@@ -1,13 +1,14 @@
-package pt.tecnico.bubbledocs;
+package pt.tecnico.bubbledocs.domain;
 
 import pt.ist.fenixframework.FenixFramework;
+import pt.ist.fenixframework.Atomic;
 
 public class Bubbledocs extends Bubbledocs_Base {
     
-	  private Bubbledocs() {
+	  	private Bubbledocs() {
 	        super();
 	        FenixFramework.getDomainRoot().setBubbledocs(this);
-	        setUniqueId(0);				//Used to generate Unique Sequential number.
+	        super.setUniqueId(0);				//Used to generate Unique Sequential number.
 	    }
 	    
 	    /*
@@ -18,6 +19,23 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    	if(s == null)
 	    		s = new Bubbledocs();
 	    	return s;
+	    }
+	   
+	    /*
+	     * setUniqueId - Faz-se Override para que não se possa mexer directamente.
+	     * no geracao de inteiros.
+	     */
+	    @Override
+	    public void setUniqueId(int id){}
+	    
+	    /*
+	     * gerarUniqueId - Gera inteiros unicos para o ID de cada folha.
+	     */
+	    @Atomic
+	    public int gerarUniqueId(){
+	    	int id = super.getUniqueId();
+	    	super.setUniqueId(getUniqueId() + 1);
+	    	return id;
 	    }
 	    
 	     /* 

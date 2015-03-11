@@ -1,10 +1,14 @@
-package pt.tecnico.bubbledocs;
+package pt.tecnico.bubbledocs.domain;
 
 import pt.tecnico.bubbledocs.exceptions.UsernameAlreadyTakenException;
+
 import java.util.ArrayList;
 
 public class Utilizador extends Utilizador_Base {
     
+	/*
+     * Throws unchecked exception UsernameAlreadyTakenException !!!!
+     */
     public Utilizador(String nome,String username,String password){
     	super();
     	try{
@@ -20,8 +24,7 @@ public class Utilizador extends Utilizador_Base {
     }
     
     /*
-     * (non-Javadoc)
-     * @see pt.tecnico.bubbledocs.Utilizador_Base#setUsername(java.lang.String)
+     * 
      */
     @Override
     public void setUsername(String newUsername){
@@ -44,7 +47,7 @@ public class Utilizador extends Utilizador_Base {
     }
     
     /*
-     * 
+     * obterFolhaPorNome - ...
      */
     public ArrayList<FolhaCalculo> obterFolhaPorNome(String nome){
     	ArrayList<FolhaCalculo> folhas = new ArrayList<FolhaCalculo>();
@@ -70,8 +73,10 @@ public class Utilizador extends Utilizador_Base {
      */
     public ArrayList<FolhaCalculo> listarFolhasCriadas(){
     	ArrayList<FolhaCalculo> folhas = new ArrayList<FolhaCalculo>();
-    	for(FolhaCalculo f: getOwnedSet())
+    	for(FolhaCalculo f: getOwnedSet()){
     		folhas.add(f);
+    		System.out.println(f);
+    	}
     	return folhas;
     }
     

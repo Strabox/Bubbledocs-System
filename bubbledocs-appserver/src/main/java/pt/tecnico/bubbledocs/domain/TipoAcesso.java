@@ -1,4 +1,5 @@
-package pt.tecnico.bubbledocs;
+package pt.tecnico.bubbledocs.domain;
+
 
 public class TipoAcesso extends TipoAcesso_Base {
     

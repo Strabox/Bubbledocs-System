@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs;
+package pt.tecnico.bubbledocs.domain;
 
 public abstract class Conteudo extends Conteudo_Base {
     

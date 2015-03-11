@@ -1,6 +1,10 @@
 package pt.tecnico.bubbledocs;
 
 import pt.ist.fenixframework.Atomic;
+import pt.tecnico.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.bubbledocs.domain.FolhaCalculo;
+import pt.tecnico.bubbledocs.domain.Literal;
+import pt.tecnico.bubbledocs.domain.Utilizador;
 
 public class BubbleApplication {
 	
@@ -10,10 +14,9 @@ public class BubbleApplication {
 		Bubbledocs bubble = Bubbledocs.getInstance();
 		// v---Testes----v
 		try{
-			Utilizador u = new Utilizador("Nome","Ai","badutss");
-			Utilizador u2 = new Utilizador("Nome","Ab","badutss");
-			u2.setUsername("hua");
-			
+			Utilizador u = bubble.obterUtilizador("si");
+			FolhaCalculo f = new FolhaCalculo(u,"hoi",1,2);
+			FolhaCalculo f1 = new FolhaCalculo(u,"hoi",1,2);
 		}
 		catch(Exception e){
 			System.out.println(e);

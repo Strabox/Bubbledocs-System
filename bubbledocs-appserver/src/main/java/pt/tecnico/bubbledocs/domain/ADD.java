@@ -1,4 +1,5 @@
-package pt.tecnico.bubbledocs;
+package pt.tecnico.bubbledocs.domain;
+
 
 public class ADD extends ADD_Base {
     
