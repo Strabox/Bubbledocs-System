@@ -6,12 +6,11 @@ import org.joda.time.LocalDate;
 public class FolhaCalculo extends FolhaCalculo_Base {
 	
 	
-    public FolhaCalculo(Utilizador owner,String nome,int linhas,int colunas) {
+    public FolhaCalculo(String nome,int linhas,int colunas) {
         super();
         this.setNome(nome);
         super.setLinhas(linhas);
         super.setColunas(colunas);
-        this.setOwner(owner);
         this.setBubbledocsFolhas(Bubbledocs.getInstance());
         super.setDataCriacao(new LocalDate());
         super.setId(Bubbledocs.getInstance().gerarUniqueId());

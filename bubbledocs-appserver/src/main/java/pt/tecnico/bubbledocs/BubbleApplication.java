@@ -12,8 +12,8 @@ public class BubbleApplication {
 		// v---Testes----v
 		try{
 			Utilizador u = bubble.obterUtilizador("si");
-			FolhaCalculo f = new FolhaCalculo(u,"hoi",1,2);
-			FolhaCalculo f1 = new FolhaCalculo(u,"hoi",1,2);
+			FolhaCalculo f = new FolhaCalculo("hoi",1,2);
+			FolhaCalculo f1 = new FolhaCalculo("hoi",1,2);
 			ADD a = new ADD(new Literal(1),new Literal(2));
 		}
 		catch(Exception e){
