@@ -105,6 +105,7 @@
             <artifactId>jdom2</artifactId>
             <version>${version.org.jdom.jdom}</version>
         </dependency>
+        
     </dependencies>
 
     <repositories>

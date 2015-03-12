@@ -41,7 +41,10 @@ class Referencia extends Conteudo{
 	int coluna;
 }
 
-class Celula;
+class Celula{
+	int linha;
+	int coluna;
+}
 
 class Funcao extends Conteudo;
 
@@ -135,6 +138,18 @@ relation TipoAcessoHasFolhaCalculo{
 
 // ############ Estrutura da Folha ##############
 
+
+relation FolhaCalculoHasCelula{
+	FolhaCalculo playsRole fc{
+		multiplicity 1;
+	}
+	Celula playsRole cel{
+		multiplicity 0..*;
+	}
+}
+
+
+
 // Cada Celula tem um Conteudo.
 relation CelulaHasConteudo{
 	Celula playsRole celula{
@@ -144,6 +159,8 @@ relation CelulaHasConteudo{
 		multiplicity 1;
 	}
 }
+
+
 
 // Cada Referencia tem uma Celula.
 relation ReferenciaHasCelula{

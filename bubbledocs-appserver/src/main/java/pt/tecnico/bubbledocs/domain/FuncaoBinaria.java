@@ -8,12 +8,12 @@ public abstract class FuncaoBinaria extends FuncaoBinaria_Base {
     
     public void init(Conteudo arg1,Conteudo arg2){
     	setArgument1(arg1);
-    	setArgument1(arg2);
+    	setArgument2(arg2);
     }
     
     @Override
 	public int getResult(){
-    	// FIX-ME
+    	
 		setResultado(calcula(getArgument1().getResult(),getArgument2().getResult()));
 		return getResultado();
 	}

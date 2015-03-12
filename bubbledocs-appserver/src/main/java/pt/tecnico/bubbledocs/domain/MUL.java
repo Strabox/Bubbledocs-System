@@ -12,4 +12,6 @@ public class MUL extends MUL_Base {
     	return arg1 * arg2;
     }
     
+   
+    
 }

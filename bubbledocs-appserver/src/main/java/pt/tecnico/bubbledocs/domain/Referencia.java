@@ -11,7 +11,7 @@ public class Referencia extends Referencia_Base {
     
     @Override
     public int getResult(){
-    	setResultado(getCelula().getConteudo().getResult());
+    	setResultado(getRefcelula().getConteudo().getResult());
     	return getResultado();
     }
     
