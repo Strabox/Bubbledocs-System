@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.domain;
 
+import org.jdom2.Element;
+
 public abstract class AVG extends AVG_Base {
     
     public AVG(Content args[]) {
@@ -13,6 +15,10 @@ public abstract class AVG extends AVG_Base {
     		somatorio += args[i];
     	
     	return somatorio;
+    }
+    
+    public void importFromXML(Element element, Cell container) {
+    	return;
     }
 }
 

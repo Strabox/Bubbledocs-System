@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.domain;
 
+import org.jdom2.Element;
+
 public abstract class PRD extends PRD_Base {
     
 	public PRD(Content[] args) {
@@ -15,4 +17,7 @@ public abstract class PRD extends PRD_Base {
     	return piatorio;
     }
     
+    public void importFromXML(Element element, Cell container) {
+    	return;
+    }
 }

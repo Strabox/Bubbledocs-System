@@ -43,5 +43,5 @@ public class Reference extends Reference_Base {
     	c = new Cell(line, column);
     	container.getFc().addCel(c);
     	setRefCell(c);
-        }
+    }
 }

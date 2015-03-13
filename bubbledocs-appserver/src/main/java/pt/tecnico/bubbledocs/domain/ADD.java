@@ -24,5 +24,7 @@ public class ADD extends ADD_Base {
     	return element;
     }
     
-    
+    public void importFromXML(Element element, Cell container) {
+    	return;
+    }
 }
