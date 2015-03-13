@@ -3,6 +3,9 @@ package pt.tecnico.bubbledocs.domain;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.Atomic;
 
+/*
+ * Implements singleton pattern.
+ */
 public class Bubbledocs extends Bubbledocs_Base {
     
 	  	private Bubbledocs() {
@@ -11,9 +14,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 	        super.setUniqueId(0);				//Used to generate Unique Sequential number.
 	    }
 	    
-	    /*
-	     * Implementa o Singleton.
-	     */
 	    public static Bubbledocs getInstance(){
 	    	Bubbledocs s = FenixFramework.getDomainRoot().getBubbledocs();
 	    	if(s == null)

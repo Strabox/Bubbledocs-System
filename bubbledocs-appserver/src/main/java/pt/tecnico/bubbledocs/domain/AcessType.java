@@ -5,7 +5,7 @@ public class AcessType extends AcessType_Base {
     
     public AcessType(SpreadSheet folha,AcessMode modo) {
         super(); 
-        this.setModo(modo);
+        this.setMode(modo);
         this.setFolha(folha);
     }
     

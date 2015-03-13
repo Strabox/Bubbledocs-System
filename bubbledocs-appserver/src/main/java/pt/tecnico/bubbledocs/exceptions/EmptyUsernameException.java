@@ -1,14 +1,14 @@
 package pt.tecnico.bubbledocs.exceptions;
 
-public class NoValueForReferenceException extends BubbledocsException{
+public class EmptyUsernameException extends BubbledocsException{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public NoValueForReferenceException(){
+	public EmptyUsernameException(){
 		super();
 	}
-	
+
 }

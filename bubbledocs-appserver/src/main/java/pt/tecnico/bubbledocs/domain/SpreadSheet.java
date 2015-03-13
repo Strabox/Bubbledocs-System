@@ -6,13 +6,12 @@ import org.joda.time.LocalDate;
 public class SpreadSheet extends SpreadSheet_Base {
 	
 	
-    public SpreadSheet(String nome,int linhas,int colunas) {
+    public SpreadSheet(String name,int linhas,int colunas) {
         super();
-        this.setNome(nome);
-        super.setLinhas(linhas);
-        super.setColunas(colunas);
-        this.setBubbledocsFolhas(Bubbledocs.getInstance());
-        super.setDataCriacao(new LocalDate());
+        this.setName(name);
+        super.setLines(linhas);
+        super.setColumns(colunas);
+        super.setCreationDate(new LocalDate());
         super.setId(Bubbledocs.getInstance().gerarUniqueId());
     }
 	
@@ -20,13 +19,13 @@ public class SpreadSheet extends SpreadSheet_Base {
      * setLinhas - Overrided para que não se possa alterar o numero de linahs da folha.
      */
     @Override
-    public void setLinhas(int linhas){}
+    public void setLines(int lines){}
     
     /*
      * setColunas - Overrided para que não se possa alterar o numero de colunas da folha.
      */
     @Override
-    public void setColunas(int colunas){}
+    public void setColumns(int columns){}
     
     /*
      * setId - Overrided para que não se possa alterar o ID atribuido pelo sistema.
@@ -38,11 +37,11 @@ public class SpreadSheet extends SpreadSheet_Base {
      * setDataCriacao - Overrided para que não se possa alterar a data de criacao da folha.
      */
     @Override
-    public void setDataCriacao(LocalDate data){}
+    public void setCreationDate(LocalDate date){}
     
     @Override
     public String toString(){
-    	String s ="ID: "+getId()+"\nNome: "+getNome()+"\nData Criação: "+getDataCriacao().toString()+"\nDono: "+getOwner().getNome()+"\n";
+    	String s ="ID: "+getId()+"\nNome: "+getName()+"\nData Criação: "+getCreationDate().toString()+"\nDono: "+getOwner().getNome()+"\n";
     	return s;
     }
     

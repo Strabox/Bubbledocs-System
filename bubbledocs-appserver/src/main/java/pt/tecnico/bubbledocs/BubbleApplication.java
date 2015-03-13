@@ -7,8 +7,6 @@ import org.jdom2.output.XMLOutputter;
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.*;
 
-
-
 public class BubbleApplication {
 	
 	@Atomic
@@ -17,11 +15,7 @@ public class BubbleApplication {
 		Bubbledocs bubble = Bubbledocs.getInstance();
 		// v---Testes----v
 		
-		
-
-		
 		try{
-			User u = bubble.obterUtilizador("si");
 			SpreadSheet f = new SpreadSheet("hoi",99,99);
 			Cell cel = new Cell (1,1,new NumberInt(3));
 			Cell cel1 = new Cell (3,3,new NumberInt(8));
@@ -51,8 +45,7 @@ public class BubbleApplication {
 		catch(Exception e){
 			System.out.println(e);
 		}
-		/*
-		
+		/*		
 		org.jdom2.Document doc = convertToXML();
 
 		printDomainInXML(doc);

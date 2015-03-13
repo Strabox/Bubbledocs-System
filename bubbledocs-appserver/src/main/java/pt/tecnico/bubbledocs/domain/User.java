@@ -11,20 +11,15 @@ public class User extends User_Base {
      */
     public User(String nome,String username,String password){
     	super();
-    	try{
-			setNome(nome);
-			setUsername(username);
-			setPassword(password);
-			setBubbledocsUtilizadores(Bubbledocs.getInstance());
-    	}
-    	catch(UsernameAlreadyTakenException e){
-    		delete();
-    		throw new UsernameAlreadyTakenException(username);
-    	}
+		setNome(nome);
+		setUsername(username);
+		setPassword(password);
+		setBubbledocsUtilizadores(Bubbledocs.getInstance());
     }
     
     /*
      * 
+     * Throws unchecked exception UsernameAlreadyTakenException !!!!
      */
     @Override
     public void setUsername(String newUsername){
@@ -52,7 +47,7 @@ public class User extends User_Base {
     public ArrayList<SpreadSheet> obterFolhaPorNome(String nome){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
-    		if(f.getNome().equals(nome))
+    		if(f.getName().equals(nome))
     			folhas.add(f);
     	}
     	return folhas;
@@ -75,7 +70,6 @@ public class User extends User_Base {
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
     		folhas.add(f);
-    		System.out.println(f);
     	}
     	return folhas;
     }

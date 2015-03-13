@@ -4,7 +4,7 @@ package pt.tecnico.bubbledocs.domain;
 
 enum AcessMode as acessMode;
 
-// Class representa o sistema.
+// Class represents the system.
 class Bubbledocs{
 	int uniqueId;
 }
@@ -16,7 +16,7 @@ class User{
 }
 
 class AcessType{
-	acessMode modo;
+	acessMode mode;
 }
 
 
@@ -24,10 +24,10 @@ class AcessType{
 
 class SpreadSheet{
 	int id;
-	String nome;
-	LocalDate dataCriacao;
-	int linhas;
-	int colunas;
+	String name;
+	LocalDate creationDate;
+	int lines;
+	int columns;
 }
 
 class Content{
