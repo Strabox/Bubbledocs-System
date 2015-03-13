@@ -23,6 +23,7 @@ public class NumberInt extends NumberInt_Base {
     }
     
     public void importFromXML(Element element, Cell container) {
-    	return;
+    	int v = Integer.parseInt(element.getAttribute("value").getValue());
+    	setResultado(v);
     }
 }

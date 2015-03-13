@@ -53,6 +53,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     }
     
     public Element exportToXML(){
+    	org.jdom2.Document xmlout = new org.jdom2.Document();
     	Element element = new Element("spreadsheet");
     	
     	element.setAttribute("owner", getOwner().getName());
@@ -63,7 +64,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     	for (Cell c : getCelSet()) {
     	    cells.addContent(c.exportToXML());
     	}
-
+    	xmlout.setRootElement(element);
     	return element;
     }
     
