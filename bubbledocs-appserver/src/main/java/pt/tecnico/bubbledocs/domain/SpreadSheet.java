@@ -60,7 +60,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     
     @Override
     public String toString(){
-    	String s ="ID: "+getId()+"\nNome: "+getName()+"\nData Criação: "+getCreationDate().toString()+"\nDono: "+getOwner().getName()+"\n";
+    	String s ="ID: "+getId()+"\nNome: "+getName()+"\nData Criação: "+getCreationDate().toString()+"\nDono: "+getOwner().getName();
     	return s;
     }
 }

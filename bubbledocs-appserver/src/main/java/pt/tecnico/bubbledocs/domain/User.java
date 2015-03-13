@@ -92,7 +92,7 @@ public class User extends User_Base {
     
     @Override
     public String toString(){
-    	String s = "Nome: "+getName()+"\nUsername: "+getUsername()+"\n";
+    	String s = "Nome: "+getName()+"\nUsername: "+getUsername();
     	return s;
     }
     
