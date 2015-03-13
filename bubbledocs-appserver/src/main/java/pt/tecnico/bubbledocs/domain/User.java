@@ -54,25 +54,41 @@ public class User extends User_Base {
     }
     
     /*
-     * listarFolhasUsadas - Retorna todas as folhas usadas pelo utilizador.
+     * listOwnedSpreadSheets - Retorna todas as folhas usadas pelo utilizador.
      */
-    public ArrayList<SpreadSheet> listOwnedSpreadSheet(){
+    public ArrayList<SpreadSheet> listOwnedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
-    	for(AcessType t: this.getUsedBySet())
+    	for(AcessType t: this.getUsedBySet()){
     		folhas.add(t.getFolha());
+    		System.out.println(t.getFolha());
+    	}
     	return folhas;
     }
     
     /*
-     * listarFolhasCriadas - Retorna todas as folhas criadas pelo utilizador.
+     * listUsedSpreadSheet - Retorna todas as folhas criadas pelo utilizador.
      */
-    public ArrayList<SpreadSheet> listUsedSpreadSheet(){
+    public ArrayList<SpreadSheet> listUsedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
     		folhas.add(f);
+    		System.out.println(f);
     	}
     	return folhas;
     }
+    
+    /*
+     * listUsedSpreadSheets - Retorna todas as folhas associadas ao utilizador.
+     */
+    public void listAllSpreadSheets(){
+    	System.out.println(getUsername()+"'s SpreadSheets");
+    	listUsedSpreadSheets();
+    	listOwnedSpreadSheets();
+    	System.out.println();
+    	System.out.println("----------------------------------");
+    }
+    
+    
     
     @Override
     public String toString(){

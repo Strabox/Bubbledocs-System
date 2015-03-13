@@ -11,7 +11,7 @@ public class BubbleApplication {
 		    SetupBubbledocs.populateDomain();
     }
 	
-    /* Bubbledocs main function. */
+    /* main - Bubbledocs main function. */
 	@Atomic
 	public static void main(String[] args){
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");
@@ -20,8 +20,27 @@ public class BubbleApplication {
 		/* Se for a 1º vez a correr ele vai preencher a BD com o necessário.*/
 		setupIfNeed(bubble);				
 		
-		// v---Testes----v
 		try{
+			/*======== Espaço que contém as chamadas para visualizacao da 1ºEntrega ======*/
+			
+			bubble.listAllUsers();
+			
+			User pf = bubble.getUserByName("pf");
+			User ra = bubble.getUserByName("ra");
+			
+			pf.listAllSpreadSheets();
+			ra.listAllSpreadSheets();
+			
+			//FIX-ME Export SpreadSheet!!!
+			
+			//FIX-ME Remove SpreadSheet From persistent State!!!
+			
+			//FIX-ME Import SpreadSheet
+			
+			pf.listAllSpreadSheets();
+		
+			System.out.println("??????????????Fim Para Efeitos de Debug??????????????????????");
+			/*============================================================================*/
 			
 			SpreadSheet f = new SpreadSheet("hoi",99,99);
 			Cell cel = new Cell (1,1,new NumberInt(3));
