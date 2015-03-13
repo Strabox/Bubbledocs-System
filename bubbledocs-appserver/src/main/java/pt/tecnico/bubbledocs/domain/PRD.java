@@ -2,8 +2,11 @@ package pt.tecnico.bubbledocs.domain;
 
 public abstract class PRD extends PRD_Base {
     
-    public PRD() {
+	public PRD(int arg) {
         super();
+        super.init(arg);
     }
+    
+    
     
 }
