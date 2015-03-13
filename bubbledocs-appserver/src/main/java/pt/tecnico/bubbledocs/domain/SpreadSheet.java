@@ -49,7 +49,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     public Element exportToXML(){
     	Element element = new Element("spreadsheet");
     	
-    	element.setAttribute("owner", getOwner().getNome());
+    	element.setAttribute("owner", getOwner().getName());
 
     	Element cells = new Element("cells");
     	element.addContent(cells);

@@ -20,5 +20,5 @@ public class NumberInt extends NumberInt_Base {
     	element.setAttribute("value", Integer.toString(getResultado()));
 
     	return element;
-    
+    }
 }
