@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalDate;
 
+import org.jdom2.Element;
 
 public class SpreadSheet extends SpreadSheet_Base {
 	
@@ -43,6 +44,21 @@ public class SpreadSheet extends SpreadSheet_Base {
     public String toString(){
     	String s ="ID: "+getId()+"\nNome: "+getName()+"\nData Criação: "+getCreationDate().toString()+"\nDono: "+getOwner().getName()+"\n";
     	return s;
+    }
+    
+    public Element exportToXML(){
+    	Element element = new Element("spreadsheet");
+    	
+    	element.setAttribute("owner", getOwner().getNome());
+
+    	Element cells = new Element("cells");
+    	element.addContent(cells);
+
+    	for (Cell c : getCelSet()) {
+    	    cells.addContent(c.exportToXML());
+    	}
+
+    	return element;
     }
     
 }

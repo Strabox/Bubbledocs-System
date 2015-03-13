@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.domain;
 
+import org.jdom2.Element;
+
 public class NumberInt extends NumberInt_Base {
     
     public NumberInt(int conteudo) {
@@ -11,5 +13,12 @@ public class NumberInt extends NumberInt_Base {
     public int getResult(){
     	return this.getResultado();
     }
+    
+    public Element exportToXML(){
+    	Element element = new Element("numberint");
+    	
+    	element.setAttribute("value", Integer.toString(getResultado()));
+
+    	return element;
     
 }

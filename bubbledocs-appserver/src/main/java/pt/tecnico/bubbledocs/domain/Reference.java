@@ -18,13 +18,11 @@ public class Reference extends Reference_Base {
     }
     
     public Element exportToXML(){
-    	Element element = new Element("spreadsheet");
-    	/*
-    	element.setAttribute("line", Integer.toString(getLine()));
-    	element.setAttribute("column", Integer.toString(getColumn()));
+    	Element element = new Element("reference");
+    	
+    	element.setAttribute("line", Integer.toString(getRefCell().getLine()));
+    	element.setAttribute("column", Integer.toString(getRefCell().getColumn()));
 
-    	element.addContent(getContent().exportToXML());
-    	*/
     	return element;
     }
 }

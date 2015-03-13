@@ -14,14 +14,6 @@ public abstract class Content extends Content_Base {
     
     public abstract int getResult();
     
-    public Element exportToXML(){
-  /*  	Element element = new Element("spreadsheet");
-    	
-    	element.setAttribute("line", Integer.toString(getLine()));
-    	element.setAttribute("column", Integer.toString(getColumn()));
+    public abstract Element exportToXML();
 
-    	element.addContent(getContent().exportToXML());
-
-    	return element;*/ return null;
-    }
 }
