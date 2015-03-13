@@ -1,9 +1,9 @@
 package pt.tecnico.bubbledocs;
 
 
-public class SistemaLogin{
+public class LoginSystem{
    
-    private SistemaLogin() {
+    private LoginSystem() {
         super();
     }
     

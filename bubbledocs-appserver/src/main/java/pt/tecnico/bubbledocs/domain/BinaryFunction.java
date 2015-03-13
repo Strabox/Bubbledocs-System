@@ -1,12 +1,12 @@
 package pt.tecnico.bubbledocs.domain;
 
-public abstract class FuncaoBinaria extends FuncaoBinaria_Base {
+public abstract class BinaryFunction extends BinaryFunction_Base {
     
-    public FuncaoBinaria() {
+    public BinaryFunction() {
         super();
     }
     
-    public void init(Conteudo arg1,Conteudo arg2){
+    public void init(Content arg1,Content arg2){
     	setArgument1(arg1);
     	setArgument2(arg2);
     }

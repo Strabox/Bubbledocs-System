@@ -1,8 +1,8 @@
 package pt.tecnico.bubbledocs.domain;
 
-public abstract class Conteudo extends Conteudo_Base {
+public abstract class Content extends Content_Base {
     
-    protected Conteudo() {
+    protected Content() {
         super();
     }
     

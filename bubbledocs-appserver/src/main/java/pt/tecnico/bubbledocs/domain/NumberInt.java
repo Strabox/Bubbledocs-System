@@ -1,8 +1,8 @@
 package pt.tecnico.bubbledocs.domain;
 
-public class Literal extends Literal_Base {
+public class NumberInt extends NumberInt_Base {
     
-    public Literal(int conteudo) {
+    public NumberInt(int conteudo) {
         super();
         super.init(conteudo);
     }

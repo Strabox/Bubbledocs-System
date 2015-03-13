@@ -4,12 +4,12 @@ import pt.tecnico.bubbledocs.exceptions.UsernameAlreadyTakenException;
 
 import java.util.ArrayList;
 
-public class Utilizador extends Utilizador_Base {
+public class User extends User_Base {
     
 	/*
      * Throws unchecked exception UsernameAlreadyTakenException !!!!
      */
-    public Utilizador(String nome,String username,String password){
+    public User(String nome,String username,String password){
     	super();
     	try{
 			setNome(nome);
@@ -29,7 +29,7 @@ public class Utilizador extends Utilizador_Base {
     @Override
     public void setUsername(String newUsername){
     	if(newUsername != null){
-	    	for(Utilizador user: Bubbledocs.getInstance().getUtilizadorSet()){
+	    	for(User user: Bubbledocs.getInstance().getUtilizadorSet()){
 	    		if(user.getUsername().equals(newUsername)){
 	    			throw new UsernameAlreadyTakenException(newUsername);
 	    		}
@@ -49,9 +49,9 @@ public class Utilizador extends Utilizador_Base {
     /*
      * obterFolhaPorNome - ...
      */
-    public ArrayList<FolhaCalculo> obterFolhaPorNome(String nome){
-    	ArrayList<FolhaCalculo> folhas = new ArrayList<FolhaCalculo>();
-    	for(FolhaCalculo f: getOwnedSet()){
+    public ArrayList<SpreadSheet> obterFolhaPorNome(String nome){
+    	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
+    	for(SpreadSheet f: getOwnedSet()){
     		if(f.getNome().equals(nome))
     			folhas.add(f);
     	}
@@ -61,9 +61,9 @@ public class Utilizador extends Utilizador_Base {
     /*
      * listarFolhasUsadas - Retorna todas as folhas usadas pelo utilizador.
      */
-    public ArrayList<FolhaCalculo> listarFolhasUsadas(){
-    	ArrayList<FolhaCalculo> folhas = new ArrayList<FolhaCalculo>();
-    	for(TipoAcesso t: this.getUsedBySet())
+    public ArrayList<SpreadSheet> listarFolhasUsadas(){
+    	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
+    	for(AcessType t: this.getUsedBySet())
     		folhas.add(t.getFolha());
     	return folhas;
     }
@@ -71,9 +71,9 @@ public class Utilizador extends Utilizador_Base {
     /*
      * listarFolhasCriadas - Retorna todas as folhas criadas pelo utilizador.
      */
-    public ArrayList<FolhaCalculo> listarFolhasCriadas(){
-    	ArrayList<FolhaCalculo> folhas = new ArrayList<FolhaCalculo>();
-    	for(FolhaCalculo f: getOwnedSet()){
+    public ArrayList<SpreadSheet> listarFolhasCriadas(){
+    	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
+    	for(SpreadSheet f: getOwnedSet()){
     		folhas.add(f);
     		System.out.println(f);
     	}

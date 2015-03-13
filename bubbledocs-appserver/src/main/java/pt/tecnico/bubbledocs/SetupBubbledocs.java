@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs;
 
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.bubbledocs.domain.Utilizador;
+import pt.tecnico.bubbledocs.domain.User;
 
 public class SetupBubbledocs {
 	
@@ -13,6 +13,6 @@ public class SetupBubbledocs {
 	
 	public static void populate(){
 		Bubbledocs.getInstance();
-		new Utilizador("SuperUser","root","root");
+		new User("SuperUser","root","root");
 	}
 }

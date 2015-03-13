@@ -2,27 +2,27 @@ package pt.tecnico.bubbledocs.domain;
 
 //------------------ ES Stuff -------------------------
 
-enum ModoAcesso as modoAcesso;
+enum AcessMode as acessMode;
 
 // Class representa o sistema.
 class Bubbledocs{
 	int uniqueId;
 }
 
-class Utilizador{
+class User{
 	String nome;
 	String username;
 	String password;
 }
 
-class TipoAcesso{
-	modoAcesso modo;
+class AcessType{
+	acessMode modo;
 }
 
 
 //------------------ PO Stuff -------------------------
 
-class FolhaCalculo{
+class SpreadSheet{
 	int id;
 	String nome;
 	LocalDate dataCriacao;
@@ -30,44 +30,44 @@ class FolhaCalculo{
 	int colunas;
 }
 
-class Conteudo{
+class Content{
 	int resultado;
 }
 
-class Literal extends Conteudo;
+class NumberInt extends Content;
 
-class Referencia extends Conteudo{
+class Reference extends Content{
 	int linha;
 	int coluna;
 }
 
-class Celula{
+class Cell{
 	int linha;
 	int coluna;
 }
 
-class Funcao extends Conteudo;
+class Function extends Content;
 
-class FuncaoBinaria extends Funcao;
+class BinaryFunction extends Function;
 
-class FuncaoGama extends Funcao{
+class IntervalFunction extends Function{
 	int top;
 	int bottom;
 	int left;
 	int right;
 }
 
-class ADD extends FuncaoBinaria;
+class ADD extends BinaryFunction;
 
-class SUB extends FuncaoBinaria;
+class SUB extends BinaryFunction;
 
-class MUL extends FuncaoBinaria;
+class MUL extends BinaryFunction;
 
-class DIV extends FuncaoBinaria;
+class DIV extends BinaryFunction;
 
-class AVG extends FuncaoGama;
+class AVG extends IntervalFunction;
 
-class PRD extends FuncaoGama;
+class PRD extends IntervalFunction;
 
 //====================================================
 //================ Relations ==========================
@@ -84,11 +84,11 @@ relation RootHasBubbledocs{
 }
 
 // O  Bubbledocs tem um conjunto de 0 ou mais utilizadores.
-relation BubbledocsHasUtilizadores{
+relation BubbledocsHasUsers{
 	Bubbledocs playsRole bubbledocsUtilizadores{
 		multiplicity 1;
 	}
-	Utilizador playsRole utilizador{
+	User playsRole utilizador{
 		multiplicity *;
 	}
 }
@@ -98,7 +98,7 @@ relation BubbledocsHasFolhas{
 	Bubbledocs playsRole bubbledocsFolhas{
 		multiplicity 1;
 	}
-	FolhaCalculo playsRole folhaCalculo{
+	SpreadSheet playsRole folhaCalculo{
 		multiplicity 0..*;
 	}
 }
@@ -106,10 +106,10 @@ relation BubbledocsHasFolhas{
 // Cada folha tem um Dono, mas um utilizador pode ser dono
 // de várias folhas.
 relation FolhasHasOwner{
-	FolhaCalculo playsRole owned{
+	SpreadSheet playsRole owned{
 		multiplicity 0..*;
 	}
-	Utilizador playsRole owner{
+	User playsRole owner{
 		multiplicity 1;
 	}
 }
@@ -117,20 +117,20 @@ relation FolhasHasOwner{
 // Um utilizador tem um conjunto de modos de acesso 
 // um para cada folha que pode usar.
 relation UtilizadorHasTiposAcesso{
-	Utilizador playsRole uses{
+	User playsRole uses{
 		multiplicity 1;
 	}
-	TipoAcesso playsRole usedBy{
+	AcessType playsRole usedBy{
 		multiplicity 0..*;
 	}
 }
 
 // Uma folha tem exclusivamente um tipo de acesso.
 relation TipoAcessoHasFolhaCalculo{
-	TipoAcesso playsRole tipo{
+	AcessType playsRole tipo{
 		multiplicity 1;
 	}
-	FolhaCalculo playsRole folha{
+	SpreadSheet playsRole folha{
 		multiplicity 1;
 	}
 }
@@ -139,55 +139,55 @@ relation TipoAcessoHasFolhaCalculo{
 // ############ Estrutura da Folha ##############
 
 
-relation FolhaCalculoHasCelula{
-	FolhaCalculo playsRole fc{
+relation FolhaCalculoHasCell{
+	SpreadSheet playsRole fc{
 		multiplicity 1;
 	}
-	Celula playsRole cel{
+	Cell playsRole cel{
 		multiplicity 0..*;
 	}
 }
 
 
 
-// Cada Celula tem um Conteudo.
-relation CelulaHasConteudo{
-	Celula playsRole celula{
+// Cada Cell tem um Content.
+relation CellHasContent{
+	Cell playsRole Cell{
 		multiplicity 1;
 	}
-	Conteudo playsRole conteudo{
+	Content playsRole Content{
 		multiplicity 1;
 	}
 }
 
 
 
-// Cada Referencia tem uma Celula.
-relation ReferenciaHasCelula{
-	Referencia playsRole referencia{
+// Cada Reference tem uma Cell.
+relation ReferenceHasCell{
+	Reference playsRole Reference{
 		multiplicity 1;
 	}
-	Celula playsRole refcelula{
+	Cell playsRole refCell{
 		multiplicity 0..1;
 	}
 }
 
 // 1º Argumento da Funcao Binaria
 relation FuncaoBinariaFirstArgument{
-	FuncaoBinaria playsRole funcaoBinaria1{
+	BinaryFunction playsRole funcaoBinaria1{
 		multiplicity 1;
 	}
-	Conteudo playsRole argument1{
+	Content playsRole argument1{
 		multiplicity 1;
 	}
 }
 
 // 2º Argumento da Funcao Binaria
 relation FuncaoBinariaSecondArgument{
-	FuncaoBinaria playsRole funcaoBinaria2{
+	BinaryFunction playsRole funcaoBinaria2{
 		multiplicity 1;
 	}
-	Conteudo playsRole argument2{
+	Content playsRole argument2{
 		multiplicity 1;
 	}
 }

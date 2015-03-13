@@ -3,10 +3,10 @@ package pt.tecnico.bubbledocs.domain;
 import org.joda.time.LocalDate;
 
 
-public class FolhaCalculo extends FolhaCalculo_Base {
+public class SpreadSheet extends SpreadSheet_Base {
 	
 	
-    public FolhaCalculo(String nome,int linhas,int colunas) {
+    public SpreadSheet(String nome,int linhas,int colunas) {
         super();
         this.setNome(nome);
         super.setLinhas(linhas);

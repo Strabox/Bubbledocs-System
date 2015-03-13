@@ -3,7 +3,7 @@ package pt.tecnico.bubbledocs.domain;
 
 public class ADD extends ADD_Base {
     
-    public ADD(Conteudo arg1,Conteudo arg2) {
+    public ADD(Content arg1,Content arg2) {
         super();
         super.init(arg1, arg2);
     }

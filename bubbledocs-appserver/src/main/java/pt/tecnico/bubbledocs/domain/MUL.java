@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 public class MUL extends MUL_Base {
     
-    public MUL(Conteudo arg1,Conteudo arg2) {
+    public MUL(Content arg1,Content arg2) {
         super();
         super.init(arg1,arg2);
     }

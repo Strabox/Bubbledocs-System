@@ -41,8 +41,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 	     /* 
 	      * obterUtilizador - Obtém o utilizador dado um username. 
 	      */
-	    public Utilizador obterUtilizador(String username){
-	    	for(Utilizador u: getUtilizadorSet()){
+	    public User obterUtilizador(String username){
+	    	for(User u: getUtilizadorSet()){
 	    		if(username.equalsIgnoreCase(u.getUsername()))
 	    			return u;
 	    	}
@@ -53,7 +53,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	     * listarUtilizadores - Lista todos os utilizadores registados na aplicacao.
 	     */
 	    public void listarUtilizadores(){
-	    	for(Utilizador u: getUtilizadorSet()){
+	    	for(User u: getUtilizadorSet()){
 	    		System.out.println(u);
 	    	}
 	    }
@@ -62,7 +62,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	     * listarFolhas - Lista todas as folha registadas na aplicacao.
 	     */
 	    public void listarFolhas(){
-	    	for(FolhaCalculo f: getFolhaCalculoSet()){
+	    	for(SpreadSheet f: getFolhaCalculoSet()){
 	    		System.out.println(f);
 	    	}
 	    }

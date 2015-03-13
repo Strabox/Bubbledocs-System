@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 public class SUB extends SUB_Base {
     
-    public SUB(Conteudo arg1,Conteudo arg2) {
+    public SUB(Content arg1,Content arg2) {
         super();
         super.init(arg1,arg2);
     }
