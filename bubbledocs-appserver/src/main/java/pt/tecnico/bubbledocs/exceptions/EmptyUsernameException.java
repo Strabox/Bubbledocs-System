@@ -10,5 +10,9 @@ public class EmptyUsernameException extends BubbledocsException{
 	public EmptyUsernameException(){
 		super();
 	}
-
+	
+	@Override
+	public String toString(){
+		return "Username vazio!!!";
+	}
 }

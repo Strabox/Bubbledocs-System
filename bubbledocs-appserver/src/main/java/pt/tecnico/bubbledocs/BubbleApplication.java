@@ -14,14 +14,15 @@ public class BubbleApplication {
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");
 		Bubbledocs bubble = Bubbledocs.getInstance();
 		// v---Testes----v
-		
 		try{
+			new User("aa","aaa","");
+			
 			SpreadSheet f = new SpreadSheet("hoi",99,99);
 			Cell cel = new Cell (1,1,new NumberInt(3));
 			Cell cel1 = new Cell (3,3,new NumberInt(8));
 			Cell celm = new Cell (4,4,new MUL(new Reference(cel,1,1),new NumberInt (7)));
 			
-
+	
 			f.addCel(cel);
 			f.addCel(cel1);
 			f.addCel(celm);
@@ -45,6 +46,7 @@ public class BubbleApplication {
 		catch(Exception e){
 			System.out.println(e);
 		}
+
 		/*		
 		org.jdom2.Document doc = convertToXML();
 

@@ -31,7 +31,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    /*
 	     * gerarUniqueId - Gera inteiros unicos para o ID de cada folha.
 	     */
-	    @Atomic
 	    public int gerarUniqueId(){
 	    	int id = super.getUniqueId();
 	    	super.setUniqueId(getUniqueId() + 1);
