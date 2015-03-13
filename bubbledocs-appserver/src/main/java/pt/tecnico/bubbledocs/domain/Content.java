@@ -16,4 +16,5 @@ public abstract class Content extends Content_Base {
     
     public abstract Element exportToXML();
 
+    public abstract void importFromXML(Element element, Cell container);
 }

@@ -11,6 +11,12 @@ public class Cell extends Cell_Base {
         setColumn(c);
     }
     
+    public Cell(int l, int c) {
+        super();
+        setLine(l);
+        setColumn(c);
+    }
+    
     public void delete(){
     	  //FIX ME	
     	//deleteDomainObject();
