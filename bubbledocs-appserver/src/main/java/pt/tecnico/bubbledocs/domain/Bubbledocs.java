@@ -30,16 +30,16 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    /*
 	     * gerarUniqueId - Gera inteiros unicos para o ID de cada folha.
 	     */
-	    public int gerarUniqueId(){
+	    public int generateUniqueId(){
 	    	int id = super.getUniqueId();
 	    	super.setUniqueId(getUniqueId() + 1);
 	    	return id;
 	    }
 	    
 	     /* 
-	      * obterUtilizador - Obtém o utilizador dado um username. 
+	      * getUserByName - Obtém o utilizador dado um username. 
 	      */
-	    public User obterUtilizador(String username){
+	    public User getUserByName(String username){
 	    	for(User u: getUtilizadorSet()){
 	    		if(username.equalsIgnoreCase(u.getUsername()))
 	    			return u;
@@ -50,7 +50,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    /* 
 	     * listarUtilizadores - Lista todos os utilizadores registados na aplicacao.
 	     */
-	    public void listarUtilizadores(){
+	    public void listAllUsers(){
 	    	for(User u: getUtilizadorSet()){
 	    		System.out.println(u);
 	    	}
@@ -59,7 +59,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    /* 
 	     * listarFolhas - Lista todas as folha registadas na aplicacao.
 	     */
-	    public void listarFolhas(){
+	    public void listAllSpreadSheets(){
 	    	for(SpreadSheet f: getFolhaCalculoSet()){
 	    		System.out.println(f);
 	    	}

@@ -13,7 +13,7 @@ public class SpreadSheet extends SpreadSheet_Base {
         super.setLines(linhas);
         super.setColumns(colunas);
         super.setCreationDate(new LocalDate());
-        super.setId(Bubbledocs.getInstance().gerarUniqueId());
+        super.setId(Bubbledocs.getInstance().generateUniqueId());
     }
 	
     /*

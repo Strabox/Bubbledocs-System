@@ -1,22 +1,27 @@
 package pt.tecnico.bubbledocs;
 
-import org.jdom2.Element;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
-
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.*;
 
 public class BubbleApplication {
 	
+	/* setupIfNeed - Setup the initial state if BubbleDocs is empty. */
+    private static void setupIfNeed(Bubbledocs b) {
+		if (b.getFolhaCalculoSet().isEmpty() && b.getUtilizadorSet().isEmpty())
+		    SetupBubbledocs.populateDomain();
+    }
+	
+    /* Bubbledocs main function. */
 	@Atomic
 	public static void main(String[] args){
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");
-		@SuppressWarnings("unused")
+	
 		Bubbledocs bubble = Bubbledocs.getInstance();
+		/* Se for a 1º vez a correr ele vai preencher a BD com o necessário.*/
+		setupIfNeed(bubble);				
+		
 		// v---Testes----v
 		try{
-			new User("aa","aaa","");
 			
 			SpreadSheet f = new SpreadSheet("hoi",99,99);
 			Cell cel = new Cell (1,1,new NumberInt(3));
