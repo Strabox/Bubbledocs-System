@@ -24,7 +24,7 @@ public class SetupBubbledocs {
 			bubble.addUtilizador(new User("Step Rabbit","ra","cor"));
 			User pf = bubble.getUserByName("pf");
 			pf.addOwned(new SpreadSheet("Notas Es",300,20));
-			//FIX-ME!!! Add contents do spreadsheet!!!!
+			SpreadSheet pfSpreadSheet = pf.getSpreadSheet("Notas ES").get(0);
 			
 		}
 		catch(DuplicateUsernameException e){

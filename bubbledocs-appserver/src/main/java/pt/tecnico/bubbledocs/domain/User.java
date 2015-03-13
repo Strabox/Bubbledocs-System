@@ -44,7 +44,7 @@ public class User extends User_Base {
     /*
      * obterFolhaPorNome - ...
      */
-    public ArrayList<SpreadSheet> obterFolhaPorNome(String nome){
+    public ArrayList<SpreadSheet> getSpreadSheet(String nome){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
     		if(f.getName().equals(nome))
@@ -56,7 +56,7 @@ public class User extends User_Base {
     /*
      * listarFolhasUsadas - Retorna todas as folhas usadas pelo utilizador.
      */
-    public ArrayList<SpreadSheet> listarFolhasUsadas(){
+    public ArrayList<SpreadSheet> listOwnedSpreadSheet(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(AcessType t: this.getUsedBySet())
     		folhas.add(t.getFolha());
@@ -66,7 +66,7 @@ public class User extends User_Base {
     /*
      * listarFolhasCriadas - Retorna todas as folhas criadas pelo utilizador.
      */
-    public ArrayList<SpreadSheet> listarFolhasCriadas(){
+    public ArrayList<SpreadSheet> listUsedSpreadSheet(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
     		folhas.add(f);
