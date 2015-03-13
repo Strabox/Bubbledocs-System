@@ -28,7 +28,7 @@ public class BubbleApplication {
 			setupIfNeed(bubble);
 			
 			bubble.listAllUsers();
-			
+			new User("aaa","pf","Aa");
 			User pf = bubble.getUserByName("pf");
 			User ra = bubble.getUserByName("ra");
 			
@@ -42,12 +42,22 @@ public class BubbleApplication {
 			//FIX-ME Import SpreadSheet
 			
 			pf.listAllSpreadSheets();
-		
-			System.out.println("??????????????Fim Para Efeitos de Debug??????????????????????");
+			
+			tm.commit();
+			committed = true;
 			/*============================================================================*/
 		}
 		catch(Exception e){
 			System.out.println(e);
+		} finally {
+			if(!committed){
+				try{
+					tm.rollback();
+				}
+				catch(Exception e){
+					System.err.println(e);
+				}
+			}
 		}
 
 	}
