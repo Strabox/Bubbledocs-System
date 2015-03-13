@@ -1,7 +1,6 @@
 package pt.tecnico.bubbledocs.domain;
 
 import pt.ist.fenixframework.FenixFramework;
-import pt.ist.fenixframework.Atomic;
 
 /*
  * Implements singleton pattern.

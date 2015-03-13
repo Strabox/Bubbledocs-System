@@ -12,6 +12,7 @@ public class BubbleApplication {
 	@Atomic
 	public static void main(String[] args){
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");
+		@SuppressWarnings("unused")
 		Bubbledocs bubble = Bubbledocs.getInstance();
 		// v---Testes----v
 		try{
