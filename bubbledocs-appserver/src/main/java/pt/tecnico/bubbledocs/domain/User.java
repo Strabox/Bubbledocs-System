@@ -1,6 +1,6 @@
 package pt.tecnico.bubbledocs.domain;
 
-import pt.tecnico.bubbledocs.exceptions.UsernameAlreadyTakenException;
+import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ public class User extends User_Base {
      */
     public User(String nome,String username,String password){
     	super();
-		setNome(nome);
+		setName(nome);
 		setUsername(username);
 		setPassword(password);
 		setBubbledocsUtilizadores(Bubbledocs.getInstance());
@@ -26,7 +26,7 @@ public class User extends User_Base {
     	if(newUsername != null){
 	    	for(User user: Bubbledocs.getInstance().getUtilizadorSet()){
 	    		if(user.getUsername().equals(newUsername)){
-	    			throw new UsernameAlreadyTakenException(newUsername);
+	    			throw new DuplicateUsernameException(newUsername);
 	    		}
 	    	}
 	    	super.setUsername(newUsername);
@@ -76,7 +76,7 @@ public class User extends User_Base {
     
     @Override
     public String toString(){
-    	String s = "Nome: "+getNome()+"\nUsername: "+getUsername()+"\n";
+    	String s = "Nome: "+getName()+"\nUsername: "+getUsername()+"\n";
     	return s;
     }
     

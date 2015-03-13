@@ -1,15 +1,15 @@
 package pt.tecnico.bubbledocs.exceptions;
 
-public class UsernameAlreadyTakenException extends BubbledocsException{
+public class DuplicateUsernameException extends BubbleDocsException{
 
 	private String username;
-		
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
-	public UsernameAlreadyTakenException(String u){
+	private static final long serialVersionUID = -5864091120608617698L;
+	
+	public DuplicateUsernameException(String u){
 		this.setUsername(u);
 	}
 	

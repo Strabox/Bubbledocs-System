@@ -10,7 +10,7 @@ class Bubbledocs{
 }
 
 class User{
-	String nome;
+	String name;
 	String username;
 	String password;
 }
