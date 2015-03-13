@@ -192,4 +192,15 @@ relation FuncaoBinariaSecondArgument{
 	}
 }
 
+// Argumento da Funcao Intervalo
+relation FuncaoIntervaloArgument{
+	IntervalFunction playsRole funcaoIntervalo{
+		multiplicity 1;
+	}
+	Content playsRole argument{
+		multiplicity 0..*;
+	}
+}
+
+
 //----------------------- END -----------------------
