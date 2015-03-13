@@ -2,6 +2,8 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalDate;
 import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 
@@ -64,7 +66,15 @@ public class SpreadSheet extends SpreadSheet_Base {
     	for (Cell c : getCelSet()) {
     	    cells.addContent(c.exportToXML());
     	}
+    	
     	xmlout.setRootElement(element);
+
+    	XMLOutputter xml = new XMLOutputter();
+
+    	xml.setFormat(Format.getPrettyFormat());
+
+    	System.out.println(xml.outputString(element));
+
     	return element;
     }
     
