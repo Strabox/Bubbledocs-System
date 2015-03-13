@@ -1,12 +1,14 @@
 package pt.tecnico.bubbledocs.domain;
 
+import org.jdom2.Element;
+
 public class Cell extends Cell_Base {
     
     public Cell(int l, int c,Content conteudo) {
         super();
         this.setContent(conteudo);
-        setLinha(l);
-        setColuna(c);
+        setLine(l);
+        setColumn(c);
     }
     
     public void delete(){
@@ -15,4 +17,14 @@ public class Cell extends Cell_Base {
     	
     }
     
+    public Element exportToXML(){
+    	Element element = new Element("spreadsheet");
+    	
+    	element.setAttribute("line", Integer.toString(getLine()));
+    	element.setAttribute("column", Integer.toString(getColumn()));
+
+    	element.addContent(getContent().exportToXML());
+
+    	return element;
+    }
 }

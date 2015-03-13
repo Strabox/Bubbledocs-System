@@ -37,13 +37,13 @@ class Content{
 class NumberInt extends Content;
 
 class Reference extends Content{
-	int linha;
-	int coluna;
+	int line;
+	int column;
 }
 
 class Cell{
-	int linha;
-	int coluna;
+	int line;
+	int column;
 }
 
 class Function extends Content;
