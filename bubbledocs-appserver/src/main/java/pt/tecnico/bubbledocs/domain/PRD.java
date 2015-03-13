@@ -17,6 +17,17 @@ public abstract class PRD extends PRD_Base {
     	return piatorio;
     }
     
+    public Element exportToXML(){
+    	Element element = new Element("prd");
+    	
+    	element.setAttribute("top", Integer.toString(getTop()));
+    	element.setAttribute("bottom", Integer.toString(getBottom()));
+    	element.setAttribute("left", Integer.toString(getLeft()));
+    	element.setAttribute("right", Integer.toString(getRight()));
+
+    	return element;
+    }
+    
     public void importFromXML(Element element, Cell container) {
     	return;
     }

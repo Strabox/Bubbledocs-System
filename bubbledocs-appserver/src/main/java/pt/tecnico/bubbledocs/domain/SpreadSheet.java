@@ -39,6 +39,10 @@ public class SpreadSheet extends SpreadSheet_Base {
     @Override
     public void setCreationDate(LocalDate date){}
     
+    public void addContentToCell(int l, int c, Content cont){
+    	
+    }
+    
     public Element exportToXML(){
     	Element element = new Element("spreadsheet");
     	
