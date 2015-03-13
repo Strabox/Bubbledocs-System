@@ -28,13 +28,12 @@ public class BubbleApplication {
 			setupIfNeed(bubble);
 			
 			bubble.listAllUsers();
-			new User("aaa","pf","Aa");
 			User pf = bubble.getUserByName("pf");
 			User ra = bubble.getUserByName("ra");
 			
 			pf.listAllSpreadSheets();
 			ra.listAllSpreadSheets();
-			
+
 			//FIX-ME Export SpreadSheet!!!
 			
 			//FIX-ME Remove SpreadSheet From persistent State!!!
