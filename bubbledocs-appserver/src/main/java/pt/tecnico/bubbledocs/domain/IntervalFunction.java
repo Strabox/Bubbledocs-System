@@ -18,10 +18,10 @@ public abstract class IntervalFunction extends IntervalFunction_Base {
     @Override
 	public int getResult(){
     	Set<Content> aux = getArgumentSet();
-    	//int a = aux.size();
-    	int args[];
-    	for(int i=0; i< aux.size(); i++){
-    		args[i] = aux[i];
+    	int args[] = new int[aux.size()], i=0;
+    	for(Content c: aux){
+    		args[i] = c.getResult();
+    		i++;
     	}
     	
 		setResultado(calcula(args));
