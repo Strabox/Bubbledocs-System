@@ -3,6 +3,8 @@ package pt.tecnico.bubbledocs.domain;
 import org.joda.time.LocalDate;
 import org.jdom2.Element;
 
+import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
+
 public class SpreadSheet extends SpreadSheet_Base {
 	
 	
@@ -40,7 +42,14 @@ public class SpreadSheet extends SpreadSheet_Base {
     public void setCreationDate(LocalDate date){}
     
     public void addContentToCell(int l, int c, Content cont){
-    	
+    	if ( !( 0 <= l && l <getLines() && 0<= c && c <getColumns() ))
+    		throw new OutOfSpreadsheetBoundariesException();
+    	for(Cell cell : getCelSet()){
+    		if (cell.getLine()==l && cell.getColumn()==c){
+    			cell.setContent(cont);
+    			return;
+    		}
+    	}
     }
     
     public Element exportToXML(){
