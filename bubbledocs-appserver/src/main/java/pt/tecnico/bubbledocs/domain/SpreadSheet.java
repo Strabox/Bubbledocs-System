@@ -46,7 +46,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     /*
      * Delete() - Delete Object from Persistent State.
      */
-    void delete(){
+    public void delete(){
     	this.setOwner(null);
     	this.setBubbledocsFolhas(null);
     	for(AcessType a : this.getTipoSet()){

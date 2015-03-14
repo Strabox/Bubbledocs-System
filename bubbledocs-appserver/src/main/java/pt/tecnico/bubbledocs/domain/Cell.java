@@ -18,9 +18,9 @@ public class Cell extends Cell_Base {
     }
     
     public void delete(){
-    	  //FIX ME	
-    	//deleteDomainObject();
-    	
+    	setFc(null);
+    	getContent().delete();
+    	deleteDomainObject();
     }
     
     public Element exportToXML(){

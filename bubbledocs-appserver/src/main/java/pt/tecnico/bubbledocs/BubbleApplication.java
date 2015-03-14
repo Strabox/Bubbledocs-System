@@ -36,7 +36,7 @@ public class BubbleApplication {
 
 			//FIX-ME Export SpreadSheet!!!
 			
-			//FIX-ME Remove SpreadSheet From persistent State!!!
+			pf.getSpreadSheet("Notas Es").get(0).delete();
 			
 			//FIX-ME Import SpreadSheet
 			
