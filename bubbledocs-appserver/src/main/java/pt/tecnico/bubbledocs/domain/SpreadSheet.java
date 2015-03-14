@@ -68,7 +68,8 @@ public class SpreadSheet extends SpreadSheet_Base {
     			return;
     		}
     	}
-    	new Cell(l, c, cont);
+    	Cell ce = new Cell(l, c, cont);
+    	addCel(ce);
     }
     
     public Element exportToXML(){
