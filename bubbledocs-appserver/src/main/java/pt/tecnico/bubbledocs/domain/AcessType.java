@@ -15,6 +15,7 @@ public class AcessType extends AcessType_Base {
     public void delete(){
     	setUses(null);
     	setFolha(null);
+    	deleteDomainObject();
     }
     
 }

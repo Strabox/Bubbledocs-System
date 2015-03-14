@@ -34,10 +34,17 @@ public class User extends User_Base {
     }
     
     /*
-     * 
+     *  Delete() - Delete a user from persistent state. 
      */
     public void delete(){
-    	//FIX-ME!!!!!!!!!!!!!
+    	setBubbledocsUtilizadores(null);
+    	/* Elimina todas as folhas que o user criou. */
+    	for(SpreadSheet s: this.getOwnedSet()){
+    		s.delete();
+    	}
+    	for(AcessType type : this.getUsedBySet()){
+    		type.delete();
+    	}
     	deleteDomainObject();
     }
     
