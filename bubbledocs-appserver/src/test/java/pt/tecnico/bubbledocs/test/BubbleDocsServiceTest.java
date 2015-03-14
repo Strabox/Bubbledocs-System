@@ -14,6 +14,11 @@ import pt.tecnico.bubbledocs.domain.User;
 // add needed import declarations
 
 public class BubbleDocsServiceTest {
+
+	public void populate4Test() {
+		// TODO Auto-generated method stub
+		
+	}
 /*
     @Before
     public void setUp() throws Exception {

@@ -16,16 +16,16 @@ import pt.tecnico.bubbledocs.service.LoginUser;
 // add needed import declarations
 
 public class LoginUserTest extends BubbleDocsServiceTest {
-/*
+
     private String jp; // the token for user jp
     private String root; // the token for user root
 
     private static final String USERNAME = "jp";
     private static final String PASSWORD = "jp#";
-
+/*
     @Override
     public void populate4Test() {
-        createUser(USERNAME, PASSWORD, "João Pereira");
+        //createUser(USERNAME, PASSWORD, "João Pereira");
     }
 
     // returns the time of the last access for the user with token userToken.
@@ -34,14 +34,18 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	// add code here
     return null;
     }
+    
+    private User getUserFromSession(String token){
+    	return null;
+    }
 
     @Test
     public void success() {
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         service.execute();
-	LocalTime currentTime = new LocalTime();
+        LocalTime currentTime = new LocalTime();
 	
-	String token = service.getUserToken();
+        String token = service.getUserToken();
 
         User user = getUserFromSession(service.getUserToken());
         assertEquals(USERNAME, user.getUsername());
