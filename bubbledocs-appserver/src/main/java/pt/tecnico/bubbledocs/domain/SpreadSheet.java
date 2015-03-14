@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.domain;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
@@ -16,6 +18,12 @@ public class SpreadSheet extends SpreadSheet_Base {
         super.setLines(linhas);
         super.setColumns(colunas);
         super.setCreationDate(new LocalDate());
+        super.setId(Bubbledocs.getInstance().generateUniqueId());
+    }
+    
+    public SpreadSheet(){
+    	super();
+    	super.setCreationDate(new LocalDate());
         super.setId(Bubbledocs.getInstance().generateUniqueId());
     }
 	
@@ -72,11 +80,13 @@ public class SpreadSheet extends SpreadSheet_Base {
     	addCel(ce);
     }
     
-    public Element exportToXML(){
+    public org.jdom2.Document exportToXML(){
     	org.jdom2.Document xmlout = new org.jdom2.Document();
     	Element element = new Element("spreadsheet");
     	
     	element.setAttribute("owner", getOwner().getName());
+    	element.setAttribute("lines", Integer.toString(getLines()));
+    	element.setAttribute("columns", Integer.toString(getColumns()));
 
     	Element cells = new Element("cells");
     	element.addContent(cells);
@@ -89,14 +99,16 @@ public class SpreadSheet extends SpreadSheet_Base {
 
     	XMLOutputter xml = new XMLOutputter();
 
-    	xml.setFormat(Format.getPrettyFormat());
+    	//xml.setFormat(Format.getPrettyFormat());
 
-    	System.out.println(xml.outputString(element));
+    	System.out.println(xml.outputString(xmlout));
 
-    	return element;
+    	return xmlout;
     }
     
-    public void importFromXML(Element element) {
+    public void importFromXML(org.jdom2.Document doc) {
+    	Element sheet = doc.getRootElement();
+    	List<Element> cells = sheet.getChildren();
     	return;
     }
     
