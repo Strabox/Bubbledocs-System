@@ -1,5 +1,6 @@
 package pt.tecnico.bubbledocs.test;
 
+/*
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 
@@ -10,7 +11,7 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
-
+*/
 // add needed import declarations
 
 public class BubbleDocsServiceTest {

@@ -1,5 +1,5 @@
 package pt.tecnico.bubbledocs.test;
-
+/*
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -10,7 +10,7 @@ import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.CreateUser;
-
+*/
 // add needed import declarations
 
 public class CreateUserTest extends BubbleDocsServiceTest {

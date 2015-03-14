@@ -1,5 +1,5 @@
 package pt.tecnico.bubbledocs.test;
-
+/*
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -10,7 +10,7 @@ import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.DeleteUser;
-
+*/
 // add needed import declarations
 
 public class DeleteUserTest extends BubbleDocsServiceTest {

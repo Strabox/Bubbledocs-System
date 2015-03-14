@@ -9,6 +9,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 
 public class SpreadSheet extends SpreadSheet_Base {
@@ -56,6 +57,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     /*
      * Delete() - Delete Object from Persistent State.
      */
+    @Atomic
     public void delete(){
     	this.setOwner(null);
     	this.setBubbledocsFolhas(null);
@@ -95,6 +97,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     	addCel(cell);
     }
     
+    @Atomic
     public org.jdom2.Document exportToXML(){
     	org.jdom2.Document xmlout = new org.jdom2.Document();
     	Element element = new Element("spreadsheet");
@@ -115,6 +118,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     	return xmlout;
     }
     
+    @Atomic
     public void importFromXML(org.jdom2.Document doc) {
     	Element sheet = doc.getRootElement();
     	List<Element> cells = sheet.getChildren();
@@ -185,7 +189,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     
     @Override
     public String toString(){
-    	String s ="ID: "+getId()+"\nNome: "+getName()+"\nData Criação: "+getCreationDate().toString()+"\nDono: "+getOwner().getName();
+    	String s ="Nome: "+getName()+"\nID: "+getId();
     	return s;
     }
 }

@@ -1,7 +1,6 @@
 package pt.tecnico.bubbledocs.domain;
 
 import java.util.Set;
-import java.util.Vector;
 
 public abstract class IntervalFunction extends IntervalFunction_Base {
     

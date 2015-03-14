@@ -1,5 +1,5 @@
 package pt.tecnico.bubbledocs.test;
-
+/*
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -12,17 +12,17 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exceptions.WrongPasswordException;
 import pt.tecnico.bubbledocs.service.LoginUser;
-
+*/
 // add needed import declarations
 
 public class LoginUserTest extends BubbleDocsServiceTest {
-
+/*
     private String jp; // the token for user jp
     private String root; // the token for user root
 
     private static final String USERNAME = "jp";
     private static final String PASSWORD = "jp#";
-/*
+
     @Override
     public void populate4Test() {
         //createUser(USERNAME, PASSWORD, "João Pereira");
