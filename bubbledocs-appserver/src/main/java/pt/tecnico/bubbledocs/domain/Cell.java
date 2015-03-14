@@ -24,7 +24,7 @@ public class Cell extends Cell_Base {
     }
     
     public Element exportToXML(){
-    	Element element = new Element("spreadsheet");
+    	Element element = new Element("cell");
     	
     	element.setAttribute("line", Integer.toString(getLine()));
     	element.setAttribute("column", Integer.toString(getColumn()));

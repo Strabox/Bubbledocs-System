@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.domain;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -66,25 +68,38 @@ public class SpreadSheet extends SpreadSheet_Base {
     	deleteDomainObject();
     }
     
-    
-    public void addContentToCell(int l, int c, Content cont){
+    public Cell getSingleCell(int l, int c){
     	if ( !( 0 <= l && l <getLines() && 0<= c && c <getColumns() ))
     		throw new OutOfSpreadsheetBoundariesException();
     	for(Cell cell : getCelSet()){
     		if (cell.getLine()==l && cell.getColumn()==c){
-    			cell.setContent(cont);
-    			return;
+    			return cell;
     		}
     	}
-    	Cell ce = new Cell(l, c, cont);
-    	addCel(ce);
+    	return null;
+    	/* Esta funcao poderia devolver uma celula vazia, mas em caso de apenas se querer saber
+    	 * se existe celula, isso podia estragar coisas.
+    	Cell cell = new Cell(l, c);
+    	addCel(cell);
+    	return cell;
+    	*/
+    }
+    
+    public void addContentToCell(int l, int c, Content cont){
+    	Cell cell = getSingleCell(l, c);
+    	if (cell!=null){
+    			cell.setContent(cont);
+    			return;
+    	}
+    	cell = new Cell(l, c, cont);
+    	addCel(cell);
     }
     
     public org.jdom2.Document exportToXML(){
     	org.jdom2.Document xmlout = new org.jdom2.Document();
     	Element element = new Element("spreadsheet");
     	
-    	element.setAttribute("owner", getOwner().getName());
+    	element.setAttribute("owner", getOwner().getUsername());
     	element.setAttribute("lines", Integer.toString(getLines()));
     	element.setAttribute("columns", Integer.toString(getColumns()));
 
@@ -97,12 +112,6 @@ public class SpreadSheet extends SpreadSheet_Base {
     	
     	xmlout.setRootElement(element);
 
-    	XMLOutputter xml = new XMLOutputter();
-
-    	//xml.setFormat(Format.getPrettyFormat());
-
-    	System.out.println(xml.outputString(xmlout));
-
     	return xmlout;
     }
     
@@ -111,6 +120,68 @@ public class SpreadSheet extends SpreadSheet_Base {
     	List<Element> cells = sheet.getChildren();
     	return;
     }
+    
+    public Content factory(String input){
+		input = input.replace("=","");
+		String[] splited;
+		splited = input.split("\\(|,|:|\\)");
+		boolean isFGama=false;
+		if(input.indexOf(":")!=-1) isFGama=true;
+		try{
+			if(splited.length == 3){							//Se for uma funcao.
+				splited[0] = "calc."+splited[0]; 
+				Class tipo = Class.forName(splited[0]);
+				Constructor<?> ctor = tipo.getConstructors()[0];
+				if(!isFGama){
+					BinaryFunction b = (BinaryFunction) ctor.newInstance();
+					b.init(factory("="+splited[1]),factory("="+splited[2]));
+					return b;
+				}else{ //se o argumento for uma gama
+					//String stringArgGama = splited[1]+":"+splited[2];
+					//Integer[] intArrayGama = splitGamas(stringArgGama); //separa em limites (linhas,colunas) da gama
+					//Conteudo c = (Conteudo) ctor.newInstance( gamaToRefArray(intArrayGama), intArrayGama[0], intArrayGama[1], intArrayGama[2], intArrayGama[3]);
+					//return c;
+				}
+			}
+			splited = splited[0].split(";");
+			if(splited.length == 1)								//Se for Literal.
+				return new NumberInt(Integer.parseInt(splited[0]));
+			
+			else if(splited.length == 2){						//Se for Reference.
+				Integer Linha = Integer.parseInt(splited[0]);
+				Integer Coluna = Integer.parseInt(splited[1]);
+				if(getSingleCell(Linha,Coluna) == null){
+					Cell c = new Cell(Linha, Coluna);
+					addCel(c);
+					return new Reference(c, Linha, Coluna);
+				}
+				else
+					return new Reference(getSingleCell(Linha,Coluna),Linha,Coluna);
+			}
+		}
+		catch (ClassNotFoundException exc) {
+			System.err.println("CLASS NOT FOUND");
+			System.err.println(exc);
+			return null;
+		}
+		catch (InstantiationException e) {
+			System.err.println(e);
+			return null;
+		}
+		catch (IllegalAccessException e) {
+			System.err.println(e);
+			return null;
+		}
+		catch (IllegalArgumentException e) {
+			System.err.println(e);
+			return null;
+		}
+		catch (InvocationTargetException e) {
+			System.err.println(e);
+			return null;
+		}
+		return null;
+	}
     
     @Override
     public String toString(){

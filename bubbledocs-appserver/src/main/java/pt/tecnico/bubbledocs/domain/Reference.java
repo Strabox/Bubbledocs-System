@@ -42,11 +42,10 @@ public class Reference extends Reference_Base {
     	setColumn(column);
     	Cell c;
     	// Checks if there already is a cell in the spreadsheet (accessed using the containing cell.
-    	for(Cell citer : container.getFc().getCelSet()){
-    		if(line==citer.getLine() || column==citer.getColumn()){
-    			setRefCell(citer);
-    			return; // Success: sets the cell as referred to, then exits.
-    		}
+    	c = container.getFc().getSingleCell(line, column);
+    	if(c != null){
+    		setRefCell(c);
+    		return; // Success: sets the cell as referred to, then exits.
     	}
     	//Failure: creates an "empty" cell that may later have a content
     	c = new Cell(line, column);

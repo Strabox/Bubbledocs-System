@@ -2,7 +2,12 @@ package pt.tecnico.bubbledocs;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
+
 import javax.transaction.*;
+
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 import pt.tecnico.bubbledocs.domain.*;
 
 
@@ -34,7 +39,10 @@ public class BubbleApplication {
 			pf.listAllSpreadSheets();
 			ra.listAllSpreadSheets();
 
-			//FIX-ME Export SpreadSheet!!!
+			XMLOutputter xml = new XMLOutputter();
+	    	xml.setFormat(Format.getPrettyFormat());
+	    	org.jdom2.Document xmlout = pf.getSpreadSheet("Notas Es").get(0).exportToXML();
+	    	System.out.println(xml.outputString(xmlout));
 			
 			pf.getSpreadSheet("Notas Es").get(0).delete();
 			
