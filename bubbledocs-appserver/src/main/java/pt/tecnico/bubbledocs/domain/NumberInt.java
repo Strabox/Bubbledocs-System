@@ -13,8 +13,10 @@ public class NumberInt extends NumberInt_Base {
      * Delete() - Delete instance from persistent state.
      */
     public void delete(){
-    	//FIX-ME!!!!!
     	this.setCell(null);
+    	this.setFuncaoBinaria1(null);
+    	this.setFuncaoIntervalo(null);
+    	this.setFuncaoBinaria2(null);
     	deleteDomainObject();
     }
     

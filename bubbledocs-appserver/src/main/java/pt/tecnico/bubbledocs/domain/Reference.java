@@ -11,8 +11,13 @@ public class Reference extends Reference_Base {
         this.setColumn(coluna);
     }
     
+    /*
+     * Delete it from persistent state.
+     */
     public void delete(){
-    	//FIX-ME!!
+    	this.setRefCell(null);
+    	this.setCell(null);
+    	deleteDomainObject();
     }
     
     @Override
