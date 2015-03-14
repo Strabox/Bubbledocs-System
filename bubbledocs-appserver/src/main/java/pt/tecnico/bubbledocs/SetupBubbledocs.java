@@ -4,6 +4,7 @@ package pt.tecnico.bubbledocs;
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.ADD;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.bubbledocs.domain.DIV;
 import pt.tecnico.bubbledocs.domain.NumberInt;
 import pt.tecnico.bubbledocs.domain.Reference;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;

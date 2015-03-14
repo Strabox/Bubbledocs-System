@@ -11,6 +11,12 @@ public class Reference extends Reference_Base {
         this.setColumn(coluna);
     }
     
+    public Reference(int linha,int coluna) {
+        super();
+        this.setLine(linha);
+        this.setColumn(coluna);
+    }
+    
     /*
      * Delete it from persistent state.
      */

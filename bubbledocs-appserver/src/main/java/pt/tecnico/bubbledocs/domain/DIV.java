@@ -4,8 +4,9 @@ import org.jdom2.Element;
 
 public class DIV extends DIV_Base {
     
-    public DIV() {
+    public DIV(Content arg1,Content arg2) {
         super();
+        super.init(arg1, arg2);
     }
     
     @Override

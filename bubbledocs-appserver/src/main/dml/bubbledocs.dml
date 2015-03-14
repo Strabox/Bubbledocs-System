@@ -144,13 +144,12 @@ relation TipoAcessoHasFolhaCalculo{
 // eventualmente pode não ter nenhum utilizador em sessão.
 relation BubbleDocsHasSessions{
 	Bubbledocs playsRole bubble{
-		multiplicity 0..*;
+		multiplicity 1;
 	}
 	Session playsRole session{
 		multiplicity 0..*;
 	}
 }
-
 
 
 // ############ Estrutura da Folha ##############
