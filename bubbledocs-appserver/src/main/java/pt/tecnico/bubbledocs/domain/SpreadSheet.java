@@ -43,6 +43,22 @@ public class SpreadSheet extends SpreadSheet_Base {
     @Override
     public void setCreationDate(LocalDate date){}
     
+    /*
+     * Delete() - Delete Object from Persistent State.
+     */
+    void delete(){
+    	this.setOwner(null);
+    	this.setBubbledocsFolhas(null);
+    	for(AcessType a : this.getTipoSet()){
+    		a.delete();
+    	}
+    	for(Cell c: this.getCelSet()){
+    		c.delete();
+    	}
+    	deleteDomainObject();
+    }
+    
+    
     public void addContentToCell(int l, int c, Content cont){
     	if ( !( 0 <= l && l <getLines() && 0<= c && c <getColumns() ))
     		throw new OutOfSpreadsheetBoundariesException();

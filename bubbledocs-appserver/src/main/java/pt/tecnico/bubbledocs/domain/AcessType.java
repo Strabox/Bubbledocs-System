@@ -9,4 +9,12 @@ public class AcessType extends AcessType_Base {
         this.setFolha(folha);
     }
     
+    /*
+     * delete() - Delete it from persistent state. 
+     */
+    public void delete(){
+    	setUses(null);
+    	setFolha(null);
+    }
+    
 }

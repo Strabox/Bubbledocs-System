@@ -128,7 +128,7 @@ relation UtilizadorHasTiposAcesso{
 // Uma folha tem exclusivamente um tipo de acesso.
 relation TipoAcessoHasFolhaCalculo{
 	AcessType playsRole tipo{
-		multiplicity 1;
+		multiplicity 0..*;
 	}
 	SpreadSheet playsRole folha{
 		multiplicity 1;
