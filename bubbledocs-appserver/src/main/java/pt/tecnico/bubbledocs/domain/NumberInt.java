@@ -9,6 +9,15 @@ public class NumberInt extends NumberInt_Base {
         super.init(conteudo);
     }
     
+    /*
+     * Delete() - Delete instance from persistent state.
+     */
+    public void delete(){
+    	//FIX-ME!!!!!
+    	this.setCell(null);
+    	deleteDomainObject();
+    }
+    
     @Override
     public int getResult(){
     	return this.getResultado();

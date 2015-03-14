@@ -11,6 +11,10 @@ public class Reference extends Reference_Base {
         this.setColumn(coluna);
     }
     
+    public void delete(){
+    	//FIX-ME!!
+    }
+    
     @Override
     public int getResult(){
     	setResultado(getRefCell().getContent().getResult());
