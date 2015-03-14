@@ -24,4 +24,7 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
      */
     public abstract int calcula(int arg1,int arg2);
     
+    public void delete(){
+    	
+    }
 }
