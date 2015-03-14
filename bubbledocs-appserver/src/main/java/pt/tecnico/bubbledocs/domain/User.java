@@ -73,9 +73,9 @@ public class User extends User_Base {
     @Atomic
     public ArrayList<SpreadSheet> listOwnedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
-    	for(AcessType t: this.getUsedBySet()){
-    		folhas.add(t.getFolha());
-    		System.out.println(t.getFolha());
+    	for(SpreadSheet f: getOwnedSet()){
+    		folhas.add(f);
+    		System.out.println(f);
     	}
     	return folhas;
     }
@@ -86,8 +86,8 @@ public class User extends User_Base {
     @Atomic
     public ArrayList<SpreadSheet> listUsedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
-    	for(SpreadSheet f: getOwnedSet()){
-    		folhas.add(f);
+    	for(AcessType t: getUsedBySet()){
+    		folhas.add(t.getFolha());
     	}
     	return folhas;
     }
@@ -95,7 +95,7 @@ public class User extends User_Base {
     
     @Override
     public String toString(){
-    	String s = "Nome: "+getName()+"\nUsername: "+getUsername();
+    	String s = "Nome: "+getName()+"\nUsername: "+getUsername()+"\nPassword: "+getPassword();
     	return s;
     }
     

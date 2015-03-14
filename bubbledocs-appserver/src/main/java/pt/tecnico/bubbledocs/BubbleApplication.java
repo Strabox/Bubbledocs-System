@@ -29,15 +29,16 @@ public class BubbleApplication {
 			setupIfNeed(bubble);
 			
 			bubble.listAllUsers();
+			
+			System.out.println("======== USERS END =========");
 			User pf = bubble.getUserByName("pf");
 			User ra = bubble.getUserByName("ra");
 			
-			for(SpreadSheet s: pf.listOwnedSpreadSheets()){
-				System.out.println(s);
-			}
-			for(SpreadSheet s: ra.listOwnedSpreadSheets()){
-				System.out.println(s);
-			}
+			System.out.println("======= pf's Spreadsheets ======");
+			pf.listOwnedSpreadSheets();
+
+			System.out.println("======= ra's Spreadsheets ======");
+			ra.listOwnedSpreadSheets();
 
 			XMLOutputter xml = new XMLOutputter();
 	    	xml.setFormat(Format.getPrettyFormat());
@@ -46,10 +47,12 @@ public class BubbleApplication {
 			
 			//pf.getSpreadSheet("Notas Es").get(0).delete();
 			
+	    	//FIX-ME Import pf's SpreadSheet
+	    	
+	    	System.out.println("======= pf's Spreadsheets======");
 			pf.listOwnedSpreadSheets();
-			
-			//FIX-ME Import SpreadSheet
-			
+
+			//FIX-ME Export pf's Spreasheet
 			
 		}
 		catch(Exception e){
