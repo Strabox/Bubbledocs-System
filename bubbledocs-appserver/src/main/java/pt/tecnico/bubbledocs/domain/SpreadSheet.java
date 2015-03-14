@@ -91,11 +91,13 @@ public class SpreadSheet extends SpreadSheet_Base {
     public void addContentToCell(int l, int c, Content cont){
     	Cell cell = getSingleCell(l, c);
     	if (cell!=null){
-    			cell.setContent(cont);
-    			return;
+			cell.setContent(cont);
+			return;
     	}
     	cell = new Cell(l, c, cont);
+    	cell.setContent(cont);
     	addCel(cell);
+    	return;
     }
     
     @Atomic
@@ -111,11 +113,11 @@ public class SpreadSheet extends SpreadSheet_Base {
     	element.addContent(cells);
 
     	for (Cell c : getCelSet()) {
+    		System.out.println("casa");
     	    cells.addContent(c.exportToXML());
     	}
     	
     	xmlout.setRootElement(element);
-
     	return xmlout;
     }
     

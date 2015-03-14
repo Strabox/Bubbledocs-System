@@ -28,9 +28,9 @@ public class Cell extends Cell_Base {
     	
     	element.setAttribute("line", Integer.toString(getLine()));
     	element.setAttribute("column", Integer.toString(getColumn()));
-
+   
     	element.addContent(getContent().exportToXML());
-
+   
     	return element;
     }
     
