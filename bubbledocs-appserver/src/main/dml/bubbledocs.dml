@@ -47,6 +47,7 @@ class Reference extends Content{
 }
 
 class Cell{
+	boolean protect;
 	int line;
 	int column;
 }

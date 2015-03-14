@@ -9,7 +9,6 @@ import pt.tecnico.bubbledocs.domain.NumberInt;
 import pt.tecnico.bubbledocs.domain.Reference;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
-import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 
 /*
  * Class SetupBubbledocs - Usada para preencher a Base de Dados

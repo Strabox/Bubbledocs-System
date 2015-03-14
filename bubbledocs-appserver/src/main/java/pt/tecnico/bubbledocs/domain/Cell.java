@@ -6,8 +6,9 @@ public class Cell extends Cell_Base {
     
     public Cell(int l, int c,Content conteudo) {
         super();
-        this.setContent(conteudo);
+        setContent(conteudo);
         setLine(l);
+        setProtect(false);
         setColumn(c);
     }
     
@@ -15,6 +16,7 @@ public class Cell extends Cell_Base {
         super();
         setLine(l);
         setColumn(c);
+        setProtect(false);
     }
     
     public void delete(){
