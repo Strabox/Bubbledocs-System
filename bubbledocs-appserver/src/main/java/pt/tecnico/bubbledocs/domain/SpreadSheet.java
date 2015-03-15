@@ -137,8 +137,8 @@ public class SpreadSheet extends SpreadSheet_Base {
      	
     	for (Element cell : cells.getChildren("cell")) {
     	    Cell c = new Cell();
-    	    c.importFromXML(cell);
     	    this.addCel(c);
+    	    c.importFromXML(cell);
     	}
     	return;
     }

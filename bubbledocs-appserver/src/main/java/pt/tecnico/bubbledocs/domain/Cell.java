@@ -35,9 +35,11 @@ public class Cell extends Cell_Base {
     	
     	element.setAttribute("line", Integer.toString(getLine()));
     	element.setAttribute("column", Integer.toString(getColumn()));
-   
+    	
+    	System.out.println("cell pre add content");
     	element.addContent(getContent().exportToXML());
-   
+    	System.out.println("cell post add content");
+    	
     	return element;
     }
     
@@ -48,26 +50,26 @@ public class Cell extends Cell_Base {
     	
     	if((content = element.getChild("div")) != null){
     		DIV div = new DIV();
-    		div.importFromXML(content);
     		setContent(div);
+    		div.importFromXML(content);
     		return;
     	}
     	else if((content = element.getChild("mul")) != null){
     		MUL mul = new MUL();
-    		mul.importFromXML(content);
     		setContent(mul);
+    		mul.importFromXML(content);
     		return;
     	}
     	else if((content = element.getChild("sub")) != null){
     		SUB sub = new SUB();
-    		sub.importFromXML(content);
     		setContent(sub);
+    		sub.importFromXML(content);
     		return;
     	}
     	else if((content = element.getChild("add")) != null){
     		ADD add = new ADD();
-    		add.importFromXML(content);
     		setContent(add);
+    		add.importFromXML(content);
     		return;
     	}
     	else if((content = element.getChild("numberint")) != null){
@@ -78,8 +80,8 @@ public class Cell extends Cell_Base {
     	}
     	else if((content = element.getChild("reference")) != null){
     		Reference ref = new Reference();
-    		ref.importFromXML(content);
     		setContent(ref);
+    		ref.importFromXML(content, this);
     		return;
     	}
     }
