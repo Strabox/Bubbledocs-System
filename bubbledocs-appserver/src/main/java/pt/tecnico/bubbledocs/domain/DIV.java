@@ -24,11 +24,11 @@ public class DIV extends DIV_Base {
     	Element arg2 = new Element("argument2");
     	element.addContent(arg1);
     	element.addContent(arg2);
-    	System.out.println(element.toString());
+    	//System.out.println(element.toString() + " export div");
     	arg1.addContent(getArgument1().exportToXML());
     	arg2.addContent(getArgument2().exportToXML());
 
-    	System.out.println(arg1.toString());
+    	//System.out.println(arg1.toString()+ " export div arg1");
     	return element;
     }
     

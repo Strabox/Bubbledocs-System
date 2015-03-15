@@ -39,6 +39,21 @@ public class Reference extends Reference_Base {
     	return getResultado();
     }
     
+    public void mountReference(Cell cell){
+    	SpreadSheet sheet = cell.getFc();
+    	Cell r = sheet.getSingleCell(getLine(),getColumn());
+    	if (r!=null){
+    		setRefCell(r);
+    		//System.out.println(getLine()+ " "+ getColumn() + "exists");
+    	}
+    	else{
+    		r = new Cell(getLine(), getColumn());
+    		sheet.addCel(r);
+    		setRefCell(r);
+    		//System.out.println(getLine()+ " "+ getColumn() + "created");
+    	}
+    }
+    
     /*
      * Used to write a Reference as XML.
      */

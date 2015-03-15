@@ -30,6 +30,10 @@ public class NumberInt extends NumberInt_Base {
     	return this.getResultado();
     }
     
+    public void mountReference(Cell cell){
+    	return;
+    }
+    
     public Element exportToXML(){
     	Element element = new Element("numberint");
     	

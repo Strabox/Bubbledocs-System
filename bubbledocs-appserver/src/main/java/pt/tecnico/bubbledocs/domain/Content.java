@@ -14,6 +14,11 @@ public abstract class Content extends Content_Base {
     
     public abstract int getResult();
     
+    /*
+     * Gets a cell from the same sheet so that it can look for the cell it's supposed to refer to.
+     */
+    public abstract void mountReference(Cell holder);
+    
     public abstract Element exportToXML();
 
     public abstract void importFromXML(Element element, Cell container);

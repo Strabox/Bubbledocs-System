@@ -36,9 +36,14 @@ public class Cell extends Cell_Base {
     	element.setAttribute("line", Integer.toString(getLine()));
     	element.setAttribute("column", Integer.toString(getColumn()));
     	
-    	System.out.println("cell pre add content");
-    	element.addContent(getContent().exportToXML());
-    	System.out.println("cell post add content");
+    	//System.out.println(getLine() + " " + getColumn());
+    	Content cont = getContent();
+    	//if(cont == null) 
+    		//System.out.println("cell pre add NULL content");
+    	Element contexp = cont.exportToXML();
+    	//System.out.println(contexp.toString());
+    	element.addContent(contexp);
+    	//System.out.println("cell post add content________");
     	
     	return element;
     }
@@ -50,38 +55,44 @@ public class Cell extends Cell_Base {
     	
     	if((content = element.getChild("div")) != null){
     		DIV div = new DIV();
-    		setContent(div);
     		div.importFromXML(content);
+    		setContent(div);
+    		//div.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("mul")) != null){
     		MUL mul = new MUL();
-    		setContent(mul);
     		mul.importFromXML(content);
+    		setContent(mul);
+    		//mul.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("sub")) != null){
     		SUB sub = new SUB();
-    		setContent(sub);
     		sub.importFromXML(content);
+    		setContent(sub);
+    		//sub.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("add")) != null){
     		ADD add = new ADD();
-    		setContent(add);
     		add.importFromXML(content);
+    		setContent(add);
+    		//add.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("numberint")) != null){
     		NumberInt n = new NumberInt();
     		n.importFromXML(content);
     		setContent(n);
+    		//n.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("reference")) != null){
     		Reference ref = new Reference();
+    		ref.importFromXML(content);
     		setContent(ref);
-    		ref.importFromXML(content, this);
+    		//ref.mountReference(this);
     		return;
     	}
     }

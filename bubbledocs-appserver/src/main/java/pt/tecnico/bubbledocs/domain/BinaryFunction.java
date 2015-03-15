@@ -36,9 +36,8 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	}
     	else if((content = arg1.getChild("reference")) != null){
     		Reference ref = new Reference();
+    		ref.importFromXML(content);
     		setArgument1(ref);
-    		System.out.println(content.toString());
-    		ref.importFromXML(content, getCell());
     	}
     	
     	arg2 = contents.get(1);
@@ -49,11 +48,16 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	}
     	else if((content = arg2.getChild("reference")) != null){
     		Reference ref = new Reference();
+    		ref.importFromXML(content);
     		setArgument2(ref);
-    		ref.importFromXML(content, getCell());
     	}
     
     	return;
+    }
+    
+    public void mountReference(Cell holder){
+    	getArgument1().mountReference(holder);
+    	getArgument2().mountReference(holder);
     }
     
     /* 
