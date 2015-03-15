@@ -45,11 +45,15 @@ public class User extends User_Base {
      */
     public void delete(){
     	setBubbledocsUtilizadores(null);
-    	/* Elimina todas as folhas que o user criou. */
+    	/* Delete the relations and the spreadsheets
+    	 * he created.
+    	 */
     	for(SpreadSheet s: this.getOwnedSet()){
     		s.delete();
     	}
-    	/* Elimina todas a relação com todas as folhas que usa.*/
+    	/* Delete the relation with all spreadsheets
+    	 * he can use.
+    	 */
     	for(AcessType type : this.getUsedBySet()){
     		type.delete();
     	}
@@ -57,8 +61,8 @@ public class User extends User_Base {
     }
     
     /*
-     * getSpreadSheetByName - Obtém todas as folhas do utilizador
-     * com o nome dado.
+     * getSpreadSheetByName - Get all the spreadsheets with the
+     * given name.
      */
     @Atomic
     public ArrayList<SpreadSheet> getSpreadSheet(String nome){
@@ -74,7 +78,8 @@ public class User extends User_Base {
     }
     
     /*
-     * listOwnedSpreadSheets - Retorna todas as folhas usadas pelo utilizador.
+     * listOwnedSpreadSheets - Return and prints all spreadsheets
+     * created by the user.
      */
     @Atomic
     public ArrayList<SpreadSheet> listOwnedSpreadSheets(){
@@ -83,11 +88,14 @@ public class User extends User_Base {
     		folhas.add(f);
     		System.out.println(f);
     	}
+    	if(folhas.isEmpty())
+    		System.out.println(getUsername()+" has 0 spreadsheets.");
     	return folhas;
     }
     
     /*
-     * listUsedSpreadSheet - Retorna todas as folhas criadas pelo utilizador.
+     * listUsedSpreadSheet - Returns all spreadsheets that user
+     * can access except the ones he has created.
      */
     @Atomic
     public ArrayList<SpreadSheet> listUsedSpreadSheets(){

@@ -9,11 +9,13 @@ class Bubbledocs{
 	int uniqueId;
 }
 
+// Class represents user
 class User{
 	String name;
 	String username;
 	String password;
 }
+
 
 class AcessType{
 	acessMode mode;
@@ -79,7 +81,7 @@ class PRD extends IntervalFunction;
 //================ Relations ==========================
 
 
-// A Root tem uma instância de Bubbledocs.
+// DomainRoot object is Bubbledocs.
 relation RootHasBubbledocs{
 	.pt.ist.fenixframework.DomainRoot playsRole root{
 		multiplicity 0..1;
@@ -89,7 +91,7 @@ relation RootHasBubbledocs{
 	}
 }
 
-// O  Bubbledocs tem um conjunto de 0 ou mais utilizadores.
+// Bubbledocs has 0 or more users.
 relation BubbledocsHasUsers{
 	Bubbledocs playsRole bubbledocsUtilizadores{
 		multiplicity 1;
@@ -99,7 +101,7 @@ relation BubbledocsHasUsers{
 	}
 }
 
-// O  Bubbledocs tem um conjunto de 0 ou mais documentos/folhas.
+// Bubbledocs has 0 or more spreasheets
 relation BubbledocsHasFolhas{
 	Bubbledocs playsRole bubbledocsFolhas{
 		multiplicity 1;
@@ -109,8 +111,8 @@ relation BubbledocsHasFolhas{
 	}
 }
 
-// Cada folha tem um Dono, mas um utilizador pode ser dono
-// de várias folhas.
+// Each spreadsheet has a owner, but an user
+// can handle 0 or more spreadsheets.
 relation FolhasHasOwner{
 	SpreadSheet playsRole owned{
 		multiplicity 0..*;
@@ -120,8 +122,8 @@ relation FolhasHasOwner{
 	}
 }
 
-// Um utilizador tem um conjunto de modos de acesso 
-// um para cada folha que pode usar.
+// An user has a set of AcessType 
+// one for each spreadsheet.
 relation UtilizadorHasTiposAcesso{
 	User playsRole uses{
 		multiplicity 1;
@@ -131,7 +133,8 @@ relation UtilizadorHasTiposAcesso{
 	}
 }
 
-// Uma folha tem exclusivamente um tipo de acesso.
+// One SpreadSheet can has 0 or more
+// accessTypes one for each user.
 relation TipoAcessoHasFolhaCalculo{
 	AcessType playsRole tipo{
 		multiplicity 0..*;
@@ -141,8 +144,7 @@ relation TipoAcessoHasFolhaCalculo{
 	}
 }
 
-// O BubbleDocs tem várias sessões para os utilizadores
-// eventualmente pode não ter nenhum utilizador em sessão.
+// Bubbledocs has 0 or more sessions at the moment.
 relation BubbleDocsHasSessions{
 	Bubbledocs playsRole bubble{
 		multiplicity 1;
@@ -153,9 +155,9 @@ relation BubbleDocsHasSessions{
 }
 
 
-// ############ Estrutura da Folha ##############
+// ############ SpreadSheet Structure ##############
 
-
+// Spreadsheet hos 0 or more cells.
 relation FolhaCalculoHasCell{
 	SpreadSheet playsRole fc{
 		multiplicity 1;
@@ -165,9 +167,7 @@ relation FolhaCalculoHasCell{
 	}
 }
 
-
-
-// Cada Cell tem um Content.
+// Cell has a content.
 relation CellHasContent{
 	Cell playsRole Cell{
 		multiplicity 1;
@@ -177,9 +177,7 @@ relation CellHasContent{
 	}
 }
 
-
-
-// Cada Reference tem uma Cell.
+// 
 relation ReferenceHasCell{
 	Reference playsRole Reference{
 		multiplicity 1;
@@ -189,7 +187,7 @@ relation ReferenceHasCell{
 	}
 }
 
-// 1º Argumento da Funcao Binaria
+// 1º BinaryFucntion argument.
 relation FuncaoBinariaFirstArgument{
 	BinaryFunction playsRole funcaoBinaria1{
 		multiplicity 1;
@@ -199,7 +197,7 @@ relation FuncaoBinariaFirstArgument{
 	}
 }
 
-// 2º Argumento da Funcao Binaria
+// 2º BinaryFunction argument.
 relation FuncaoBinariaSecondArgument{
 	BinaryFunction playsRole funcaoBinaria2{
 		multiplicity 1;
@@ -209,7 +207,7 @@ relation FuncaoBinariaSecondArgument{
 	}
 }
 
-// Argumento da Funcao Intervalo
+// IntervalFunction argument.
 relation FuncaoIntervaloArgument{
 	IntervalFunction playsRole funcaoIntervalo{
 		multiplicity 1;

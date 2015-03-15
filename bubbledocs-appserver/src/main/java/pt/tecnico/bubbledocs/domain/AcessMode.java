@@ -1,8 +1,8 @@
 package pt.tecnico.bubbledocs.domain;
 
 /*
- * ModoAcesso - Enumerado que representa os
- * vários modos de acesso que um utilizador pode ser sobre uma folha.
+ * ModoAcesso - Enum represents all the acceses modes
+ * an user can has.
  */
 public enum AcessMode {
 	WRITE, READ 

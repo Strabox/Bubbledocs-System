@@ -2,9 +2,11 @@ package pt.tecnico.bubbledocs.domain;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 
 /*
  * Implements singleton pattern.
+ * Bubbledocs is entry point for FenixFramework.
  */
 public class Bubbledocs extends Bubbledocs_Base {
     
@@ -23,14 +25,15 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    }
 	   
 	    /*
-	     * setUniqueId - Faz-se Override para que não se possa mexer directamente.
-	     * no geracao de inteiros.
+	     * setUniqueId - Overrided so we cant mess with
+	     * uniqueId generation.
 	     */
 	    @Override
 	    public void setUniqueId(int id){}
 	    
 	    /*
-	     * gerarUniqueId - Gera inteiros unicos para o ID de cada folha.
+	     * gerarUniqueId - Generate Unique Id's to each new
+	     * spreadsheet.
 	     */
 	    @Atomic
 	    public int generateUniqueId(){
@@ -40,7 +43,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    }
 	    
 	     /* 
-	      * getUserByName - Obtém o utilizador dado um username. 
+	      * getUserByName - Get the user given his username. 
 	      */
 	    @Atomic
 	    public User getUserByName(String username){
@@ -48,11 +51,12 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    		if(username.equalsIgnoreCase(u.getUsername()))
 	    			return u;
 	    	}
-	    	return null;
+	    	throw new UnknownBubbleDocsUserException();
 	    }
 	    
 	    /* 
-	     * listarUtilizadores - Lista todos os utilizadores registados na aplicacao.
+	     * listAllUsers - Lists all the users registered in
+	     * the application.
 	     */
 	    @Atomic
 	    public void listAllUsers(){
@@ -62,7 +66,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    }
     	
 	    /* 
-	     * listarFolhas - Lista todas as folha registadas na aplicacao.
+	     * listAllSpreadSheets - Lists all the spreadsheets
+	     * registered in the application.
 	     */
 	    @Atomic
 	    public void listAllSpreadSheets(){

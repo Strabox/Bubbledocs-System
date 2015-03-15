@@ -19,7 +19,7 @@ public class BubbleApplication {
     }
 	
 	/*
-	 * Use only to demonstrate 1st part, need due to fenixframework
+	 * Use only to demonstrate 1st part, needed due to fenixframework
 	 * atomic acesses.
 	 */
 	@Atomic
@@ -32,23 +32,24 @@ public class BubbleApplication {
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");				
 		
 		try{
-
 			Bubbledocs bubble = Bubbledocs.getInstance();
-			/* Se for a 1º vez a correr ele vai preencher a BD com o necessário.*/
+			/* If it's 1st execution DB will be loaded with some data */
 			setupIfNeed(bubble);
 			
 			bubble.listAllUsers();
 			
-			System.out.println("======== USERS END =========");
 			User pf = bubble.getUserByName("pf");
 			User ra = bubble.getUserByName("ra");
+			System.out.println("================================");
 			
 			System.out.println("======= pf's Spreadsheets ======");
 			pf.listOwnedSpreadSheets();
-
+			System.out.println("================================");
+			
 			System.out.println("======= ra's Spreadsheets ======");
 			ra.listOwnedSpreadSheets();
-
+			System.out.println("================================");
+			
 			XMLOutputter xml = new XMLOutputter();
 	    	xml.setFormat(Format.getPrettyFormat());
 	    	org.jdom2.Document xmlout = pf.getSpreadSheet("Notas Es").get(0).exportToXML();
@@ -62,7 +63,7 @@ public class BubbleApplication {
 	    	
 	    	System.out.println("======= pf's Spreadsheets======");
 			pf.listOwnedSpreadSheets();
-
+			System.out.println("================================");
 			
 	    	xml.setFormat(Format.getPrettyFormat());
 	    	xmlout = pf.getSpreadSheet("Notas Es").get(0).exportToXML();

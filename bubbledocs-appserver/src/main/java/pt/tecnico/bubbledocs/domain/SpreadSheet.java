@@ -12,7 +12,7 @@ import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 
 public class SpreadSheet extends SpreadSheet_Base {
 	
-	
+	 
     public SpreadSheet(String name,int linhas,int colunas) {
         super();
         this.setName(name);
@@ -29,25 +29,29 @@ public class SpreadSheet extends SpreadSheet_Base {
     }
 	
     /*
-     * setLinhas - Overrided para que não se possa alterar o numero de linahs da folha.
+     * setLines - Overrided because the number of lines
+     * cant change after creation.
      */
     @Override
     public void setLines(int lines){}
     
     /*
-     * setColunas - Overrided para que não se possa alterar o numero de colunas da folha.
+     * setColumns - Overrided because the number of columns
+     * cant change after creation.
      */
     @Override
     public void setColumns(int columns){}
     
     /*
-     * setId - Overrided para que não se possa alterar o ID atribuido pelo sistema.
+     * setId - Overrided so we cant mess with 
+     * UniqueId generation.
      */
     @Override
     public void setId(int id){}
     
     /*
-     * setDataCriacao - Overrided para que não se possa alterar a data de criacao da folha.
+     * setCreationDate - Overrided because we cant change
+     * creationDate after spreadsheet creation.
      */
     @Override
     public void setCreationDate(LocalDate date){}
@@ -127,11 +131,10 @@ public class SpreadSheet extends SpreadSheet_Base {
     	setName(sheet.getAttribute("name").getValue());
     	super.setLines(Integer.parseInt(sheet.getAttribute("lines").getValue()));
     	super.setColumns(Integer.parseInt(sheet.getAttribute("columns").getValue()));
-    	/*O utilizador que quer importar a folha nao é o dono dela.*/
+    	/*The user want import the spreadsheet isnt his owner */
     	if(owner != username)
     		new UnauthorizedOperationException();
-   
-    	
+     	
     	for (Element cell : cells.getChildren("cell")) {
     	    Cell c = new Cell();
     	    c.importFromXML(cell);

@@ -15,7 +15,7 @@ public class DuplicateUsernameException extends BubbleDocsException{
 	
 	@Override
 	public String toString(){
-		return "O utilizador "+getUsername()+" já existe!!";
+		return "The user "+getUsername()+" already exists!!!!";
 	}
 
 	public String getUsername() {

@@ -1,6 +1,5 @@
 package pt.tecnico.bubbledocs;
 
-
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.ADD;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
@@ -11,8 +10,8 @@ import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 
 /*
- * Class SetupBubbledocs - Usada para preencher a Base de Dados
- * com o necessário se esta for a 1º execucação da Aplicação.
+ * Class SetupBubbledocs - Used to fill application database
+ * in the 1st time it's executed.
  */
 public class SetupBubbledocs {
 	

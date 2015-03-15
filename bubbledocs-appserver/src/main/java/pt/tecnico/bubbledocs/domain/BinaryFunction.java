@@ -56,8 +56,7 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     }
     
     /* 
-     * Calcula - As sublcasses implementam a operação especifica sobre os
-     * argumentos.
+     * Calcula - Subclasses implement the specific operation.
      */
     public abstract int calcula(int arg1,int arg2);
     
