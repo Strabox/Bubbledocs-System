@@ -18,6 +18,12 @@ public class User extends User_Base {
 		setBubbledocsUtilizadores(Bubbledocs.getInstance());
     }
     
+    @Override
+    @Atomic
+    public void addOwned(SpreadSheet s){
+    	super.addOwned(s);
+    }
+    
     /*
      * 
      * Throws unchecked exception UsernameAlreadyTakenException !!!!
@@ -91,7 +97,7 @@ public class User extends User_Base {
     	}
     	return folhas;
     }
-
+    
     
     @Override
     public String toString(){

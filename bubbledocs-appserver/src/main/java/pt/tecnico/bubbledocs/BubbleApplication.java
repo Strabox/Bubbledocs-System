@@ -18,6 +18,15 @@ public class BubbleApplication {
 		    SetupBubbledocs.populateDomain();
     }
 	
+	/*
+	 * Use only to demonstrate 1st part, need due to fenixframework
+	 * atomic acesses.
+	 */
+	@Atomic
+	public static SpreadSheet createEmptySpreadSheet(){
+		return new SpreadSheet();
+	}
+	
     /* main - Bubbledocs main function. */
 	public static void main(String[] args){
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");				
@@ -45,14 +54,19 @@ public class BubbleApplication {
 	    	org.jdom2.Document xmlout = pf.getSpreadSheet("Notas Es").get(0).exportToXML();
 	    	System.out.println(xml.outputString(xmlout));
 			
-			//pf.getSpreadSheet("Notas Es").get(0).delete();
+			pf.getSpreadSheet("Notas Es").get(0).delete();
 			
-	    	//FIX-ME Import pf's SpreadSheet
+	    	SpreadSheet s2 = createEmptySpreadSheet();
+	    	s2.importFromXML(xmlout,"pf");
+	    	pf.addOwned(s2);
 	    	
 	    	System.out.println("======= pf's Spreadsheets======");
 			pf.listOwnedSpreadSheets();
 
-			//FIX-ME Export pf's Spreasheet
+			
+	    	xml.setFormat(Format.getPrettyFormat());
+	    	xmlout = pf.getSpreadSheet("Notas Es").get(0).exportToXML();
+	    	System.out.println(xml.outputString(xmlout));
 			
 		}
 		catch(Exception e){

@@ -1,5 +1,9 @@
 package pt.tecnico.bubbledocs.domain;
 
+import java.util.List;
+
+import org.jdom2.Element;
+
 public abstract class BinaryFunction extends BinaryFunction_Base {
     
     public BinaryFunction() {
@@ -18,6 +22,39 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
 		return getResultado();
 	}
     
+    public void importFromXML(Element element) {
+    	Element arg1;
+    	Element arg2;
+    	Element content;
+    	List<Element> contents = element.getChildren();
+    	
+    	arg1 = contents.get(0);
+    	if((content = arg1.getChild("numberint")) != null){
+    		NumberInt n = new NumberInt();
+    		n.importFromXML(content);
+    		setArgument1(n);  		
+    	}
+    	else if((content = arg1.getChild("reference")) != null){
+    		Reference ref = new Reference();
+    		ref.importFromXML(content);
+    		setArgument1(ref);
+    	}
+    	
+    	arg2 = contents.get(1);
+    	if((content = arg2.getChild("numberint")) != null){
+    		NumberInt n = new NumberInt();
+    		n.importFromXML(content);
+    		setArgument2(n);
+    	}
+    	else if((content = arg2.getChild("reference")) != null){
+    		Reference ref = new Reference();
+    		ref.importFromXML(content);
+    		setArgument2(ref);
+    	}
+    
+    	return;
+    }
+    
     /* 
      * Calcula - As sublcasses implementam a operação especifica sobre os
      * argumentos.
@@ -30,6 +67,8 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     public void delete(){
     	getArgument1().delete();
     	getArgument2().delete();
+    	setArgument1(null);
+    	setArgument2(null);
     	setCell(null);
     	deleteDomainObject();
     }

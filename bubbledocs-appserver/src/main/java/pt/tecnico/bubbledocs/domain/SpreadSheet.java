@@ -2,15 +2,13 @@ package pt.tecnico.bubbledocs.domain;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.jdom2.Element;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
+import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 
 public class SpreadSheet extends SpreadSheet_Base {
 	
@@ -105,6 +103,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     	org.jdom2.Document xmlout = new org.jdom2.Document();
     	Element element = new Element("spreadsheet");
     	
+    	element.setAttribute("name", getName());
     	element.setAttribute("owner", getOwner().getUsername());
     	element.setAttribute("lines", Integer.toString(getLines()));
     	element.setAttribute("columns", Integer.toString(getColumns()));
@@ -113,7 +112,6 @@ public class SpreadSheet extends SpreadSheet_Base {
     	element.addContent(cells);
 
     	for (Cell c : getCelSet()) {
-    		System.out.println("casa");
     	    cells.addContent(c.exportToXML());
     	}
     	
@@ -122,9 +120,17 @@ public class SpreadSheet extends SpreadSheet_Base {
     }
     
     @Atomic
-    public void importFromXML(org.jdom2.Document doc) {
+    public void importFromXML(org.jdom2.Document doc,String username) {
     	Element sheet = doc.getRootElement();
     	Element cells = sheet.getChild("cells");
+    	String owner = sheet.getAttribute("owner").getValue();
+    	setName(sheet.getAttribute("name").getValue());
+    	super.setLines(Integer.parseInt(sheet.getAttribute("lines").getValue()));
+    	super.setColumns(Integer.parseInt(sheet.getAttribute("columns").getValue()));
+    	/*O utilizador que quer importar a folha nao é o dono dela.*/
+    	if(owner != username)
+    		new UnauthorizedOperationException();
+   
     	
     	for (Element cell : cells.getChildren("cell")) {
     	    Cell c = new Cell();
@@ -143,6 +149,7 @@ public class SpreadSheet extends SpreadSheet_Base {
 		try{
 			if(splited.length == 3){							//Se for uma funcao.
 				splited[0] = "calc."+splited[0]; 
+				@SuppressWarnings("rawtypes")
 				Class tipo = Class.forName(splited[0]);
 				Constructor<?> ctor = tipo.getConstructors()[0];
 				if(!isFGama){

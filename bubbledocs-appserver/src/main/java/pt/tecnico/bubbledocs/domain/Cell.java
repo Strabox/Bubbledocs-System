@@ -1,5 +1,6 @@
 package pt.tecnico.bubbledocs.domain;
 
+
 import org.jdom2.Element;
 
 public class Cell extends Cell_Base {
@@ -42,6 +43,8 @@ public class Cell extends Cell_Base {
     
     public void importFromXML(Element element) {
     	Element content;
+    	this.setLine(Integer.parseInt(element.getAttribute("line").getValue()));
+    	this.setColumn(Integer.parseInt(element.getAttribute("column").getValue()));
     	
     	if((content = element.getChild("div")) != null){
     		DIV div = new DIV();
@@ -75,11 +78,10 @@ public class Cell extends Cell_Base {
     	}
     	else if((content = element.getChild("reference")) != null){
     		Reference ref = new Reference();
-    		ref.importFromXML(element);
+    		ref.importFromXML(content);
     		setContent(ref);
     		return;
     	}
-    	
-    	return;
     }
+    
 }

@@ -21,6 +21,7 @@ public class NumberInt extends NumberInt_Base {
     	this.setFuncaoBinaria1(null);
     	this.setFuncaoIntervalo(null);
     	this.setFuncaoBinaria2(null);
+    	this.setFuncaoIntervalo(null);
     	deleteDomainObject();
     }
     

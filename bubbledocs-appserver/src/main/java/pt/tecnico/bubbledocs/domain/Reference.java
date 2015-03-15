@@ -27,6 +27,9 @@ public class Reference extends Reference_Base {
     public void delete(){
     	this.setRefCell(null);
     	this.setCell(null);
+    	this.setFuncaoBinaria2(null);
+    	this.setFuncaoBinaria1(null);
+    	this.setFuncaoIntervalo(null);
     	deleteDomainObject();
     }
     
@@ -49,11 +52,8 @@ public class Reference extends Reference_Base {
     }
     
     public void importFromXML(Element element) {
-    	int column = Integer.parseInt(element.getAttribute("line").getValue());
-    	int line = Integer.parseInt(element.getAttribute("column").getValue());
-    	setLine(line);
-    	setColumn(column);
-    	return;
+    	setLine(Integer.parseInt(element.getAttribute("line").getValue()));
+    	setColumn(Integer.parseInt(element.getAttribute("column").getValue()));
     }
     
     public void importFromXML(Element element, Cell container) {
