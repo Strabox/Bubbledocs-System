@@ -4,6 +4,10 @@ import org.jdom2.Element;
 
 public class Reference extends Reference_Base {
     
+	public Reference(){
+		super();
+	}
+	
     public Reference(Cell referenciada,int line,int column) {
         super();
         this.setRefCell(referenciada);
@@ -32,6 +36,9 @@ public class Reference extends Reference_Base {
     	return getResultado();
     }
     
+    /*
+     * Used to write a Reference as XML.
+     */
     public Element exportToXML(){
     
     	Element element = new Element("reference");
@@ -39,6 +46,14 @@ public class Reference extends Reference_Base {
     	element.setAttribute("column", Integer.toString(getColumn()));
     	
     	return element;
+    }
+    
+    public void importFromXML(Element element) {
+    	int column = Integer.parseInt(element.getAttribute("line").getValue());
+    	int line = Integer.parseInt(element.getAttribute("column").getValue());
+    	setLine(line);
+    	setColumn(column);
+    	return;
     }
     
     public void importFromXML(Element element, Cell container) {

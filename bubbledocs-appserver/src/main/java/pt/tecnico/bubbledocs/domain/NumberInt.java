@@ -4,6 +4,10 @@ import org.jdom2.Element;
 
 public class NumberInt extends NumberInt_Base {
     
+	public NumberInt(){
+		super();
+	}
+	
     public NumberInt(int conteudo) {
         super();
         super.init(conteudo);
@@ -33,8 +37,12 @@ public class NumberInt extends NumberInt_Base {
     	return element;
     }
     
-    public void importFromXML(Element element, Cell container) {
+    public void importFromXML(Element element) {
     	int v = Integer.parseInt(element.getAttribute("value").getValue());
     	setResultado(v);
+    }
+    
+    public void importFromXML(Element element,Cell container) {
+    	return;
     }
 }

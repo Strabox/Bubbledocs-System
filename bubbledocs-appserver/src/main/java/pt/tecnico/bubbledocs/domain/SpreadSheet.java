@@ -124,7 +124,13 @@ public class SpreadSheet extends SpreadSheet_Base {
     @Atomic
     public void importFromXML(org.jdom2.Document doc) {
     	Element sheet = doc.getRootElement();
-    	List<Element> cells = sheet.getChildren();
+    	Element cells = sheet.getChild("cells");
+    	
+    	for (Element cell : cells.getChildren("cell")) {
+    	    Cell c = new Cell();
+    	    c.importFromXML(cell);
+    	    this.addCel(c);
+    	}
     	return;
     }
     

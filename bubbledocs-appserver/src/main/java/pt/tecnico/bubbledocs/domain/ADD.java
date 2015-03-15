@@ -5,6 +5,10 @@ import org.jdom2.Element;
 
 public class ADD extends ADD_Base {
     
+	public ADD(){
+		super();
+	}
+	
     public ADD(Content arg1,Content arg2) {
         super();
         super.init(arg1, arg2);
@@ -17,11 +21,19 @@ public class ADD extends ADD_Base {
     
     public Element exportToXML(){
     	Element element = new Element("add");
+    	Element arg1 = new Element("argument1");
+    	Element arg2 = new Element("argument2");
+    	element.addContent(arg1);
+    	element.addContent(arg2);
     	
-    	element.addContent(getArgument1().exportToXML());
-    	element.addContent(getArgument2().exportToXML());
+    	arg1.addContent(getArgument1().exportToXML());
+    	arg2.addContent(getArgument2().exportToXML());
 
     	return element;
+    }
+    
+    public void importFromXML(Element element) {
+    	return;
     }
     
     public void importFromXML(Element element, Cell container) {

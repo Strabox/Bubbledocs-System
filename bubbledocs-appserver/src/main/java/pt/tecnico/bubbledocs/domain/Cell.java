@@ -4,6 +4,10 @@ import org.jdom2.Element;
 
 public class Cell extends Cell_Base {
     
+	public Cell(){
+		super();
+	}
+	
     public Cell(int l, int c,Content conteudo) {
         super();
         setContent(conteudo);
@@ -37,6 +41,45 @@ public class Cell extends Cell_Base {
     }
     
     public void importFromXML(Element element) {
+    	Element content;
+    	
+    	if((content = element.getChild("div")) != null){
+    		DIV div = new DIV();
+    		div.importFromXML(content);
+    		setContent(div);
+    		return;
+    	}
+    	else if((content = element.getChild("mul")) != null){
+    		MUL mul = new MUL();
+    		mul.importFromXML(content);
+    		setContent(mul);
+    		return;
+    	}
+    	else if((content = element.getChild("sub")) != null){
+    		SUB sub = new SUB();
+    		sub.importFromXML(content);
+    		setContent(sub);
+    		return;
+    	}
+    	else if((content = element.getChild("add")) != null){
+    		ADD add = new ADD();
+    		add.importFromXML(content);
+    		setContent(add);
+    		return;
+    	}
+    	else if((content = element.getChild("numberint")) != null){
+    		NumberInt n = new NumberInt();
+    		n.importFromXML(content);
+    		setContent(n);
+    		return;
+    	}
+    	else if((content = element.getChild("reference")) != null){
+    		Reference ref = new Reference();
+    		ref.importFromXML(element);
+    		setContent(ref);
+    		return;
+    	}
+    	
     	return;
     }
 }
