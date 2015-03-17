@@ -1,5 +1,5 @@
 package pt.tecnico.bubbledocs.test;
-/*
+
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -10,8 +10,7 @@ import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.DeleteUser;
-*/
-// add needed import declarations
+
 
 public class DeleteUserTest extends BubbleDocsServiceTest {
 /*
@@ -49,7 +48,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     /*
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is not in session
-     
+     *
     @Test
     public void successToDeleteIsNotInSession() {
         success();
@@ -58,7 +57,8 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     /*
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is in session Test if user and session are both deleted
-     
+     */
+    /*
     @Test
     public void successToDeleteIsInSession() {
         String token = addUserToSession(USERNAME_TO_DELETE);

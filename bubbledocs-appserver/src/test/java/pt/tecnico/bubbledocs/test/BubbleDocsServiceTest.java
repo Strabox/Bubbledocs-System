@@ -37,8 +37,7 @@ public class BubbleDocsServiceTest {
 
     // should redefine this method in the subclasses if it is needed to specify
     // some initial state
-    public void populate4Test() {
-    }
+    public void populate4Test() {}
 
     // auxiliary methods that access the domain layer and are needed in the test classes
     // for defining the iniital state and checking that the service has the expected behavior
@@ -49,14 +48,14 @@ public class BubbleDocsServiceTest {
     }
 
     public SpreadSheet createSpreadSheet(User user, String name, int row,int column) {
-    	// add code here
-    	return null;
+    	SpreadSheet s = new SpreadSheet(name,row,column);
+    	user.addOwned(s);
+    	return s;
     }
 
     // returns a spreadsheet whose name is equal to name
     public SpreadSheet getSpreadSheet(String name) {
-    	// add code here
-    	return null;
+    	return Bubbledocs.getInstance().getSpreadSheet(name);
     }
 
     // returns the user registered in the application whose username is equal to username
@@ -66,17 +65,18 @@ public class BubbleDocsServiceTest {
 
     // put a user into session and returns the token associated to it
     String addUserToSession(String username) {
-    	return null;
+    	Bubbledocs bubble = FenixFramework.getDomainRoot().getBubbledocs();
+    	return bubble.putUserInSession(username);
     }
 
     // remove a user from session given its token
     void removeUserFromSession(String token) {
-    	// add code here
+    	FenixFramework.getDomainRoot().getBubbledocs().removeUserFromSession(token);
     }
 
     // return the user registered in session whose token is equal to token
     User getUserFromSession(String token) {
-    	return  FenixFramework.getDomainRoot().getBubbledocs().getUserFromSession(token);
+    	return FenixFramework.getDomainRoot().getBubbledocs().getUserFromSession(token);
     }
 
 }

@@ -52,6 +52,13 @@ public class Bubbledocs extends Bubbledocs_Base {
 		return token;
 	}
 	
+	public SpreadSheet getSpreadSheet(String name){
+		for (SpreadSheet s : getFolhaCalculoSet()) {
+			if (s.getName().equals(name))
+				return s;
+		}
+		return null;
+	}
 	
 	/*
 	 * getUserByName - Get the user given his username.
@@ -61,7 +68,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 			if (username.equals(u.getUsername()))
 				return u;
 		}
-		throw new UnknownBubbleDocsUserException();
+		return null;
 	}
 
 	/*
@@ -87,7 +94,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 			if(s.getToken().equals(token))
 				s.delete();						//Deletes user session
 		}	
-		throw new UserNotInSessionException();
 	}
 	
 	/*
@@ -102,7 +108,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-	 * getLastTime - ...
+	 * getLastTime - Get last time user made a change to refresh
+	 * his login.
 	 */
 	public LocalTime getLastTime(String token){
 		for(Session s : getSessionSet()){
@@ -111,6 +118,27 @@ public class Bubbledocs extends Bubbledocs_Base {
 			}			
 		}
 		return null;
+	}
+	
+	/*
+	 * putUserInSession - Add user session to bubbledocs sessions.
+	 */
+	public String putUserInSession(String username){
+		String token = generateToken(username);
+		addSession(new Session(new LocalTime(),username,token));
+		return token;
+	}
+	
+	/*
+	 * getUserInSessionToken - Get user's token if in session.
+	 */
+	public String getUserInSessionToken(String username){
+		for(Session s : getSessionSet()){
+			if(s.getName().equals(username)){
+				return s.getToken();
+			}			
+		}
+		throw new UserNotInSessionException();
 	}
 	
 	/*
@@ -132,10 +160,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 		}
 		for (User u : getUtilizadorSet()) {
 			if (user.equals(u.getUsername()) && u.getPassword().equals(pass)) {
-				token = generateToken(user);
-				Session s = new Session(new LocalTime(), user, token);
-				addSession(s);
-				return token;
+				return putUserInSession(user);
 			}else if (user.equals(u.getUsername()) && !u.getPassword().equals(pass))
 				throw new WrongPasswordException();
 		}
