@@ -10,7 +10,12 @@ public class ExportDocument extends BubbleDocsService {
     public byte[] getDocXML() {
 	return docXML;
     }
-
+    
+    @Override
+    protected void accessControl(){
+    	// FIX-ME Implement me!!!!!
+    }
+    
     public ExportDocument(String userToken, int docId) {
 	// add code here
     }

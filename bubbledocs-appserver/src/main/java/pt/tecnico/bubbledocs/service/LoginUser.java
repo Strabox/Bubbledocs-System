@@ -1,23 +1,37 @@
 package pt.tecnico.bubbledocs.service;
 
+import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 
-// add needed import declarations
 
 public class LoginUser extends BubbleDocsService {
 
-    private String userToken;
+	private String userToken;
+	
+	private String username;
+	
+	private String password;
 
-    public LoginUser(String username, String password) {
-	// add code here
-    }
+	
+	public LoginUser(String user, String pass) {
+		this.username = user;
+		this.password = pass;
+	}
 
-    @Override
-    protected void dispatch() throws BubbleDocsException {
-	// add code here
-    }
+	@Override
+	protected void accessControl() {
+		// Do Nothing.
+		// LoginUser Service dont need previous access to login.
+	}
 
-    public final String getUserToken() {
-	return userToken;
-    }
+	@Override
+	protected void dispatch() throws BubbleDocsException {
+		Bubbledocs bubble = Bubbledocs.getInstance();
+		
+		userToken = bubble.loginUser(username, password);
+	}
+
+	public final String getUserToken() {
+		return userToken;
+	}
 }

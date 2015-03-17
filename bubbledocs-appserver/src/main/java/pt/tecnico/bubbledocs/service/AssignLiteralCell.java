@@ -11,7 +11,12 @@ public class AssignLiteralCell extends BubbleDocsService {
             String literal) {
 	// add code here	
     }
-
+    
+    @Override
+    protected void accessControl(){
+    	// FIX-ME Implement me!!!!!
+    }
+    
     @Override
     protected void dispatch() throws BubbleDocsException {
 	// add code here

@@ -10,7 +10,12 @@ public class CreateSpreadSheet extends BubbleDocsService {
     public int getSheetId() {
         return sheetId;
     }
-
+    
+    @Override
+    protected void accessControl(){
+    	// FIX-ME Implement me!!!!!
+    }
+    
     public CreateSpreadSheet(String userToken, String name, int rows,
             int columns) {
 	// add code here
