@@ -1,6 +1,5 @@
 package pt.tecnico.bubbledocs.domain;
 
-
 import org.joda.time.LocalTime;
 
 import pt.ist.fenixframework.FenixFramework;
@@ -32,8 +31,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 * setUniqueId - Overrided so we cant mess with uniqueId generation.
 	 */
 	@Override
-	public void setUniqueId(int id) {
-	}
+	public void setUniqueId(int id) {}
 
 	/*
 	 * gerarUniqueId - Generate Unique Id's to each new spreadsheet.
@@ -43,7 +41,18 @@ public class Bubbledocs extends Bubbledocs_Base {
 		super.setUniqueId(getUniqueId() + 1);
 		return id;
 	}
-
+	
+	/*
+     * generateToken - Generates a random token for a user session.
+     */
+	protected String generateToken(String username) {
+		String token = username;
+		Long l = Math.round(Math.random()*9);
+		token = token + l.toString();
+		return token;
+	}
+	
+	
 	/*
 	 * getUserByName - Get the user given his username.
 	 */
@@ -55,16 +64,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 		throw new UnknownBubbleDocsUserException();
 	}
 
-	/*
-     * generateToken - Generates a random token for a user session.
-     */
-	protected String generateToken(String username) {
-		String token = username;
-		Long l = Math.round(Math.random()*9);
-		token = token + l.toString();
-		return token;
-	}
-	
 	/*
 	 * getUserFromSession - Returns user from his session given
 	 * his secret token.
@@ -80,6 +79,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 	/*
 	 * removeUserFromSession - Remove user from his session given
 	 * his secret token.
+	 * 
+	 * throws UserNotInSessionException !!!!!
 	 */
 	public void removeUserFromSession(String token){
 		for(Session s: getSessionSet()){
