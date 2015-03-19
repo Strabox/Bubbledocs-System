@@ -7,10 +7,8 @@ import java.util.ArrayList;
 
 public class User extends User_Base {
     
-	/*
-     * Throws unchecked exception UsernameAlreadyTakenException !!!!
-     */
-    public User(String nome,String username,String password){
+
+    public User(String nome,String username,String password) throws DuplicateUsernameException{
     	super();
 		setName(nome);
 		setUsername(username);
@@ -24,12 +22,9 @@ public class User extends User_Base {
     	super.addOwned(s);
     }
     
-    /*
-     * 
-     * Throws unchecked exception UsernameAlreadyTakenException !!!!
-     */
+    /* */
     @Override
-    public void setUsername(String newUsername){
+    public void setUsername(String newUsername) throws DuplicateUsernameException{
     	if(newUsername != null){
 	    	for(User user: Bubbledocs.getInstance().getUtilizadorSet()){
 	    		if(user.getUsername().equals(newUsername)){

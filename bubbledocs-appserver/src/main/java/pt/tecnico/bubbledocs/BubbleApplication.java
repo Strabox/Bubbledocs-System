@@ -21,8 +21,7 @@ public class BubbleApplication {
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");				
 		
 		try{
-			
-			
+				
 		}
 		catch(Exception e){
 			System.out.println(e);

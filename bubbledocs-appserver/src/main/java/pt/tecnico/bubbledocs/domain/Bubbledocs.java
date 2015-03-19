@@ -4,7 +4,6 @@ import org.joda.time.LocalTime;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
-import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.exceptions.WrongPasswordException;
 
 /*
@@ -17,6 +16,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 		super();
 		FenixFramework.getDomainRoot().setBubbledocs(this);
 		super.setUniqueId(0); // Used to generate Unique Sequential number.
+		this.addUtilizador(new User("Super User","root","root"));
 	}
 
 	
@@ -45,7 +45,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	/*
      * generateToken - Generates a random token for a user session.
      */
-	protected String generateToken(String username) {
+	public String generateToken(String username) {
 		String token = username;
 		Long l = Math.round(Math.random()*9);
 		token = token + l.toString();
@@ -86,8 +86,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 	/*
 	 * removeUserFromSession - Remove user from his session given
 	 * his secret token.
-	 * 
-	 * throws UserNotInSessionException !!!!!
 	 */
 	public void removeUserFromSession(String token){
 		for(Session s: getSessionSet()){
@@ -121,15 +119,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-	 * putUserInSession - Add user session to bubbledocs sessions.
-	 */
-	public String putUserInSession(String username){
-		String token = generateToken(username);
-		addSession(new Session(new LocalTime(),username,token));
-		return token;
-	}
-	
-	/*
 	 * getUserInSessionToken - Get user's token if in session.
 	 */
 	public String getUserInSessionToken(String username){
@@ -138,17 +127,15 @@ public class Bubbledocs extends Bubbledocs_Base {
 				return s.getToken();
 			}			
 		}
-		throw new UserNotInSessionException();
+		return null;
 	}
 	
 	/*
 	 * loginUser - Create a new session for the user and he stays logged in
 	 * returns the generated token.
-	 * 
-	 * - throws WrongPasswordException 	!!!
-	 * - throws UnknownBubbleDocsUserException !!!
 	 */
-	public String loginUser(String user, String pass) {
+	public String loginUser(String user, String pass) throws WrongPasswordException,	
+		UnknownBubbleDocsUserException {
 		String token = "";
 		for(Session s : getSessionSet()){
 			if(s.getName().equals(user)){			//User already in session.
@@ -160,7 +147,9 @@ public class Bubbledocs extends Bubbledocs_Base {
 		}
 		for (User u : getUtilizadorSet()) {
 			if (user.equals(u.getUsername()) && u.getPassword().equals(pass)) {
-				return putUserInSession(user);
+				token = generateToken(user);
+				addSession(new Session(new LocalTime(),user,token));
+				return token;
 			}else if (user.equals(u.getUsername()) && !u.getPassword().equals(pass))
 				throw new WrongPasswordException();
 		}

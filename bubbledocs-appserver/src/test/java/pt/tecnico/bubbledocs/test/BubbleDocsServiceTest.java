@@ -4,12 +4,14 @@ package pt.tecnico.bubbledocs.test;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 
+import org.joda.time.LocalTime;
 import org.junit.After;
 import org.junit.Before;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.bubbledocs.domain.Session;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 
@@ -65,8 +67,9 @@ public class BubbleDocsServiceTest {
 
     // put a user into session and returns the token associated to it
     String addUserToSession(String username) {
-    	Bubbledocs bubble = FenixFramework.getDomainRoot().getBubbledocs();
-    	return bubble.putUserInSession(username);
+    	String token = Bubbledocs.getInstance().generateToken(username);
+		Bubbledocs.getInstance().addSession(new Session(new LocalTime(),username,token));
+		return token;
     }
 
     // remove a user from session given its token

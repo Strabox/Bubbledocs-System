@@ -13,7 +13,7 @@ import pt.tecnico.bubbledocs.service.DeleteUser;
 
 
 public class DeleteUserTest extends BubbleDocsServiceTest {
-/*
+
     private static final String USERNAME_TO_DELETE = "smf";
     private static final String USERNAME = "ars";
     private static final String PASSWORD = "ars";
@@ -48,7 +48,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     /*
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is not in session
-     *
+     */
     @Test
     public void successToDeleteIsNotInSession() {
         success();
@@ -58,12 +58,12 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is in session Test if user and session are both deleted
      */
-    /*
+    
     @Test
     public void successToDeleteIsInSession() {
         String token = addUserToSession(USERNAME_TO_DELETE);
         success();
-	assertNull("Removed user but not removed from session", getUserFromSession(token));
+        assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
 
     @Test(expected = UnknownBubbleDocsUserException.class)
@@ -96,5 +96,5 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     public void accessUserDoesNotExist() {
         new DeleteUser(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
     }
-    */
+    
 }
