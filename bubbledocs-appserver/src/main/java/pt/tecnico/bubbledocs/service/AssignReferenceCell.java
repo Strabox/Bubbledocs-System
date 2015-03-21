@@ -54,14 +54,11 @@ public class AssignReferenceCell extends BubbleDocsService {
     		}
     	}
     	/*
-    	 * if it's root, let them continue. else (if goes false) check if
-    	 * it's the owner or if they have write permissions.
+    	 * check if it's the owner or if they have write permissions.
     	 * if denied, throw exception.
     	 */
-    	if(tokenUser != bubbled.getUserInSessionToken("root")){
-    		if( sheet.getOwner()!=user && !Arrays.asList(writable).contains(sheet)){
+    	if( sheet.getOwner()!=user && !Arrays.asList(writable).contains(sheet)){
     			throw new UnauthorizedOperationException();
-    		}
     	}
     	/*
     	 * if the cell exists, it can be protected.
