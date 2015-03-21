@@ -30,6 +30,10 @@ public class Cell extends Cell_Base {
     	deleteDomainObject();
     }
     
+    public int getResult(){
+    	return getContent().getResult();
+    }
+    
     public Element exportToXML(){
     	Element element = new Element("cell");
     	

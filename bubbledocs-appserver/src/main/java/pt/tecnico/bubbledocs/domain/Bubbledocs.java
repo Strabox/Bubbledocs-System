@@ -66,6 +66,15 @@ public class Bubbledocs extends Bubbledocs_Base {
 		return null;
 	}
 	
+	public SpreadSheet getSpreadSheet(int id){
+		for (SpreadSheet s : getFolhaCalculoSet()) {
+			if (s.getId() == id)
+				return s;
+		}
+		return null;
+	}
+	
+	
 	/*
 	 * getUserByName - Get the user given his username.
 	 */

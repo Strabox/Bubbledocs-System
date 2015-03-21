@@ -7,6 +7,7 @@ import org.joda.time.LocalDate;
 import org.jdom2.Element;
 
 import pt.ist.fenixframework.Atomic;
+import pt.tecnico.bubbledocs.exceptions.BadCellContentException;
 import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 
@@ -102,6 +103,19 @@ public class SpreadSheet extends SpreadSheet_Base {
     	return;
     }
     
+    public void addContentToCellFromString(int l, int c, String contentInString){
+    	Content cont = factory(contentInString);
+    	Cell cell = getSingleCell(l, c);
+    	if (cell!=null){
+			cell.setContent(cont);
+			return;
+    	}
+    	cell = new Cell(l, c, cont);
+    	cell.setContent(cont);
+    	addCel(cell);
+    	return;
+    }
+    
     @Atomic
     public org.jdom2.Document exportToXML(){
     	org.jdom2.Document xmlout = new org.jdom2.Document();
@@ -185,25 +199,25 @@ public class SpreadSheet extends SpreadSheet_Base {
 		catch (ClassNotFoundException exc) {
 			System.err.println("CLASS NOT FOUND");
 			System.err.println(exc);
-			return null;
+			throw new BadCellContentException(input);
 		}
 		catch (InstantiationException e) {
 			System.err.println(e);
-			return null;
+			throw new BadCellContentException(input);
 		}
 		catch (IllegalAccessException e) {
 			System.err.println(e);
-			return null;
+			throw new BadCellContentException(input);
 		}
 		catch (IllegalArgumentException e) {
 			System.err.println(e);
-			return null;
+			throw new BadCellContentException(input);
 		}
 		catch (InvocationTargetException e) {
 			System.err.println(e);
-			return null;
+			throw new BadCellContentException(input);
 		}
-		return null;
+		throw new BadCellContentException(input);
 	}
     
     @Override
