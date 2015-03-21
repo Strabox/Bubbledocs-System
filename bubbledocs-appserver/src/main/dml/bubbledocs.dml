@@ -16,7 +16,6 @@ class User{
 	String password;
 }
 
-
 class AcessType{
 	acessMode mode;
 }

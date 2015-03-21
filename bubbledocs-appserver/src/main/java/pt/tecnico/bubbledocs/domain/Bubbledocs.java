@@ -15,7 +15,9 @@ public class Bubbledocs extends Bubbledocs_Base {
 	private Bubbledocs() {
 		super();
 		FenixFramework.getDomainRoot().setBubbledocs(this);
-		super.setUniqueId(0); // Used to generate Unique Sequential number.
+		// Used to generate Unique Sequential number.
+		super.setUniqueId(0);
+		// 1st time Bubbledocs run creates a super user to it.
 		this.addUtilizador(new User("Super User","root","root"));
 	}
 
@@ -43,7 +45,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-     * generateToken - Generates a random token for a user session.
+     * generateToken - Generates a random token for a user session
+     * given a username.
      */
 	public String generateToken(String username) {
 		String token = username;
@@ -52,6 +55,9 @@ public class Bubbledocs extends Bubbledocs_Base {
 		return token;
 	}
 	
+	/*
+	 * getSpreadSheet - ...
+	 */
 	public SpreadSheet getSpreadSheet(String name){
 		for (SpreadSheet s : getFolhaCalculoSet()) {
 			if (s.getName().equals(name))
