@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
-import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
+import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
 import pt.tecnico.bubbledocs.service.LoginUser;
@@ -18,7 +18,6 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
     private static final String PASSWORD = "jp#";
     private LoginUser log;
     private static SpreadSheet SPSA;
-    private SpreadSheet[] SPSV;
 
     @Override
     public void populate4Test() {
@@ -26,11 +25,6 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
         log = new LoginUser(USERNAME, PASSWORD);
         log.execute();
         SPSA = new SpreadSheet("alpha", 10, 10);
-        
-        SPSV = new SpreadSheet[10];
-        for (int i = 0; i < SPSV.length; i++) {
-			SPSV[i] = new SpreadSheet("aaaa"+i, 1*i, 1*i);
-		}
     }
 
 	
@@ -62,24 +56,22 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 	
 	@Test
 	public void TestNegativeValues() {
-		User user = getUserFromSession(log.getUserToken());
-    	
-    	try {
-    		CreateSpreadSheet csps = new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
-		} catch (UnauthorizedOperationException e) {
-			System.out.println("UnauthorizedOperation Exception caught: " + e.getMessage());
+		try {
+    		new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
+		} catch (BadSpreadSheetValuesException e) {
+			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
 		}
     	
     	try {
-    		CreateSpreadSheet csps = new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
-		} catch (UnauthorizedOperationException e) {
-			System.out.println("UnauthorizedOperation Exception caught: " + e.getMessage());
+    		new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
+		} catch (BadSpreadSheetValuesException e) {
+			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
 		}
     	
     	try {
-    		CreateSpreadSheet csps = new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
-		} catch (UnauthorizedOperationException e) {
-			System.out.println("UnauthorizedOperation Exception caught: " + e.getMessage());
+    		new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
+		} catch (BadSpreadSheetValuesException e) {
+			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
 		}
 	}
 	
@@ -90,7 +82,21 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 		try {
 			csps.execute();
 		} catch (UserNotInSessionException e) {
-			System.out.println("UserNotInSession Exception caught: " + e.getMessage());
+			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
+		}
+		
+		csps = new CreateSpreadSheet(null, SPSA.getName(), SPSA.getLines(), SPSA.getColumns());
+		try {
+			csps.execute();
+		} catch (UserNotInSessionException e) {
+			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
+		}
+		
+		csps = new CreateSpreadSheet("abcd", SPSA.getName(), SPSA.getLines(), SPSA.getColumns());
+		try {
+			csps.execute();
+		} catch (UserNotInSessionException e) {
+			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
 		}
 	}
 	

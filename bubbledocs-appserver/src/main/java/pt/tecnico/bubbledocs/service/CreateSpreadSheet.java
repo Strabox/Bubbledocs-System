@@ -4,7 +4,7 @@ import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
-import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
+import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 
 // add needed import declarations
@@ -31,7 +31,7 @@ public class CreateSpreadSheet extends BubbleDocsService {
 
 	public CreateSpreadSheet(String userToken, String name, int lines, int columns) {
 		if (lines < 0 || columns < 0 || name == null) {
-			throw new UnauthorizedOperationException();
+			throw new BadSpreadSheetValuesException();
 		}
 		usrtoken = userToken; sheetname = name;
 		sheetrows = lines; sheetcolumns = columns;
