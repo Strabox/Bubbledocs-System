@@ -82,21 +82,21 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 		try {
 			csps.execute();
 		} catch (UserNotInSessionException e) {
-			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
+			System.out.println("UserNotInSession Exception caught: " + e.getMessage());
 		}
 		
 		csps = new CreateSpreadSheet(null, SPSA.getName(), SPSA.getLines(), SPSA.getColumns());
 		try {
 			csps.execute();
 		} catch (UserNotInSessionException e) {
-			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
+			System.out.println("UserNotInSession Exception caught: " + e.getMessage());
 		}
 		
 		csps = new CreateSpreadSheet("abcd", SPSA.getName(), SPSA.getLines(), SPSA.getColumns());
 		try {
 			csps.execute();
 		} catch (UserNotInSessionException e) {
-			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
+			System.out.println("UserNotInSession Exception caught: " + e.getMessage());
 		}
 	}
 	
