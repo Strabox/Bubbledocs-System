@@ -9,29 +9,27 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
-import pt.tecnico.bubbledocs.service.LoginUser;
 
 
 public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME = "jp";
     private static final String PASSWORD = "jp#";
-    private LoginUser log;
     private static SpreadSheet SPSA;
+    private static String TOKEN;
 
     @Override
     public void populate4Test() {
         createUser(USERNAME, PASSWORD, "João Pereira");
-        log = new LoginUser(USERNAME, PASSWORD);
-        log.execute();
+        TOKEN = addUserToSession(USERNAME);
         SPSA = new SpreadSheet("alpha", 10, 10);
     }
 
 	
 	@Test
     public void Control() {
-        User user = getUserFromSession(log.getUserToken());
-    	CreateSpreadSheet csps = new CreateSpreadSheet(log.getUserToken(), SPSA.getName(), SPSA.getLines(), SPSA.getColumns());
+        User user = getUserFromSession(TOKEN);
+    	CreateSpreadSheet csps = new CreateSpreadSheet(TOKEN, SPSA.getName(), SPSA.getLines(), SPSA.getColumns());
     	
     	csps.execute();
         
@@ -57,19 +55,19 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 	@Test
 	public void TestNegativeValues() {
 		try {
-    		new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
+    		new CreateSpreadSheet(TOKEN, null, SPSA.getLines(), SPSA.getColumns());
 		} catch (BadSpreadSheetValuesException e) {
 			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
 		}
     	
     	try {
-    		new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
+    		new CreateSpreadSheet(TOKEN, null, SPSA.getLines(), SPSA.getColumns());
 		} catch (BadSpreadSheetValuesException e) {
 			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
 		}
     	
     	try {
-    		new CreateSpreadSheet(log.getUserToken(), null, SPSA.getLines(), SPSA.getColumns());
+    		new CreateSpreadSheet(TOKEN, null, SPSA.getLines(), SPSA.getColumns());
 		} catch (BadSpreadSheetValuesException e) {
 			System.out.println("BadSpreadSheetValues Exception caught: " + e.getMessage());
 		}
