@@ -17,7 +17,8 @@ import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 
 public class AssignReferenceCell extends BubbleDocsService {
 	
-    private String result;
+	private boolean hasValue;
+    private int result;
     private String tokenUser;
     private int sheetID;
     private String cellID;
@@ -28,6 +29,7 @@ public class AssignReferenceCell extends BubbleDocsService {
 		sheetID = _docId;
 		cellID = _cellId;
 		reference = _reference;
+		hasValue = true;
     }
     
     @Override
@@ -73,18 +75,20 @@ public class AssignReferenceCell extends BubbleDocsService {
     	}
     	/*
     	 * Congratulations! you have permissions.
-    	 * doing the actual work may still fail if the cell is out of bounds.
+    	 * doing the actual work may still fail if the cell is out of bounds
+    	 * or if the referred cell has no value (exceptions in both cases).
     	 */
     	sheet.addContentToCellFromString(l, c,"="+reference);
     	try{
-    		result = Integer.toString(sheet.getSingleCell(l, c).getResult());
+    		result = sheet.getSingleCell(l, c).getResult();
     	}
-    	catch(NoValueForReferenceException nvfre){
-    		//what is there to do here? wait for email from teachers
+    	catch(NoValueForReferenceException nvfr){
+    		hasValue = false;
     	}
     }
 
-    public final String getResult() {
-        return result;
+    public final int getResult() {
+        if (hasValue) return result;
+        else throw new NoValueForReferenceException();
     }
 }
