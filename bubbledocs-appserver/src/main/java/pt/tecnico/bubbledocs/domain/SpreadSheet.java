@@ -150,8 +150,13 @@ public class SpreadSheet extends SpreadSheet_Base {
     		new UnauthorizedOperationException();
      	
     	for (Element cell : cells.getChildren("cell")) {
-    	    Cell c = new Cell();
-    	    this.addCel(c);
+    		Cell c;
+    		int lin = Integer.parseInt(cell.getAttribute("line").getValue());
+        	int col = Integer.parseInt(cell.getAttribute("column").getValue());
+        	if((c = getSingleCell(lin,col))==null){
+        		c = new Cell();
+        		this.addCel(c);
+        	}
     	    c.importFromXML(cell);
     	}
     	return;
