@@ -1,9 +1,9 @@
 package pt.tecnico.bubbledocs.domain;
 
 
-public class AcessType extends AcessType_Base {
+public class AccessType extends AccessType_Base {
     
-    public AcessType(SpreadSheet folha,AcessMode modo) {
+    public AccessType(SpreadSheet folha,AccessMode modo) {
         super(); 
         this.setMode(modo);
         this.setFolha(folha);

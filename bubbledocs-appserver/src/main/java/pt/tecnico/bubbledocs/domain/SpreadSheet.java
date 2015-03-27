@@ -65,7 +65,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     public void delete(){
     	this.setOwner(null);
     	this.setBubbledocsFolhas(null);
-    	for(AcessType a : this.getTipoSet()){
+    	for(AccessType a : this.getTipoSet()){
     		a.delete();
     	}
     	for(Cell c: this.getCelSet()){

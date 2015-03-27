@@ -2,8 +2,10 @@ package pt.tecnico.bubbledocs.domain;
 
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
+import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class User extends User_Base {
     
@@ -49,7 +51,7 @@ public class User extends User_Base {
     	/* Delete the relation with all spreadsheets
     	 * he can use.
     	 */
-    	for(AcessType type : this.getUsedBySet()){
+    	for(AccessType type : this.getUsedBySet()){
     		type.delete();
     	}
     	deleteDomainObject();
@@ -66,7 +68,7 @@ public class User extends User_Base {
     		if(f.getName().equals(nome))
     			folhas.add(f);
     	}
-    	for(AcessType t: this.getUsedBySet()){
+    	for(AccessType t: this.getUsedBySet()){
     		folhas.add(t.getFolha());
     	}
     	return folhas;
@@ -88,6 +90,28 @@ public class User extends User_Base {
     	return folhas;
     }
     
+    public ArrayList<SpreadSheet> listWritableSpreadSheets(){
+    	ArrayList<SpreadSheet> writable = new ArrayList<SpreadSheet>();
+    	for(AccessType ae : getUsedBySet()){
+    		if (ae.getMode()==AccessMode.WRITE){
+    			writable.add(ae.getFolha());
+    		}
+    	}    	
+    	return writable;
+    	
+    }
+    
+    public ArrayList<SpreadSheet> listReadableSpreadSheets(){
+    	ArrayList<SpreadSheet> readable = new ArrayList<SpreadSheet>();
+    	for(AccessType ae : getUsedBySet()){
+    		if (ae.getMode()==AccessMode.READ || ae.getMode()==AccessMode.WRITE){
+    			readable.add(ae.getFolha());
+    		}
+    	}    	
+    	return readable;
+    	
+    }
+    
     /*
      * listUsedSpreadSheet - Returns all spreadsheets that user
      * can access except the ones he has created.
@@ -95,7 +119,7 @@ public class User extends User_Base {
     @Atomic
     public ArrayList<SpreadSheet> listUsedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
-    	for(AcessType t: getUsedBySet()){
+    	for(AccessType t: getUsedBySet()){
     		folhas.add(t.getFolha());
     	}
     	return folhas;

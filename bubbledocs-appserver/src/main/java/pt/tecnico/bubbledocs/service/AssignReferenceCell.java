@@ -3,8 +3,8 @@ package pt.tecnico.bubbledocs.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import pt.tecnico.bubbledocs.domain.AcessMode;
-import pt.tecnico.bubbledocs.domain.AcessType;
+import pt.tecnico.bubbledocs.domain.AccessMode;
+import pt.tecnico.bubbledocs.domain.AccessType;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
@@ -50,8 +50,8 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 */
     	/*getting the sheets the user can write on*/
     	ArrayList<SpreadSheet> writable = new ArrayList<SpreadSheet>();
-    	for(AcessType ae : user.getUsedBySet()){
-    		if (ae.getMode()==AcessMode.WRITE){
+    	for(AccessType ae : user.getUsedBySet()){
+    		if (ae.getMode()==AccessMode.WRITE){
     			writable.add(ae.getFolha());
     		}
     	}

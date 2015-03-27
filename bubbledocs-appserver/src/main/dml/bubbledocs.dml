@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 //------------------ ES Stuff -------------------------
 
-enum AcessMode as acessMode;
+enum AccessMode as accessMode;
 
 // Class represents the system.
 class Bubbledocs{
@@ -16,8 +16,8 @@ class User{
 	String password;
 }
 
-class AcessType{
-	acessMode mode;
+class AccessType{
+	accessMode mode;
 }
 
 class Session{
@@ -121,13 +121,13 @@ relation FolhasHasOwner{
 	}
 }
 
-// An user has a set of AcessType 
+// An user has a set of AccessType 
 // one for each spreadsheet.
 relation UtilizadorHasTiposAcesso{
 	User playsRole uses{
 		multiplicity 1;
 	}
-	AcessType playsRole usedBy{
+	AccessType playsRole usedBy{
 		multiplicity 0..*;
 	}
 }
@@ -135,7 +135,7 @@ relation UtilizadorHasTiposAcesso{
 // One SpreadSheet can has 0 or more
 // accessTypes one for each user.
 relation TipoAcessoHasFolhaCalculo{
-	AcessType playsRole tipo{
+	AccessType playsRole tipo{
 		multiplicity 0..*;
 	}
 	SpreadSheet playsRole folha{
