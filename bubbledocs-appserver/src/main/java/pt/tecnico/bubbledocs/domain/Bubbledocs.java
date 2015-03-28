@@ -1,7 +1,6 @@
 package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalTime;
-
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exceptions.WrongPasswordException;

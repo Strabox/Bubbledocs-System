@@ -1,7 +1,6 @@
 package pt.tecnico.bubbledocs.service;
 
 import java.util.ArrayList;
-
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.Literal;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
