@@ -160,7 +160,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-	 * loginUser - Create a new session for the user and he stays logged in
+	 * loginUser - Create a new session for the user and put him logged in,
 	 * returns the generated token.
 	 */
 	public String loginUser(String user, String pass) throws WrongPasswordException,	

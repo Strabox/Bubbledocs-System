@@ -56,10 +56,25 @@ public class SpreadSheet extends SpreadSheet_Base {
     public void setCreationDate(LocalDate date){}
     
     /*
-     * changeUsers(String) - Function used to change spreadsheet user's set.
+     * changeUsers(String) - Method used to change spreadsheet's user set.
      */
-    public void changeUsers(String username){
+    public void changeUsers(String username,String userToRemove){
+    	boolean canChange = false;
+    	for(Permission p : getPermissionSet()){
+    		if(p.getUses().getUsername() == username && p.getMode() == AccessMode.WRITE){
+    			canChange = true;
+    		}
+    	}
+    	if(getOwner().getUsername() == username)
+    		canChange = true;
+    	if(!canChange)
+    		throw new UnauthorizedOperationException();
     	
+    	for(Permission p : getPermissionSet()){
+    		if(p.getUses().getUsername() == userToRemove){
+    			p.delete();
+    		}
+    	}
     }
     
     

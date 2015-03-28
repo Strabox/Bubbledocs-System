@@ -7,7 +7,7 @@ import org.joda.time.Minutes;
 public class Session extends Session_Base {
 	
 	// Max minutes user can be loggedin without activity.
-	private final int MAX_LOGIN_TIME = 2 * 60;
+	private final int MAX_LOGIN_TIME_MINUTES = 2 * 60;
 	
     public Session(LocalTime time,String name,String token) {
         super();
@@ -24,7 +24,7 @@ public class Session extends Session_Base {
     	LocalTime time = getLoginTime();
     	LocalTime now = new LocalTime();
     	int difference = Minutes.minutesBetween(now, time).getMinutes();
-    	if(difference > MAX_LOGIN_TIME)
+    	if(difference > MAX_LOGIN_TIME_MINUTES)
     		return false;
     	else
     		return true;

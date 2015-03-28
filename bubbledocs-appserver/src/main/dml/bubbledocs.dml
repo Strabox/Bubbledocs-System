@@ -156,7 +156,7 @@ relation BubbleDocsHasSessions{
 
 // ############ SpreadSheet Structure ##############
 
-// Spreadsheet hos 0 or more cells.
+// Spreadsheet has 0 or more cells.
 relation SpreadsheetHasCell{
 	SpreadSheet playsRole fc{
 		multiplicity 1;

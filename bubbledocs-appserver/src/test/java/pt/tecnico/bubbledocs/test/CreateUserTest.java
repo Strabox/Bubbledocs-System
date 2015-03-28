@@ -1,5 +1,5 @@
 package pt.tecnico.bubbledocs.test;
-/*
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -10,11 +10,10 @@ import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.CreateUser;
-*/
-// add needed import declarations
+
 
 public class CreateUserTest extends BubbleDocsServiceTest {
-/*
+
     // the tokens
     private String root;
     private String ars;
@@ -27,7 +26,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     @Override
     public void populate4Test() {
         createUser(USERNAME, PASSWORD, "António Rito Silva");
-        root = addUserToSession("root");
+        root = addUserToSession(ROOT_USERNAME);
         ars = addUserToSession("ars");
     }
 
@@ -72,5 +71,5 @@ public class CreateUserTest extends BubbleDocsServiceTest {
                 "José Ferreira");
         service.execute();
     }
-*/
+
 }

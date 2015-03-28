@@ -2,6 +2,8 @@ package pt.tecnico.bubbledocs.domain;
 
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
+import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
+
 import java.util.ArrayList;
 
 public class User extends User_Base {
@@ -17,7 +19,10 @@ public class User extends User_Base {
     
     /* */
     @Override
-    public void setUsername(String newUsername) throws DuplicateUsernameException{
+    public void setUsername(String newUsername) throws DuplicateUsernameException,
+    	EmptyUsernameException{
+    	if(newUsername == "")
+    		throw new EmptyUsernameException();
     	if(newUsername != null){
 	    	for(User user: Bubbledocs.getInstance().getUserSet()){
 	    		if(user.getUsername().equals(newUsername)){

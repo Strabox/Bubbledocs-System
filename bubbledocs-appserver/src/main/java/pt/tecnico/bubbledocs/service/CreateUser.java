@@ -5,18 +5,20 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
-import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 
-// add needed import declarations
 
 public class CreateUser extends BubbleDocsService {
 
 	private static final String root = "root"; 
 	
 	private String UserToken;
+	
 	private String newUserUsername;
+	
 	private String newUserPassword;
+	
 	private String newUserIRLName;
+	
 	
     public CreateUser(String userToken, String newUsername,
             String password, String name) {
@@ -38,12 +40,8 @@ public class CreateUser extends BubbleDocsService {
     
     @Override
     protected void dispatch() throws BubbleDocsException {
-    	
     	Bubbledocs bubble = Bubbledocs.getInstance();
-    	//cannot create two users with the same name
-    	if(bubble.getUserByName(newUserUsername) != null)
-    		throw new DuplicateUsernameException(newUserUsername);
-
+    	
     	bubble.addUser(new User(newUserIRLName,newUserUsername,newUserPassword));
     }
 }
