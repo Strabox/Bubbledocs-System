@@ -46,13 +46,19 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 * checking permissions. OK if it's the owner or has writing permissions
     	 * and then if the cell is unprotected.
     	 */
-    	/*getting the sheets the user can write on*/
+    	/*getting the sheets the user can write on and checking if the sheet
+    	 * is there
+    	 */
+    	boolean hasWritePermissions = false;
     	ArrayList<SpreadSheet> writable = user.listWritableSpreadSheets();
+    	for(SpreadSheet sss : writable){
+    		if (sss==sheet) hasWritePermissions = true;
+    	}
     	/*
     	 * check if it's the owner or if they have write permissions.
     	 * if denied, throw exception.
     	 */
-    	if( sheet.getOwner()!=user && !Arrays.asList(writable).contains(sheet)){
+    	if( !(sheet.getOwner()==user || hasWritePermissions)){
     			throw new UnauthorizedOperationException();
     	}
     	/*
