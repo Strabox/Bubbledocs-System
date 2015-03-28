@@ -61,42 +61,42 @@ public class Cell extends Cell_Base {
     		DIV div = new DIV();
     		div.importFromXML(content);
     		setContent(div);
-    		//div.mountReference(this);
+    		div.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("mul")) != null){
     		MUL mul = new MUL();
     		mul.importFromXML(content);
     		setContent(mul);
-    		//mul.mountReference(this);
+    		mul.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("sub")) != null){
     		SUB sub = new SUB();
     		sub.importFromXML(content);
     		setContent(sub);
-    		//sub.mountReference(this);
+    		sub.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("add")) != null){
     		ADD add = new ADD();
     		add.importFromXML(content);
     		setContent(add);
-    		//add.mountReference(this);
+    		add.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("numberint")) != null){
     		NumberInt n = new NumberInt();
     		n.importFromXML(content);
     		setContent(n);
-    		//n.mountReference(this);
+    		n.mountReference(this);
     		return;
     	}
     	else if((content = element.getChild("reference")) != null){
     		Reference ref = new Reference();
     		ref.importFromXML(content);
     		setContent(ref);
-    		//ref.mountReference(this);
+    		ref.mountReference(this);
     		return;
     	}
     }

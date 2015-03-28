@@ -16,8 +16,7 @@ import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 // add needed import declarations
 
 public class AssignReferenceCell extends BubbleDocsService {
-	
-	private boolean hasValue;
+
     private int result;
     private String tokenUser;
     private int sheetID;
@@ -29,7 +28,6 @@ public class AssignReferenceCell extends BubbleDocsService {
 		sheetID = _docId;
 		cellID = _cellId;
 		reference = _reference;
-		hasValue = true;
     }
     
     @Override
@@ -49,12 +47,7 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 * and then if the cell is unprotected.
     	 */
     	/*getting the sheets the user can write on*/
-    	ArrayList<SpreadSheet> writable = new ArrayList<SpreadSheet>();
-    	for(AccessType ae : user.getUsedBySet()){
-    		if (ae.getMode()==AccessMode.WRITE){
-    			writable.add(ae.getFolha());
-    		}
-    	}
+    	ArrayList<SpreadSheet> writable = user.listWritableSpreadSheets();
     	/*
     	 * check if it's the owner or if they have write permissions.
     	 * if denied, throw exception.
@@ -79,16 +72,10 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 * or if the referred cell has no value (exceptions in both cases).
     	 */
     	sheet.addContentToCellFromString(l, c,"="+reference);
-    	try{
-    		result = sheet.getSingleCell(l, c).getResult();
-    	}
-    	catch(NoValueForReferenceException nvfr){
-    		hasValue = false;
-    	}
+    	result = sheet.getSingleCell(l, c).getResult();
     }
 
     public final int getResult() {
-        if (hasValue) return result;
-        else throw new NoValueForReferenceException();
+        return result;
     }
 }
