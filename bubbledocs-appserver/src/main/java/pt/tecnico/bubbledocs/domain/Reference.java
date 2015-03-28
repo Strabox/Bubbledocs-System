@@ -26,11 +26,7 @@ public class Reference extends Reference_Base {
      */
     public void delete(){
     	this.setRefCell(null);
-    	this.setCell(null);
-    	this.setBinaryFunction2(null);
-    	this.setBinaryFunction1(null);
-    	this.setIntervalFunction(null);
-    	deleteDomainObject();
+    	super.delete();
     }
     
     @Override

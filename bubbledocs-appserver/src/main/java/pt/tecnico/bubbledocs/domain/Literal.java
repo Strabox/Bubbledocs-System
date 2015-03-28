@@ -17,12 +17,7 @@ public class Literal extends Literal_Base {
      * Delete() - Delete instance from persistent state.
      */
     public void delete(){
-    	this.setCell(null);
-    	this.setBinaryFunction1(null);
-    	this.setIntervalFunction(null);
-    	this.setBinaryFunction2(null);
-    	this.setIntervalFunction(null);
-    	deleteDomainObject();
+    	super.delete();
     }
     
     @Override

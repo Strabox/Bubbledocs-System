@@ -19,6 +19,9 @@ public class SpreadSheet extends SpreadSheet_Base {
         super.setId(Bubbledocs.getInstance().generateUniqueId());
     }
     
+    /*
+     * Necessary for XMLImport functions.
+     */
     public SpreadSheet(){
     	super();
     	super.setCreationDate(new LocalDate());
@@ -52,6 +55,13 @@ public class SpreadSheet extends SpreadSheet_Base {
      */
     @Override
     public void setCreationDate(LocalDate date){}
+    
+    /*
+     * changeUsers(String) - Function used to change spreadsheet user's set.
+     */
+    public void changeUsers(String username){
+    	
+    }
     
     
     /*

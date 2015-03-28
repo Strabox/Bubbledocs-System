@@ -24,5 +24,16 @@ public abstract class Content extends Content_Base {
 
     public abstract void importFromXML(Element element, Cell container);
     
-    public abstract void delete();
+    /*
+     * delete() - Delete content from persistent state.
+     */
+    public void delete(){
+    	setBinaryFunction1(null);
+    	setBinaryFunction2(null);
+    	setCell(null);
+    	setIntervalFunction(null);
+    	deleteDomainObject();
+    }
+    
+    
 }

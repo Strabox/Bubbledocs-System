@@ -61,7 +61,7 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     }
     
     /* 
-     * Calcula - Subclasses implement the specific operation.
+     * Calcula(int,int) - Subclasses implement the specific operation.
      */
     public abstract int calcula(int arg1,int arg2);
     
@@ -73,7 +73,6 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	getArgument2().delete();
     	setArgument1(null);
     	setArgument2(null);
-    	setCell(null);
-    	deleteDomainObject();
+    	super.delete();
     }
 }

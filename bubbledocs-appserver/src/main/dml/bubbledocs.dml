@@ -176,7 +176,7 @@ relation CellHasContent{
 	}
 }
 
-// 
+// Reference has a Cell.
 relation ReferenceHasCell{
 	Reference playsRole reference{
 		multiplicity 1;
@@ -186,7 +186,7 @@ relation ReferenceHasCell{
 	}
 }
 
-// 1º BinaryFucntion argument.
+// 1º BinaryFunction argument.
 relation BinaryFunctionFirstArgument{
 	BinaryFunction playsRole binaryFunction1{
 		multiplicity 1;

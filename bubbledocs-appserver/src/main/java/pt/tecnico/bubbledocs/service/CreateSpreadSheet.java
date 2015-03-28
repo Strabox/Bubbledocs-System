@@ -7,9 +7,9 @@ import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 
-// add needed import declarations
 
 public class CreateSpreadSheet extends BubbleDocsService {
+	
 	private int sheetId;  // id of the new sheet
 	private User usr;
 	private String usrtoken;
