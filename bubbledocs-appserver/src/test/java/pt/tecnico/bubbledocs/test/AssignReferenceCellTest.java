@@ -2,7 +2,6 @@ package pt.tecnico.bubbledocs.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -18,8 +17,6 @@ import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.AssignReferenceCell;
-import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
-import pt.tecnico.bubbledocs.service.DeleteUser;
 
 public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	

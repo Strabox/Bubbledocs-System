@@ -1,15 +1,11 @@
 package pt.tecnico.bubbledocs.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import pt.tecnico.bubbledocs.domain.AccessMode;
-import pt.tecnico.bubbledocs.domain.Permission;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
-import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 
@@ -35,31 +31,24 @@ public class AssignReferenceCell extends BubbleDocsService {
     	Bubbledocs bubbled = Bubbledocs.getInstance();
     	if(tokenUser == null || bubbled.getUserFromSession(tokenUser) == null)
     		throw new UserNotInSessionException();
-    }
-    
-    @Override
-    protected void dispatch() throws BubbleDocsException {
-    	Bubbledocs bubbled = Bubbledocs.getInstance();
-    	SpreadSheet sheet = bubbled.getSpreadSheet(sheetID);
+    	
     	User user = bubbled.getUserFromSession(tokenUser);
+    	SpreadSheet sheet = bubbled.getSpreadSheet(sheetID);
     	/*
-    	 * checking permissions. OK if it's the owner or has writing permissions
+    	 * OK if it's the owner or has writing permissions
     	 * and then if the cell is unprotected.
-    	 */
-    	/*getting the sheets the user can write on and checking if the sheet
-    	 * is there
     	 */
     	boolean hasWritePermissions = false;
     	ArrayList<SpreadSheet> writable = user.listWritableSpreadSheets();
-    	for(SpreadSheet sss : writable){
-    		if (sss==sheet) hasWritePermissions = true;
-    	}
-    	/*
-    	 * check if it's the owner or if they have write permissions.
-    	 * if denied, throw exception.
+    	/* 
+    	 * getting the sheets the user can write on and checking if the sheet
+    	 * is there
     	 */
+    	for(SpreadSheet ss : writable){
+    		if (ss==sheet) hasWritePermissions = true;
+    	}
     	if( !(sheet.getOwner()==user || hasWritePermissions)){
-    			throw new UnauthorizedOperationException();
+			throw new UnauthorizedOperationException();
     	}
     	/*
     	 * if the cell exists, it can be protected.
@@ -72,11 +61,20 @@ public class AssignReferenceCell extends BubbleDocsService {
     	if(sheet.getSingleCell(l,c)!=null && sheet.getSingleCell(l, c).getProtect()){
     		throw new UnauthorizedOperationException();
     	}
+    }
+    
+    @Override
+    protected void dispatch() throws BubbleDocsException {
+    	Bubbledocs bubbled = Bubbledocs.getInstance();
+    	SpreadSheet sheet = bubbled.getSpreadSheet(sheetID);
+    	
     	/*
-    	 * Congratulations! you have permissions.
     	 * doing the actual work may still fail if the cell is out of bounds
     	 * or if the referred cell has no value (exceptions in both cases).
     	 */
+    	String[] coords = cellID.split(";");
+    	int l = Integer.parseInt(coords[0]);
+    	int c = Integer.parseInt(coords[1]);
     	String[] refcoords = reference.split(";");
     	int lref = Integer.parseInt(refcoords[0]);
     	int cref = Integer.parseInt(refcoords[1]);
