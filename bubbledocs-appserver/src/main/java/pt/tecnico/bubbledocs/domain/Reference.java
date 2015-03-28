@@ -35,8 +35,7 @@ public class Reference extends Reference_Base {
     
     @Override
     public int getResult(){
-    	setResultado(getRefCell().getContent().getResult());
-    	return getResultado();
+    	return getRefCell().getResult();
     }
     
     public void mountReference(Cell cell){

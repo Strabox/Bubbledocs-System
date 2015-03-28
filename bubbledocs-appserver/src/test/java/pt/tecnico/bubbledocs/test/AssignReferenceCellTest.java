@@ -13,6 +13,8 @@ import pt.tecnico.bubbledocs.domain.Literal;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
+import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
+import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
@@ -66,17 +68,25 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
         bubbled.addUser(userOwner);
     }
 
-
+	/*
+	 * This first test involves two cells in the boundaries of the sheet, with the referred
+	 * cell existing and having a literal as content, and the holder cell being unprotected.
+	 * The user is the owner of the sheet, being able to write on it, and will enter valid
+	 * and intelligible coordinates as arguments. This could replace the first test of each
+	 * test-suite, since they're all based on this.
+	 */
     @Test
     public void Control() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
     	arcs.execute();
-    	removeUserFromSession(tokenOwner);
     	int result = arcs.getResult();
 		assertEquals("Result of referred cell different from unexpected.", result, 42);
     }
 	
+    /*
+     * User permissions
+     */
     @Test
     public void userPermissionsOwnerTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
@@ -109,6 +119,66 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenNone,sheet.getId(),"2;2","0;0");
 		arcs.execute();
 		arcs.getResult();
+    }
+    
+    /*
+     * Cell protection
+     */
+    @Test
+    public void cellProtectionUnprotectedTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
+    	arcs.execute();
+    	int result = arcs.getResult();
+		assertEquals("Result of referred cell different from unexpected.", result, 42);
+    }
+    
+    @Test(expected = UnauthorizedOperationException.class)
+    public void cellProtectionProtectedTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"1;2","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    /*
+     * Cell location
+     */
+    @Test
+    public void cellLocationInBoundariesTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
+    	arcs.execute();
+    	int result = arcs.getResult();
+		assertEquals("Result of referred cell different from unexpected.", result, 42);
+    }
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"3;2","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    /*
+     * Referred cell content
+     */
+    @Test
+    public void referredCellHasContentTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
+    	arcs.execute();
+    	int result = arcs.getResult();
+		assertEquals("Result of referred cell different from unexpected.", result, 42);
+    }
+    
+    @Test(expected = NoValueForReferenceException.class)
+    public void referredCellHasNoContentTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","1;1");
+    	arcs.execute();
+    	arcs.getResult();
     }
     
 }

@@ -3,6 +3,8 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.jdom2.Element;
 
+import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
+
 public class Cell extends Cell_Base {
     
 	public Cell(){
@@ -31,6 +33,7 @@ public class Cell extends Cell_Base {
     }
     
     public int getResult(){
+    	if(getContent()==null) throw new NoValueForReferenceException();
     	return getContent().getResult();
     }
     
