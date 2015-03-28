@@ -85,26 +85,16 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
     	arcs.execute();
-    	removeUserFromSession(tokenOwner);
     	int result = arcs.getResult();
 		assertEquals("Result of referred cell different from unexpected.", result, 42);
     }
     
-    @Test
+    @Test(expected = UnauthorizedOperationException.class)
     public void userPermissionsReadTest() {
     	String tokenRead = addUserToSession(USERNAMEREAD);
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenRead,sheet.getId(),"2;2","0;0");
-    	try{
-    		arcs.execute();
-    		arcs.getResult();
-    		fail();
-    	}
-    	catch(UnauthorizedOperationException e){
-    		System.out.println("userPermissionsReadTest: caught expected exception");
-    	}
-    	finally{
-    		removeUserFromSession(tokenRead);
-    	}
+		arcs.execute();
+		arcs.getResult();
     }
     
     @Test
@@ -112,26 +102,16 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	String tokenWrite = addUserToSession(USERNAMEWRITE);
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenWrite,sheet.getId(),"2;2","0;0");
     	arcs.execute();
-    	removeUserFromSession(tokenWrite);
     	int result = arcs.getResult();
 		assertEquals("Result of referred cell different from unexpected.", result, 42);
     }
 
-    @Test
+    @Test(expected = UnauthorizedOperationException.class)
     public void userPermissionsNoneTest() {
     	String tokenNone = addUserToSession(USERNAMENOPERM);
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenNone,sheet.getId(),"2;2","0;0");
-    	try{
-    		arcs.execute();
-    		arcs.getResult();
-    		fail();
-    	}
-    	catch(UnauthorizedOperationException e){
-    		System.out.println("userPermissionsNoneTest: caught expected exception");
-    	}
-		finally{
-			removeUserFromSession(tokenNone);
-		}
+		arcs.execute();
+		arcs.getResult();
     }
     
 }
