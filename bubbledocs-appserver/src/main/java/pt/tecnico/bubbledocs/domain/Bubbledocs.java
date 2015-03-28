@@ -91,7 +91,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 */
 	public User getUserFromSession(String token){
 		for(Session s: getSessionSet()){
-			if(s.getToken().equals(token))
+			if(s.getToken().equals(token) && s.isValid())
 				return getUserByName(s.getName());
 		}
 		return null;

@@ -1,12 +1,13 @@
 package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalTime;
+import org.joda.time.Minutes;
 
 /* class Session - Represents a user in session. */
 public class Session extends Session_Base {
 	
-	// 
-	private final int MAX_LOGIN_TIME = 2;
+	// Max minutes user can be loggedin without activity.
+	private final int MAX_LOGIN_TIME = 2 * 60;
 	
     public Session(LocalTime time,String name,String token) {
         super();
@@ -21,7 +22,12 @@ public class Session extends Session_Base {
      */
     public boolean isValid(){
     	LocalTime time = getLoginTime();
-    	return false;
+    	LocalTime now = new LocalTime();
+    	int difference = Minutes.minutesBetween(now, time).getMinutes();
+    	if(difference > MAX_LOGIN_TIME)
+    		return false;
+    	else
+    		return true;
     }
     
     /*
