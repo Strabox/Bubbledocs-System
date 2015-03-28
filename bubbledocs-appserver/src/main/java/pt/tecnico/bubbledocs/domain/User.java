@@ -15,12 +15,6 @@ public class User extends User_Base {
 		setBubbledocsUsers(Bubbledocs.getInstance());
     }
     
-    @Override
-    @Atomic
-    public void addOwned(SpreadSheet s){
-    	super.addOwned(s);
-    }
-    
     /* */
     @Override
     public void setUsername(String newUsername) throws DuplicateUsernameException{
@@ -80,10 +74,7 @@ public class User extends User_Base {
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
     		folhas.add(f);
-    		System.out.println(f);
     	}
-    	if(folhas.isEmpty())
-    		System.out.println(getUsername()+" has 0 spreadsheets.");
     	return folhas;
     }
     

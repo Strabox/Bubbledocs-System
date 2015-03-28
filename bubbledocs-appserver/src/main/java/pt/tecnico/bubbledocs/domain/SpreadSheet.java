@@ -2,7 +2,6 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalDate;
 import org.jdom2.Element;
-
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
