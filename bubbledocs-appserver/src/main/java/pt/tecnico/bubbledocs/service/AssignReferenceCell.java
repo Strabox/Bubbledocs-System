@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 
@@ -34,6 +36,7 @@ public class AssignReferenceCell extends BubbleDocsService {
     	
     	User user = bubbled.getUserFromSession(tokenUser);
     	SpreadSheet sheet = bubbled.getSpreadSheet(sheetID);
+    	if (sheet == null) throw new SpreadSheetNotFoundException();
     	/*
     	 * OK if it's the owner or has writing permissions
     	 * and then if the cell is unprotected.
@@ -56,8 +59,14 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 * should this be done first, for efficiency?
     	 */
     	String[] coords = cellID.split(";");
-    	int l = Integer.parseInt(coords[0]);
-    	int c = Integer.parseInt(coords[1]);
+    	if(coords.length!=2) throw new BadSpreadSheetValuesException();
+    	int l, c;
+    	try{
+    		l = Integer.parseInt(coords[0]);
+    		c = Integer.parseInt(coords[1]);
+    	}catch(NumberFormatException e){
+    		throw new BadSpreadSheetValuesException();
+    	}
     	if(sheet.getSingleCell(l,c)!=null && sheet.getSingleCell(l, c).getProtect()){
     		throw new UnauthorizedOperationException();
     	}
@@ -72,12 +81,19 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 * doing the actual work may still fail if the cell is out of bounds
     	 * or if the referred cell has no value (exceptions in both cases).
     	 */
-    	String[] coords = cellID.split(";");
-    	int l = Integer.parseInt(coords[0]);
-    	int c = Integer.parseInt(coords[1]);
-    	String[] refcoords = reference.split(";");
-    	int lref = Integer.parseInt(refcoords[0]);
-    	int cref = Integer.parseInt(refcoords[1]);
+    	int l, c, lref, cref;
+    	try{
+	    	String[] coords = cellID.split(";");
+	    	if(coords.length!=2) throw new BadSpreadSheetValuesException();
+	    	l = Integer.parseInt(coords[0]);
+	    	c = Integer.parseInt(coords[1]);
+	    	String[] refcoords = reference.split(";");
+	    	if(refcoords.length!=2) throw new BadSpreadSheetValuesException();
+	    	lref = Integer.parseInt(refcoords[0]);
+	    	cref = Integer.parseInt(refcoords[1]);
+    	} catch(NumberFormatException e){
+    		throw new BadSpreadSheetValuesException();
+    	}
     	sheet.addReferenceToCell(l, c, lref, cref);
     	result = sheet.getSingleCell(l, c).getResult();
     }

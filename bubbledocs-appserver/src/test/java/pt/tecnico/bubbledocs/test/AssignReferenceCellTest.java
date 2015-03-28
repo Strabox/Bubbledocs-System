@@ -1,8 +1,6 @@
 package pt.tecnico.bubbledocs.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.AccessMode;
@@ -15,9 +13,8 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
 import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
+import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
-import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
-import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.AssignReferenceCell;
 
 public class AssignReferenceCellTest extends BubbleDocsServiceTest {
@@ -122,6 +119,26 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     }
     
     /*
+     * Spreadsheet id
+     */
+    @Test
+    public void SpreadSheetExistsTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
+    	arcs.execute();
+    	int result = arcs.getResult();
+		assertEquals("Result of referred cell different from unexpected.", result, 42);
+    }
+    
+    @Test(expected = SpreadSheetNotFoundException.class)
+    public void SpreadSheetDoesNotExist() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,9999999,"2;2","0;0");
+    	arcs.execute();
+    	int result = arcs.getResult();
+		assertEquals("Result of referred cell different from unexpected.", result, 42);
+    }
+    /*
      * Cell protection
      */
     @Test
@@ -157,6 +174,34 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     public void cellLocationOutOfBoundariesTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"3;2","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    /*
+     * Bad coordinates (unreadable)
+     */
+    @Test
+    public void coordArgumentsGoodTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
+    	arcs.execute();
+    	int result = arcs.getResult();
+		assertEquals("Result of referred cell different from unexpected.", result, 42);
+    }
+    
+    @Test(expected = BadSpreadSheetValuesException.class)
+    public void coordArgumentsFirstBadTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"22","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    @Test(expected = BadSpreadSheetValuesException.class)
+    public void coordArgumentsSecondBadTest() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","a;0");
     	arcs.execute();
     	arcs.getResult();
     }
