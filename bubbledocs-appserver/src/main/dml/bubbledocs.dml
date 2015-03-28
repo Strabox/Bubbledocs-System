@@ -2,7 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 //------------------ ES Stuff -------------------------
 
-enum AccessMode as accessMode;
+enum AccessMode as AccessMode;
 
 // Class represents the system.
 class Bubbledocs{
@@ -16,8 +16,8 @@ class User{
 	String password;
 }
 
-class AccessType{
-	accessMode mode;
+class Permission{
+	AccessMode mode;
 }
 
 class Session{
@@ -40,7 +40,7 @@ class Content{
 	int resultado;
 }
 
-class NumberInt extends Content;
+class Literal extends Content;
 
 class Reference extends Content{
 	int line;
@@ -92,27 +92,27 @@ relation RootHasBubbledocs{
 
 // Bubbledocs has 0 or more users.
 relation BubbledocsHasUsers{
-	Bubbledocs playsRole bubbledocsUtilizadores{
+	Bubbledocs playsRole bubbledocsUsers{
 		multiplicity 1;
 	}
-	User playsRole utilizador{
+	User playsRole user{
 		multiplicity *;
 	}
 }
 
 // Bubbledocs has 0 or more spreasheets
-relation BubbledocsHasFolhas{
-	Bubbledocs playsRole bubbledocsFolhas{
+relation BubbledocsHasSpreadsheets{
+	Bubbledocs playsRole bubbledocsSpreadsheets{
 		multiplicity 1;
 	}
-	SpreadSheet playsRole folhaCalculo{
+	SpreadSheet playsRole bubbleSpreadsheet{
 		multiplicity 0..*;
 	}
 }
 
 // Each spreadsheet has a owner, but an user
 // can handle 0 or more spreadsheets.
-relation FolhasHasOwner{
+relation SpreadsheetHasOwner{
 	SpreadSheet playsRole owned{
 		multiplicity 0..*;
 	}
@@ -121,24 +121,24 @@ relation FolhasHasOwner{
 	}
 }
 
-// An user has a set of AccessType 
+// An user has a set of Permissions 
 // one for each spreadsheet.
-relation UtilizadorHasTiposAcesso{
+relation UserHasOnePermissionPerSpreadsheet{
 	User playsRole uses{
 		multiplicity 1;
 	}
-	AccessType playsRole usedBy{
+	Permission playsRole usedBy{
 		multiplicity 0..*;
 	}
 }
 
 // One SpreadSheet can has 0 or more
 // accessTypes one for each user.
-relation TipoAcessoHasFolhaCalculo{
-	AccessType playsRole tipo{
+relation SpreadSheetHasMultipleUserPermissions{
+	Permission playsRole permission{
 		multiplicity 0..*;
 	}
-	SpreadSheet playsRole folha{
+	SpreadSheet playsRole spreadsheet{
 		multiplicity 1;
 	}
 }
@@ -157,11 +157,11 @@ relation BubbleDocsHasSessions{
 // ############ SpreadSheet Structure ##############
 
 // Spreadsheet hos 0 or more cells.
-relation FolhaCalculoHasCell{
+relation SpreadsheetHasCell{
 	SpreadSheet playsRole fc{
 		multiplicity 1;
 	}
-	Cell playsRole cel{
+	Cell playsRole cell{
 		multiplicity 0..*;
 	}
 }
@@ -178,7 +178,7 @@ relation CellHasContent{
 
 // 
 relation ReferenceHasCell{
-	Reference playsRole Reference{
+	Reference playsRole reference{
 		multiplicity 1;
 	}
 	Cell playsRole refCell{
@@ -187,8 +187,8 @@ relation ReferenceHasCell{
 }
 
 // 1º BinaryFucntion argument.
-relation FuncaoBinariaFirstArgument{
-	BinaryFunction playsRole funcaoBinaria1{
+relation BinaryFunctionFirstArgument{
+	BinaryFunction playsRole binaryFunction1{
 		multiplicity 1;
 	}
 	Content playsRole argument1{
@@ -197,8 +197,8 @@ relation FuncaoBinariaFirstArgument{
 }
 
 // 2º BinaryFunction argument.
-relation FuncaoBinariaSecondArgument{
-	BinaryFunction playsRole funcaoBinaria2{
+relation BinaryFunctionSecondArgument{
+	BinaryFunction playsRole binaryFunction2{
 		multiplicity 1;
 	}
 	Content playsRole argument2{
@@ -207,8 +207,8 @@ relation FuncaoBinariaSecondArgument{
 }
 
 // IntervalFunction argument.
-relation FuncaoIntervaloArgument{
-	IntervalFunction playsRole funcaoIntervalo{
+relation IntervalFunctionArgument{
+	IntervalFunction playsRole intervalFunction{
 		multiplicity 1;
 	}
 	Content playsRole argument{

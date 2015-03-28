@@ -27,9 +27,9 @@ public class Reference extends Reference_Base {
     public void delete(){
     	this.setRefCell(null);
     	this.setCell(null);
-    	this.setFuncaoBinaria2(null);
-    	this.setFuncaoBinaria1(null);
-    	this.setFuncaoIntervalo(null);
+    	this.setBinaryFunction2(null);
+    	this.setBinaryFunction1(null);
+    	this.setIntervalFunction(null);
     	deleteDomainObject();
     }
     
@@ -48,7 +48,7 @@ public class Reference extends Reference_Base {
     	}
     	else{
     		r = new Cell(getLine(), getColumn());
-    		sheet.addCel(r);
+    		sheet.addCell(r);
     		setRefCell(r);
     		//System.out.println(getLine()+ " "+ getColumn() + "created");
     	}
@@ -85,7 +85,7 @@ public class Reference extends Reference_Base {
     	}
     	//Failure: creates an "empty" cell that may later have a content
     	c = new Cell(line, column);
-    	container.getFc().addCel(c);
+    	container.getFc().addCell(c);
     	setRefCell(c);
     }
 }

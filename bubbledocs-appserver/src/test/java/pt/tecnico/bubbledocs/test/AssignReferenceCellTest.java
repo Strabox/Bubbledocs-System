@@ -7,10 +7,10 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.AccessMode;
-import pt.tecnico.bubbledocs.domain.AccessType;
+import pt.tecnico.bubbledocs.domain.Permission;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.Cell;
-import pt.tecnico.bubbledocs.domain.NumberInt;
+import pt.tecnico.bubbledocs.domain.Literal;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
@@ -51,22 +51,22 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
         holder = new Cell(2,2);		//where content is placed
         protect = new Cell(1,2);	//where content can't be placed
         protect.setProtect(true);
-        AccessType readable = new AccessType(sheet, AccessMode.READ);
+        Permission readable = new Permission(sheet, AccessMode.READ);
         userRead.addUsedBy(readable);
-        AccessType writable = new AccessType(sheet, AccessMode.WRITE);
+        Permission writable = new Permission(sheet, AccessMode.WRITE);
         userWrite.addUsedBy(writable);
-        NumberInt nint = new NumberInt(42);
+        Literal nint = new Literal(42);
         withValue.setContent(nint);
-        sheet.addCel(withValue);
-        sheet.addCel(noValue);
-        sheet.addCel(holder);
-        sheet.addCel(protect);
+        sheet.addCell(withValue);
+        sheet.addCell(noValue);
+        sheet.addCell(holder);
+        sheet.addCell(protect);
         bubbled = Bubbledocs.getInstance();
-        bubbled.addFolhaCalculo(sheet);
-        bubbled.addUtilizador(userNoPerm);
-        bubbled.addUtilizador(userRead);
-        bubbled.addUtilizador(userWrite);
-        bubbled.addUtilizador(userOwner);
+        bubbled.addBubbleSpreadsheet(sheet);
+        bubbled.addUser(userNoPerm);
+        bubbled.addUser(userRead);
+        bubbled.addUser(userWrite);
+        bubbled.addUser(userOwner);
     }
 
 

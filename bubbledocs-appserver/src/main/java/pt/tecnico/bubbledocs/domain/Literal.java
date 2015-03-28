@@ -2,13 +2,13 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.jdom2.Element;
 
-public class NumberInt extends NumberInt_Base {
+public class Literal extends Literal_Base {
     
-	public NumberInt(){
+	public Literal(){
 		super();
 	}
 	
-    public NumberInt(int conteudo) {
+    public Literal(int conteudo) {
         super();
         super.init(conteudo);
     }
@@ -18,10 +18,10 @@ public class NumberInt extends NumberInt_Base {
      */
     public void delete(){
     	this.setCell(null);
-    	this.setFuncaoBinaria1(null);
-    	this.setFuncaoIntervalo(null);
-    	this.setFuncaoBinaria2(null);
-    	this.setFuncaoIntervalo(null);
+    	this.setBinaryFunction1(null);
+    	this.setIntervalFunction(null);
+    	this.setBinaryFunction2(null);
+    	this.setIntervalFunction(null);
     	deleteDomainObject();
     }
     

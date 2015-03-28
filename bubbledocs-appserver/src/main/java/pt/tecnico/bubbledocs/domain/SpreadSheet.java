@@ -64,11 +64,11 @@ public class SpreadSheet extends SpreadSheet_Base {
     @Atomic
     public void delete(){
     	this.setOwner(null);
-    	this.setBubbledocsFolhas(null);
-    	for(AccessType a : this.getTipoSet()){
+    	this.setBubbledocsSpreadsheets(null);
+    	for(Permission a : this.getPermissionSet()){
     		a.delete();
     	}
-    	for(Cell c: this.getCelSet()){
+    	for(Cell c: this.getCellSet()){
     		c.delete();
     	}
     	deleteDomainObject();
@@ -77,7 +77,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     public Cell getSingleCell(int l, int c){
     	if ( !( 0 <= l && l <getLines() && 0<= c && c <getColumns() ))
     		throw new OutOfSpreadsheetBoundariesException();
-    	for(Cell cell : getCelSet()){
+    	for(Cell cell : getCellSet()){
     		if (cell.getLine()==l && cell.getColumn()==c){
     			return cell;
     		}
@@ -99,7 +99,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     	}
     	cell = new Cell(l, c, cont);
     	cell.setContent(cont);
-    	addCel(cell);
+    	addCell(cell);
     	return;
     }
     
@@ -112,7 +112,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     	}
     	cell = new Cell(l, c, cont);
     	cell.setContent(cont);
-    	addCel(cell);
+    	addCell(cell);
     	return;
     }
     
@@ -129,7 +129,7 @@ public class SpreadSheet extends SpreadSheet_Base {
     	Element cells = new Element("cells");
     	element.addContent(cells);
 
-    	for (Cell c : getCelSet()) {
+    	for (Cell c : getCellSet()) {
     	    cells.addContent(c.exportToXML());
     	}
     	
@@ -155,7 +155,7 @@ public class SpreadSheet extends SpreadSheet_Base {
         	int col = Integer.parseInt(cell.getAttribute("column").getValue());
         	if((c = getSingleCell(lin,col))==null){
         		c = new Cell();
-        		this.addCel(c);
+        		this.addCell(c);
         	}
     	    c.importFromXML(cell);
     	}
@@ -187,14 +187,14 @@ public class SpreadSheet extends SpreadSheet_Base {
 			}
 			splited = splited[0].split(";");
 			if(splited.length == 1)								//Se for Literal.
-				return new NumberInt(Integer.parseInt(splited[0]));
+				return new Literal(Integer.parseInt(splited[0]));
 			
 			else if(splited.length == 2){						//Se for Reference.
 				Integer Linha = Integer.parseInt(splited[0]);
 				Integer Coluna = Integer.parseInt(splited[1]);
 				if(getSingleCell(Linha,Coluna) == null){
 					Cell c = new Cell(Linha, Coluna);
-					addCel(c);
+					addCell(c);
 					return new Reference(c, Linha, Coluna);
 				}
 				else

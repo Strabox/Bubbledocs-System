@@ -2,10 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
-import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class User extends User_Base {
     
@@ -15,7 +12,7 @@ public class User extends User_Base {
 		setName(nome);
 		setUsername(username);
 		setPassword(password);
-		setBubbledocsUtilizadores(Bubbledocs.getInstance());
+		setBubbledocsUsers(Bubbledocs.getInstance());
     }
     
     @Override
@@ -28,7 +25,7 @@ public class User extends User_Base {
     @Override
     public void setUsername(String newUsername) throws DuplicateUsernameException{
     	if(newUsername != null){
-	    	for(User user: Bubbledocs.getInstance().getUtilizadorSet()){
+	    	for(User user: Bubbledocs.getInstance().getUserSet()){
 	    		if(user.getUsername().equals(newUsername)){
 	    			throw new DuplicateUsernameException(newUsername);
 	    		}
@@ -41,7 +38,7 @@ public class User extends User_Base {
      *  Delete() - Delete a user from persistent state. 
      */
     public void delete(){
-    	setBubbledocsUtilizadores(null);
+    	setBubbledocsUsers(null);
     	/* Delete the relations and the spreadsheets
     	 * he created.
     	 */
@@ -51,7 +48,7 @@ public class User extends User_Base {
     	/* Delete the relation with all spreadsheets
     	 * he can use.
     	 */
-    	for(AccessType type : this.getUsedBySet()){
+    	for(Permission type : this.getUsedBySet()){
     		type.delete();
     	}
     	deleteDomainObject();
@@ -68,8 +65,8 @@ public class User extends User_Base {
     		if(f.getName().equals(nome))
     			folhas.add(f);
     	}
-    	for(AccessType t: this.getUsedBySet()){
-    		folhas.add(t.getFolha());
+    	for(Permission t: this.getUsedBySet()){
+    		folhas.add(t.getSpreadsheet());
     	}
     	return folhas;
     }
@@ -92,9 +89,9 @@ public class User extends User_Base {
     
     public ArrayList<SpreadSheet> listWritableSpreadSheets(){
     	ArrayList<SpreadSheet> writable = new ArrayList<SpreadSheet>();
-    	for(AccessType ae : getUsedBySet()){
+    	for(Permission ae : getUsedBySet()){
     		if (ae.getMode()==AccessMode.WRITE){
-    			writable.add(ae.getFolha());
+    			writable.add(ae.getSpreadsheet());
     		}
     	}    	
     	return writable;
@@ -103,9 +100,9 @@ public class User extends User_Base {
     
     public ArrayList<SpreadSheet> listReadableSpreadSheets(){
     	ArrayList<SpreadSheet> readable = new ArrayList<SpreadSheet>();
-    	for(AccessType ae : getUsedBySet()){
+    	for(Permission ae : getUsedBySet()){
     		if (ae.getMode()==AccessMode.READ || ae.getMode()==AccessMode.WRITE){
-    			readable.add(ae.getFolha());
+    			readable.add(ae.getSpreadsheet());
     		}
     	}    	
     	return readable;
@@ -119,8 +116,8 @@ public class User extends User_Base {
     @Atomic
     public ArrayList<SpreadSheet> listUsedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
-    	for(AccessType t: getUsedBySet()){
-    		folhas.add(t.getFolha());
+    	for(Permission t: getUsedBySet()){
+    		folhas.add(t.getSpreadsheet());
     	}
     	return folhas;
     }

@@ -1,12 +1,12 @@
 package pt.tecnico.bubbledocs.domain;
 
 
-public class AccessType extends AccessType_Base {
+public class Permission extends Permission_Base {
     
-    public AccessType(SpreadSheet folha,AccessMode modo) {
+    public Permission(SpreadSheet folha,AccessMode modo) {
         super(); 
         this.setMode(modo);
-        this.setFolha(folha);
+        this.setSpreadsheet(folha);
     }
     
     /*
@@ -14,7 +14,7 @@ public class AccessType extends AccessType_Base {
      */
     public void delete(){
     	setUses(null);
-    	setFolha(null);
+    	setSpreadsheet(null);
     	deleteDomainObject();
     }
     

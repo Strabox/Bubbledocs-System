@@ -86,7 +86,7 @@ public class Cell extends Cell_Base {
     		return;
     	}
     	else if((content = element.getChild("numberint")) != null){
-    		NumberInt n = new NumberInt();
+    		Literal n = new Literal();
     		n.importFromXML(content);
     		setContent(n);
     		n.mountReference(this);

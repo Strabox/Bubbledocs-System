@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import pt.tecnico.bubbledocs.domain.AccessMode;
-import pt.tecnico.bubbledocs.domain.AccessType;
+import pt.tecnico.bubbledocs.domain.Permission;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;

@@ -11,7 +11,7 @@ public class BubbleApplication {
 	/* setupIfNeed - Setup the initial state if BubbleDocs is empty. */
 	@Atomic
     private static void setupIfNeed(Bubbledocs b) {
-		if (b.getFolhaCalculoSet().isEmpty() && b.getUtilizadorSet().isEmpty())
+		if (b.getBubbleSpreadsheetSet().isEmpty() && b.getUserSet().isEmpty())
 		    SetupBubbledocs.populateDomain();
     }
 	

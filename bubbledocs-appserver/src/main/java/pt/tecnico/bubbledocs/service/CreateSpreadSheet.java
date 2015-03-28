@@ -41,7 +41,7 @@ public class CreateSpreadSheet extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		SpreadSheet sps = new SpreadSheet(sheetname, sheetrows, sheetcolumns);
-		bubble.addFolhaCalculo(sps);
+		bubble.addBubbleSpreadsheet(sps);
 		usr.addOwned(sps);
 		sheetId = sps.getId();
 	}

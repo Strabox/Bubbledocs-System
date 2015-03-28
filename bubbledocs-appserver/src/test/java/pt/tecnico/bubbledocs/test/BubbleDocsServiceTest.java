@@ -45,7 +45,7 @@ public class BubbleDocsServiceTest {
     // for defining the iniital state and checking that the service has the expected behavior
     User createUser(String username, String password, String name) {
     	User user = new User(name,username,password);
-    	Bubbledocs.getInstance().addUtilizador(user);
+    	Bubbledocs.getInstance().addUser(user);
 	    return user;
     }
 

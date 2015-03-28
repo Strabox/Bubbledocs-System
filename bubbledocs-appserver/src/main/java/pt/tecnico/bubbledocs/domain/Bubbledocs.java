@@ -18,7 +18,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 		// Used to generate Unique Sequential number.
 		super.setUniqueId(0);
 		// 1st time Bubbledocs run creates a super user to it.
-		this.addUtilizador(new User("Super User","root","root"));
+		this.addUser(new User("Super User","root","root"));
 	}
 
 	
@@ -59,7 +59,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 * getSpreadSheet - ...
 	 */
 	public SpreadSheet getSpreadSheet(String name){
-		for (SpreadSheet s : getFolhaCalculoSet()) {
+		for (SpreadSheet s : getBubbleSpreadsheetSet()) {
 			if (s.getName().equals(name))
 				return s;
 		}
@@ -67,7 +67,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	public SpreadSheet getSpreadSheet(int id){
-		for (SpreadSheet s : getFolhaCalculoSet()) {
+		for (SpreadSheet s : getBubbleSpreadsheetSet()) {
 			if (s.getId() == id)
 				return s;
 		}
@@ -79,7 +79,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 * getUserByName - Get the user given his username.
 	 */
 	public User getUserByName(String username) {
-		for (User u : getUtilizadorSet()) {
+		for (User u : getUserSet()) {
 			if (username.equals(u.getUsername()))
 				return u;
 		}
@@ -160,7 +160,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 				return token;
 			}			
 		}
-		for (User u : getUtilizadorSet()) {
+		for (User u : getUserSet()) {
 			if (user.equals(u.getUsername()) && u.getPassword().equals(pass)) {
 				token = generateToken(user);
 				addSession(new Session(new LocalTime(),user,token));
@@ -176,7 +176,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 * listAllUsers - Lists all the users registered in the application.
 	 */
 	public void listAllUsers() {
-		for (User u : getUtilizadorSet()) {
+		for (User u : getUserSet()) {
 			System.out.println(u);
 		}
 	}
@@ -186,7 +186,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 * application.
 	 */
 	public void listAllSpreadSheets() {
-		for (SpreadSheet f : getFolhaCalculoSet()) {
+		for (SpreadSheet f : getBubbleSpreadsheetSet()) {
 			System.out.println(f);
 		}
 	}
