@@ -77,7 +77,10 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 * doing the actual work may still fail if the cell is out of bounds
     	 * or if the referred cell has no value (exceptions in both cases).
     	 */
-    	sheet.addContentToCellFromString(l, c,"="+reference);
+    	String[] refcoords = reference.split(";");
+    	int lref = Integer.parseInt(refcoords[0]);
+    	int cref = Integer.parseInt(refcoords[1]);
+    	sheet.addReferenceToCell(l, c, lref, cref);
     	result = sheet.getSingleCell(l, c).getResult();
     }
 

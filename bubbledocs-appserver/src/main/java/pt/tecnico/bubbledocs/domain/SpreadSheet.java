@@ -83,12 +83,6 @@ public class SpreadSheet extends SpreadSheet_Base {
     		}
     	}
     	return null;
-    	/* Esta funcao poderia devolver uma celula vazia, mas em caso de apenas se querer saber
-    	 * se existe celula, isso podia estragar coisas.
-    	Cell cell = new Cell(l, c);
-    	addCel(cell);
-    	return cell;
-    	*/
     }
     
     public void addContentToCell(int l, int c, Content cont){
@@ -103,15 +97,24 @@ public class SpreadSheet extends SpreadSheet_Base {
     	return;
     }
     
-    public void addContentToCellFromString(int l, int c, String contentInString){
-    	Content cont = factory(contentInString);
-    	Cell cell = getSingleCell(l, c);
+    public void addReferenceToCell(int lholder, int cholder, int lref, int cref){
+    	//creates content
+    	Reference ref;
+    	if(getSingleCell(lref,cref) == null){
+			Cell c = new Cell(lref, cref);
+			addCell(c);
+			ref = new Reference(c, lref, cref);
+		}
+		else{
+			ref =  new Reference(getSingleCell(lref,cref),lref,cref);
+		}
+    	//adds to cell
+    	Cell cell = getSingleCell(lholder, cholder);
     	if (cell!=null){
-			cell.setContent(cont);
+			cell.setContent(ref);
 			return;
     	}
-    	cell = new Cell(l, c, cont);
-    	cell.setContent(cont);
+    	cell = new Cell(lholder, cholder, ref);
     	addCell(cell);
     	return;
     }
@@ -162,68 +165,6 @@ public class SpreadSheet extends SpreadSheet_Base {
     	return;
     }
     
-    public Content factory(String input){
-		input = input.replace("=","");
-		String[] splited;
-		splited = input.split("\\(|,|:|\\)");
-		boolean isFGama=false;
-		if(input.indexOf(":")!=-1) isFGama=true;
-		try{
-			if(splited.length == 3){							//Se for uma funcao.
-				splited[0] = "calc."+splited[0]; 
-				@SuppressWarnings("rawtypes")
-				Class tipo = Class.forName(splited[0]);
-				Constructor<?> ctor = tipo.getConstructors()[0];
-				if(!isFGama){
-					BinaryFunction b = (BinaryFunction) ctor.newInstance();
-					b.init(factory("="+splited[1]),factory("="+splited[2]));
-					return b;
-				}else{ //se o argumento for uma gama
-					//String stringArgGama = splited[1]+":"+splited[2];
-					//Integer[] intArrayGama = splitGamas(stringArgGama); //separa em limites (linhas,colunas) da gama
-					//Conteudo c = (Conteudo) ctor.newInstance( gamaToRefArray(intArrayGama), intArrayGama[0], intArrayGama[1], intArrayGama[2], intArrayGama[3]);
-					//return c;
-				}
-			}
-			splited = splited[0].split(";");
-			if(splited.length == 1)								//Se for Literal.
-				return new Literal(Integer.parseInt(splited[0]));
-			
-			else if(splited.length == 2){						//Se for Reference.
-				Integer Linha = Integer.parseInt(splited[0]);
-				Integer Coluna = Integer.parseInt(splited[1]);
-				if(getSingleCell(Linha,Coluna) == null){
-					Cell c = new Cell(Linha, Coluna);
-					addCell(c);
-					return new Reference(c, Linha, Coluna);
-				}
-				else
-					return new Reference(getSingleCell(Linha,Coluna),Linha,Coluna);
-			}
-		}
-		catch (ClassNotFoundException exc) {
-			System.err.println("CLASS NOT FOUND");
-			System.err.println(exc);
-			throw new BadCellContentException(input);
-		}
-		catch (InstantiationException e) {
-			System.err.println(e);
-			throw new BadCellContentException(input);
-		}
-		catch (IllegalAccessException e) {
-			System.err.println(e);
-			throw new BadCellContentException(input);
-		}
-		catch (IllegalArgumentException e) {
-			System.err.println(e);
-			throw new BadCellContentException(input);
-		}
-		catch (InvocationTargetException e) {
-			System.err.println(e);
-			throw new BadCellContentException(input);
-		}
-		throw new BadCellContentException(input);
-	}
     
     @Override
     public String toString(){
