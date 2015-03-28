@@ -44,6 +44,6 @@ public class CreateUser extends BubbleDocsService {
     	if(bubble.getUserByName(newUserUsername) != null)
     		throw new DuplicateUsernameException(newUserUsername);
 
-    	bubble.addUtilizador(new User(newUserIRLName,newUserUsername,newUserPassword));
+    	bubble.addUser(new User(newUserIRLName,newUserUsername,newUserPassword));
     }
 }
