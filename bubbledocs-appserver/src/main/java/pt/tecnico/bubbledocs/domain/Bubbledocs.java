@@ -55,7 +55,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-	 * getSpreadSheet - ...
+	 * getSpreadSheet - Get the spreadsheet by name.
 	 */
 	public SpreadSheet getSpreadSheet(String name){
 		for (SpreadSheet s : getBubbleSpreadsheetSet()) {
@@ -65,6 +65,9 @@ public class Bubbledocs extends Bubbledocs_Base {
 		return null;
 	}
 	
+	/*
+	 * getSpreadsheet - Get the spreadsheet by ID.
+	 */
 	public SpreadSheet getSpreadSheet(int id){
 		for (SpreadSheet s : getBubbleSpreadsheetSet()) {
 			if (s.getId() == id)
@@ -87,7 +90,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 
 	/*
 	 * getUserFromSession - Returns user from his session given
-	 * his secret token.
+	 * his secret token if session exists and is valid.
 	 */
 	public User getUserFromSession(String token){
 		for(Session s: getSessionSet()){
@@ -104,16 +107,28 @@ public class Bubbledocs extends Bubbledocs_Base {
 	public void removeUserFromSession(String token){
 		for(Session s: getSessionSet()){
 			if(s.getToken().equals(token))
-				s.delete();						//Deletes user session
+				s.delete();						//Deletes user session.
 		}	
 	}
 	
 	/*
-	 * resetsSessionTime - Reset user session time given his token.
+	 * removeAllInvalidSessions - Remove all sessions that are no
+	 * longer valid in the system.
+	 */
+	public void removeAllInvalidSessions(){
+		for(Session s: getSessionSet()){
+			if(!s.isValid())
+				s.delete();
+		}
+	}
+	
+	/*
+	 * resetsSessionTime - Reset user session time given his token
+	 * if session is valid, otherwise do nothing.
 	 */
 	public void resetsSessionTime(String token){
 		for(Session s : getSessionSet()){
-			if(s.getToken().equals(token)){
+			if(s.getToken().equals(token) && s.isValid()){
 				s.setLoginTime(new LocalTime());
 			}			
 		}

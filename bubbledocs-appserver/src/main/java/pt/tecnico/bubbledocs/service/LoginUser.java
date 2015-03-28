@@ -29,6 +29,7 @@ public class LoginUser extends BubbleDocsService {
 		Bubbledocs bubble = Bubbledocs.getInstance();
 		
 		userToken = bubble.loginUser(username, password);
+		bubble.removeAllInvalidSessions();
 	}
 
 	public final String getUserToken() {
