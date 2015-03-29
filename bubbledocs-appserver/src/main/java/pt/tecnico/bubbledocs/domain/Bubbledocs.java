@@ -200,6 +200,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 * application.
 	 */
 	public void listAllSpreadSheets() {
+		if(getBubbleSpreadsheetSet().isEmpty())
+			System.out.println("0 Spreadsheets in Bubbledocs");
 		for (SpreadSheet f : getBubbleSpreadsheetSet()) {
 			System.out.println(f);
 		}

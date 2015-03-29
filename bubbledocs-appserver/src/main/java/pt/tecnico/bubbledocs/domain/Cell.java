@@ -29,6 +29,8 @@ public class Cell extends Cell_Base {
     public void delete(){
     	setFc(null);
     	getContent().delete();
+    	this.setContent(null);
+    	this.setReference(null);
     	deleteDomainObject();
     }
     

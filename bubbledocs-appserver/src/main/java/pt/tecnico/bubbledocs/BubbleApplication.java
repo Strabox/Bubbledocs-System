@@ -40,7 +40,9 @@ public class BubbleApplication {
 			pfLogin.execute();
 			String pfToken = pfLogin.getUserToken();
 			
-			ExportDocument ex = new ExportDocument(pfToken, 0);
+			Integer id = bubble.getUserByName("pf").getSpreadSheet("NotasEs").get(0).getId();
+			
+			ExportDocument ex = new ExportDocument(pfToken, id);
 			ex.execute();
 			
 			XMLOutputter xml = new XMLOutputter();
@@ -49,17 +51,22 @@ public class BubbleApplication {
 	    	System.out.println(xml.outputString(xmlout));
 	    	System.out.println("----------------------------");
 	    	
-	    	bubble.getSpreadSheet(0).delete();
+	    	bubble.getSpreadSheet(id).delete();
 	    	System.out.println("----------------------------");
 	    	bubble.listAllSpreadSheets();
 	    	System.out.println("----------------------------");
 	    	
-	    	//SpreadSheet s = new SpreadSheet();
-	    	//s.importFromXML(xmlout, "pf);
-	    	//pf.addOwned(s);
+	    	SpreadSheet s = new SpreadSheet();
+	    	s.importFromXML(xmlout, "pf");
+	    	bubble.getUserByName("pf").addOwned(s);
+	    	bubble.addBubbleSpreadsheet(s);
 	    	
 	    	bubble.listAllSpreadSheets();
 	    	System.out.println("----------------------------");
+	    	
+	    	xml.setFormat(Format.getPrettyFormat());
+	    	xmlout = bubble.getSpreadSheet("NotasEs").exportToXML();
+	    	System.out.println(xml.outputString(xmlout));
 	    	
 			tm.commit();
 			committed = true;

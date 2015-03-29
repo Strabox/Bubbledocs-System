@@ -33,7 +33,7 @@ public class SetupBubbledocs {
 			CreateSpreadSheet cs = new CreateSpreadSheet(pfToken,"NotasEs",300,20);
 			cs.execute();
 			new AssignLiteralCell(pfToken, cs.getSheetId(), "3;4", "5").execute();
-			//new AssignReferenceCell(pfToken, cs.getSheetId(), "1;1", "5;6").execute();
+			new AssignReferenceCell(pfToken, cs.getSheetId(), "1;1", "3;4").execute();
 			
 			System.out.println("----------First Time Populate Done!!-------");
 		}
