@@ -32,8 +32,5 @@ public class DIV extends DIV_Base {
     	return element;
     }
     
-    
-    public void importFromXML(Element element, Cell container) {
-    	return;
-    }
+
 }

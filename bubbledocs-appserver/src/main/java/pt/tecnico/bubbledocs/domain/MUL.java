@@ -31,8 +31,5 @@ public class MUL extends MUL_Base {
     	return element;
     }
     
-    
-    public void importFromXML(Element element, Cell container) {
-    	return;
-    }
+
 }

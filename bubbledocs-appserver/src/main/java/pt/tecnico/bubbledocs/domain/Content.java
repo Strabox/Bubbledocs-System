@@ -21,8 +21,6 @@ public abstract class Content extends Content_Base {
     public abstract void mountReference(Cell holder);
     
     public abstract Element exportToXML();
-
-    public abstract void importFromXML(Element element, Cell container);
     
     /*
      * delete() - Delete content from persistent state.

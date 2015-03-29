@@ -42,7 +42,4 @@ public class Literal extends Literal_Base {
     	setResultado(v);
     }
     
-    public void importFromXML(Element element,Cell container) {
-    	return;
-    }
 }
