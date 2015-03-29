@@ -47,7 +47,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		sheet = createSpreadSheet(userOwner,"sheet1", 3, 3);
 		sheet.setOwner(userOwner);
 		cell1 = new Cell(0,0);	
-		cell2 = new Cell(0,1);	
+		//cell2 = new Cell(0,1);	
 		cell3 = new Cell(1,0);              
 		Permission readable = new Permission(sheet, AccessMode.READ);
 		userRead.addUsedBy(readable);
@@ -57,7 +57,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		//cell2.setContent(new Reference(0,0));
 		cell3.setContent(new ADD(new Literal (2),new Literal(4)));    
 		sheet.addCell(cell1);
-		//sheet.addCell(cell2);
+		sheet.addCell(cell2);
 		sheet.addCell(cell3);  
 		bubbled = Bubbledocs.getInstance();
 		bubbled.addBubbleSpreadsheet(sheet);

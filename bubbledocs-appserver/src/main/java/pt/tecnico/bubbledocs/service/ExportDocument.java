@@ -82,6 +82,7 @@ public class ExportDocument extends BubbleDocsService {
 			throw new UnauthorizedOperationException();
 		}
 		serialize(sheet.exportToXML());
+		docXML = sheet.exportToXML();
 
 
 	}
