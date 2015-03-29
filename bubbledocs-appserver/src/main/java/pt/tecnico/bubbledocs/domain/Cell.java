@@ -88,7 +88,7 @@ public class Cell extends Cell_Base {
     		add.mountReference(this);
     		return;
     	}
-    	else if((content = element.getChild("numberint")) != null){
+    	else if((content = element.getChild("literal")) != null){
     		Literal n = new Literal();
     		n.importFromXML(content);
     		setContent(n);

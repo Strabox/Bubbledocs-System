@@ -38,7 +38,7 @@ public class Literal extends Literal_Base {
     }
     
     public void importFromXML(Element element) {
-    	int v = Integer.parseInt(element.getAttribute("value").getValue());
+    	int v = Integer.parseInt(element.getAttribute("value").getValue());    	
     	setResultado(v);
     }
     

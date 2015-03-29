@@ -29,7 +29,7 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	List<Element> contents = element.getChildren();
     	
     	arg1 = contents.get(0);
-    	if((content = arg1.getChild("numberint")) != null){
+    	if((content = arg1.getChild("literal")) != null){
     		Literal n = new Literal();
     		n.importFromXML(content);
     		setArgument1(n);  		
@@ -41,7 +41,7 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	}
     	
     	arg2 = contents.get(1);
-    	if((content = arg2.getChild("numberint")) != null){
+    	if((content = arg2.getChild("literal")) != null){
     		Literal n = new Literal();
     		n.importFromXML(content);
     		setArgument2(n);

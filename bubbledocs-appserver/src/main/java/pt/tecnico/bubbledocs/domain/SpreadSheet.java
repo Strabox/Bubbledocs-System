@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalDate;
 import org.jdom2.Element;
+
 import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
@@ -179,8 +180,10 @@ public class SpreadSheet extends SpreadSheet_Base {
         	if((c = getSingleCell(lin,col))==null){
         		c = new Cell();
         		this.addCell(c);
+        		
         	}
     	    c.importFromXML(cell);
+    	    
     	}
     	return;
     }
