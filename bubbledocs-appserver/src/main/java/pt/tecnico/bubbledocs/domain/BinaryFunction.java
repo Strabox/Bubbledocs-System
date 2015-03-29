@@ -17,9 +17,7 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     
     @Override
 	public int getResult(){
-    	
-		setResultado(calcula(getArgument1().getResult(),getArgument2().getResult()));
-		return getResultado();
+		return calcula(getArgument1().getResult(),getArgument2().getResult());
 	}
     
     public void importFromXML(Element element) {

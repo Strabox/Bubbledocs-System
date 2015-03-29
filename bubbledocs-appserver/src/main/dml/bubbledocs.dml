@@ -37,11 +37,11 @@ class SpreadSheet{
 	int columns;
 }
 
-class Content{
-	int resultado;
-}
+class Content;
 
-class Literal extends Content;
+class Literal extends Content{
+	int value;
+}
 
 class Reference extends Content{
 	int line;

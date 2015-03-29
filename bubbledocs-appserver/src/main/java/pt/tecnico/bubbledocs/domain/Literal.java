@@ -10,7 +10,7 @@ public class Literal extends Literal_Base {
 	
     public Literal(int conteudo) {
         super();
-        super.init(conteudo);
+        setValue(conteudo);
     }
     
     /*
@@ -22,7 +22,7 @@ public class Literal extends Literal_Base {
     
     @Override
     public int getResult(){
-    	return this.getResultado();
+    	return getValue();
     }
     
     public void mountReference(Cell cell){
@@ -32,14 +32,14 @@ public class Literal extends Literal_Base {
     public Element exportToXML(){
     	Element element = new Element("literal");
     	
-    	element.setAttribute("value", Integer.toString(getResultado()));
+    	element.setAttribute("value", Integer.toString(getResult()));
 
     	return element;
     }
     
     public void importFromXML(Element element) {
     	int v = Integer.parseInt(element.getAttribute("value").getValue());    	
-    	setResultado(v);
+    	setValue(v);
     }
     
 }

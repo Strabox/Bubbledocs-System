@@ -22,9 +22,7 @@ public abstract class IntervalFunction extends IntervalFunction_Base {
     		args[i] = c.getResult();
     		i++;
     	}
-    	
-		setResultado(calcula(args));
-		return getResultado();
+		return calcula(args);
 	}
     
     /* 

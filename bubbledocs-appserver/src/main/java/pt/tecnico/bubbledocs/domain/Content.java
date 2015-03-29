@@ -8,10 +8,6 @@ public abstract class Content extends Content_Base {
         super();
     }
     
-    protected void init(int valor){
-    	setResultado(valor);
-    }
-    
     public abstract int getResult();
     
     /*
