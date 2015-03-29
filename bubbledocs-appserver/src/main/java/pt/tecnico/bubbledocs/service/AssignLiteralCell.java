@@ -9,7 +9,6 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.InvalidLiteralException;
-import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
 import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;

@@ -4,6 +4,7 @@ import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class User extends User_Base {
     
@@ -112,6 +113,48 @@ public class User extends User_Base {
     		folhas.add(t.getSpreadsheet());
     	}
     	return folhas;
+    }
+    
+    public void removeUserPermission(String username, SpreadSheet sp, AccessMode mode){
+    	if (username == this.getName()) {
+			System.out.println("User cannot change own permissions");
+			return;
+		}
+    	Bubbledocs bubble = Bubbledocs.getInstance();
+    	User usr = bubble.getUserByName(username);
+    	
+    	if(!(this.getOwnedSet().contains(sp))){
+    		System.out.println("Error: Cannot change permission of not owned spreadsheets");
+    		return;
+    	}
+    	
+    	Permission pm = new Permission(sp, mode);
+    	usr.removeUsedBy(pm);
+    }
+    
+    public void ChangeUserPermission(String username, SpreadSheet sp, AccessMode mode){
+    	if (username == this.getName()) {
+			System.out.println("User cannot change own permissions");
+			return;
+		}
+    	Bubbledocs bubble = Bubbledocs.getInstance();
+    	User usr = bubble.getUserByName(username);
+    	
+    	if(!(this.getOwnedSet().contains(sp))){
+    		System.out.println("Error: Cannot change permission of not owned spreadsheets");
+    		return;
+    	}
+    	
+    	Permission pm = new Permission(sp, mode);
+    	
+    	if (mode == AccessMode.WRITE) {
+			removeUserPermission(username, sp, AccessMode.READ);
+		}
+    	else {
+    		removeUserPermission(username, sp, AccessMode.WRITE);
+		}
+    	
+    	usr.addUsedBy(pm);
     }
     
     
