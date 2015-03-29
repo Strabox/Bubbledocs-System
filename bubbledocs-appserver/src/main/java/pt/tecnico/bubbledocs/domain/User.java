@@ -1,6 +1,5 @@
 package pt.tecnico.bubbledocs.domain;
 
-import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 
@@ -57,7 +56,6 @@ public class User extends User_Base {
      * getSpreadSheetByName - Get all the spreadsheets with the
      * given name.
      */
-    @Atomic
     public ArrayList<SpreadSheet> getSpreadSheet(String nome){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
@@ -74,7 +72,6 @@ public class User extends User_Base {
      * listOwnedSpreadSheets - Return and prints all spreadsheets
      * created by the user.
      */
-    @Atomic
     public ArrayList<SpreadSheet> listOwnedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(SpreadSheet f: getOwnedSet()){
@@ -109,7 +106,6 @@ public class User extends User_Base {
      * listUsedSpreadSheet - Returns all spreadsheets that user
      * can access except the ones he has created.
      */
-    @Atomic
     public ArrayList<SpreadSheet> listUsedSpreadSheets(){
     	ArrayList<SpreadSheet> folhas = new ArrayList<SpreadSheet>();
     	for(Permission t: getUsedBySet()){

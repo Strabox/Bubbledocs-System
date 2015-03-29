@@ -1,12 +1,13 @@
 package pt.tecnico.bubbledocs.service;
 
 import java.util.ArrayList;
+
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.Literal;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
-import pt.tecnico.bubbledocs.exceptions.SpreadSheetDoesNotExistException;
+import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 
@@ -46,7 +47,7 @@ public class AssignLiteralCell extends BubbleDocsService {
     		throw new UserNotInSessionException();
     	
     	if(sheet == null)
-    		throw new SpreadSheetDoesNotExistException();
+    		throw new SpreadSheetNotFoundException();
     	
     	ArrayList<SpreadSheet> writable = user.listWritableSpreadSheets();
     	for(SpreadSheet s : writable){
