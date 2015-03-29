@@ -6,7 +6,10 @@ import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.Literal;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.InvalidLiteralException;
+import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
 import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
@@ -15,73 +18,99 @@ import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
  * Service assign a integer constant to a cell.
  */
 public class AssignLiteralCell extends BubbleDocsService {
-	
-    private int result;
-    
-    private Bubbledocs bubble;
-    
-    private String token;
-    
-    private int docId;
-    
-    private String cellId;
-    
-    private String literal;
-    
-    public AssignLiteralCell(String tokenUser, int docId, String cellId,
-            String literal) {
-    	this.token = tokenUser;
-    	this.docId = docId;
-    	this.cellId = cellId;
-    	this.literal = literal;
-    }
-    
-    @Override
-    protected void accessControl(){
-    	boolean canWrite = false;
-    	bubble = Bubbledocs.getInstance();
-    	User user = bubble.getUserFromSession(token);
-    	SpreadSheet sheet = bubble.getSpreadSheet(docId);
-    	
-    	if(token == null || user == null)
-    		throw new UserNotInSessionException();
-    	
-    	if(sheet == null)
-    		throw new SpreadSheetNotFoundException();
-    	
-    	ArrayList<SpreadSheet> writable = user.listWritableSpreadSheets();
-    	for(SpreadSheet s : writable){
-    		if (s == sheet) 
-    			canWrite = true;
-    	}
-    	if(!canWrite || !(sheet.getOwner() == user))
-    		throw new UnauthorizedOperationException();
-    	
-    }
-    
-    
-    @Override
-    protected void dispatch() throws BubbleDocsException {
-    	SpreadSheet sheet = bubble.getSpreadSheet(docId); 
-    	String[] coords = cellId.split(";");
-    	int l = Integer.parseInt(coords[0]);
-    	int c = Integer.parseInt(coords[1]);	
-    	int Literal;
-    	Literal cont;
-    	
-    	if(sheet.getSingleCell(l,c) != null && sheet.getSingleCell(l, c).getProtect()){
-    		throw new UnauthorizedOperationException();
-    	}
-    	
-    	Literal = Integer.parseInt(literal);
-    	
-    	cont = new Literal(Literal);
-    	sheet.addContentToCell(l, c, cont);
-    	result = cont.getResult();
-    }
 
-    public final int getResult() {
-        return result;
-    }
+	private int result;
+	private String tokenUser;
+	private int sheetID;
+	private String cellID;
+	private String literal;
+
+	public AssignLiteralCell(String accessUsername, int docId, String cellId, String lite){
+		tokenUser = accessUsername;
+		sheetID = docId;
+		cellID = cellId;
+		literal = lite;
+	}
+
+	@Override
+	protected void accessControl(){
+		Bubbledocs bubbled = Bubbledocs.getInstance();
+		if(tokenUser == null || bubbled.getUserFromSession(tokenUser) == null)
+			throw new UserNotInSessionException();
+
+		User user = bubbled.getUserFromSession(tokenUser);
+		SpreadSheet sheet = bubbled.getSpreadSheet(sheetID);
+		if (sheet == null) throw new SpreadSheetNotFoundException();
+		/*
+		 * OK if it's the owner or has writing permissions
+		 * and then if the cell is unprotected.
+		 */
+		boolean hasWritePermissions = false;
+		ArrayList<SpreadSheet> writable = user.listWritableSpreadSheets();
+		/* 
+		 * getting the sheets the user can write on and checking if the sheet
+		 * is there
+		 */
+		for(SpreadSheet ss : writable){
+			if (ss==sheet) hasWritePermissions = true;
+		}
+		if( !(sheet.getOwner()==user || hasWritePermissions)){
+			throw new UnauthorizedOperationException();
+		}
+		/*
+		 * if the cell exists, it can be protected.
+		 * if it is protected, we can't change its content either.
+		 * should this be done first, for efficiency?
+		 */
+		String[] coords = cellID.split(";");
+		if(coords.length!=2) throw new BadSpreadSheetValuesException();
+		int l, c;
+		try{
+			l = Integer.parseInt(coords[0]);
+			c = Integer.parseInt(coords[1]);
+		}catch(NumberFormatException e){
+			throw new BadSpreadSheetValuesException();
+		}
+		if(sheet.getSingleCell(l,c)!=null && sheet.getSingleCell(l, c).getProtect()){
+			throw new UnauthorizedOperationException();
+		}
+	}
+
+	@Override
+	protected void dispatch() throws BubbleDocsException {
+		Bubbledocs bubbled = Bubbledocs.getInstance();
+		SpreadSheet sheet = bubbled.getSpreadSheet(sheetID);
+
+		/*
+		 * doing the actual work may still fail if the cell is out of bounds
+		 * or if the referred cell has no value (exceptions in both cases).
+		 */
+		int l, c;
+		try{
+			String[] coords = cellID.split(";");
+			if(coords.length!=2) throw new BadSpreadSheetValuesException();
+			l = Integer.parseInt(coords[0]);
+			c = Integer.parseInt(coords[1]);
+
+		} catch(NumberFormatException e){
+			throw new BadSpreadSheetValuesException();
+		}
+		
+		int aux;
+		try{
+			aux = Integer.parseInt(literal);
+			
+		} catch (NumberFormatException e){
+			throw new InvalidLiteralException();
+		}
+
+		Literal lit = new Literal(aux);
+		sheet.addContentToCell(l, c, lit);
+		result = sheet.getSingleCell(l, c).getResult();
+	}
+
+	public final int getResult() {
+		return result;
+	}
 
 }

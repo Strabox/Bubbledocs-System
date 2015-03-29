@@ -32,7 +32,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     private SpreadSheet sheet;
 	private Cell withValue;
 	private Cell noValue;
-//	private Cell holder;
+	private Cell holder;
 	private Cell protect;
 	
 	@Override
@@ -45,7 +45,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
         sheet.setOwner(userOwner);
         withValue = new Cell(0,0);	//should have a value
         noValue = new Cell(1,1);	//should have no value
-    //    holder = new Cell(2,2);		//where content is placed
+        holder = new Cell(2,2);		//where content is placed
         protect = new Cell(1,2);	//where content can't be placed
         protect.setProtect(true);
         Permission readable = new Permission(sheet, AccessMode.READ);
@@ -56,7 +56,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
         withValue.setContent(nint);
         sheet.addCell(withValue);
         sheet.addCell(noValue);
-    //    sheet.addCell(holder);
+        sheet.addCell(holder);
         sheet.addCell(protect);
         bubbled = Bubbledocs.getInstance();
         bubbled.addBubbleSpreadsheet(sheet);
