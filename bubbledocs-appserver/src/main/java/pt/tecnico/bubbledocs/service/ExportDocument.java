@@ -1,11 +1,6 @@
 package pt.tecnico.bubbledocs.service;
-import org.jdom2.*;
-
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
@@ -18,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-// add needed import declarations
+
 
 public class ExportDocument extends BubbleDocsService {
 	private byte[] docXMLbytes;

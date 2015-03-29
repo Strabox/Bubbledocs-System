@@ -6,15 +6,16 @@ import org.joda.time.Minutes;
 /* class Session - Represents a user in session. */
 public class Session extends Session_Base {
 	
-	// Max minutes user can be loggedin without activity.
-	private final int MAX_LOGIN_TIME_MINUTES = 2 * 60;
-	
     public Session(LocalTime time,String name,String token) {
         super();
         setLoginTime(time);
         setName(name);
         setToken(token);
+        super.setMAX_LOGIN_TIME_MINUTES(2 * 60);
     }
+    
+    @Override
+    public void setMAX_LOGIN_TIME_MINUTES(int time){/*DO nothing*/}
     
     /*
      * isValid() - Verifies if the session is valid with in
@@ -23,8 +24,8 @@ public class Session extends Session_Base {
     public boolean isValid(){
     	LocalTime time = getLoginTime();
     	LocalTime now = new LocalTime();
-    	int difference = Minutes.minutesBetween(now, time).getMinutes();
-    	if(difference > MAX_LOGIN_TIME_MINUTES)
+    	int difference = Minutes.minutesBetween(time, now).getMinutes();
+    	if(difference > getMAX_LOGIN_TIME_MINUTES())
     		return false;
     	else
     		return true;

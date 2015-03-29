@@ -24,6 +24,7 @@ class Session{
 	LocalTime loginTime;
 	String name;
 	String token;
+	int MAX_LOGIN_TIME_MINUTES;
 }
 
 //------------------ PO Stuff -------------------------
