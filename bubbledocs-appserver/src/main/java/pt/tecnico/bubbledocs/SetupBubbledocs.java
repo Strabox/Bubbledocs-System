@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs;
 
 
 import pt.tecnico.bubbledocs.domain.ADD;
+import pt.tecnico.bubbledocs.domain.DIV;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.Literal;
 import pt.tecnico.bubbledocs.domain.Reference;
@@ -46,6 +47,8 @@ public class SetupBubbledocs {
 			
 			bubble.getSpreadSheet(0).addContentToCell(5, 6, new ADD(new Literal(2),new Reference(3,4)));
 			bubble.getSpreadSheet(0).getSingleCell(5,6).getContent().mountReference(bubble.getSpreadSheet(0).getSingleCell(5,6));
+			bubble.getSpreadSheet(0).addContentToCell(2, 2, new DIV(new Reference(1,1),new Reference(3,4)));
+			bubble.getSpreadSheet(0).getSingleCell(2,2).getContent().mountReference(bubble.getSpreadSheet(0).getSingleCell(2,2));
 		}
 		catch(Exception e){
 			System.out.println(e);
