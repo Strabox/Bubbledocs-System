@@ -35,7 +35,6 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	else if((content = arg1.getChild("reference")) != null){
     		Reference ref = new Reference();
     		ref.importFromXML(content);
-    		ref.mountReference(getCell());
     		setArgument1(ref);
     	}
     	
@@ -48,7 +47,6 @@ public abstract class BinaryFunction extends BinaryFunction_Base {
     	else if((content = arg2.getChild("reference")) != null){
     		Reference ref = new Reference();
     		ref.importFromXML(content);
-    		ref.mountReference(getCell());
     		setArgument2(ref);
     	}
     

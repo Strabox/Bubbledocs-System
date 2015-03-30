@@ -41,6 +41,7 @@ public class SetupBubbledocs {
 			new AssignReferenceCell(pfToken, cs.getSheetId(), "1;1", "3;4").execute();
 			
 			bubble.getSpreadSheet(0).addContentToCell(5, 6, new ADD(new Literal(2),new Reference(3,4)));
+			bubble.getSpreadSheet(0).getSingleCell(5,6).getContent().mountReference(bubble.getSpreadSheet(0).getSingleCell(5,6));
 			System.out.println("----------First Time Populate Done!!-------");
 		}
 		catch(Exception e){

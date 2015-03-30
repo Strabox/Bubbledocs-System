@@ -53,15 +53,17 @@ public class BubbleApplication {
 	    	bubble.getSpreadSheet(id).delete();
 	    	System.out.println("----------------------------");
 	    	bubble.listAllSpreadSheets();
-	    	System.out.println("----------------------------");
+	    	System.out.println("----------------------------a");
 	    	
 	    	SpreadSheet s = new SpreadSheet();
+	    	System.out.println("importing");
 	    	s.importFromXML(xmlout, "pf");
+	    	System.out.println("imported");
 	    	bubble.getUserByName("pf").addOwned(s);
 	    	bubble.addBubbleSpreadsheet(s);
 	    	
 	    	bubble.listAllSpreadSheets();
-	    	System.out.println("----------------------------");
+	    	System.out.println("----------------------------b");
 	    	
 	    	xml.setFormat(Format.getPrettyFormat());
 	    	xmlout = bubble.getSpreadSheet("NotasEs").exportToXML();
