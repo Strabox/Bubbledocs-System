@@ -5,7 +5,6 @@ import javax.transaction.SystemException;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.bubbledocs.domain.*;

@@ -4,7 +4,6 @@ import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class User extends User_Base {
     
