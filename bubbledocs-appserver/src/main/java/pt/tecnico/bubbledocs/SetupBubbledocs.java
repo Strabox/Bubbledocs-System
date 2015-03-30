@@ -40,7 +40,7 @@ public class SetupBubbledocs {
 			new AssignLiteralCell(pfToken, cs.getSheetId(), "3;4", "5").execute();
 			new AssignReferenceCell(pfToken, cs.getSheetId(), "1;1", "3;4").execute();
 			
-			bubble.getSpreadSheet(0).addContentToCell(5, 6, new ADD(new Literal(1),new Literal(8)));
+			bubble.getSpreadSheet(0).addContentToCell(5, 6, new ADD(new Literal(2),new Reference(3,4)));
 			System.out.println("----------First Time Populate Done!!-------");
 		}
 		catch(Exception e){
