@@ -34,6 +34,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	private Cell cell1;
 	private Cell cell2;
 	private Cell cell3;
+	private Cell cell4;
 	SpreadSheet importedSheet;
 
 
@@ -44,22 +45,26 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		userRead = createUser(USERNAMEREAD, "pass", "can read");
 		userWrite = createUser(USERNAMEWRITE, "pass", "can write");
 		userOwner = createUser(USERNAMEOWNER, "pass", "is owner");
-		sheet = createSpreadSheet(userOwner,"sheet1", 3, 3);
+		sheet = createSpreadSheet(userOwner,"sheet1", 300, 300);
 		sheet.setOwner(userOwner);
 		cell1 = new Cell(0,0);	
-		/*//*/cell2 = new Cell(0,1);	
-		cell3 = new Cell(1,0);              
+		cell2 = new Cell(0,1);	
+		cell3 = new Cell(1,0); 
+		cell4 = new Cell(1,1);  
 		Permission readable = new Permission(sheet, AccessMode.READ);
 		userRead.addUsedBy(readable);
 		Permission writable = new Permission(sheet, AccessMode.WRITE);
 		userWrite.addUsedBy(writable);
 		cell1.setContent(new Literal(3));
-		/*//*/cell2.setContent(new Reference(0,0));
-		cell3.setContent(new ADD(new Literal (2),new Literal(4)));    
+		cell2.setContent(new Reference(0,0));
+		cell3.setContent(new Reference(0,1));
+		cell4.setContent(new ADD(new Literal(7),new Literal(4)));    
 		sheet.addCell(cell1);
 		sheet.addCell(cell2);
+		sheet.addCell(cell3);
 		sheet.addCell(cell3);  
 		cell2.getContent().mountReference(cell2);
+		cell3.getContent().mountReference(cell3);
 		bubbled = Bubbledocs.getInstance();
 		bubbled.addBubbleSpreadsheet(sheet);
 		bubbled.addUser(userNoPerm);
@@ -71,7 +76,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 
 
 	@Test
-	public void canRead() {
+	public void owner() {
 		String tokenOwner = addUserToSession(USERNAMEOWNER);
 		ExportDocument expDoc = new ExportDocument(tokenOwner,sheet.getId());
 		expDoc.execute();
@@ -100,7 +105,49 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		//this assert wont execute
 		assertEquals("...", 0, 0);
 	}
+	
+	@Test
+	public void canWrite() {
+		String tokenOwner = addUserToSession(USERNAMEWRITE);
+		ExportDocument expDoc = new ExportDocument(tokenOwner,sheet.getId());
+		expDoc.execute();
+		removeUserFromSession(tokenOwner);
+		// test
+		expDoc.deserialize(expDoc.getDocXMLBytes());
+		org.jdom2.Document tempDocXML = expDoc.getDocXML();
+		importedSheet.importFromXML(tempDocXML, USERNAMEWRITE);
+		assertEquals("Name", sheet.getName(),importedSheet.getName());
+		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
+		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
+		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
+		for(Cell cell : sheet.getCellSet()){			
+			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
+			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
 
+		}
+	}
+	@Test
+	public void canRead() {
+		String tokenOwner = addUserToSession(USERNAMEREAD);
+		ExportDocument expDoc = new ExportDocument(tokenOwner,sheet.getId());
+		expDoc.execute();
+		removeUserFromSession(tokenOwner);
+		// test
+		expDoc.deserialize(expDoc.getDocXMLBytes());
+		org.jdom2.Document tempDocXML = expDoc.getDocXML();
+		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
+		assertEquals("Name", sheet.getName(),importedSheet.getName());
+		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
+		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
+		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
+		for(Cell cell : sheet.getCellSet()){			
+			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
+			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
+
+		}
+	}
+	
+	
 
 }
 
