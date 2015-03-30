@@ -5,6 +5,7 @@ import pt.tecnico.bubbledocs.domain.ADD;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.Literal;
 import pt.tecnico.bubbledocs.domain.Reference;
+import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
 import pt.tecnico.bubbledocs.service.AssignLiteralCell;
 import pt.tecnico.bubbledocs.service.AssignReferenceCell;
 import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
@@ -38,11 +39,13 @@ public class SetupBubbledocs {
 			CreateSpreadSheet cs = new CreateSpreadSheet(pfToken,"NotasEs",300,20);
 			cs.execute();
 			new AssignLiteralCell(pfToken, cs.getSheetId(), "3;4", "5").execute();
-			new AssignReferenceCell(pfToken, cs.getSheetId(), "1;1", "3;4").execute();
+			try{
+				new AssignReferenceCell(pfToken, cs.getSheetId(), "1;1", "5;6").execute();
+			}
+			catch(NoValueForReferenceException e){}
 			
 			bubble.getSpreadSheet(0).addContentToCell(5, 6, new ADD(new Literal(2),new Reference(3,4)));
 			bubble.getSpreadSheet(0).getSingleCell(5,6).getContent().mountReference(bubble.getSpreadSheet(0).getSingleCell(5,6));
-			System.out.println("----------First Time Populate Done!!-------");
 		}
 		catch(Exception e){
 			System.out.println(e);
