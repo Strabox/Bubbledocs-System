@@ -47,18 +47,19 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		sheet = createSpreadSheet(userOwner,"sheet1", 3, 3);
 		sheet.setOwner(userOwner);
 		cell1 = new Cell(0,0);	
-		//cell2 = new Cell(0,1);	
+		/*//*/cell2 = new Cell(0,1);	
 		cell3 = new Cell(1,0);              
 		Permission readable = new Permission(sheet, AccessMode.READ);
 		userRead.addUsedBy(readable);
 		Permission writable = new Permission(sheet, AccessMode.WRITE);
 		userWrite.addUsedBy(writable);
 		cell1.setContent(new Literal(3));
-		//cell2.setContent(new Reference(0,0));
+		/*//*/cell2.setContent(new Reference(0,0));
 		cell3.setContent(new ADD(new Literal (2),new Literal(4)));    
 		sheet.addCell(cell1);
 		sheet.addCell(cell2);
 		sheet.addCell(cell3);  
+		cell2.getContent().mountReference(cell2);
 		bubbled = Bubbledocs.getInstance();
 		bubbled.addBubbleSpreadsheet(sheet);
 		bubbled.addUser(userNoPerm);
@@ -85,7 +86,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
 		for(Cell cell : sheet.getCellSet()){			
 			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
-			assertEquals("Cell: content",cell.getContent().getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getResult());
+			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
 
 		}
 	}

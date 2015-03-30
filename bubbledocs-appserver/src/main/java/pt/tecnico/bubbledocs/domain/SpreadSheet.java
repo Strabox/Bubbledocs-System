@@ -180,10 +180,8 @@ public class SpreadSheet extends SpreadSheet_Base {
         	if((c = getSingleCell(lin,col))==null){
         		c = new Cell();
         		this.addCell(c);
-        		
         	}
-    	    c.importFromXML(cell);
-    	    
+        	c.importFromXML(cell);
     	}
     	return;
     }

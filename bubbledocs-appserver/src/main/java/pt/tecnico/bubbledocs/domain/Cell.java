@@ -45,14 +45,9 @@ public class Cell extends Cell_Base {
     	element.setAttribute("line", Integer.toString(getLine()));
     	element.setAttribute("column", Integer.toString(getColumn()));
     	
-    	//System.out.println(getLine() + " " + getColumn());
     	Content cont = getContent();
-    	//if(cont == null) 
-    		//System.out.println("cell pre add NULL content");
     	Element contexp = cont.exportToXML();
-    	//System.out.println(contexp.toString());
     	element.addContent(contexp);
-    	//System.out.println("cell post add content________");
     	
     	return element;
     }
