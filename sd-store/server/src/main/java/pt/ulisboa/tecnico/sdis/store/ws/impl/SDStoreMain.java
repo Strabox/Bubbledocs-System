@@ -2,24 +2,36 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 import javax.xml.ws.Endpoint;
 
+import pt.ulisboa.tecnico.sdis.store.ws.impl.uddi.*;
+
 public class SDStoreMain {
 
     public static void main(String[] args) {
         // Check arguments
-        if (args.length < 1) {
+        if (args.length < 3) {
             System.err.println("Argument(s) missing!");
             System.err.printf("Usage: java %s url%n", SDStoreMain.class.getName());
             return;
         }
 
-        String url = args[0];
+        String uddiURL = args[0];
+        String name = args[1];
+        String url = args[2];
+        
         Endpoint endpoint = null;
+        UDDINaming uddiNaming = null;
+        
         try {
             endpoint = Endpoint.create(new SDStoreImpl());
 
             // publish endpoint
             System.out.printf("Starting %s%n", url);
             endpoint.publish(url);
+            
+         // publish to UDDI
+            System.out.printf("Publishing '%s' to UDDI at %s%n", name, uddiURL);
+            uddiNaming = new UDDINaming(uddiURL);
+            uddiNaming.rebind(name, url);
 
             // wait
             System.out.println("Awaiting connections");
