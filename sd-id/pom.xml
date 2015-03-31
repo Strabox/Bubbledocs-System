@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <!-- http://maven.apache.org/pom.html#Quick_Overview -->
- <groupId>SD-ES</groupId>
+  <groupId>sdis</groupId>
   <artifactId>SD-ID</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -19,10 +19,10 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mainclass>example.ws.impl.HelloMain</mainclass>
+    <mainclass>sdis.SDIDMain</mainclass>
 
     <ws.name>Hello</ws.name>
-    <ws.url>http://localhost:8080/hello-ws/endpoint</ws.url>
+    <ws.url>http://localhost:8080/id-ws/endpoint</ws.url>
   </properties>
   
   <build>
@@ -85,5 +85,4 @@
     </plugins>
   </build>
 
-  <groupId>pt.ulisboa.tecnico.sdis</groupId>
 </project>
