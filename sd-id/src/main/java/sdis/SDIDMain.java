@@ -5,7 +5,6 @@ import javax.xml.ws.Endpoint;
 import sdis.uddi.UDDINaming;
 
 
-@SuppressWarnings("restriction")
 public class SDIDMain {
 
     public static void main(String[] args) {
@@ -16,7 +15,7 @@ public class SDIDMain {
             return;
         }
         
-        String uddiUTL = args[0];
+        String uddiURL = args[0];
         String name = args[1];
         
         String url = args[2];
@@ -29,7 +28,12 @@ public class SDIDMain {
             // publish endpoint
             System.out.printf("Starting %s%n", url);
             endpoint.publish(url);
-
+            
+         // publish to UDDI
+            System.out.printf("Publishing '%s' to UDDI at %s%n", name, uddiURL);
+            uddiNaming = new UDDINaming(uddiURL);
+            uddiNaming.rebind(name, url);
+            
             // wait
             System.out.println("Awaiting connections");
             System.out.println("Press enter to shutdown");
@@ -48,6 +52,16 @@ public class SDIDMain {
                 }
             } catch(Exception e) {
                 System.out.printf("Caught exception when stopping: %s%n", e);
+            }
+            try{
+            	if(uddiNaming != null){
+            		// delete from UDDI
+                    uddiNaming.unbind(name);
+                    System.out.printf("Deleted '%s' from UDDI%n", name);
+            	}
+            	
+            }catch(Exception e){
+            	System.out.printf("Caught exception when deleting: %s%n", e);
             }
         }
 

@@ -4,7 +4,6 @@ import javax.jws.*;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 
-@SuppressWarnings("restriction")
 @WebService(
     endpointInterface="pt.ulisboa.tecnico.sdis.id.ws.SDId", 
     wsdlLocation="SD-ID.1_1.wsdl",
