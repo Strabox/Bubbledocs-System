@@ -2,6 +2,8 @@ package sdis;
 
 import javax.xml.ws.Endpoint;
 
+import sdis.uddi.UDDINaming;
+
 
 @SuppressWarnings("restriction")
 public class SDIDMain {
@@ -13,9 +15,14 @@ public class SDIDMain {
             System.err.printf("Usage: java %s url%n", SDIDMain.class.getName());
             return;
         }
-
-        String url = args[0];
+        
+        String uddiUTL = args[0];
+        String name = args[1];
+        
+        String url = args[2];
+        
         Endpoint endpoint = null;
+        UDDINaming uddiNaming = null;
         try {
             endpoint = Endpoint.create(new SDImpl());
 
