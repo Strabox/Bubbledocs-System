@@ -3,6 +3,8 @@ package sdis;
 import javax.jws.*;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
+import sdis.domain.User;
+import sdis.domain.UserManager;
 
 @WebService(
     endpointInterface="pt.ulisboa.tecnico.sdis.id.ws.SDId", 
@@ -14,12 +16,17 @@ import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 )
 public class SDImpl implements SDId {
 
+	private UserManager manager;
+	
+	public SDImpl(){
+		manager = new UserManager();
+	}
 
 	public void createUser(String userId, String emailAddress)
 			throws EmailAlreadyExists_Exception, InvalidEmail_Exception,
 			InvalidUser_Exception, UserAlreadyExists_Exception {
-		// TODO Auto-generated method stub
-		
+		User user = new User(userId,emailAddress);
+		manager.addUser(user);
 	}
 
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {
