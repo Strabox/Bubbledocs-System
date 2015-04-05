@@ -1,7 +1,6 @@
 package sdis.domain;
 
 import java.util.ArrayList;
-
 import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists;
 import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail;
@@ -17,6 +16,7 @@ public class UserManager {
 	/* System users. */
 	private ArrayList<User> users;
 	
+	
 	public UserManager(){
 		users = new ArrayList<User>();
 	}
@@ -25,17 +25,21 @@ public class UserManager {
 	public void addUser(User user) throws UserAlreadyExists_Exception,
 	EmailAlreadyExists_Exception, InvalidEmail_Exception {
 		if(usernameExists(user.getUsername()))
-			throw new UserAlreadyExists_Exception("Por favor insira outro username.",new UserAlreadyExists());
+			throw new UserAlreadyExists_Exception("Por favor insira outro username!!",new UserAlreadyExists());
 		if(emailExists(user.getEmail()))
-			throw new EmailAlreadyExists_Exception("Por favor insira outro mail.",new EmailAlreadyExists());
+			throw new EmailAlreadyExists_Exception("Por favor insira outro mail!!",new EmailAlreadyExists());
 		if(!validateEmail(user.getEmail()))
 			throw new InvalidEmail_Exception("Email inválido!!",new InvalidEmail());
 		users.add(user);
 	}
-	
-	/* FIX-ME!!!! */
+
+	/* validateEmail - check if the email has a valid format. */
 	private boolean validateEmail(String mail){
-		return true;
+		if(mail.matches(".+@.+\\..+"))
+			return true;
+		else
+			return false;
+		
 	}
 	
 	public boolean usernameExists(String user){

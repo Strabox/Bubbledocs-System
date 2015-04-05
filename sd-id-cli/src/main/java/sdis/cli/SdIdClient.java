@@ -1,9 +1,7 @@
 package sdis.cli;
 
 import java.util.*;
-
 import javax.xml.ws.*;
-
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 
@@ -21,9 +19,9 @@ public class SdIdClient {
         System.out.println(requestContext.get(ENDPOINT_ADDRESS_PROPERTY));
         
         try{
-        	id.createUser("User", "adas");
-        }catch(UserAlreadyExists_Exception e){
-        	System.out.println("FODA-SE SOU O REI!!!!!");
+        	id.createUser("User", "adas@a.a");
+        }catch(Exception e){
+        	System.out.println(e);
         }
     }
 
