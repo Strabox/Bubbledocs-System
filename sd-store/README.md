@@ -3,25 +3,25 @@
 
 ## Primeira entrega ##
 
-Grupo de SD ...
-*(preencher com número do grupo de SD no Fénix)*
+Grupo de SD 17
 
-... ... ...
 
-... ... ...
+... 64722 ...
 
-... ... ...
-*(preencher com nome, número e email de membro do grupo)*
+Artur Fonseca 75456 artur.fonseca@tecnico.ulisboa.pt
+
+... 75513 ...
+
 
 
 Repositório:
-[tecnico-softeng-distsys-2015/C_XX_YY_ZZ-project](https://github.com/tecnico-softeng-distsys-2015/C_XX_YY_ZZ-project/)
+[tecnico-softeng-distsys-2015/A_15_03_17-project](https://github.com/tecnico-softeng-distsys-2015/A_15_03_17-project/)
 
 
 -------------------------------------------------------------------------------
 
-## Serviço SD-ID / SD-STORE 
-(indicar apenas 1)
+## Serviço SD-STORE 
+
 
 ### Instruções de instalação 
 *(Como colocar o projecto a funcionar numa máquina do laboratório)*
