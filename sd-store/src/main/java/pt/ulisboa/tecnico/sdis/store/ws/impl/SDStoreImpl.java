@@ -2,6 +2,8 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jws.*;
@@ -21,14 +23,18 @@ import pt.ulisboa.tecnico.sdis.store.ws.*;
 		)
 
 public class SDStoreImpl implements SDStore {
-	/**
-	 * 
-	 * @param docUserPair
-	 * @throws DocAlreadyExists_Exception
-	 */
 
-	public void createDoc(DocUserPair docUserPair){
-		//FIX ME
+	private List<User> users = null;
+	
+
+	public void createDoc(DocUserPair docUserPair) {
+		String userId = docUserPair.getUserId();
+		String docId = docUserPair.getDocumentId();
+		
+		SpreadSheet sp = new SpreadSheet(docId);
+		User user = new User(userId);
+		user.addDocs(sp);
+		users.add(user);
 	}
 
 	/**
@@ -39,9 +45,26 @@ public class SDStoreImpl implements SDStore {
 	 * @throws UserDoesNotExist_Exception
 	 */
 
-	public List<String> listDocs(String userId){
-		// FIX ME
-		return null;
+	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception {
+		User aux = null;
+		for (User user : users) {
+			if(user.getUserId()==userId){
+				aux = user;
+				break;
+			}
+		}
+		if (aux==null) {
+			UserDoesNotExist E = new UserDoesNotExist();
+			E.setUserId(userId);
+			throw new UserDoesNotExist_Exception("userId wasn't matched", E);
+		}
+		
+		List<String> docnames = new ArrayList<String>(aux.getDocs().size());
+		for (SpreadSheet sp : aux.getDocs()) {
+			docnames.add(sp.getDocid());
+		}
+		
+		return docnames;
 	}
 
 	/**
@@ -53,10 +76,36 @@ public class SDStoreImpl implements SDStore {
 	 * @throws CapacityExceeded_Exception
 	 */
 
-	public void store(DocUserPair docUserPair, byte[] contents){
-		//FIX ME
+	public void store(DocUserPair docUserPair, byte[] contents) 
+			throws UserDoesNotExist_Exception, DocDoesNotExist_Exception {
+		String userId = docUserPair.getUserId();
+		String docId = docUserPair.getDocumentId();
 		
+		User aux = null;
+		for (User user : users) {
+			if(user.getUserId()==userId){
+				aux = user;
+				break;
+			}
+		}
+		if (aux==null) {
+			UserDoesNotExist E = new UserDoesNotExist();
+			E.setUserId(userId);
+			throw new UserDoesNotExist_Exception("userId wasn't matched", E);
+		}
 		
+		boolean exists = false;
+		for (SpreadSheet sp : aux.getDocs()) {
+			if (sp.getDocid()==docId) {
+				exists = true;
+				sp.setContent(contents);
+				break;
+			}
+		}
+		if (!exists) {
+			DocDoesNotExist E = new DocDoesNotExist();
+			throw new DocDoesNotExist_Exception("docId wasn't matched", E);
+		}
 	}
 
 
@@ -69,11 +118,30 @@ public class SDStoreImpl implements SDStore {
 	 * @throws DocDoesNotExist_Exception
 	 */
 
-	public byte[] load(DocUserPair docUserPair){
-		//FIX ME
+	public byte[] load(DocUserPair docUserPair) throws UserDoesNotExist_Exception{
+		String userId = docUserPair.getUserId();
+		String docId = docUserPair.getDocumentId();
+		
+		User aux = null;
+		for (User user : users) {
+			if(user.getUserId()==userId){
+				aux = user;
+				break;
+			}
+		}
+		if (aux==null) {
+			UserDoesNotExist E = new UserDoesNotExist();
+			E.setUserId(userId);
+			throw new UserDoesNotExist_Exception("userId wasn't matched", E);
+		}
+		
+		for (SpreadSheet sp : aux.getDocs()) {
+			if (sp.getDocid()==docId) {
+				return sp.getContent();
+			}
+		}
 		return null;
 	}
-
 
 }
 
