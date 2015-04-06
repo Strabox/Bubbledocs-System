@@ -2,6 +2,8 @@ package pt.tecnico.bubbledocs.service;
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
@@ -24,9 +26,22 @@ public class RenewPassword extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		// TODO Auto-generated method stub
-		//chamar metodo renew do remote
-		//tentar mudar a password local
-		//fear the flying killer pigs!
+		try{
+			IDRemoteServices idrs = new IDRemoteServices();
+			idrs.renewPassword(Bubbledocs.getInstance().getUserFromSession(tokenUser).getUsername());
+			//password should be printed?
+			//revoke local password
+		}
+		catch(LoginBubbleDocsException e){
+			System.out.println("login problem on renewing password");
+			throw e;
+		}
+		catch(RemoteInvocationException e){
+			System.out.println("remove invocation problem on renewing password");
+			throw e;
+			//MAKE THIS BETTER: there should be a different exception, specific to a higher layer.
+		}
+
 	}
 
 }

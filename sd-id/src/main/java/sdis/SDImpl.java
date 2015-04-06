@@ -31,8 +31,13 @@ public class SDImpl implements SDId {
 	}
 
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
-		
+		if(!manager.usernameExists(userId)){
+			UserDoesNotExist udne = new UserDoesNotExist();
+			udne.setUserId(userId);
+			throw new UserDoesNotExist_Exception(userId, udne);
+		}
+		User user = manager.getUserByUsername(userId);
+		String pass = user.setNewPassword();
 	}
 
 	public void removeUser(String userId) throws UserDoesNotExist_Exception {

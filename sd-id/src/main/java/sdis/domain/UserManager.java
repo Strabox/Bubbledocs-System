@@ -32,6 +32,14 @@ public class UserManager {
 			throw new InvalidEmail_Exception("Email inválido!!",new InvalidEmail());
 		users.add(user);
 	}
+	
+	public User getUserByUsername(String username){
+		for(User u : users){
+			if(u.getUsername().equals(username))
+				return u;
+		}
+		return null;
+	}
 
 	/* validateEmail - check if the email has a valid format. */
 	private boolean validateEmail(String mail){

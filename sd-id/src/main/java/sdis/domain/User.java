@@ -53,5 +53,9 @@ public class User {
 		this.email = email;
 	}
 	
-	
+	public String setNewPassword(){
+		String pass = generatePassword();
+		setPassword(pass);
+		return pass;
+	}
 }
