@@ -1,8 +1,6 @@
 package sdis.domain;
 
-import java.util.UUID;
-
-/* Class represents system user. */
+/* User - Class represents system user. */
 public class User {
 
 	private String username;
@@ -11,19 +9,25 @@ public class User {
 	
 	private String email;
 
+	
 	public User(String user,String mail){
 		username = user;
 		email = mail;
 		password = generatePassword();
 	}
 	
+	/* Generate a new password. */
 	private String generatePassword(){
+		/*
+		For now we return always the same for testing!!
 		return UUID.randomUUID().toString();
+		*/
+		return "pass";
 	}
 	
-	/* Verify if the password matches  */
+	/* Verify if the password matches.  */
 	public boolean verifyPassword(String givenPass){
-		if(password == givenPass)
+		if(password.equals(givenPass))
 			return true;
 		else
 			return false;

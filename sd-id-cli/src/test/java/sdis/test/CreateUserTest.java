@@ -1,5 +1,7 @@
 package sdis.test;
 
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists_Exception;
@@ -7,64 +9,118 @@ import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 
-/* NOTE: In this tests we assume that server is empty
- and running!!!!!*/
+/* NOTE: In this tests we assume that server is empty and running!!!!!*/
 
 
 /* Test suit for CreateUser service. */
 public class CreateUserTest extends SdIdTest {
 
-	private static final String username = "Andre69";
-	private static final String username2 = "Andre70";
-	private static final String username3 = "Andre71";
+	private final String username = "Andre69";
+	private final String username2 = "Andre70";
+	private final String username3 = "Andre71";
+	private final String invalidUsername = "";
 	
-	private static final String correctEmail = "andre@sdIsAwesome.pt"  ;
+	private final String correctEmail = "andre69@sdIsAwesome.ist"  ;
+	private final String correctEmail2 = "hmm@sdIsAwesome.ist";
 	
-	private static final String invalidEmail1 = "andre" ;
-	private static final String invalidEmail2 = "andre@sdIsAwesome" ;
-	private static final String invalidEmail3 = "andre.sdIsAwesome" ;
+	private final String invalidEmail1 = "andre" ;
+	private final String invalidEmail2 = "andre@sdIsAwesome" ;
+	private final String invalidEmail3 = "andre.sdIsAwesome" ;
 	
 	/* Create a user that doesnt exist in the SDID. */
 	@Test
-	public void createUserSuccess() throws EmailAlreadyExists_Exception,
-	InvalidEmail_Exception, InvalidUser_Exception, UserAlreadyExists_Exception{
-		idServer.createUser(username, correctEmail);
-		// Nothing should happen
+	public void createUserSuccess() {
+		try{
+			idServer.createUser(username, correctEmail);
+		}
+		catch(Exception e){
+			fail(e.toString());
+		}
 	}
 	
 	/* Try create the same user. */
 	@Test(expected = UserAlreadyExists_Exception.class)
-	public void createDuplicateUser() throws UserAlreadyExists_Exception,
-	EmailAlreadyExists_Exception, InvalidEmail_Exception, InvalidUser_Exception{
-		idServer.createUser(username, correctEmail);
+	public void createDuplicateUser() throws UserAlreadyExists_Exception{
+		try {
+			idServer.createUser(username, correctEmail);
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidEmail_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} 
+	}
+	
+	/* Try create a user with invalid username. */
+	@Test(expected = InvalidUser_Exception.class)
+	public void createUserWithInvalidUsername() throws InvalidUser_Exception{
+		try {
+			idServer.createUser(invalidUsername, correctEmail2);
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidEmail_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
+		
 	}
 	
 	/* Try create a differente user with same email. */
 	@Test(expected = EmailAlreadyExists_Exception.class)
-	public void createUserWithInvalidEmail() throws EmailAlreadyExists_Exception,
-	InvalidEmail_Exception, InvalidUser_Exception, UserAlreadyExists_Exception{
-		idServer.createUser(username2, correctEmail);
+	public void createUserWithInvalidEmail() throws EmailAlreadyExists_Exception{
+		try {
+			idServer.createUser(username2, correctEmail);
+		} catch (InvalidEmail_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
 	}
 	
-	/* */
+	/* Try create a user with a invalid email. */
 	@Test(expected = InvalidEmail_Exception.class)
-	public void createUserWithInvalidEmail1() throws EmailAlreadyExists_Exception,
-	InvalidEmail_Exception, InvalidUser_Exception, UserAlreadyExists_Exception{
-		idServer.createUser(username3, invalidEmail1);
+	public void createUserWithInvalidEmail1() throws InvalidEmail_Exception{
+		try {
+			idServer.createUser(username3, invalidEmail1);
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
 	}
 	
-	/* */
+	/* Try create a user with a invalid email. */
 	@Test(expected = InvalidEmail_Exception.class)
-	public void createUserWithInvalidEmail2() throws EmailAlreadyExists_Exception,
-	InvalidEmail_Exception, InvalidUser_Exception, UserAlreadyExists_Exception{
-		idServer.createUser(username3, invalidEmail2);
+	public void createUserWithInvalidEmail2() throws InvalidEmail_Exception{
+		try {
+			idServer.createUser(username3, invalidEmail2);
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
 	}
 	
-	/* */
+	/* Try create a user with a invalid email. */
 	@Test(expected = InvalidEmail_Exception.class)
-	public void createUserWithInvalidEmail3() throws EmailAlreadyExists_Exception,
-	InvalidEmail_Exception, InvalidUser_Exception, UserAlreadyExists_Exception{
-		idServer.createUser(username3, invalidEmail3);
+	public void createUserWithInvalidEmail3() throws InvalidEmail_Exception {
+		try {
+			idServer.createUser(username3, invalidEmail3);
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
 	}
 	
 	

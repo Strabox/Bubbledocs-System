@@ -1,5 +1,11 @@
 package sdis;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javax.jws.*;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
@@ -18,6 +24,7 @@ public class SDImpl implements SDId {
 
 	private UserManager manager;
 	
+	
 	public SDImpl(){
 		manager = new UserManager();
 	}
@@ -27,7 +34,6 @@ public class SDImpl implements SDId {
 			InvalidUser_Exception, UserAlreadyExists_Exception {
 		User user = new User(userId,emailAddress);
 		manager.addUser(user);
-		System.out.println(user.getPassword());
 	}
 
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {
@@ -47,8 +53,26 @@ public class SDImpl implements SDId {
 
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 			throws AuthReqFailed_Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try{
+			ByteArrayInputStream bIn = new ByteArrayInputStream(reserved);
+			ObjectInputStream oIn = new ObjectInputStream(bIn);
+			String password = (String) oIn.readObject();
+			
+			boolean loggedin = manager.verifyUserPassword(userId, password);
+			
+			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+			ObjectOutputStream oOut = new ObjectOutputStream(bOut);
+			oOut.writeObject(loggedin);
+			return bOut.toByteArray(); 
+		}
+		catch (IOException e){
+			AuthReqFailed a = new AuthReqFailed();
+			throw new AuthReqFailed_Exception("Authentication failed!", a);
+		}
+		catch(ClassNotFoundException e ){
+			AuthReqFailed a = new AuthReqFailed();
+			throw new AuthReqFailed_Exception("Authentication failed!", a);
+		}
 	}
 
 }

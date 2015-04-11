@@ -10,6 +10,12 @@
   <name>${project.artifactId}</name>
   
   <dependencies>
+       <dependency>
+     		<groupId>org.jmockit</groupId> 
+		   <artifactId>jmockit</artifactId>
+		   <version>1.16</version> 
+	   	   <scope>test</scope>
+  		 </dependency>
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>jaxws-rt</artifactId>
