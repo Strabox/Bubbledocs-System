@@ -8,13 +8,23 @@ import java.util.ArrayList;
 public class User extends User_Base {
     
 
-    public User(String nome,String username,String password) throws DuplicateUsernameException{
+    public User(String nome,String username,String password,String email) throws DuplicateUsernameException{
     	super();
 		setName(nome);
+		setEmail(email);
 		setUsername(username);
 		setPassword(password);
 		setBubbledocsUsers(Bubbledocs.getInstance());
     }
+    
+    public User(String nome,String username,String email) throws DuplicateUsernameException{
+    	super();
+    	setEmail(email);
+		setName(nome);
+		setUsername(username);
+		setBubbledocsUsers(Bubbledocs.getInstance());
+    }
+    
     
     /* */
     @Override

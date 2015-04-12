@@ -9,7 +9,7 @@ import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 public class RenewPassword extends BubbleDocsService {
 	
-	private IDRemoteServices idRemote;
+	//private IDRemoteServices idRemote;
 	private String tokenUser;
 	
 	public RenewPassword(String tokenUser){

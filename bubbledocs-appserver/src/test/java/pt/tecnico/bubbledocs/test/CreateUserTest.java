@@ -1,6 +1,8 @@
 package pt.tecnico.bubbledocs.test;
 
 import static org.junit.Assert.assertEquals;
+import mockit.Expectations;
+import mockit.Mocked;
 
 import org.junit.Test;
 
@@ -10,37 +12,51 @@ import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.CreateUser;
+import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
 public class CreateUserTest extends BubbleDocsServiceTest {
 
+	/* Mock RemoteServices to cover all test cases and avoid the need
+	 * for put the real remote service working.*/
+	@Mocked
+	private IDRemoteServices idRemote;
+	
     // the tokens
     private String root;
     private String ars;
 
     private static final String USERNAME = "ars";
     private static final String PASSWORD = "ars";
+    private static final String EMAIL = "jp@ESisAwesome.ist";
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
 
     @Override
     public void populate4Test() {
-        createUser(USERNAME, PASSWORD, "António Rito Silva");
+        createUser(USERNAME,EMAIL ,PASSWORD, "António Rito Silva");
         root = addUserToSession(ROOT_USERNAME);
         ars = addUserToSession("ars");
     }
 
     @Test
     public void success() {
-        CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST, "jose",
-                "José Ferreira");
+        CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST, 
+        		"jf@ESisAwesome.ist","José Ferreira");
+        
+        new Expectations(){
+        	{
+        		idRemote.createUser(USERNAME_DOES_NOT_EXIST, "jf@ESisAwesome.ist");
+        	}
+        };
+        
         service.execute();
 
-	// User is the domain class that represents a User
+        
         User user = getUserFromUsername(USERNAME_DOES_NOT_EXIST);
 
         assertEquals(USERNAME_DOES_NOT_EXIST, user.getUsername());
-        assertEquals("jose", user.getPassword());
+        //assertEquals("jose", user.getPassword());
         assertEquals("José Ferreira", user.getName());
     }
 

@@ -1,9 +1,9 @@
 package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalTime;
+
 import pt.ist.fenixframework.FenixFramework;
-import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
-import pt.tecnico.bubbledocs.exceptions.WrongPasswordException;
+import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 
 /*
  * Implements singleton pattern.
@@ -160,29 +160,37 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-	 * loginUser - Create a new session for the user and put him logged in,
-	 * returns the generated token.
+	 * createSession(String) - Create a session for the user and returns
+	 * a random token to user services.
 	 */
-	public String loginUser(String user, String pass) throws WrongPasswordException,	
-		UnknownBubbleDocsUserException {
-		String token = "";
+	public String createSession(String username){
+		String token = generateToken(username);
 		for(Session s : getSessionSet()){
-			if(s.getName().equals(user)){			//User already in session.
-				token = generateToken(user);
+			if(s.getName().equals(username)){		//User already in session.
 				s.setToken(token);    				//Generates a new token.
 				s.setLoginTime(new LocalTime());    //Resets login time.
-				return token;
+				return token;						//No need to see more users.
 			}			
 		}
+		//User not in session, create a new one.
+		addSession(new Session(new LocalTime(),username,token));	
+		return token;
+	}
+	
+	/*
+	 * loginUser(String,String) - Create a new session for the user and put him 
+	 * logged in returns the generated token.
+	 */
+	public void loginUser(String user, String pass) throws UnavailableServiceException{
 		for (User u : getUserSet()) {
 			if (user.equals(u.getUsername()) && u.getPassword().equals(pass)) {
-				token = generateToken(user);
-				addSession(new Session(new LocalTime(),user,token));
-				return token;
+				//LOGIN SUCCESSFUL
+				return;
 			}else if (user.equals(u.getUsername()) && !u.getPassword().equals(pass))
-				throw new WrongPasswordException();
+				throw new UnavailableServiceException();
 		}
-		throw new UnknownBubbleDocsUserException();
+		//User doesnt exist in local Database.
+		throw new UnavailableServiceException();
 	}
 	
 	

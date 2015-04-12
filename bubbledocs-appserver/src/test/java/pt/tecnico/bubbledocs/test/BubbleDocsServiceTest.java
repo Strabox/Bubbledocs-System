@@ -43,12 +43,18 @@ public class BubbleDocsServiceTest {
 
     // auxiliary methods that access the domain layer and are needed in the test classes
     // for defining the iniital state and checking that the service has the expected behavior
-    User createUser(String username, String password, String name) {
+    User createUser(String username,String email ,String password, String name) {
+    	User user = new User(name,username,password,email);
+    	Bubbledocs.getInstance().addUser(user);
+	    return user;
+    }
+    //FIX_ME USED ONLY TO NOT BROKE UP OTHER PPL SERVICES.
+    User createUser(String username,String password, String name) {
     	User user = new User(name,username,password);
     	Bubbledocs.getInstance().addUser(user);
 	    return user;
     }
-
+    
     public SpreadSheet createSpreadSheet(User user, String name, int row,int column) {
     	SpreadSheet s = new SpreadSheet(name,row,column);
     	user.addOwned(s);
