@@ -8,6 +8,9 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
+import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
+import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
+import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -78,7 +81,16 @@ public class ExportDocument extends BubbleDocsService {
 		}
 		serialize(sheet.exportToXML());
 		docXML = sheet.exportToXML();
-
-
+		try{
+			StoreRemoteServices store = new StoreRemoteServices();
+			store.storeDocument(user.getUsername(),sheet.getName() , docXMLbytes);
+		}
+		catch (RemoteInvocationException e){
+			throw new UnavailableServiceException();
+		}
 	}
+
+
+
+	
 }
