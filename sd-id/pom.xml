@@ -10,6 +10,12 @@
   <name>${project.artifactId}</name>
   
   <dependencies>
+	  <dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	      <version>4.12</version>
+	      <scope>test</scope>
+	    </dependency>
        <dependency>
      		<groupId>org.jmockit</groupId> 
 		   <artifactId>jmockit</artifactId>
@@ -96,7 +102,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mainclass>sdis.SDIDMain</mainclass>
 
-    <ws.name>SDId</ws.name>
+    <ws.name>SD-ID</ws.name>
     <ws.url>http://localhost:8080/id-ws/endpoint</ws.url>
     <uddi.url>http://localhost:8081</uddi.url>
   </properties>

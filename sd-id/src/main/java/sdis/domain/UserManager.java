@@ -14,7 +14,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 /* Class manager - Manages all users in the system. */
 public class UserManager {
 
-	/* System users. */
+	/* System users. Yea arraylist is a bit idiot and ineficcient.*/
 	private ArrayList<User> users;
 	
 	
@@ -60,9 +60,9 @@ public class UserManager {
 	}
 
 	/* validateUsername(String) - checks if the username has a valid
-	 * format */
+	 * format. */
 	private boolean validateUsername(String username){
-		if(!username.equals(""))
+		if(!(username == null) && !username.equals(""))
 			return true;
 		else
 			return false;
@@ -70,7 +70,7 @@ public class UserManager {
 	
 	/* validateEmail(String) - check if the email has a valid format. */
 	private boolean validateEmail(String mail){
-		if(mail.matches(".+@.+\\..+"))
+		if(!(mail == null) && mail.matches(".+@.+\\..+"))
 			return true;
 		else
 			return false;
@@ -106,6 +106,8 @@ public class UserManager {
 	 * password is correct.
 	 */
 	public boolean verifyUserPassword(String username,String password) {
+		if(username == null || password == null)
+			return false;
 		for(User u : users){
 			if(u.getUsername().equals(username)){
 				if(u.getPassword().equals(password))

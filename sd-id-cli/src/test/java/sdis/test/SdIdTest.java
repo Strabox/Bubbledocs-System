@@ -1,17 +1,23 @@
 package sdis.test;
 
+import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Map;
+
+import javax.xml.ws.BindingProvider;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
+import sdis.uddi.UDDINaming;
 
 
 public class SdIdTest {
@@ -23,10 +29,22 @@ public class SdIdTest {
 	/* Used to setup the client before all tests.
 	 * (Get Proxy, fix endpoints etc). */
 	@BeforeClass
-	public static void setUpClient(){
-		SDId_Service service = new SDId_Service();
-        idServer = service.getSDIdImplPort();		//GET the PROXY!!!!
-        //idServer = (BindingProvider) id;
+	public static void setUpClient() throws Exception{
+		// Find URL where the service is running using UDDI.
+        String uddiURL = "http://localhost:8081";	//URL where is running UDDI.
+    	String name = "SD-ID";						//Service name published in UDDI.
+    	
+        UDDINaming uddiNaming = new UDDINaming(uddiURL);
+        String endpointAddress = uddiNaming.lookup(name);
+        if (endpointAddress == null) 
+            return;
+
+        SDId_Service service = new SDId_Service();
+        idServer = service.getSDIdImplPort();
+        
+        BindingProvider bindingProvider = (BindingProvider) idServer;
+        Map<String, Object> requestContext = bindingProvider.getRequestContext();
+        requestContext.put(ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
 	}
 	
 	@AfterClass

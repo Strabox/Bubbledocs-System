@@ -11,7 +11,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed_Exception;
 public class RequestAuthenticationTest extends SdIdTest{
 	
 	private static final String user = "Andre20";
-	private static final String inexistenUser = "Andre21";
+	private static final String inexistentUser = "Andre21";
 	
 	private static final String email = "andre20@SdIsAwesome.ist";
 	
@@ -30,7 +30,11 @@ public class RequestAuthenticationTest extends SdIdTest{
 	@Test
 	public void successLogin(){
 		try{
-			boolean login = (Boolean) bytesToObject(idServer.requestAuthentication(user, objectToBytes(pass)));
+			boolean login = false;
+			byte[] ans = idServer.requestAuthentication(user, objectToBytes(pass));
+			if(ans[0] == 1){
+				login = true;
+			}
 			Assert.assertTrue(login);
 		}
 		catch(AuthReqFailed_Exception e){
@@ -39,27 +43,28 @@ public class RequestAuthenticationTest extends SdIdTest{
 	}
 	
 	/* Test user login with wrong password. */
-	@Test
+	@Test(expected = AuthReqFailed_Exception.class)
 	public void wrongPassword() throws AuthReqFailed_Exception{
-		try{
-			boolean login = (Boolean) bytesToObject(idServer.requestAuthentication(user, objectToBytes(wrongPass)));
-			Assert.assertFalse(login);
-		}
-		catch(AuthReqFailed_Exception e){
-			fail();
-		}
+		idServer.requestAuthentication(user, objectToBytes(wrongPass));
 	}
 	
 	/* Test an inexistent user login. */
-	@Test
-	public void inexistentUserAuth(){
-		try{
-			boolean login = (Boolean) bytesToObject(idServer.requestAuthentication(inexistenUser, objectToBytes(pass)));
-			Assert.assertFalse(login);
-		}
-		catch(AuthReqFailed_Exception e){
-			fail();
-		}
+	@Test(expected = AuthReqFailed_Exception.class)
+	public void inexistentUserAuth() throws AuthReqFailed_Exception{
+		idServer.requestAuthentication(inexistentUser, objectToBytes(pass));
 	}
+	
+	/* */
+	@Test(expected = AuthReqFailed_Exception.class)
+	public void nullUsername() throws AuthReqFailed_Exception{
+		idServer.requestAuthentication(null, objectToBytes(pass));
+	}
+	
+	/* */
+	@Test(expected = AuthReqFailed_Exception.class)
+	public void nullPassward() throws AuthReqFailed_Exception{
+		idServer.requestAuthentication(user, null);
+	}
+	
 	
 }

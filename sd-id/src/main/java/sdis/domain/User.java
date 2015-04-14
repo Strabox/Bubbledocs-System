@@ -1,5 +1,7 @@
 package sdis.domain;
 
+//import org.apache.commons.lang.RandomStringUtils;
+
 /* User - Class represents system user. */
 public class User {
 
@@ -16,11 +18,12 @@ public class User {
 		password = generatePassword();
 	}
 	
-	/* Generate a new password. */
+	/* Generate a new random password for user. */
 	private String generatePassword(){
 		/*
 		For now we return always the same for testing!!
-		return UUID.randomUUID().toString();
+		RandomStringUtils rsu;
+		return rsu.randomAlphanumeric(12);
 		*/
 		return "pass";
 	}

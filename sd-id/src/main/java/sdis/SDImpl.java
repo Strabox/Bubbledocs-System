@@ -1,11 +1,8 @@
 package sdis;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import javax.jws.*;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
@@ -27,13 +24,51 @@ public class SDImpl implements SDId {
 	
 	public SDImpl(){
 		manager = new UserManager();
+		populateServer();
 	}
 
+	/* populateServer - Used to populate users in the server launch. */
+	private void populateServer(){
+		User user;
+		try{
+			user = new User("alice","alice@tecnico.pt");
+			user.setPassword("Aaa1");
+			manager.addUser(user);
+			user = new User("bruno","bruno@tecnico.pt");
+			user.setPassword("Bbb2");
+			manager.addUser(user);
+			user = new User("carla","carla@tecnico.pt");
+			user.setPassword("Ccc3");
+			manager.addUser(user);
+			user = new User("duarte","duarte@tecnico.pt");
+			user.setPassword("Ddd4");
+			manager.addUser(user);
+			user = new User("eduardo","eduardo@tecnico.pt");
+			user.setPassword("Eee5");
+			manager.addUser(user);
+		}catch(Exception e){
+			System.out.println(e);
+		}
+	}
+	
+	/*
+	 * bytesToObject(bytes) - Transforms bytes in an object.
+	 */
+	private Object bytesToObject(byte[] bytes) throws IOException,
+		ClassNotFoundException {
+		ByteArrayInputStream b = new ByteArrayInputStream(bytes);
+		ObjectInputStream o = new ObjectInputStream(b);
+		return o.readObject();
+	}
+	
+	/* -----------------------WebService Methods---------------------------- */
+	
 	public void createUser(String userId, String emailAddress)
 			throws EmailAlreadyExists_Exception, InvalidEmail_Exception,
 			InvalidUser_Exception, UserAlreadyExists_Exception {
 		User user = new User(userId,emailAddress);
 		manager.addUser(user);
+		System.out.println(user.getPassword());	//Requested by professor.
 	}
 
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {
@@ -42,8 +77,8 @@ public class SDImpl implements SDId {
 			udne.setUserId(userId);
 			throw new UserDoesNotExist_Exception(userId, udne);
 		}
-		User user = manager.getUserByUsername(userId);
-		String pass = user.setNewPassword();
+		//User user = manager.getUserByUsername(userId);
+		//String pass = user.setNewPassword();
 	}
 
 	public void removeUser(String userId) throws UserDoesNotExist_Exception {
@@ -53,25 +88,26 @@ public class SDImpl implements SDId {
 
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 			throws AuthReqFailed_Exception {
-		try{
-			ByteArrayInputStream bIn = new ByteArrayInputStream(reserved);
-			ObjectInputStream oIn = new ObjectInputStream(bIn);
-			String password = (String) oIn.readObject();
+		try{		
+			if(userId == null | reserved == null){
+				AuthReqFailed arf = new AuthReqFailed();
+				throw new AuthReqFailed_Exception("Invalid username or password!!", arf);
+			}
+			String password = (String) bytesToObject(reserved);
 			
 			boolean loggedin = manager.verifyUserPassword(userId, password);
-			
-			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-			ObjectOutputStream oOut = new ObjectOutputStream(bOut);
-			oOut.writeObject(loggedin);
-			return bOut.toByteArray(); 
-		}
-		catch (IOException e){
-			AuthReqFailed a = new AuthReqFailed();
-			throw new AuthReqFailed_Exception("Authentication failed!", a);
-		}
-		catch(ClassNotFoundException e ){
-			AuthReqFailed a = new AuthReqFailed();
-			throw new AuthReqFailed_Exception("Authentication failed!", a);
+			if(loggedin == true){
+				byte[] res = new byte[1];
+				res[0] = (byte) 1;
+				return res;
+			}
+			else{
+				AuthReqFailed arf = new AuthReqFailed();
+				throw new AuthReqFailed_Exception("Invalid username or password!!", arf);
+			}
+		}catch(Exception e){
+			AuthReqFailed arf = new AuthReqFailed();
+			throw new AuthReqFailed_Exception("Problem authenticating!!", arf);
 		}
 	}
 

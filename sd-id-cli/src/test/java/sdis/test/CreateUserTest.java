@@ -9,7 +9,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 
-/* NOTE: In this tests we assume that server is empty and running!!!!!*/
+/* NOTE: In this tests we assume that server is fresh and running!!!!!*/
 
 
 /* Test suit for CreateUser service. */
@@ -67,6 +67,21 @@ public class CreateUserTest extends SdIdTest {
 		
 	}
 	
+	/* Try create a user with invalid username(null). */
+	@Test(expected = InvalidUser_Exception.class)
+	public void createUserWithNullUsername() throws InvalidUser_Exception{
+		try {
+			idServer.createUser(null, correctEmail2);
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidEmail_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
+		
+	}
+	
 	/* Try create a differente user with same email. */
 	@Test(expected = EmailAlreadyExists_Exception.class)
 	public void createUserWithInvalidEmail() throws EmailAlreadyExists_Exception{
@@ -114,6 +129,20 @@ public class CreateUserTest extends SdIdTest {
 	public void createUserWithInvalidEmail3() throws InvalidEmail_Exception {
 		try {
 			idServer.createUser(username3, invalidEmail3);
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
+	}
+	
+	/* Try create a user with a invalid email (null). */
+	@Test(expected = InvalidEmail_Exception.class)
+	public void createUserWithNullEmail4() throws InvalidEmail_Exception {
+		try {
+			idServer.createUser(username3, null);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidUser_Exception e) {
