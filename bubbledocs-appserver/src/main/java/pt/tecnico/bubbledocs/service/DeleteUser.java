@@ -2,7 +2,6 @@ package pt.tecnico.bubbledocs.service;
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
-import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 
@@ -38,13 +37,7 @@ public class DeleteUser extends BubbleDocsService {
     @Override
     protected void dispatch() throws BubbleDocsException {
     	Bubbledocs bubble = Bubbledocs.getInstance();
-    	String token = bubble.getUserInSessionToken(deleteUsername);
-    	if(token != null)										//If user in session remove it first.
-    		bubble.removeUserFromSession(token);
-    	if(bubble.getUserByName(deleteUsername) != null)		//If user exists delete it.
-    		bubble.getUserByName(deleteUsername).delete();
-    	else													//User doesnt exist.
-    		throw new LoginBubbleDocsException();
+    	bubble.delete(deleteUsername);
     }
 
 }

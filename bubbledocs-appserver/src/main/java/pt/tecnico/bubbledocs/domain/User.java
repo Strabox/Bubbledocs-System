@@ -5,6 +5,7 @@ import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 
 import java.util.ArrayList;
 
+
 public class User extends User_Base {
     
 
@@ -26,7 +27,7 @@ public class User extends User_Base {
     }
     
     
-    /* */
+    /* setUsername(String) - Overrided to implement bussines logic. */
     @Override
     public void setUsername(String newUsername) throws DuplicateUsernameException,
     	EmptyUsernameException{
@@ -43,7 +44,7 @@ public class User extends User_Base {
     }
     
     /*
-     *  Delete() - Delete a user from persistent state. 
+     *  delete() - Delete a user from persistent state. 
      */
     public void delete(){
     	setBubbledocsUsers(null);
@@ -63,7 +64,7 @@ public class User extends User_Base {
     }
     
     /*
-     * getSpreadSheetByName - Get all the spreadsheets with the
+     * getSpreadSheetByName(String) - Get all the spreadsheets with the
      * given name.
      */
     public ArrayList<SpreadSheet> getSpreadSheet(String nome){

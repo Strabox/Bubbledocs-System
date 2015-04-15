@@ -3,6 +3,7 @@ package pt.tecnico.bubbledocs.domain;
 import org.joda.time.LocalTime;
 
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 
 /*
@@ -45,7 +46,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	
 	/*
      * generateToken - Generates a random token for a user session
-     * given a username.
+     * given a username (DEPRECATED).
      */
 	public String generateToken(String username) {
 		String token = username;
@@ -76,9 +77,21 @@ public class Bubbledocs extends Bubbledocs_Base {
 		return null;
 	}
 	
+	/*
+	 * delete(String) - Delete username from bubbledocs. 
+	 */
+	public void delete(String username) throws LoginBubbleDocsException{
+		User user = getUserByName(username);
+		String token = getUserInSessionToken(username);
+		if(user == null)
+			throw new LoginBubbleDocsException();
+		if(token != null)
+			removeUserFromSession(token);
+		user.delete();
+	}
 	
 	/*
-	 * getUserByName - Get the user given his username.
+	 * getUserByName(String) - Get the user given his username.
 	 */
 	public User getUserByName(String username) {
 		for (User u : getUserSet()) {
@@ -89,8 +102,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 
 	/*
-	 * getUserFromSession - Returns user from his session given
-	 * his secret token if session exists and is valid.
+	 * getUserFromSession(String) - Returns user from his 
+	 * session given his secret token if session exists and is valid.
 	 */
 	public User getUserFromSession(String token){
 		for(Session s: getSessionSet()){
@@ -107,7 +120,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	public void removeUserFromSession(String token){
 		for(Session s: getSessionSet()){
 			if(s.getToken().equals(token))
-				s.delete();						//Deletes user session.
+				s.delete();					//Deletes user session.
 		}	
 	}
 	
