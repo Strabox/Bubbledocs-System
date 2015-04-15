@@ -10,6 +10,8 @@ import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist;
+import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 
 /* Class manager - Manages all users in the system. */
 public class UserManager {
@@ -116,6 +118,28 @@ public class UserManager {
 			}
 		}
 		return false;
+	}
+	
+	public void removeUser(String username) throws InvalidUser_Exception, UserDoesNotExist_Exception{
+		
+		if (!validateUsername(username)){
+			InvalidUser iu = new InvalidUser();
+			iu.setUserId(username);
+			throw new InvalidUser_Exception("User inválido!!",iu);	
+		}
+		
+		boolean match = false;
+		for (User u : users){
+			if (u.getUsername().equals(username)){
+				users.remove(u);
+				match = true;
+			}
+		}
+		if (match == false){
+			UserDoesNotExist udne = new UserDoesNotExist();
+			udne.setUserId(username);
+			throw new UserDoesNotExist_Exception("User não existe!!",udne);
+		}
 	}
 	
 }
