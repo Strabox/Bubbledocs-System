@@ -14,6 +14,7 @@ import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
+import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.LoginUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
@@ -28,7 +29,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     private static final String USERNAME = "jpa";  
     private static final String EMAIL = "jp@ESisAwesome.ist";
     private static final String PASSWORD = "jp#";
-    
+    private static final String NEW_PASSWORD = "new_pass";
     
     @Override
     public void populate4Test() {
@@ -40,7 +41,12 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	private LocalTime getLastAccessTimeInSession(String userToken) {
 		return Bubbledocs.getInstance().getLastTime(userToken);
 	}
-
+	
+	private void changeUserPassword(String username,String password){
+		User user = Bubbledocs.getInstance().getUserByName(username);
+		user.setPassword(password);
+	}
+	
     @Test
     public void success() {
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
@@ -67,7 +73,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     }
 
     @Test
-    public void succesLoginLocally(){
+    public void successLoginLocally(){
     	LoginUser service = new LoginUser(USERNAME, PASSWORD);
     	
     	 new Expectations(){
@@ -75,8 +81,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
          		idRemote.loginUser(USERNAME,PASSWORD);
          		result = new RemoteInvocationException();
          	}
-         };
-         
+         };    
          service.execute();
          
          LocalTime currentTime = new LocalTime();
@@ -92,7 +97,52 @@ public class LoginUserTest extends BubbleDocsServiceTest {
  		assertTrue("Access time in session not correctly set", difference >= 0);
  		assertTrue("diference in seconds greater than expected", difference < 2);
     }
+    
+    @Test(expected = UnavailableServiceException.class)
+    public void wrongPasswordLoginLocally(){
+    	LoginUser service = new LoginUser(USERNAME, "wrongpass");
     	
+    	 new Expectations(){
+         	{
+         		idRemote.loginUser(USERNAME,"wrongpass");
+         		result = new RemoteInvocationException();
+         	}
+         };
+         
+         service.execute();
+    }
+    
+    @Test(expected = UnavailableServiceException.class)
+    public void unknownUserLoginLocally(){
+    	LoginUser service = new LoginUser("unknown", PASSWORD);
+    	
+    	 new Expectations(){
+         	{
+         		idRemote.loginUser("unknown",PASSWORD);
+         		result = new RemoteInvocationException();
+         	}
+         };
+         
+         service.execute();
+    }
+    
+    @Test
+    public void updatePassword(){
+    	LoginUser service = new LoginUser(USERNAME,NEW_PASSWORD);
+    	
+    	User user = getUserFromUsername(USERNAME);
+    	assertEquals(PASSWORD,user.getPassword());
+    	changeUserPassword(USERNAME, NEW_PASSWORD);	
+    	new Expectations(){
+    		{
+    			idRemote.loginUser(USERNAME, NEW_PASSWORD);
+    		}
+    	};
+    	service.execute();
+    	
+    	assertEquals(NEW_PASSWORD,user.getPassword());
+    }
+    
     @Test
     public void successLoginTwice() {
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
@@ -148,5 +198,6 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         
         service.execute();
     }
+    
     
 }

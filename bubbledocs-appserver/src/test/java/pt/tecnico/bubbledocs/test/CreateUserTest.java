@@ -3,7 +3,6 @@ package pt.tecnico.bubbledocs.test;
 import static org.junit.Assert.assertEquals;
 import mockit.Expectations;
 import mockit.Mocked;
-
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.User;
@@ -11,7 +10,9 @@ import pt.tecnico.bubbledocs.exceptions.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
+import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
+import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.CreateUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
@@ -46,7 +47,6 @@ public class CreateUserTest extends BubbleDocsServiceTest {
         ars = addUserToSession("ars");
     }
 
-    
     
     @Test
     public void success() {
@@ -100,7 +100,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     
     
     @Test(expected = InvalidUsernameException.class)
-    public void toSmallUsername() {
+    public void smallUsername() {
         CreateUser service = new CreateUser(root, SMALL_USERNAME, "small@ESisAwesome.ist"
         ,"José Ferreira");
         
@@ -114,7 +114,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     }
     
     @Test(expected = InvalidUsernameException.class)
-    public void toBigUsername() {
+    public void bigUsername() {
         CreateUser service = new CreateUser(root, BIG_USERNAME, "big@ESisAwesome.ist"
         ,"José Ferreira");
         
@@ -145,7 +145,13 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     public void unauthorizedUserCreation() {
         CreateUser service = new CreateUser(ars, USERNAME_DOES_NOT_EXIST,
         		"jf@ESisAwesome.ist","José Ferreira");
-
+        
+        new Expectations(){
+    		{
+    		idRemote.createUser(USERNAME_DOES_NOT_EXIST, "jf@ESisAwesome.ist");	
+    		times = 0;
+    		}
+    	};
         service.execute();
     }
 
@@ -155,8 +161,28 @@ public class CreateUserTest extends BubbleDocsServiceTest {
         
         CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST,
         		"jf@ESisAwesome.ist","José Ferreira");
-
+        
+        new Expectations(){
+    		{
+    		idRemote.createUser(USERNAME_DOES_NOT_EXIST, "jf@ESisAwesome.ist");	
+    		times = 0; 
+    		}
+    	};
         service.execute();
+    }
+    
+    @Test(expected = UnavailableServiceException.class)
+    public void unavailableIdRemoteServer(){
+    	CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST,
+        		EMAIL,"José Ferreira");
+    	
+    	new Expectations(){
+    		{
+			idRemote.createUser(USERNAME_DOES_NOT_EXIST, EMAIL);
+			result = new RemoteInvocationException();
+    		}
+    	};
+    	service.execute();
     }
 
 }

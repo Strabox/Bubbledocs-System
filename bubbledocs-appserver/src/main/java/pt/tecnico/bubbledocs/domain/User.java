@@ -47,6 +47,8 @@ public class User extends User_Base {
 	    	}
 	    	super.setUsername(newUsername);
     	}
+    	else
+    		throw new InvalidUsernameException();
     }
     
     /*

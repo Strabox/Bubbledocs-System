@@ -45,7 +45,7 @@ public class CreateUser extends BubbleDocsService {
 			throw new UnauthorizedOperationException();
     	//IMPORTANT!! Resets the user session time.
     	bubble.resetsSessionTime(userToken);
-    }
+    } 
     
     @Override
     protected void dispatch() throws BubbleDocsException {

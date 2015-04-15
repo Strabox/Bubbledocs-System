@@ -48,6 +48,8 @@ public class BubbleDocsServiceTest {
     	Bubbledocs.getInstance().addUser(user);
 	    return user;
     }
+    
+    
     //FIX_ME USED ONLY TO NOT BROKE UP OTHER PPL SERVICES.
     User createUser(String username,String password, String name) {
     	User user = new User(name,username,password);

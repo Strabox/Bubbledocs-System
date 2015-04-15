@@ -3,7 +3,8 @@ package pt.tecnico.bubbledocs.domain;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
-/* class Session - Represents a user in session. */
+
+/* Class Session - Represents a user in session. */
 public class Session extends Session_Base {
 	
     public Session(LocalTime time,String name,String token) {
