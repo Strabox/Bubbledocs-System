@@ -23,6 +23,8 @@ public class ExportDocument extends BubbleDocsService {
 	private String token;
 	private int docId;
 	private org.jdom2.Document docXML;
+	private SpreadSheet sheet;
+	private User user;
 
 	public byte[] getDocXMLBytes() {
 		return docXMLbytes;
@@ -61,16 +63,11 @@ public class ExportDocument extends BubbleDocsService {
 			docXML = (org.jdom2.Document) o.readObject();
 		}
 		catch (IOException | ClassNotFoundException e){}
-
-
-
-
 	}
-	@Override
-	protected void dispatch() throws BubbleDocsException {
+	public void createXML() throws BubbleDocsException{
 		Bubbledocs bubbled = Bubbledocs.getInstance();
-		SpreadSheet sheet = bubbled.getSpreadSheet(docId);
-		User user = bubbled.getUserFromSession(token);
+		sheet = bubbled.getSpreadSheet(docId);
+		user = bubbled.getUserFromSession(token);
 		boolean hasReadPermissions = false;
 		ArrayList<SpreadSheet> readable = user.listReadableSpreadSheets();
 		for(SpreadSheet ss : readable){
@@ -80,7 +77,15 @@ public class ExportDocument extends BubbleDocsService {
 			throw new UnauthorizedOperationException();
 		}
 		serialize(sheet.exportToXML());
-		docXML = sheet.exportToXML();
+		docXML = sheet.exportToXML();		
+		
+	}
+
+
+	
+	@Override
+	protected void dispatch() throws BubbleDocsException {
+		createXML();
 		try{
 			StoreRemoteServices store = new StoreRemoteServices();
 			store.storeDocument(user.getUsername(),sheet.getName() , docXMLbytes);

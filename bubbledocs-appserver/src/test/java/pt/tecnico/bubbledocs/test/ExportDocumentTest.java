@@ -1,6 +1,9 @@
 package pt.tecnico.bubbledocs.test;
 
 import static org.junit.Assert.assertEquals;
+import mockit.Expectations;
+import mockit.Mocked;
+
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.AccessMode;
@@ -13,12 +16,16 @@ import pt.tecnico.bubbledocs.domain.Reference;
 import pt.tecnico.bubbledocs.domain.Permission;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
+import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.ExportDocument;
+import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 
 
 public class ExportDocumentTest extends BubbleDocsServiceTest {
-
+	@Mocked
+	private StoreRemoteServices storeRemote;
 	private Bubbledocs bubbled;
 	private static User userNoPerm;
 	private static User userRead;
@@ -28,13 +35,15 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	private static final String USERNAMEREAD = "userread";
 	private static final String USERNAMEWRITE = "userwrit";
 	private static final String USERNAMEOWNER = "userowne";
-	private SpreadSheet sheet;
+	private SpreadSheet sheet;	
 	private Cell cell1;
 	private Cell cell2;
 	private Cell cell3;
 	private Cell cell4;
 	private Cell cell5;
 	SpreadSheet importedSheet;
+	
+	
 
 
 
@@ -82,6 +91,14 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	public void owner() {
 		String tokenOwner = addUserToSession(USERNAMEOWNER);
 		ExportDocument expDoc = new ExportDocument(tokenOwner,sheet.getId());
+		expDoc.createXML(); // create byte[] to be used as expectation
+		new Expectations(){
+        	{
+        		storeRemote.storeDocument(userOwner.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+        		
+        	}
+        };
+        
 		expDoc.execute();
 		removeUserFromSession(tokenOwner);
 		// test
@@ -99,22 +116,21 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 		}
 	}
 
-	@Test (expected=UnauthorizedOperationException.class)
-	public void cantRead() {
-		String token = addUserToSession(USERNAMENOPERM);
-		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
-		expDoc.execute();
-		removeUserFromSession(token);    
-		//this assert wont execute
-		assertEquals("...", 0, 0);
-	}
+	
 	
 	@Test
 	public void canWrite() {
-		String tokenOwner = addUserToSession(USERNAMEWRITE);
-		ExportDocument expDoc = new ExportDocument(tokenOwner,sheet.getId());
+		String token = addUserToSession(USERNAMEWRITE);
+		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		expDoc.createXML(); // create byte[] to be used as expectation
+		new Expectations(){
+        	{
+        		storeRemote.storeDocument(userWrite.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+        		
+        	}
+        };
 		expDoc.execute();
-		removeUserFromSession(tokenOwner);
+		removeUserFromSession(token);
 		// test
 		expDoc.deserialize(expDoc.getDocXMLBytes());
 		org.jdom2.Document tempDocXML = expDoc.getDocXML();
@@ -131,10 +147,17 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	}
 	@Test
 	public void canRead() {
-		String tokenOwner = addUserToSession(USERNAMEREAD);
-		ExportDocument expDoc = new ExportDocument(tokenOwner,sheet.getId());
+		String token = addUserToSession(USERNAMEREAD);
+		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		expDoc.createXML(); // create byte[] to be used as expectation
+		new Expectations(){
+        	{
+        		storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+        		
+        	}
+        };
 		expDoc.execute();
-		removeUserFromSession(tokenOwner);
+		removeUserFromSession(token);
 		// test
 		expDoc.deserialize(expDoc.getDocXMLBytes());
 		org.jdom2.Document tempDocXML = expDoc.getDocXML();
@@ -149,6 +172,53 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 
 		}
 	}
+	
+	@Test (expected=UnavailableServiceException.class)
+	public void unavailableService() {
+		String token = addUserToSession(USERNAMEREAD);
+		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		expDoc.createXML(); // create byte[] to be used as expectation
+		new Expectations(){
+			{
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+				result = new RemoteInvocationException();
+
+			}
+		};
+		expDoc.execute();
+		removeUserFromSession(token);
+		// test
+		expDoc.deserialize(expDoc.getDocXMLBytes());
+		org.jdom2.Document tempDocXML = expDoc.getDocXML();
+		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
+		assertEquals("Name", sheet.getName(),importedSheet.getName());
+		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
+		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
+		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
+		for(Cell cell : sheet.getCellSet()){			
+			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
+			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
+
+		}
+	}
+	
+	@Test (expected=UnauthorizedOperationException.class)
+	public void cantRead() {
+		String token = addUserToSession(USERNAMENOPERM);
+		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		expDoc.createXML(); // create byte[] to be used as expectation
+		new Expectations(){
+        	{
+        		storeRemote.storeDocument(userNoPerm.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+        		
+        	}
+        };
+		expDoc.execute();
+		removeUserFromSession(token);    
+		//this assert wont execute
+		assertEquals("...", 0, 0);
+	}
+	
 	
 	
 
