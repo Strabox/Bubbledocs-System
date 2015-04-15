@@ -3,28 +3,17 @@ package sdis.test;
 import static org.junit.Assert.fail;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed_Exception;
 
 public class RequestAuthenticationTest extends SdIdTest{
 	
-	private static final String user = "Andre20";
-	private static final String inexistentUser = "Andre21";
+	private final String user = "alice";
+	private final String inexistentUser = "Andre21";
 	
-	private static final String email = "andre20@SdIsAwesome.ist";
-	
-	private static final String pass = "pass";
-	private static final String wrongPass = "ssap";
-	
-	@Before
-	@Override
-	public void populate4Test() {
-		try {
-			idServer.createUser(user, email);
-		} catch (Exception e){}
-	}
+	private final String pass = "Aaa1";
+	private final String wrongPass = "wrong";
 	
 	/* Test a successful login. */
 	@Test

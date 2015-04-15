@@ -16,10 +16,12 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 public class CreateUserTest extends SdIdTest {
 
 	private final String username = "Andre69";
+	private final String bruno = "bruno";
 	private final String username2 = "Andre70";
 	private final String username3 = "Andre71";
 	private final String invalidUsername = "";
 	
+	private final String brunoEmail = "bruno@tecnico.pt";
 	private final String correctEmail = "andre69@sdIsAwesome.ist"  ;
 	private final String correctEmail2 = "hmm@sdIsAwesome.ist";
 	
@@ -38,11 +40,11 @@ public class CreateUserTest extends SdIdTest {
 		}
 	}
 	
-	/* Try create the same user. */
+	/* Try create a existing user. */
 	@Test(expected = UserAlreadyExists_Exception.class)
 	public void createDuplicateUser() throws UserAlreadyExists_Exception{
 		try {
-			idServer.createUser(username, correctEmail);
+			idServer.createUser(bruno, brunoEmail);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidEmail_Exception e) {
@@ -86,7 +88,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = EmailAlreadyExists_Exception.class)
 	public void createUserWithInvalidEmail() throws EmailAlreadyExists_Exception{
 		try {
-			idServer.createUser(username2, correctEmail);
+			idServer.createUser(username2, brunoEmail);
 		} catch (InvalidEmail_Exception e) {
 			fail();
 		} catch (InvalidUser_Exception e) {

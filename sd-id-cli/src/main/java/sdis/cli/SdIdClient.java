@@ -67,11 +67,7 @@ public class SdIdClient {
         
         //------------ Some test Code ---------------------
         try{
-        	byte[] bytea = id.requestAuthentication("alice", objectToBytes("Aaa1"));
-        	if(bytea[0] == 1)
-        		System.out.println("Login Successful.");
-        	else
-        		System.out.println("Login Failed.");
+        
         	
         }catch(Exception e){
         	System.out.println(e);

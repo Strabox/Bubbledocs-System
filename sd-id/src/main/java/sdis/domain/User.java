@@ -1,10 +1,10 @@
 package sdis.domain;
 
-//import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /* User - Class represents system user. */
 public class User {
-
+	
 	private String username;
 	
 	private String password;
@@ -19,13 +19,8 @@ public class User {
 	}
 	
 	/* Generate a new random password for user. */
-	private String generatePassword(){
-		/*
-		For now we return always the same for testing!!
-		RandomStringUtils rsu;
-		return rsu.randomAlphanumeric(12);
-		*/
-		return "pass";
+	private static String generatePassword(){
+		return RandomStringUtils.randomAlphanumeric(8);
 	}
 	
 	/* Verify if the password matches.  */

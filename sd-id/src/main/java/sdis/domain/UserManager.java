@@ -62,7 +62,7 @@ public class UserManager {
 	/* validateUsername(String) - checks if the username has a valid
 	 * format. */
 	private boolean validateUsername(String username){
-		if(!(username == null) && !username.equals(""))
+		if(!(username == null) && !username.isEmpty())
 			return true;
 		else
 			return false;
@@ -74,7 +74,6 @@ public class UserManager {
 			return true;
 		else
 			return false;
-		
 	}
 	
 	/*

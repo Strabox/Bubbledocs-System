@@ -94,7 +94,6 @@ public class SDImpl implements SDId {
 				throw new AuthReqFailed_Exception("Invalid username or password!!", arf);
 			}
 			String password = (String) bytesToObject(reserved);
-			
 			boolean loggedin = manager.verifyUserPassword(userId, password);
 			if(loggedin == true){
 				byte[] res = new byte[1];
