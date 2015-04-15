@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
-import pt.tecnico.bubbledocs.exceptions.UnknownBubbleDocsUserException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.DeleteUser;
 
@@ -66,7 +66,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
 
-    @Test(expected = UnknownBubbleDocsUserException.class)
+    @Test(expected = LoginBubbleDocsException.class)
     public void userToDeleteDoesNotExist() {
         new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();
     }

@@ -49,8 +49,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         	{
         		idRemote.loginUser(USERNAME,PASSWORD);
         	}
-        };
-        
+        }; 
         service.execute();
         
         LocalTime currentTime = new LocalTime();

@@ -187,6 +187,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 				//LOGIN SUCCESSFUL
 				return;
 			}else if (user.equals(u.getUsername()) && !u.getPassword().equals(pass))
+				//Wrong username - password combination.
 				throw new UnavailableServiceException();
 		}
 		//User doesnt exist in local Database.
