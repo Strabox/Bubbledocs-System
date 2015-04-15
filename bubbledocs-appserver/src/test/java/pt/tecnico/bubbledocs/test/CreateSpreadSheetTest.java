@@ -13,7 +13,7 @@ import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
 
 public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 
-	private static final String USERNAME = "jp";
+	private static final String USERNAME = "jpa";
 	private static final String PASSWORD = "jp#";
 	private static SpreadSheet SPSA;
 	private static String TOKEN;

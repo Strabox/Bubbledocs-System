@@ -32,8 +32,8 @@ public class SetupBubbledocs {
 			LoginUser rootLogin =  new LoginUser("root", "root");
 			rootLogin.execute();
 			String rootToken =  rootLogin.getUserToken();
-			new CreateUser(rootToken, "pf", "sub", "Paul Door").execute();
-			new CreateUser(rootToken,"ra","cor","Step Rabbit").execute();
+			new CreateUser(rootToken, "pfa", "pfa@ist.pt", "Paul Door").execute();
+			new CreateUser(rootToken,"raa","raa@ist.pt","Step Rabbit").execute();
 			LoginUser pfLogin = new LoginUser("pf", "sub");
 			pfLogin.execute();
 			String pfToken = pfLogin.getUserToken();

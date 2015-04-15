@@ -25,7 +25,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	@Mocked
 	private IDRemoteServices idRemote;
 	
-    private static final String USERNAME = "jp";  
+    private static final String USERNAME = "jpa";  
     private static final String EMAIL = "jp@ESisAwesome.ist";
     private static final String PASSWORD = "jp#";
     

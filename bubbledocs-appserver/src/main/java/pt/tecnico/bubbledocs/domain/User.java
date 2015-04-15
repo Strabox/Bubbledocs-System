@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
+import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
 
 import java.util.ArrayList;
 
@@ -9,7 +10,8 @@ import java.util.ArrayList;
 public class User extends User_Base {
     
 
-    public User(String nome,String username,String password,String email) throws DuplicateUsernameException{
+    public User(String nome,String username,String password,String email) 
+    	throws DuplicateUsernameException{
     	super();
 		setName(nome);
 		setEmail(email);
@@ -18,7 +20,8 @@ public class User extends User_Base {
 		setBubbledocsUsers(Bubbledocs.getInstance());
     }
     
-    public User(String nome,String username,String email) throws DuplicateUsernameException{
+    public User(String nome,String username,String email) 
+		throws DuplicateUsernameException{
     	super();
     	setEmail(email);
 		setName(nome);
@@ -29,11 +32,14 @@ public class User extends User_Base {
     
     /* setUsername(String) - Overrided to implement bussines logic. */
     @Override
-    public void setUsername(String newUsername) throws DuplicateUsernameException,
-    	EmptyUsernameException{
-    	if(newUsername == "")
-    		throw new EmptyUsernameException();
+    public void setUsername(String newUsername) 
+    	throws DuplicateUsernameException, InvalidUsernameException,
+    	EmptyUsernameException {
     	if(newUsername != null){
+	    	if(newUsername.isEmpty())
+	    		throw new EmptyUsernameException();
+	    	if(newUsername.length() < 3 || newUsername.length() > 8)
+	    		throw new InvalidUsernameException();
 	    	for(User user: Bubbledocs.getInstance().getUserSet()){
 	    		if(user.getUsername().equals(newUsername)){
 	    			throw new DuplicateUsernameException(newUsername);
@@ -124,6 +130,7 @@ public class User extends User_Base {
     	}
     	return folhas;
     }
+    
     
     public void removeUserPermission(String username, SpreadSheet sp, AccessMode mode){
     	if (username == this.getName()) {

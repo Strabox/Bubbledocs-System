@@ -24,10 +24,10 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	private static User userRead;
 	private static User userWrite;
 	private static User userOwner;
-	private static final String USERNAMENOPERM = "usernoperm";
+	private static final String USERNAMENOPERM = "usernope";
     private static final String USERNAMEREAD = "userread";
-    private static final String USERNAMEWRITE = "userwrite";
-    private static final String USERNAMEOWNER = "userowner";
+    private static final String USERNAMEWRITE = "userwrit";
+    private static final String USERNAMEOWNER = "userowne";
     private SpreadSheet sheet;
 	private Cell withValue;
 	private Cell noValue;

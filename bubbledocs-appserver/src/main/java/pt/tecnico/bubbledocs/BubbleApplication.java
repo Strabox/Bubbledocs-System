@@ -23,7 +23,8 @@ public class BubbleApplication {
 	
     /* main - Bubbledocs main function. */
 	public static void main(String[] args){
-		System.out.println("Bem-Vindos ao BubbleDocs!!!");				
+		System.out.println("Bem-Vindos ao BubbleDocs!!!");		
+		/*
 		boolean committed = false;
 		TransactionManager	tm	=FenixFramework.getTransactionManager();
 		try{
@@ -35,11 +36,11 @@ public class BubbleApplication {
 			System.out.println("----------------------------");
 			bubble.listAllSpreadSheets();
 			System.out.println("----------------------------");
-			LoginUser pfLogin = new LoginUser("pf", "sub");
+			LoginUser pfLogin = new LoginUser("pfa", "sub");
 			pfLogin.execute();
 			String pfToken = pfLogin.getUserToken();
 			
-			Integer id = bubble.getUserByName("pf").getSpreadSheet("NotasEs").get(0).getId();
+			Integer id = bubble.getUserByName("pfa").getSpreadSheet("NotasEs").get(0).getId();
 			
 			ExportDocument ex = new ExportDocument(pfToken, id);
 			ex.execute();
@@ -57,9 +58,9 @@ public class BubbleApplication {
 	    	
 	    	SpreadSheet s = new SpreadSheet();
 	    	System.out.println("importing");
-	    	s.importFromXML(xmlout, "pf");
+	    	s.importFromXML(xmlout, "pfa");
 	    	System.out.println("imported");
-	    	bubble.getUserByName("pf").addOwned(s);
+	    	bubble.getUserByName("pfa").addOwned(s);
 	    	bubble.addBubbleSpreadsheet(s);
 	    	
 	    	bubble.listAllSpreadSheets();
@@ -84,6 +85,7 @@ public class BubbleApplication {
 				}
 			}
 		}
+		*/
 	}
 
 }
