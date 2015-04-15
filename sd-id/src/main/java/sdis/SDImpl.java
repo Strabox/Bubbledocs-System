@@ -77,8 +77,8 @@ public class SDImpl implements SDId {
 			udne.setUserId(userId);
 			throw new UserDoesNotExist_Exception(userId, udne);
 		}
-		//User user = manager.getUserByUsername(userId);
-		//String pass = user.setNewPassword();
+		String pass = manager.getUserByUsername(userId).setNewPassword();
+		System.out.println("Password for "+ userId+ ": " + pass);
 	}
 
 	public void removeUser(String userId) throws UserDoesNotExist_Exception {
