@@ -120,14 +120,14 @@ public class UserManager {
 		return false;
 	}
 	
-	public void removeUser(String username) throws InvalidUser_Exception, UserDoesNotExist_Exception{
+	public void removeUser(String username) throws UserDoesNotExist_Exception{
 		
-		if (!validateUsername(username)){
+	/*	if (!validateUsername(username)){
 			InvalidUser iu = new InvalidUser();
 			iu.setUserId(username);
 			throw new InvalidUser_Exception("User inválido!!",iu);	
 		}
-		
+	*/	
 		boolean match = false;
 		for (User u : users){
 			if (u.getUsername().equals(username)){

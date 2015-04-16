@@ -82,8 +82,7 @@ public class SDImpl implements SDId {
 	}
 
 	public void removeUser(String userId) throws UserDoesNotExist_Exception {
-		// TODO Auto-generated method stub
-		
+		manager.removeUser(userId);
 	}
 
 	public byte[] requestAuthentication(String userId, byte[] reserved)
