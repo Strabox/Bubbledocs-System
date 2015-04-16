@@ -2,7 +2,7 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 import javax.xml.ws.Endpoint;
 
-import pt.ulisboa.tecnico.sdis.store.ws.impl.uddi.*;
+import pt.ulisboa.tecnico.sdis.store.ws.impl.uddi.UDDINaming;
 
 public class SDStoreMain {
 
@@ -30,8 +30,8 @@ public class SDStoreMain {
             
          // publish to UDDI
             System.out.printf("Publishing '%s' to UDDI at %s%n", name, uddiURL);
-            uddiNaming = new UDDINaming(uddiURL);
-            uddiNaming.rebind(name, url);
+            uddiNaming = bindUDDI(uddiURL,name,url);
+            
 
             // wait
             System.out.println("Awaiting connections");
@@ -46,6 +46,7 @@ public class SDStoreMain {
             try {
                 if (endpoint != null) {
                     // stop endpoint
+                    unbindUDDI(uddiNaming,name);
                     endpoint.stop();
                     System.out.printf("Stopped %s%n", url);
                 }
@@ -55,5 +56,18 @@ public class SDStoreMain {
         }
 
     }
+    public static UDDINaming bindUDDI(String uddiURL, String name, String url) throws Exception {
+    	UDDINaming uddiNaming = new UDDINaming(uddiURL);
+        uddiNaming.rebind(name, url);
+        return uddiNaming;
+    }
+    
+    public static void unbindUDDI(UDDINaming uddi, String name) throws Exception {
+    	uddi.unbind(name);
+    }
 
 }
+
+
+
+  
