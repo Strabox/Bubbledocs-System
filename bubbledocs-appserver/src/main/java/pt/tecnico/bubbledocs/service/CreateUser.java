@@ -39,7 +39,9 @@ public class CreateUser extends BubbleDocsService {
     protected void accessControl(){
     	Bubbledocs bubble = Bubbledocs.getInstance();
     	String rootToken  = bubble.getUserInSessionToken(root);
-    	if (userToken==null || bubble.getUserFromSession(userToken)==null || rootToken==null)
+    	if (userToken == null 
+    	   || bubble.getUserFromSession(userToken) == null 
+    	   || rootToken==null)
     		throw new UserNotInSessionException();
 		else if(!userToken.equals(rootToken))
 			throw new UnauthorizedOperationException();
@@ -48,7 +50,8 @@ public class CreateUser extends BubbleDocsService {
     } 
     
     @Override
-    protected void dispatch() throws BubbleDocsException {
+    protected void dispatch() throws BubbleDocsException,
+    		UnavailableServiceException {
     	Bubbledocs bubble = Bubbledocs.getInstance();
     	try{
     		idRemote.createUser(newUsername, newUserEmail);
