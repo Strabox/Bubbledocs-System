@@ -6,7 +6,7 @@
 Grupo de SD 17
 
 
-André Esteves 64722 ...
+André Esteves 64722 andre.neves.esteves@tecnico.ulisboa.pt
 
 Artur Fonseca 75456 artur.fonseca@tecnico.ulisboa.pt
 

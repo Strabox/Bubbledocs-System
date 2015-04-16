@@ -13,7 +13,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 
 public class Storage{
 	private String userId;
-	private final int capacity = 10000;
+	private final int capacity = 10240;
 	private List<Document> docs;
 	private static final int DEFAULT_SIZE = 5;
 	private int currentsize = 0;

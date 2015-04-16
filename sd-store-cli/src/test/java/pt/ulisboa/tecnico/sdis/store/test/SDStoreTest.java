@@ -21,7 +21,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
 import pt.ulisboa.tecnico.sdis.store.ws.uddi.UDDINaming;
 
 
-public class SDStoreTests {
+public class SDStoreTest {
 
 	
 	protected static SDStore port;
