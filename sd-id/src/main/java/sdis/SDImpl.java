@@ -27,7 +27,7 @@ public class SDImpl implements SDId {
 		populateServer();
 	}
 
-	/* populateServer - Used to populate users in the server launch. */
+	/* populateServer() - Used to populate users in the server launch. */
 	private void populateServer(){
 		User user;
 		try{
