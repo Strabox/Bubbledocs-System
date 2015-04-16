@@ -65,5 +65,20 @@ public class SDIDMain {
         }
 
     }
-
+    
+    public SDIDMain(){
+    	
+    }
+    
+    public UDDINaming bindUDDI(String uddiURL, String name, String url) throws Exception {
+    	// publish to UDDI
+        System.out.printf("Publishing '%s' to UDDI at %s%n", name, uddiURL);
+        UDDINaming uddiNaming = new UDDINaming(uddiURL);
+        uddiNaming.rebind(name, url);
+        return uddiNaming;
+    }
+    
+    public void unbind(UDDINaming uddi, String name) throws Exception{
+    	uddi.unbind(name);
+    }
 }
