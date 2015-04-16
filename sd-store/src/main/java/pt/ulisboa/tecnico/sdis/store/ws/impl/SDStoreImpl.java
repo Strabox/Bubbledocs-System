@@ -50,6 +50,11 @@ public class SDStoreImpl implements SDStore {
 	 * @throws DocAlreadyExists_Exception 
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
+		for (Storage storage2 : storage) {
+			if (storage2.getUserId()==docUserPair.getUserId()) {
+				storage2.addDoc(docUserPair.getDocumentId());
+			}
+		}
 		Storage newstor = new Storage(docUserPair.getUserId(), docUserPair.getDocumentId());
 		storage.add(newstor);
 	}

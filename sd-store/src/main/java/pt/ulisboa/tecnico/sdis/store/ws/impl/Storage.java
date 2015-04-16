@@ -9,6 +9,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists;
 import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.ListDocs;
 
 
 public class Storage{
@@ -95,5 +96,14 @@ public class Storage{
 	public void setDocs(List<Document> docs) {
 		this.docs = docs;
 	}
-	
+	public void addDoc(String doc) throws DocAlreadyExists_Exception{
+		for (Document document : docs) {
+			if (doc==document.getDocId()) {
+				DocAlreadyExists E = new DocAlreadyExists();
+				throw new DocAlreadyExists_Exception(doc+" already exists", E);
+			}
+		}
+		Document newdoc = new Document(doc);
+		docs.add(newdoc);
+	}
 }
