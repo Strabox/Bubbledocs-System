@@ -29,6 +29,7 @@ public class SDStoreTest {
 	
 	@BeforeClass
 	public static void setUpClient() throws Exception{
+		
 		 String uddiURL = "http://localhost:8081";
 	        String name = "SDStore";	       
 	        UDDINaming uddiNaming = new UDDINaming(uddiURL);	        

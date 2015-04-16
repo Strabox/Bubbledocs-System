@@ -13,7 +13,7 @@ import org.junit.Test;
 
 
 public class loadTest extends SDStoreTest {
-	/*
+	
 	@Test 
 	public void loadSucess () throws DocDoesNotExist_Exception, UserDoesNotExist_Exception, DocAlreadyExists_Exception, CapacityExceeded_Exception  {
 		String user ="user4";
@@ -22,7 +22,7 @@ public class loadTest extends SDStoreTest {
 		byte[] expectedContent = expectedText.getBytes();
 		
 		DocUserPair pair = new DocUserPair();
-		pair.setDocumentId("document1");
+		pair.setDocumentId("document41");
 		pair.setUserId(user);
 		port.createDoc(pair);
 		port.store(pair, expectedContent);		
@@ -50,11 +50,11 @@ public class loadTest extends SDStoreTest {
 		String user = "ghostUser";
 		
 		DocUserPair pair = new DocUserPair();
-		pair.setDocumentId("document1");
+		pair.setDocumentId("document42");
 		pair.setUserId(user);		
 		byte[] content=port.load(pair);
 		assertEquals("...",true,true);
 	}
 	
-	*/
+	
 }

@@ -13,7 +13,7 @@ import org.junit.Test;
 
 
 public class storeTest extends SDStoreTest {
-	/*
+	
 	@Test 
 	public void storeSucess() throws DocAlreadyExists_Exception, CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception   {
 		String user = "User3";
@@ -22,7 +22,7 @@ public class storeTest extends SDStoreTest {
 		byte[] content = text.getBytes();
 		
 		DocUserPair pair = new DocUserPair();
-		pair.setDocumentId("document1");
+		pair.setDocumentId("document31");
 		pair.setUserId(user);
 		port.createDoc(pair);
 		port.store(pair, content);
@@ -40,7 +40,6 @@ public class storeTest extends SDStoreTest {
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId("ghostDocument");
 		pair.setUserId(user);
-		port.createDoc(pair);
 		port.store(pair, content);
 		assertEquals("...",true,true);	
 	}
@@ -54,11 +53,11 @@ public class storeTest extends SDStoreTest {
 	public void capacityExceeded() throws DocAlreadyExists_Exception, CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception   {
 		String user = "User3";
 
-		int size = Integer.MAX_VALUE;
-	   	byte[] hugeContent = new byte[size];
+		
+	   	byte[] hugeContent = new byte[50000];
 		
 		DocUserPair pair = new DocUserPair();
-		pair.setDocumentId("document1");
+		pair.setDocumentId("document32");
 		pair.setUserId(user);
 		port.createDoc(pair);
 		port.store(pair, hugeContent);
@@ -73,11 +72,11 @@ public class storeTest extends SDStoreTest {
 		byte[] content = text.getBytes();;
 		
 		DocUserPair pair = new DocUserPair();
-		pair.setDocumentId("document1");
+		pair.setDocumentId("document33");
 		pair.setUserId(user);		
 		port.store(pair, content);
 		assertEquals("...",true,true);
 	}
-	*/
 	
+
 }

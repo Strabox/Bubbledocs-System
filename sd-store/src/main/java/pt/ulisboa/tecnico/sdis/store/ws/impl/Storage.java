@@ -18,12 +18,12 @@ public class Storage{
 	private List<Document> docs;
 	private static final int DEFAULT_SIZE = 5;
 	private int currentsize = 0;
-	
+
 	private class Document{
 		private String docId;
 		private byte[] content;
-		
-		
+
+
 		public Document(String docId) {
 			super();
 			this.docId = docId;
@@ -48,7 +48,7 @@ public class Storage{
 		this.userId = userId;
 		docs = new ArrayList<Storage.Document>(DEFAULT_SIZE);
 		for (Document document : docs) {
-			if (document.getDocId()==docId) {
+			if (document.getDocId().equals(docId)) {
 				DocAlreadyExists E = new DocAlreadyExists();
 				throw new DocAlreadyExists_Exception(docId+"already exists", E);
 			}
@@ -58,22 +58,31 @@ public class Storage{
 	}
 	public void setContent(String docId, byte[] content) throws CapacityExceeded_Exception, DocDoesNotExist_Exception{
 		for (Document document : docs) {
-			if (docId==document.getDocId() || currentsize+content.length<=capacity) {
-				document.setContent(content);
-				currentsize+=content.length;
-				return;
+			if (docId.equals(document.getDocId())) {
+				if(currentsize+content.length<=capacity){
+					document.setContent(content);
+					currentsize+=content.length;
+					return;
+				}
+				else{
+					CapacityExceeded E = new CapacityExceeded();
+					throw new CapacityExceeded_Exception("Exceeded maximum capacity", E);
+
+				}
 			}
-			else {
-				CapacityExceeded E = new CapacityExceeded();
-				throw new CapacityExceeded_Exception("Exceeded maximum capacity", E);
-			}
+
+
 		}
 		DocDoesNotExist E = new DocDoesNotExist();
 		throw new DocDoesNotExist_Exception("Document: "+docId+" not found", E);
 	}
+
+
+
+
 	public byte[] getContent(String docId) throws DocDoesNotExist_Exception{
 		for (Document document : docs) {
-			if (docId==document.getDocId()) {
+			if (docId.equals(document.getDocId())) {
 				return document.getContent();
 			}
 		}
@@ -97,10 +106,13 @@ public class Storage{
 		this.docs = docs;
 	}
 	public void addDoc(String doc) throws DocAlreadyExists_Exception{
+
 		for (Document document : docs) {
-			if (doc==document.getDocId()) {
-				DocAlreadyExists E = new DocAlreadyExists();
+			if (doc.equals(document.getDocId())) {
+
+				DocAlreadyExists E = new DocAlreadyExists();				
 				throw new DocAlreadyExists_Exception(doc+" already exists", E);
+
 			}
 		}
 		Document newdoc = new Document(doc);

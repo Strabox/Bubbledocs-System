@@ -36,7 +36,7 @@ public class SDStoreImpl implements SDStore {
 
 	private void checkUserExistence(String UserId) throws UserDoesNotExist_Exception{
 		for (Storage storage2 : storage) {
-			if (storage2.getUserId()==UserId) {
+			if (storage2.getUserId().equals(UserId)) {
 				return;
 			}
 		}
@@ -51,12 +51,16 @@ public class SDStoreImpl implements SDStore {
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
 		for (Storage storage2 : storage) {
-			if (storage2.getUserId()==docUserPair.getUserId()) {
-				storage2.addDoc(docUserPair.getDocumentId());
+			
+			if (storage2.getUserId().equals(docUserPair.getUserId())) {
+				
+				storage2.addDoc(docUserPair.getDocumentId());				
+				return;
 			}
 		}
 		Storage newstor = new Storage(docUserPair.getUserId(), docUserPair.getDocumentId());
 		storage.add(newstor);
+		
 	}
 
 	/**
@@ -72,7 +76,7 @@ public class SDStoreImpl implements SDStore {
 		List<String> doclist = new ArrayList<String>();
 		
 		for (Storage store : storage) {
-			if (userId==store.getUserId()) {
+			if (userId.equals(store.getUserId())) {
 				doclist = store.getDocs();
 			}
 		}
@@ -93,7 +97,7 @@ public class SDStoreImpl implements SDStore {
 
 		checkUserExistence(docUserPair.getUserId());
 		for (Storage s : storage) {
-			if(s.getUserId()==docUserPair.getUserId())
+			if(s.getUserId().equals(docUserPair.getUserId()))
 				s.setContent(docUserPair.getDocumentId(), contents);
 		}
 	}
@@ -112,7 +116,7 @@ public class SDStoreImpl implements SDStore {
 
 		checkUserExistence(docUserPair.getUserId());
 		for (Storage s : storage) {
-			if(s.getUserId()==docUserPair.getUserId())
+			if(s.getUserId().equals(docUserPair.getUserId()))
 				return s.getContent(docUserPair.getDocumentId());
 		}
 		return null;
