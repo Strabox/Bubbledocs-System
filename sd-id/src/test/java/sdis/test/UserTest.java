@@ -12,11 +12,11 @@ public class UserTest {
 
 	User user1;
 	private final String username1 = "user1";
-	private final String email1 = "user1";
+	private final String email1 = "user1@sd.pt";
 	
 	User user2;
 	private final String username2 = "user2";
-	private final String email2 = "user2";
+	private final String email2 = "user2@sd.pt";
 	
 	@Before
 	public void populate4Test(){

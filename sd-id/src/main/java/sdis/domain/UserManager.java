@@ -72,7 +72,7 @@ public class UserManager {
 	
 	/* validateEmail(String) - check if the email has a valid format. */
 	private boolean validateEmail(String mail){
-		if(!(mail == null) && mail.matches(".+@.+\\..+"))
+		if(!(mail == null) && mail.matches(".+@.+\\..*"))
 			return true;
 		else
 			return false;
