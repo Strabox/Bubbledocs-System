@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sdis.store.cli;
 
 import java.util.Map;
 
+import javax.xml.registry.JAXRException;
 import javax.xml.ws.*;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
@@ -21,13 +22,12 @@ public class SDStoreClient {
 
         String uddiURL = args[0];
         String name = args[1];
-
         System.out.printf("Contacting UDDI at %s%n", uddiURL);
         UDDINaming uddiNaming = new UDDINaming(uddiURL);
 
         System.out.printf("Looking for '%s'%n", name);
         String endpointAddress = uddiNaming.lookup(name);
-
+      
         if (endpointAddress == null) {
             System.out.println("Not found!");
             return;
@@ -48,5 +48,7 @@ public class SDStoreClient {
         
         
     }
+    
+   
 
 }
