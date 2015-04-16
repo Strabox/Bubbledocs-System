@@ -47,7 +47,7 @@ JUDDI:
 
 
 [4] Construir e executar **servidor**
-
+(corre testes também)
 > cd sd-store
 
 > mvn clean generate-sources package 
@@ -56,7 +56,7 @@ JUDDI:
 
 
 [5] Construir **cliente**
-
+(corre testes também)
 > cd sd-store-cli
 
 > mvn clean package
@@ -70,18 +70,20 @@ JUDDI:
 *(Como verificar que todas as funcionalidades estão a funcionar correctamente)*
 
 
-[1] Executar **cliente de testes** ...
+[1] Executar **cliente de testes** 
 
 > cd sd-store-cli
 
 > mvn test
 
 
-[2] Executar ...
+[2] Executar **testes do servidor**
+> cd sd-store
+
+> mvn test
 
 
 
-...
 
 
 -------------------------------------------------------------------------------
