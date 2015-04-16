@@ -35,21 +35,22 @@ public class User extends User_Base {
     public void setUsername(String newUsername) 
     	throws DuplicateUsernameException, InvalidUsernameException,
     	EmptyUsernameException {
+    	final int MIN_USERNAME_SIZE = 3;
+    	final int MAX_USERNAME_SIZE = 8;
+    	
     	if(newUsername != null){
 	    	if(newUsername.isEmpty())
 	    		throw new EmptyUsernameException();
-	    	if(newUsername.length() < 3 || newUsername.length() > 8)
+	    	if(newUsername.length() < MIN_USERNAME_SIZE || 
+	    	   newUsername.length() > MAX_USERNAME_SIZE)
 	    		throw new InvalidUsernameException();
-	    	for(User user: Bubbledocs.getInstance().getUserSet()){
-	    		if(user.getUsername().equals(newUsername)){
-	    			throw new DuplicateUsernameException(newUsername);
-	    		}
-	    	}
+	    	Bubbledocs.getInstance().userExists(newUsername);
 	    	super.setUsername(newUsername);
     	}
     	else
     		throw new InvalidUsernameException();
     }
+
     
     /*
      *  delete() - Delete a user from persistent state. 

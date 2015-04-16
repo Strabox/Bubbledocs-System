@@ -84,7 +84,7 @@ public class CreateUserTest extends SdIdTest {
 		
 	}
 	
-	/* Try create a differente user with same email. */
+	/* Try create a different user with same email. */
 	@Test(expected = EmailAlreadyExists_Exception.class)
 	public void createUserWithInvalidEmail() throws EmailAlreadyExists_Exception{
 		try {

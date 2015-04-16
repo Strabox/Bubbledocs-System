@@ -43,13 +43,13 @@ public class RequestAuthenticationTest extends SdIdTest{
 		idServer.requestAuthentication(inexistentUser, objectToBytes(pass));
 	}
 	
-	/* */
+	/* Test with null username. */
 	@Test(expected = AuthReqFailed_Exception.class)
 	public void nullUsername() throws AuthReqFailed_Exception{
 		idServer.requestAuthentication(null, objectToBytes(pass));
 	}
 	
-	/* */
+	/* Test with null password. */
 	@Test(expected = AuthReqFailed_Exception.class)
 	public void nullPassward() throws AuthReqFailed_Exception{
 		idServer.requestAuthentication(user, null);

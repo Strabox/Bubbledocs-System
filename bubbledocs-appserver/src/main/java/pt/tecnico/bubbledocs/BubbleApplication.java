@@ -24,7 +24,7 @@ public class BubbleApplication {
     /* main - Bubbledocs main function. */
 	public static void main(String[] args){
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");		
-		/*
+		
 		boolean committed = false;
 		TransactionManager	tm	=FenixFramework.getTransactionManager();
 		try{
@@ -32,9 +32,9 @@ public class BubbleApplication {
 			Bubbledocs bubble = Bubbledocs.getInstance();
 			setupIfNeed(bubble);
 			
-			bubble.listAllUsers();
+			bubble.printAllUsers();
 			System.out.println("----------------------------");
-			bubble.listAllSpreadSheets();
+			bubble.printAllSpreadSheets();
 			System.out.println("----------------------------");
 			LoginUser pfLogin = new LoginUser("pfa", "sub");
 			pfLogin.execute();
@@ -53,7 +53,7 @@ public class BubbleApplication {
 	    	
 	    	bubble.getSpreadSheet(id).delete();
 	    	System.out.println("----------------------------");
-	    	bubble.listAllSpreadSheets();
+	    	bubble.printAllSpreadSheets();
 	    	System.out.println("----------------------------a");
 	    	
 	    	SpreadSheet s = new SpreadSheet();
@@ -63,7 +63,7 @@ public class BubbleApplication {
 	    	bubble.getUserByName("pfa").addOwned(s);
 	    	bubble.addBubbleSpreadsheet(s);
 	    	
-	    	bubble.listAllSpreadSheets();
+	    	bubble.printAllSpreadSheets();
 	    	System.out.println("----------------------------b");
 	    	
 	    	xml.setFormat(Format.getPrettyFormat());
@@ -85,7 +85,7 @@ public class BubbleApplication {
 				}
 			}
 		}
-		*/
+		
 	}
 
 }

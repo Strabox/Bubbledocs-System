@@ -3,6 +3,7 @@ package pt.tecnico.bubbledocs.domain;
 import org.joda.time.LocalTime;
 
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 
@@ -46,7 +47,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	
 	/*
      * generateToken - Generates a random token for a user session
-     * given a username (DEPRECATED).
+     * given a username.
      */
 	public String generateToken(String username) {
 		String token = username;
@@ -56,7 +57,19 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-	 * getSpreadSheet - Get the spreadsheet by name.
+	 * userExists(String) - Verify if the user exists already.
+	 */
+	public void userExists(String newUsername)
+		throws DuplicateUsernameException{
+		for(User user: getUserSet()){
+			if(user.getUsername().equals(newUsername)){
+				throw new DuplicateUsernameException(newUsername);
+			}
+		}
+	}
+	
+	/*
+	 * getSpreadSheet(String) - Get the spreadsheet by name.
 	 */
 	public SpreadSheet getSpreadSheet(String name){
 		for (SpreadSheet s : getBubbleSpreadsheetSet()) {
@@ -67,7 +80,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	/*
-	 * getSpreadsheet - Get the spreadsheet by ID.
+	 * getSpreadsheet(int) - Get the spreadsheet by ID.
 	 */
 	public SpreadSheet getSpreadSheet(int id){
 		for (SpreadSheet s : getBubbleSpreadsheetSet()) {
@@ -209,19 +222,19 @@ public class Bubbledocs extends Bubbledocs_Base {
 	
 	
 	/*
-	 * listAllUsers - Lists all the users registered in the application.
+	 * printAllUsers - Print all the users registered in the application.
 	 */
-	public void listAllUsers() {
+	public void printAllUsers() {
 		for (User u : getUserSet()) {
 			System.out.println(u);
 		}
 	}
 
 	/*
-	 * listAllSpreadSheets - Lists all the spreadsheets registered in the
+	 * printAllSpreadSheets - Print all the spreadsheets registered in the
 	 * application.
 	 */
-	public void listAllSpreadSheets() {
+	public void printAllSpreadSheets() {
 		if(getBubbleSpreadsheetSet().isEmpty())
 			System.out.println("0 Spreadsheets in Bubbledocs");
 		for (SpreadSheet f : getBubbleSpreadsheetSet()) {
