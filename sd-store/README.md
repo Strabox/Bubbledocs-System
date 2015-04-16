@@ -49,13 +49,16 @@ JUDDI:
 [4] Construir e executar **servidor**
 
 > cd sd-store
+
 > mvn clean generate-sources package 
+
 > mvn exec:java
 
 
 [5] Construir **cliente**
 
 > cd sd-store-cli
+
 > mvn clean package
 
 
@@ -70,6 +73,7 @@ JUDDI:
 [1] Executar **cliente de testes** ...
 
 > cd sd-store-cli
+
 > mvn test
 
 
