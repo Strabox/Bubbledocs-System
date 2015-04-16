@@ -6,11 +6,11 @@
 Grupo de SD 17
 
 
-... 64722 ...
+André Esteves 64722 ...
 
 Artur Fonseca 75456 artur.fonseca@tecnico.ulisboa.pt
 
-... 75513 ...
+Ricardo Pires 75513 ricardo_pires2@live.com.pt
 
 
 
@@ -28,39 +28,37 @@ Repositório:
 
 [0] Iniciar sistema operativo
 
-Indicar Windows ou Linux
-*(escolher um dos dois, que esteja disponível nos laboratórios)*
+Linux
 
 
 [1] Iniciar servidores de apoio
 
 JUDDI:
-> ...
+> startup.sh
 
 [2] Criar pasta temporária
 
-> cd ...
-> mkdir ...
+> mkdir proj
 
 [3] Obter versão entregue
 
-> git clone ... 
-*(comandos git para obter a versão entregue - tag)*
+> git clone -b SD-STORE_R_1 https://github.com/tecnico-softeng-distsys-2015/A_15_03_17-project/
+
 
 
 [4] Construir e executar **servidor**
 
-> cd ...
-> mvn clean package 
+> cd sd-store
+> mvn clean generate-sources package 
 > mvn exec:java
 
 
 [5] Construir **cliente**
 
-> cd ...
+> cd sd-store-cli
 > mvn clean package
 
-...
+
 
 
 -------------------------------------------------------------------------------
@@ -71,7 +69,7 @@ JUDDI:
 
 [1] Executar **cliente de testes** ...
 
-> cd ...
+> cd sd-store-cli
 > mvn test
 
 

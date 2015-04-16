@@ -45,7 +45,7 @@ public class SDStoreClient {
         requestContext.put(ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
 
         System.out.println("Remote call ...");
-        port.store(null,null);
+        
         
     }
 
