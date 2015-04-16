@@ -9,7 +9,7 @@ public class SDIDMain {
 
     public static void main(String[] args) {
         // Check arguments
-        if (args.length < 1) {
+        if (args.length < 3) {
             System.err.println("Argument(s) missing!");
             System.err.printf("Usage: java %s url%n", SDIDMain.class.getName());
             return;
@@ -28,24 +28,21 @@ public class SDIDMain {
             System.out.printf("Starting %s%n", url);
             endpoint.publish(url);
             
-         // publish to UDDI
+            // publish to UDDI
             System.out.printf("Publishing '%s' to UDDI at %s%n", name, uddiURL);
-            uddiNaming = new UDDINaming(uddiURL);
-            uddiNaming.rebind(name, url);
+            uddiNaming = bindUDDI(uddiURL,name,url);
             
-            // wait
+            // Wait
             System.out.println("Awaiting connections");
             System.out.println("Press enter to shutdown");
             System.in.read();
 
         } catch(Exception e) {
             System.out.printf("Caught exception: %s%n", e);
-            e.printStackTrace();
-
-        } finally {
+        }finally {
             try {
-                if (endpoint != null) {
-                    // stop endpoint
+                if(endpoint != null) {
+                    // Stop endpoint
                     endpoint.stop();
                     System.out.printf("Stopped %s%n", url);
                 }
@@ -54,31 +51,27 @@ public class SDIDMain {
             }
             try{
             	if(uddiNaming != null){
-            		// delete from UDDI
-                    uddiNaming.unbind(name);
+            		// Delete from UDDI
+                    unbindUDDI(uddiNaming,name);
                     System.out.printf("Deleted '%s' from UDDI%n", name);
             	}
-            	
             }catch(Exception e){
             	System.out.printf("Caught exception when deleting: %s%n", e);
             }
         }
 
     }
+      SDIDMain(){ }
     
-    public SDIDMain(){
-    	
-    }
-    
-    public UDDINaming bindUDDI(String uddiURL, String name, String url) throws Exception {
-    	// publish to UDDI
-        System.out.printf("Publishing '%s' to UDDI at %s%n", name, uddiURL);
+    public static UDDINaming bindUDDI(String uddiURL, String name, String url) throws Exception {
+    	// Publish to UDDI
         UDDINaming uddiNaming = new UDDINaming(uddiURL);
         uddiNaming.rebind(name, url);
         return uddiNaming;
     }
     
-    public void unbind(UDDINaming uddi, String name) throws Exception{
+    public static void unbindUDDI(UDDINaming uddi, String name) throws Exception {
     	uddi.unbind(name);
     }
+    
 }

@@ -43,10 +43,9 @@ public class SdIdClient {
     	String name = args[1];			//Service name published in UDDI.
     	
     	System.out.printf("Contacting UDDI at %s%n", uddiURL);
-        UDDINaming uddiNaming = new UDDINaming(uddiURL);
     	
         System.out.printf("Looking for '%s'%n", name);
-        String endpointAddress = uddiNaming.lookup(name);
+        String endpointAddress = UDDILookup(uddiURL, name);
         if (endpointAddress == null) {
             System.out.println("Not found!");
             return;
@@ -68,10 +67,14 @@ public class SdIdClient {
         //------------ Some test Code ---------------------
         try{
         
-        	
         }catch(Exception e){
         	System.out.println(e);
         }
+    }
+    
+    public static String UDDILookup(String uddiUrl,String name) throws Exception{
+        UDDINaming uddiNaming = new UDDINaming(uddiUrl);
+        return uddiNaming.lookup(name);
     }
 
 }

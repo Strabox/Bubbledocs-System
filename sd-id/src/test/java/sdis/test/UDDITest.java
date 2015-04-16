@@ -10,41 +10,63 @@ import org.junit.*;
 import sdis.SDIDMain;
 import sdis.uddi.UDDINaming;
 
+
 public class UDDITest {
 	
+	/* Mocked UDDI naming server. */
 	@Mocked
 	UDDINaming uddi;
-	
+
+	private final String UDDI_URL = "http://localhost:8081";
+	private final String ENDPOINT_URL = "http://localhost:8080/id-ws/endpoint";
+	private final String NAME = "SD-ID";
 	
 	@Test
-	public void success() throws Exception{
+	public void rebindSuccess() throws Exception{
 		
 		new Expectations(){
 			{
-				new UDDINaming("http://localhost:8081");
-				uddi.rebind("SD-ID", "http://localhost:8080/id-ws/endpoint");
-				uddi.unbind("SD-ID");
+				new UDDINaming(UDDI_URL);
+				uddi.rebind(NAME, ENDPOINT_URL);
 			}
-		};
-		//SDIDMain.main(args);
-		SDIDMain cli = new SDIDMain();
-		UDDINaming realuddi = cli.bindUDDI("http://localhost:8081", "SD-ID", "http://localhost:8080/id-ws/endpoint");
-		//UDDINaming realuddi = cli.bindUDDI("http://localhost:8081", "SD-ID", any);
-		cli.unbind(realuddi,"SD-ID");
+		};	
+		SDIDMain.bindUDDI(UDDI_URL, NAME, ENDPOINT_URL);
 	}
 	
-	@Test(expected=JAXRException.class)
-	public void jaxrexceptionTest() throws Exception{
+	@Test(expected = JAXRException.class)
+	public void jaxrexceptionRebindTest() throws Exception{
 		
 		new Expectations(){
 			{
-				
-				uddi.rebind("DNSgoogle", "http://8.8.8.8/dns");
+				new UDDINaming(UDDI_URL);
+				uddi.rebind(NAME, ENDPOINT_URL);
 				result = new JAXRException();
 			}
 		};
-		SDIDMain cli = new SDIDMain();
-		cli.bindUDDI("http://8.8.8.8", "DNSgoogle", "http://8.8.8.8/dns");
-		
+		SDIDMain.bindUDDI(UDDI_URL, NAME, ENDPOINT_URL);
 	}
+	
+	@Test
+	public void successUnbindTest() throws Exception{
+		
+		new Expectations(){
+			{
+				uddi.unbind(NAME);
+			}
+		};
+		SDIDMain.unbindUDDI(uddi,NAME);
+	}
+	
+	@Test(expected = JAXRException.class)
+	public void jaxrexceptionUnbindTest() throws Exception{
+		
+		new Expectations(){
+			{
+				uddi.unbind(NAME);
+				result = new JAXRException();
+			}
+		};
+		SDIDMain.unbindUDDI(uddi,NAME);
+	}
+	
 }

@@ -68,7 +68,7 @@ public class SDImpl implements SDId {
 			InvalidUser_Exception, UserAlreadyExists_Exception {
 		User user = new User(userId,emailAddress);
 		manager.addUser(user);
-		System.out.println(user.getPassword());	//Requested by professor.
+		System.out.println("First password for " + user.getUsername()+ " : " + user.getPassword());	//Requested by professor.
 	}
 
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {

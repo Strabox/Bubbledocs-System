@@ -167,7 +167,7 @@
           <programs>
             <program>
               <mainClass>${mainclass}</mainClass>
-              <id>hello-ws</id>
+              <id>sdid-ws</id>
             </program>
           </programs>
         </configuration>
