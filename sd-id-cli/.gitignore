@@ -1,6 +1,7 @@
 /target/
 /target/
 .classpath
-/.settings/
+.settings
+/.settings
 /target/
 derby.log
