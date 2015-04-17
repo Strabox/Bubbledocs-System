@@ -88,7 +88,7 @@ public class UserManagerTest {
 		User userInvalidName2 = new User("","nullusername2@sd.pt");
 		manager.addUser(userInvalidName2);
 	}
-	/*
+	
 	@Test
 	public void testRemoveUserExists() throws Exception{
 		String usernameToDelete = "userToDeleteExists";
@@ -96,8 +96,8 @@ public class UserManagerTest {
 		manager.addUser(userExistsToDelete);
 		manager.removeUser(usernameToDelete);
 	}
-	*/
-	@Test(expected=UserDoesNotExist_Exception.class)
+	
+	@Test
 	public void testRemoveUserDoesNotExist() throws Exception{
 		String usernameToDelete = "userToDeleteDoesntExist";
 		manager.removeUser(usernameToDelete);

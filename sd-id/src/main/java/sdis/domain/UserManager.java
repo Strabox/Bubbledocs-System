@@ -123,6 +123,7 @@ public class UserManager {
 		for (User u : users){
 			if (u.getUsername().equals(username)){
 				users.remove(u);
+				break;
 			}
 		}
 	}
