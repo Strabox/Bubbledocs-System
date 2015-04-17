@@ -82,7 +82,13 @@ public class SDImpl implements SDId {
 	}
 
 	public void removeUser(String userId) throws UserDoesNotExist_Exception {
-		manager.removeUser(userId);
+		if (!manager.usernameExists(userId)){
+			UserDoesNotExist udne = new UserDoesNotExist();
+			udne.setUserId(userId);
+			throw new UserDoesNotExist_Exception("User não existe!!",udne);
+		}
+		else
+			manager.removeUser(userId);
 	}
 
 	public byte[] requestAuthentication(String userId, byte[] reserved)
