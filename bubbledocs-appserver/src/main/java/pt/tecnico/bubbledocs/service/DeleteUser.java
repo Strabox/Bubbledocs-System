@@ -1,9 +1,7 @@
 package pt.tecnico.bubbledocs.service;
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
-import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
@@ -46,9 +44,6 @@ public class DeleteUser extends BubbleDocsService {
     		idrs.removeUser(usertodelete);
     		Bubbledocs bubble = Bubbledocs.getInstance();
     		bubble.delete(usertodelete);
-		}
-		catch(LoginBubbleDocsException e){
-			throw e;
 		}
 		catch(RemoteInvocationException e){
 			throw new UnavailableServiceException();
