@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.test;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import mockit.Expectations;
 
 import org.junit.Test;
 
@@ -10,6 +11,7 @@ import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.DeleteUser;
+import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
 public class DeleteUserTest extends BubbleDocsServiceTest {
@@ -20,6 +22,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
     private static final String SPREADSHEET_NAME = "spread";
+    private IDRemoteServices remoteID;
 
     // the tokens for user root
     private String root;
@@ -35,8 +38,14 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
 
     public void success() {
         DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
-        service.execute();
 
+        new Expectations(){
+        	{
+        		remoteID.removeUser(USERNAME_TO_DELETE);
+        	}
+        };
+        
+        service.execute();
         boolean deleted = getUserFromUsername(USERNAME_TO_DELETE) == null;
 
         assertTrue("user was not deleted", deleted);
