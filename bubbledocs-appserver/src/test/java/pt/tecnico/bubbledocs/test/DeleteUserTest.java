@@ -3,6 +3,7 @@ package pt.tecnico.bubbledocs.test;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import mockit.Expectations;
+import mockit.Mocked;
 
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
     private static final String SPREADSHEET_NAME = "spread";
+    @Mocked
     private IDRemoteServices remoteID;
 
     // the tokens for user root
@@ -59,7 +61,6 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is not in session
      */
-    //também falha este
     @Test
     public void successToDeleteIsNotInSession() {
         success();
@@ -78,7 +79,6 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
 
-    //Não tá a lançar a excepção, miguel
     @Test(expected = LoginBubbleDocsException.class)
     public void userToDeleteDoesNotExist() {
         new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();

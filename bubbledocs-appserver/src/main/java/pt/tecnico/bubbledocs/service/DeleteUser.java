@@ -13,12 +13,14 @@ import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 public class DeleteUser extends BubbleDocsService {
 	
-	private static final String root = "root"; 
+	private static final String root = "root";
 	
 	private String token;
+	private String usertodelete;
 	
 	public DeleteUser(String userToken, String toDeleteUsername) {
 		this.token = userToken;
+		this.usertodelete = toDeleteUsername;
     }
     
     /* Verifies if give token is equal to root's token.
@@ -40,11 +42,10 @@ public class DeleteUser extends BubbleDocsService {
     @Override
     protected void dispatch() throws BubbleDocsException {
     	try{
-			IDRemoteServices idrs = new IDRemoteServices();
-			User u = Bubbledocs.getInstance().getUserFromSession(token);
-			idrs.removeUser(u.getUsername());
-			u.delete();			// achas que isto faz sentido?
-			
+    		IDRemoteServices idrs = new IDRemoteServices();
+    		idrs.removeUser(usertodelete);
+    		Bubbledocs bubble = Bubbledocs.getInstance();
+    		bubble.delete(usertodelete);
 		}
 		catch(LoginBubbleDocsException e){
 			throw e;
