@@ -40,7 +40,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     private static final String PASSWORD = "ars";
     private static final String EMAIL = "jp@ESisAwesome.ist";
     private static final String EMAIL_DOES_NOT_EXIST = "not-exist@ESisAwesome.ist";
-    private static final String INVALID_EMAIL = "wrong-email";
+    private static final String INVALID_EMAIL = "invalid-email";
     
     @Override
     public void populate4Test() {

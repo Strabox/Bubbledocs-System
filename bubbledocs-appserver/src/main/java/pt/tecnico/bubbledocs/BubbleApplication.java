@@ -1,5 +1,6 @@
 package pt.tecnico.bubbledocs;
 
+/*
 import javax.transaction.SystemException;
 
 import org.jdom2.output.Format;
@@ -10,23 +11,23 @@ import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.bubbledocs.domain.*;
 import pt.tecnico.bubbledocs.service.ExportDocument;
 import pt.tecnico.bubbledocs.service.LoginUser;
-
+*/
 
 
 public class BubbleApplication {
 	
-	/* setupIfNeed - Setup the initial state if BubbleDocs is empty. */
+	/* setupIfNeed - Setup the initial state if BubbleDocs is empty. 
     private static void setupIfNeed(Bubbledocs b) {
 		if (b.getBubbleSpreadsheetSet().isEmpty() && b.getUserSet().size() == 1)
 		    SetupBubbledocs.populateDomain();
-    }
+    } */
 	
     /* main - Bubbledocs main function. */
 	public static void main(String[] args){
 		System.out.println("Bem-Vindos ao BubbleDocs!!!");		
-		
+		/*
 		boolean committed = false;
-		TransactionManager	tm	=FenixFramework.getTransactionManager();
+		TransactionManager tm = FenixFramework.getTransactionManager();
 		try{
 			tm.begin();
 			Bubbledocs bubble = Bubbledocs.getInstance();
@@ -85,7 +86,7 @@ public class BubbleApplication {
 				}
 			}
 		}
-		
+		*/
 	}
 
 }

@@ -1,6 +1,6 @@
 package pt.tecnico.bubbledocs;
 
-
+/*
 import pt.tecnico.bubbledocs.domain.ADD;
 import pt.tecnico.bubbledocs.domain.DIV;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
@@ -12,7 +12,7 @@ import pt.tecnico.bubbledocs.service.AssignReferenceCell;
 import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
 import pt.tecnico.bubbledocs.service.CreateUser;
 import pt.tecnico.bubbledocs.service.LoginUser;
-
+*/
 
 /*
  * Class SetupBubbledocs - Used to fill application database
@@ -26,6 +26,7 @@ public class SetupBubbledocs {
 	}
 	
 	public static void populateDomain(){
+		/*
 		try{
 			Bubbledocs bubble = Bubbledocs.getInstance();
 			System.out.println("----------First Time Populate Initializing!!-------");
@@ -49,10 +50,12 @@ public class SetupBubbledocs {
 			bubble.getSpreadSheet(0).getSingleCell(5,6).getContent().mountReference(bubble.getSpreadSheet(0).getSingleCell(5,6));
 			bubble.getSpreadSheet(0).addContentToCell(2, 2, new DIV(new Reference(1,1),new Reference(3,4)));
 			bubble.getSpreadSheet(0).getSingleCell(2,2).getContent().mountReference(bubble.getSpreadSheet(0).getSingleCell(2,2));
+			System.out.println("----------First Time Populate End!!-------");
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
+		*/
 	}	
 
 	
