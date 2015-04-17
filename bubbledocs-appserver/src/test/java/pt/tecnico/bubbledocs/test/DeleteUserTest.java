@@ -36,6 +36,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         root = addUserToSession(ROOT_USERNAME);
     };
 
+    
     public void success() {
         DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
 
@@ -58,6 +59,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is not in session
      */
+    //também falha este
     @Test
     public void successToDeleteIsNotInSession() {
         success();
@@ -68,6 +70,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
      * and is in session Test if user and session are both deleted
      */
     
+    // falha este
     @Test
     public void successToDeleteIsInSession() {
         String token = addUserToSession(USERNAME_TO_DELETE);
@@ -75,6 +78,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
 
+    //Não tá a lançar a excepção, miguel
     @Test(expected = LoginBubbleDocsException.class)
     public void userToDeleteDoesNotExist() {
         new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();

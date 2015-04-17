@@ -17,12 +17,8 @@ public class DeleteUser extends BubbleDocsService {
 	
 	private String token;
 	
-	private String deleteUsername;
-	
-	
-    public DeleteUser(String userToken, String toDeleteUsername) {
+	public DeleteUser(String userToken, String toDeleteUsername) {
 		this.token = userToken;
-		this.deleteUsername = toDeleteUsername;
     }
     
     /* Verifies if give token is equal to root's token.
@@ -47,6 +43,7 @@ public class DeleteUser extends BubbleDocsService {
 			IDRemoteServices idrs = new IDRemoteServices();
 			User u = Bubbledocs.getInstance().getUserFromSession(token);
 			idrs.removeUser(u.getUsername());
+			u.delete();			// achas que isto faz sentido?
 			
 		}
 		catch(LoginBubbleDocsException e){
