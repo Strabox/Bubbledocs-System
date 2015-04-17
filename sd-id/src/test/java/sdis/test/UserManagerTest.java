@@ -1,8 +1,5 @@
 package sdis.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +7,6 @@ import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
-import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 import sdis.domain.User;
 import sdis.domain.UserManager;
 
