@@ -73,7 +73,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	 * test-suite, since they're all based on this.
 	 */
     @Test
-    public void Control() {
+    public void control() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
     	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
     	arcs.execute();

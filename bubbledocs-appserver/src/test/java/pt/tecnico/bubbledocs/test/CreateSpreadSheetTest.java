@@ -27,7 +27,7 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 
 
 	@Test
-	public void Control() {
+	public void control() {
 		User user = getUserFromSession(TOKEN);
 		CreateSpreadSheet csps = new CreateSpreadSheet(TOKEN, SPSA.getName(), SPSA.getLines(), SPSA.getColumns());
 
