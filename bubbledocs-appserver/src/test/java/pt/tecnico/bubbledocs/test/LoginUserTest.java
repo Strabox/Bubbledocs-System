@@ -26,7 +26,8 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	@Mocked
 	private IDRemoteServices idRemote;
 	
-    private static final String USERNAME = "jpa";  
+    private static final String USERNAME = "jpa";
+    private static final String UNKNOWN_USERNAME ="unknown";
     private static final String EMAIL = "jp@ESisAwesome.ist";
     private static final String PASSWORD = "jp#";
     private static final String NEW_PASSWORD = "new_pass";
@@ -138,11 +139,11 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     
     @Test(expected = UnavailableServiceException.class)
     public void unknownUserLoginLocally(){
-    	LoginUser service = new LoginUser("unknown", PASSWORD);
+    	LoginUser service = new LoginUser(UNKNOWN_USERNAME, PASSWORD);
     	
     	 new Expectations(){
          	{
-         		idRemote.loginUser("unknown",PASSWORD);
+         		idRemote.loginUser(UNKNOWN_USERNAME,PASSWORD);
          		result = new RemoteInvocationException();
          	}
          };
