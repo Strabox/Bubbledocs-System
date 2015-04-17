@@ -25,13 +25,13 @@ Repositório:
 [1] Iniciar servidores de apoio
 
 JUDDI:
-> $ cd ~
-> $ wget http://disciplinas.tecnico.ulisboa.pt/leic-sod/2014-2015/download/juddi-3.2.1_tomcat-7.0.57_port-8081.zip
-> $ unzip juddi-3.2.1_tomcat-7.0.57_port-8081.zip
-> $ export CATALINA_HOME=/afs/.ist.utl.pt/users/0/9/ist1*****/juddi-3.2.1_tomcat-7.0.57_port-8081
-> $ export PATH=${PATH}:${CATALINA_HOME}/bin
-> $ chmod +x $CATALINA_HOME/bin/*.sh
-> $ ./juddi-3.2.1_tomcat-7.0.57_port-8081/bin/startup.sh
+> cd ~
+> wget http://disciplinas.tecnico.ulisboa.pt/leic-sod/2014-2015/download/juddi-3.2.1_tomcat-7.0.57_port-8081.zip
+> unzip juddi-3.2.1_tomcat-7.0.57_port-8081.zip
+> export CATALINA_HOME=/afs/.ist.utl.pt/users/0/9/ist1*****/juddi-3.2.1_tomcat-7.0.57_port-8081
+> export PATH=${PATH}:${CATALINA_HOME}/bin
+> chmod +x $CATALINA_HOME/bin/*.sh
+> ./juddi-3.2.1_tomcat-7.0.57_port-8081/bin/startup.sh
 
 [2] Criar pasta temporária
 
@@ -40,20 +40,20 @@ JUDDI:
 
 [3] Obter versão entregue
 
-> git clone https://github.com/tecnico-softeng-distsys-2015/A_15_03_17-project
-> git checkout tags/R_2
-
+> cd ~
+> cd project
+> git clone -b SD-ID_R_1 https://github.com/tecnico-softeng-distsys-2015/A_15_03_17-project
 
 [4] Construir e executar **servidor**
 
-> cd ~/project/C_15_03_17-project/sd-id
+> cd ~/project/A_15_03_17-project/sd-id
 > mvn clean test
 > mvn exec:java
 
 
 [5] Construir **cliente**
 
-> cd ~/project/C_15_03_17-project/sd-id-cli
+> cd ~/project/A_15_03_17-project/sd-id-cli
 > mvn clean package
 
 
@@ -65,8 +65,8 @@ JUDDI:
 
 [1] Executar **cliente de testes** ...
 
-> cd sd-id-cli
-> mvn test
+> cd ~/project/A_15_03_17-project/sd-id-cli
+> mvn clean test
 
 
 [2] Executar

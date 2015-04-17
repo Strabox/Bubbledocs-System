@@ -18,6 +18,7 @@ public class SdIdClient {
 	 * stringToBytes(Object) - Transforms a (Serializable) object
 	 * in byte of arrays.
 	 */
+	@SuppressWarnings("unused")
 	private static byte[] objectToBytes(Object obj){
 		try{
 			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
@@ -66,7 +67,7 @@ public class SdIdClient {
         
         //------------ Some test Code ---------------------
         try{
-        
+
         }catch(Exception e){
         	System.out.println(e);
         }
