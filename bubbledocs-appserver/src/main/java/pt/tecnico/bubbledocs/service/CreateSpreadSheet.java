@@ -27,6 +27,8 @@ public class CreateSpreadSheet extends BubbleDocsService {
 		usr = bubble.getUserFromSession(usrtoken);
 		if(usrtoken == null || usr == null)
     		throw new UserNotInSessionException();
+		//IMPORTANT!! Resets the user session time.
+		bubble.resetsSessionTime(usrtoken);
 	}
 
 	public CreateSpreadSheet(String userToken, String name, int lines, int columns) {

@@ -23,6 +23,7 @@ public class RenewPassword extends BubbleDocsService {
 		Bubbledocs bubbled = Bubbledocs.getInstance();
 		if(tokenUser == null || bubbled.getUserFromSession(tokenUser) == null)
 			throw new UserNotInSessionException();
+		//IMPORTANT!! Resets the user session time.
 		bubbled.resetsSessionTime(tokenUser);
 	}
 

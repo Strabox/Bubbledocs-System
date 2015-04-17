@@ -38,7 +38,8 @@ public class ExportDocument extends BubbleDocsService {
 		Bubbledocs bubbled = Bubbledocs.getInstance();
 		if(token == null || bubbled.getUserFromSession(token) == null)
 			throw new UserNotInSessionException();
-
+		//IMPORTANT!! Resets the user session time.
+		bubbled.resetsSessionTime(token);
 	}
 
 	public ExportDocument(String _userToken, int _docId) {

@@ -32,6 +32,8 @@ public class DeleteUser extends BubbleDocsService {
     	//If the user tokens isnt root's token cant execute command.
 		else if(!token.equals(rootToken))
 			throw new UnauthorizedOperationException();
+    	//IMPORTANT!! Resets the user session time.
+		bubble.resetsSessionTime(token);
     }
     
     @Override

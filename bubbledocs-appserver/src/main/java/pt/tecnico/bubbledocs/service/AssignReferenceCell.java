@@ -70,6 +70,8 @@ public class AssignReferenceCell extends BubbleDocsService {
     	if(sheet.getSingleCell(l,c)!=null && sheet.getSingleCell(l, c).getProtect()){
     		throw new UnauthorizedOperationException();
     	}
+    	//IMPORTANT!! Resets the user session time.
+    	bubbled.resetsSessionTime(tokenUser);
     }
     
     @Override

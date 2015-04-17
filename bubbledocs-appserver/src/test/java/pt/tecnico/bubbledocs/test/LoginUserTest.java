@@ -65,13 +65,37 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         User user = getUserFromSession(service.getUserToken());
     	
         assertEquals(USERNAME, user.getUsername());
-
+        assertEquals(PASSWORD, user.getPassword());
+        
 		int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
 	
 		assertTrue("Access time in session not correctly set", difference >= 0);
 		assertTrue("diference in seconds greater than expected", difference < 2);
     }
 
+    @Test
+    public void successAndUpdatePassword(){
+    	LoginUser service = new LoginUser(USERNAME,NEW_PASSWORD);
+    	
+    	User user = getUserFromUsername(USERNAME);
+    	assertEquals(PASSWORD,user.getPassword());
+    	changeUserPassword(USERNAME, NEW_PASSWORD);	
+    	new Expectations(){
+    		{
+    			idRemote.loginUser(USERNAME, NEW_PASSWORD);
+    		}
+    	};
+    	service.execute();
+    	String token = service.getUserToken();
+    	LocalTime currentTime = new LocalTime();
+    	assertEquals(USERNAME, user.getUsername());
+    	assertEquals(NEW_PASSWORD,user.getPassword());
+    	
+    	int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
+		assertTrue("Access time in session not correctly set", difference >= 0);
+		assertTrue("diference in seconds greater than expected", difference < 2);
+    }
+    
     @Test
     public void successLoginLocally(){
     	LoginUser service = new LoginUser(USERNAME, PASSWORD);
@@ -127,23 +151,6 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     }
     
     @Test
-    public void updatePassword(){
-    	LoginUser service = new LoginUser(USERNAME,NEW_PASSWORD);
-    	
-    	User user = getUserFromUsername(USERNAME);
-    	assertEquals(PASSWORD,user.getPassword());
-    	changeUserPassword(USERNAME, NEW_PASSWORD);	
-    	new Expectations(){
-    		{
-    			idRemote.loginUser(USERNAME, NEW_PASSWORD);
-    		}
-    	};
-    	service.execute();
-    	
-    	assertEquals(NEW_PASSWORD,user.getPassword());
-    }
-    
-    @Test
     public void successLoginTwice() {
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         
@@ -172,12 +179,12 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     }
 
     @Test(expected = LoginBubbleDocsException.class)
-    public void loginUnknownUser() {
-        LoginUser service = new LoginUser("jp2", "jp");
+    public void remoteLoginUnknownUser() {
+        LoginUser service = new LoginUser("jp2", PASSWORD);
         
         new Expectations(){
         	{
-        		idRemote.loginUser("jp2","jp");
+        		idRemote.loginUser("jp2",anyString);
         		result = new LoginBubbleDocsException();
         	}
         };
@@ -186,7 +193,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     }
 
     @Test(expected = LoginBubbleDocsException.class)
-    public void loginUserWithinWrongPassword() {
+    public void remoteLoginWrongPassword() {
         LoginUser service = new LoginUser(USERNAME, "jp2");
         
         new Expectations(){

@@ -46,7 +46,6 @@ public class LoginUser extends BubbleDocsService {
 				throw new UnavailableServiceException();
 			}
 		}
-		
 		//Update User password locally to use in future local logins.
 		User user = bubble.getUserByName(username);
 		user.setPassword(password);

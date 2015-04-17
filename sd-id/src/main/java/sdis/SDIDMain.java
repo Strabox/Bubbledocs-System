@@ -53,6 +53,7 @@ public class SDIDMain {
             	if(uddiNaming != null){
             		// Delete from UDDI
                     unbindUDDI(uddiNaming,name);
+                    endpoint.stop();
                     System.out.printf("Deleted '%s' from UDDI%n", name);
             	}
             }catch(Exception e){
@@ -61,7 +62,8 @@ public class SDIDMain {
         }
 
     }
-      SDIDMain(){ }
+    
+    SDIDMain(){ }
     
     public static UDDINaming bindUDDI(String uddiURL, String name, String url) throws Exception {
     	// Publish to UDDI
