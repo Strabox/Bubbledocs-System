@@ -1,7 +1,6 @@
 package pt.tecnico.bubbledocs.domain;
 
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
-import pt.tecnico.bubbledocs.exceptions.EmptyUsernameException;
 import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
 
 import java.util.ArrayList;
@@ -33,14 +32,13 @@ public class User extends User_Base {
     /* setUsername(String) - Overrided to implement bussines logic. */
     @Override
     public void setUsername(String newUsername) 
-    	throws DuplicateUsernameException, InvalidUsernameException,
-    	EmptyUsernameException {
+    	throws DuplicateUsernameException, InvalidUsernameException{
     	final int MIN_USERNAME_SIZE = 3;
     	final int MAX_USERNAME_SIZE = 8;
     	
     	if(newUsername != null){
 	    	if(newUsername.isEmpty())
-	    		throw new EmptyUsernameException();
+	    		throw new InvalidUsernameException();
 	    	if(newUsername.length() < MIN_USERNAME_SIZE || 
 	    	   newUsername.length() > MAX_USERNAME_SIZE)
 	    		throw new InvalidUsernameException();

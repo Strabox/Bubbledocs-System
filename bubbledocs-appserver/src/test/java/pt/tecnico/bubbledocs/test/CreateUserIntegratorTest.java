@@ -15,11 +15,11 @@ import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
-import pt.tecnico.bubbledocs.service.CreateUser;
+import pt.tecnico.bubbledocs.integration.CreateUserIntegrator;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
-public class CreateUserTest extends BubbleDocsServiceTest {
+public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 
 	/* Mock RemoteServices to cover all test cases and avoid the need
 	 * for put the real remote service working.*/
@@ -52,7 +52,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     
     @Test
     public void success() {
-        CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST, 
+        CreateUserIntegrator service = new CreateUserIntegrator(root, USERNAME_DOES_NOT_EXIST, 
         		EMAIL_DOES_NOT_EXIST,"José Ferreira");
         
         new Expectations(){
@@ -71,14 +71,14 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 
     @Test(expected = DuplicateUsernameException.class)
     public void usernameExists() {
-        CreateUser service = new CreateUser(root, USERNAME, 
+    	CreateUserIntegrator service = new CreateUserIntegrator(root, USERNAME, 
         		EMAIL_DOES_NOT_EXIST,"José Ferreira");
         
         new Expectations(){
         	{
             String username = USERNAME;
         	idRemote.createUser(username,EMAIL_DOES_NOT_EXIST);
-        	result = new DuplicateUsernameException(username);
+        	times = 0;
         	}
         };
         service.execute();
@@ -86,13 +86,13 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 
     @Test(expected = InvalidUsernameException.class)
     public void emptyUsername() {
-        CreateUser service = new CreateUser(root, EMPTY_USERNAME, 
+    	CreateUserIntegrator service = new CreateUserIntegrator(root, EMPTY_USERNAME, 
         		EMAIL_DOES_NOT_EXIST,"José Ferreira");
         
         new Expectations(){
         	{
         	idRemote.createUser(EMPTY_USERNAME, EMAIL_DOES_NOT_EXIST);
-        	result = new InvalidUsernameException();
+        	times = 0;
         	}
         };
         service.execute();
@@ -100,13 +100,13 @@ public class CreateUserTest extends BubbleDocsServiceTest {
      
     @Test(expected = InvalidUsernameException.class)
     public void smallUsername() {
-        CreateUser service = new CreateUser(root, SMALL_USERNAME, 
+    	CreateUserIntegrator service = new CreateUserIntegrator(root, SMALL_USERNAME, 
         		EMAIL_DOES_NOT_EXIST, "José Ferreira");
         
         new Expectations(){
         	{
         	idRemote.createUser(SMALL_USERNAME, EMAIL_DOES_NOT_EXIST);
-        	result = new InvalidUsernameException();
+        	times = 0;
         	}
         };
         service.execute();
@@ -114,13 +114,13 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     
     @Test(expected = InvalidUsernameException.class)
     public void bigUsername() {
-        CreateUser service = new CreateUser(root, BIG_USERNAME, 
+    	CreateUserIntegrator service = new CreateUserIntegrator(root, BIG_USERNAME, 
         		EMAIL_DOES_NOT_EXIST,"José Ferreira");
         
         new Expectations(){
         	{
         	idRemote.createUser(BIG_USERNAME, EMAIL_DOES_NOT_EXIST);
-        	result = new InvalidUsernameException();
+        	times = 0;
         	}
         };
         service.execute();
@@ -128,7 +128,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     
     @Test(expected = DuplicateEmailException.class)
     public void duplicateEmail(){
-    	CreateUser service = new CreateUser(root,USERNAME_DOES_NOT_EXIST,
+    	CreateUserIntegrator service = new CreateUserIntegrator(root,USERNAME_DOES_NOT_EXIST,
     	EMAIL,"José Ferreira");
     	
     	new Expectations(){
@@ -143,7 +143,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 
     @Test(expected = InvalidEmailException.class) 
     public void invalidEmail(){
-    	CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST
+    	CreateUserIntegrator service = new CreateUserIntegrator(root, USERNAME_DOES_NOT_EXIST
     			,INVALID_EMAIL,"José Ferreira");
     	
     	new Expectations(){
@@ -157,7 +157,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     
     @Test(expected = UnauthorizedOperationException.class)
     public void unauthorizedUserCreation() {
-        CreateUser service = new CreateUser(ars, USERNAME_DOES_NOT_EXIST,
+    	CreateUserIntegrator service = new CreateUserIntegrator(ars, USERNAME_DOES_NOT_EXIST,
         		EMAIL_DOES_NOT_EXIST,"José Ferreira");
         
         new Expectations(){
@@ -173,7 +173,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     public void accessUsernameNotExist() {
         removeUserFromSession(root);
         
-        CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST,
+        CreateUserIntegrator service = new CreateUserIntegrator(root, USERNAME_DOES_NOT_EXIST,
         		EMAIL_DOES_NOT_EXIST,"José Ferreira");
         
         new Expectations(){
@@ -187,7 +187,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     
     @Test(expected = UnavailableServiceException.class)
     public void unavailableIdRemoteServer(){
-    	CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST,
+    	CreateUserIntegrator service = new CreateUserIntegrator(root, USERNAME_DOES_NOT_EXIST,
     			EMAIL_DOES_NOT_EXIST,"José Ferreira");
     	
     	new Expectations(){

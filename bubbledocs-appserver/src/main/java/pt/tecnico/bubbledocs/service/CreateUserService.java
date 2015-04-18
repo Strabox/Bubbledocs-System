@@ -3,16 +3,12 @@ package pt.tecnico.bubbledocs.service;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
-import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
-import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
-public class CreateUser extends BubbleDocsService {
-
-	private IDRemoteServices idRemote;
+public class CreateUserService extends BubbleDocsService {
 	
 	private static final String root = "root"; 
 	
@@ -25,9 +21,8 @@ public class CreateUser extends BubbleDocsService {
 	private String newUserIRLName;
 	
 	
-    public CreateUser(String userToken, String newUsername,
+    public CreateUserService(String userToken, String newUsername,
             String email, String name) {
-    	idRemote = new IDRemoteServices();
 		this.userToken 	 = userToken;
 		this.newUsername = newUsername;
 		this.newUserEmail = email;
@@ -53,12 +48,6 @@ public class CreateUser extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException,
     		UnavailableServiceException {
     	Bubbledocs bubble = Bubbledocs.getInstance();
-    	try{
-    		idRemote.createUser(newUsername, newUserEmail);
-    	}catch(RemoteInvocationException rie){
-    		//Problems contacting remote service.
-    		throw new UnavailableServiceException();
-    	}
     	// Remote creation success, add user locally.	
     	bubble.addUser(new User(newUserIRLName,newUsername,newUserEmail));
     }
