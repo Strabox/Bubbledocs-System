@@ -16,4 +16,5 @@ public abstract class BubbleDocsService {
     protected abstract void accessControl() throws BubbleDocsException;
     
     protected abstract void dispatch() throws BubbleDocsException;
+    
 }
