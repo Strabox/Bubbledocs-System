@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -31,8 +31,8 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
 
     @Override
     public void populate4Test() {
-        createUser(USERNAME, PASSWORD, "António Rito Silva");
-        User smf = createUser(USERNAME_TO_DELETE, "smf", "Sérgio Fernandes");
+        createUser(USERNAME,"email@email.pt" ,PASSWORD, "António Rito Silva");
+        User smf = createUser(USERNAME_TO_DELETE,"email2@email.pt", "smf", "Sérgio Fernandes");
         createSpreadSheet(smf, USERNAME_TO_DELETE, 20, 20);
 
         root = addUserToSession(ROOT_USERNAME);

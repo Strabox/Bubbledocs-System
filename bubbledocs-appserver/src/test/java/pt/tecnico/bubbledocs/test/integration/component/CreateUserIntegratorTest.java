@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertEquals;
 import mockit.Expectations;
@@ -134,7 +134,7 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
     	new Expectations(){
     		{
     		idRemote.createUser(USERNAME_DOES_NOT_EXIST, EMAIL);	
-    		result = new DuplicateEmailException();
+    		times = 0;
     		}
     	};
     	
@@ -149,7 +149,7 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
     	new Expectations(){
     		{
     		idRemote.createUser(USERNAME_DOES_NOT_EXIST, INVALID_EMAIL);
-    		result = new InvalidEmailException();
+    		times = 0;
     		}
     	};
     	service.execute();

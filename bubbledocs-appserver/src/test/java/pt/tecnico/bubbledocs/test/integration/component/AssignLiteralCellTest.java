@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,10 +37,10 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	
 	@Override
     public void populate4Test() {
-		userNoPerm = createUser(USERNAMENOPERM, "pass", "no permissions");
-        userRead = createUser(USERNAMEREAD, "pass", "can read");
-        userWrite = createUser(USERNAMEWRITE, "pass", "can write");
-        userOwner = createUser(USERNAMEOWNER, "pass", "is owner");
+		userNoPerm = createUser(USERNAMENOPERM,"user@user.pt", "pass", "no permissions");
+        userRead = createUser(USERNAMEREAD,"user2@user.pt", "pass", "can read");
+        userWrite = createUser(USERNAMEWRITE,"user3@user.pt", "pass", "can write");
+        userOwner = createUser(USERNAMEOWNER,"user4@user.pt", "pass", "is owner");
         sheet = createSpreadSheet(userOwner,"sheet1", 3, 3);
         sheet.setOwner(userOwner);
         withValue = new Cell(0,0);	//should have a value

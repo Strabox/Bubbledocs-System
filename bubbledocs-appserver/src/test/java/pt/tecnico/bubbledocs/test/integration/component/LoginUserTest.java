@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

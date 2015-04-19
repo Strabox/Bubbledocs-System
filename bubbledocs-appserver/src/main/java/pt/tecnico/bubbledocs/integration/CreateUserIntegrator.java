@@ -4,6 +4,7 @@ import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.CreateUserService;
+import pt.tecnico.bubbledocs.service.DeleteUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
@@ -17,12 +18,13 @@ public class CreateUserIntegrator extends BubbleDocsIntegrator {
 	
 	private final String username;
 	private final String email;
-	
+	private final String token;
 	
 	public CreateUserIntegrator(String token,String username,
 			String email, String name){
 		cu = new CreateUserService(token,username,email,name);
 		idRemote = new IDRemoteServices();
+		this.token = token;
 		this.username = username;
 		this.email = email;
 	}
@@ -39,7 +41,15 @@ public class CreateUserIntegrator extends BubbleDocsIntegrator {
 	
 	public void execute() throws BubbleDocsException{
 		cu.execute();
-		createUserRemote(username,email);
+		try{
+			createUserRemote(username,email);
+		}catch(Exception e){
+			/* Compensation if the remote call fails. */
+			// TODO
+			DeleteUser du = new DeleteUser(token, username);
+			du.execute();
+			throw e;
+		}
 	}
 	
 }

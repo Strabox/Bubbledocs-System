@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertNull;
 
@@ -23,6 +23,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
 	private final String USERNAME_DOES_NOT_EXIST = "renewDNX";
     private final String PASSWORD = "hunter2";
     private final String EMAIL = "renew@able.energy";
+    private final String EMAIL2 = "renew2@able.energy";
     
     private String tokenExists;
     private String tokenDoesNotExist;
@@ -31,7 +32,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
     public void populate4Test() {
         createUser(USERNAME_EXISTS, EMAIL, PASSWORD, "Mr Renew");
         tokenExists = addUserToSession(USERNAME_EXISTS);
-        createUser(USERNAME_DOES_NOT_EXIST, EMAIL, PASSWORD, "static electricity");
+        createUser(USERNAME_DOES_NOT_EXIST, EMAIL2, PASSWORD, "static electricity");
         tokenDoesNotExist = addUserToSession(USERNAME_DOES_NOT_EXIST);
     }
 	

@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,7 +20,7 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 
 	@Override
 	public void populate4Test() {
-		createUser(USERNAME, PASSWORD, "João Pereira");
+		createUser(USERNAME,"email@email.pt" ,PASSWORD, "João Pereira");
 		TOKEN = addUserToSession(USERNAME);
 		SPSA = new SpreadSheet("alpha", 10, 10);
 	}
