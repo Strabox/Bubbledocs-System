@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.service.remote;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.xml.registry.JAXRException;
@@ -13,17 +14,24 @@ import pt.tecnico.bubbledocs.exceptions.InvalidEmailException;
 import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
+import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 
 public class IDRemoteServices extends RemoteServices{
 	
+	private static final String UDDI_URL = "http://localhost:8081";
 	
-	public SDId getSpecificProxie(String uddiUrl,String name){
+	private static final String ID_NAME = "SD-ID";
+	
+	
+	public SDId getSpecificProxy(String uddiUrl,String name)
+		throws RemoteInvocationException {
 		String endpointAddress;
 		try {
 			endpointAddress = UDDILookup(uddiUrl,name);
@@ -31,7 +39,7 @@ public class IDRemoteServices extends RemoteServices{
 			throw new RemoteInvocationException();
 		}
 		if (endpointAddress == null)
-		throw new RemoteInvocationException();
+			throw new RemoteInvocationException();
 		
 		SDId_Service service = new SDId_Service();
 		SDId id = service.getSDIdImplPort();
@@ -46,7 +54,8 @@ public class IDRemoteServices extends RemoteServices{
 		throws InvalidUsernameException, DuplicateUsernameException,
 		DuplicateEmailException, InvalidEmailException,
 		RemoteInvocationException {
-		SDId idRemote = getSpecificProxie("http://localhost:8081", "SD-ID");
+		
+		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
 		try {
 			idRemote.createUser(username, email);
 		} catch (EmailAlreadyExists_Exception e) {
@@ -62,16 +71,34 @@ public class IDRemoteServices extends RemoteServices{
 	
 	public void loginUser(String username, String password)
 		throws LoginBubbleDocsException, RemoteInvocationException {
-		// TODO : the connection and invocation of the remote service
+		
+		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
+		try {
+			idRemote.requestAuthentication(username, objectToBytes(password));
+		} catch (AuthReqFailed_Exception | IOException e) {
+			throw new LoginBubbleDocsException();
+		}
 	}
 	
 	public void removeUser(String username)
 		throws LoginBubbleDocsException, RemoteInvocationException {
-		// TODO : the connection and invocation of the remote service
+		
+		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
+		try {
+			idRemote.removeUser(username);
+		} catch (UserDoesNotExist_Exception e) {
+			throw new LoginBubbleDocsException();
+		}
 	}
 	
 	public void renewPassword(String username)
 		throws LoginBubbleDocsException, RemoteInvocationException {
-		// TODO : the connection and invocation of the remote service
+		
+		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
+		try {
+			idRemote.renewPassword(username);
+		} catch (UserDoesNotExist_Exception e) {
+			throw new LoginBubbleDocsException();
+		}
 	}
 }
