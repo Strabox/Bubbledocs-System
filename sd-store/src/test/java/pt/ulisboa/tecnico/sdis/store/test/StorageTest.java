@@ -3,7 +3,6 @@ package pt.ulisboa.tecnico.sdis.store.test;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.*;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 import static org.junit.Assert.assertEquals;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 
