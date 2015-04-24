@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.integration.component;
+package pt.tecnico.bubbledocs.test.service;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +9,7 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.local.CreateSpreadSheet;
+import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
 
 public class CreateSpreadSheetTest extends BubbleDocsServiceTest {

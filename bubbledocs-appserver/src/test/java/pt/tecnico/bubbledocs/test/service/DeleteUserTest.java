@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.integration.component;
+package pt.tecnico.bubbledocs.test.service;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +13,7 @@ import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.local.DeleteUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
+import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
 
 public class DeleteUserTest extends BubbleDocsServiceTest {

@@ -11,7 +11,7 @@ import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 public class CreateUserIntegrator extends BubbleDocsIntegrator {
 	
 	/* Delegate do CreateUser service. */
-	private CreateUserService cu;
+	private CreateUserService createUserService;
 	
 	/* Used to interact with remote id service. */
 	private IDRemoteServices idRemote;
@@ -22,7 +22,7 @@ public class CreateUserIntegrator extends BubbleDocsIntegrator {
 	
 	public CreateUserIntegrator(String token,String username,
 			String email, String name){
-		cu = new CreateUserService(token,username,email,name);
+		createUserService = new CreateUserService(token,username,email,name);
 		idRemote = new IDRemoteServices();
 		this.token = token;
 		this.username = username;
@@ -40,7 +40,7 @@ public class CreateUserIntegrator extends BubbleDocsIntegrator {
 	}
 	
 	public void execute() throws BubbleDocsException{
-		cu.execute();
+		createUserService.execute();
 		try{
 			createUserRemote(username,email);
 		}catch(Exception e){

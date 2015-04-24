@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.integration.component;
+package pt.tecnico.bubbledocs.test;
 
 
 import javax.transaction.NotSupportedException;
@@ -43,7 +43,7 @@ public class BubbleDocsServiceTest {
 
     // auxiliary methods that access the domain layer and are needed in the test classes
     // for defining the iniital state and checking that the service has the expected behavior
-    User createUser(String username,String email ,String password, String name) {
+    protected User createUser(String username,String email ,String password, String name) {
     	User user = new User(name,username,password,email);
     	Bubbledocs.getInstance().addUser(user);
 	    return user;
@@ -51,42 +51,42 @@ public class BubbleDocsServiceTest {
     
     
     //FIX_ME USED ONLY TO NOT BROKE UP OTHER PPL SERVICES.
-    User createUser(String username,String password, String name) {
+    protected User createUser(String username,String password, String name) {
     	User user = new User(name,username,password);
     	Bubbledocs.getInstance().addUser(user);
 	    return user;
     }
     
-    public SpreadSheet createSpreadSheet(User user, String name, int row,int column) {
+    protected SpreadSheet createSpreadSheet(User user, String name, int row,int column) {
     	SpreadSheet s = new SpreadSheet(name,row,column);
     	user.addOwned(s);
     	return s;
     }
 
     // returns a spreadsheet whose name is equal to name
-    public SpreadSheet getSpreadSheet(String name) {
+    protected SpreadSheet getSpreadSheet(String name) {
     	return Bubbledocs.getInstance().getSpreadSheet(name);
     }
 
     // returns the user registered in the application whose username is equal to username
-    User getUserFromUsername(String username) {
+    protected User getUserFromUsername(String username) {
     	return FenixFramework.getDomainRoot().getBubbledocs().getUserByName(username);
     }
 
     // put a user into session and returns the token associated to it
-    String addUserToSession(String username) {
+    protected String addUserToSession(String username) {
     	String token = Bubbledocs.getInstance().generateToken(username);
 		Bubbledocs.getInstance().addSession(new Session(new LocalTime(),username,token));
 		return token;
     }
 
     // remove a user from session given its token
-    void removeUserFromSession(String token) {
+    protected void removeUserFromSession(String token) {
     	FenixFramework.getDomainRoot().getBubbledocs().removeUserFromSession(token);
     }
 
     // return the user registered in session whose token is equal to token
-    User getUserFromSession(String token) {
+    protected User getUserFromSession(String token) {
     	return FenixFramework.getDomainRoot().getBubbledocs().getUserFromSession(token);
     }
 

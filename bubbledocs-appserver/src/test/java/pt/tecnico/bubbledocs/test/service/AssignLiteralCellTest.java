@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.integration.component;
+package pt.tecnico.bubbledocs.test.service;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,6 +17,7 @@ import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.InvalidLiteralException;
 import pt.tecnico.bubbledocs.service.local.AssignLiteralCell;
+import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
 public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	

@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.integration.component;
+package pt.tecnico.bubbledocs.test.service;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,6 +17,7 @@ import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.service.local.AssignReferenceCell;
+import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
 public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 	
