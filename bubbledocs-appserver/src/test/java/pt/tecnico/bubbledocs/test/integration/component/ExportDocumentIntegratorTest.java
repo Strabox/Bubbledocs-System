@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.service;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertEquals;
 import mockit.Expectations;
@@ -19,12 +19,13 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
+import pt.tecnico.bubbledocs.integration.ExportDocumentIntegrator;
 import pt.tecnico.bubbledocs.service.local.ExportDocument;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
 
-public class ExportDocumentTest extends BubbleDocsServiceTest {
+public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 	@Mocked
 	private StoreRemoteServices storeRemote;
 	private Bubbledocs bubbled;
@@ -88,7 +89,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	@Test
 	public void owner() {
 		String tokenOwner = addUserToSession(USERNAMEOWNER);
-		ExportDocument expDoc = new ExportDocument(tokenOwner,sheet.getId());
+		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(tokenOwner,sheet.getId());
 		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
         	{
@@ -119,7 +120,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	@Test
 	public void canWrite() {
 		String token = addUserToSession(USERNAMEWRITE);
-		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
 		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
         	{
@@ -146,7 +147,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	@Test
 	public void canRead() {
 		String token = addUserToSession(USERNAMEREAD);
-		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
 		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
         	{
@@ -174,7 +175,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	@Test (expected=UnavailableServiceException.class)
 	public void unavailableService() {
 		String token = addUserToSession(USERNAMEREAD);
-		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
 		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
 			{
@@ -203,7 +204,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest {
 	@Test (expected=UnauthorizedOperationException.class)
 	public void cantRead() {
 		String token = addUserToSession(USERNAMENOPERM);
-		ExportDocument expDoc = new ExportDocument(token,sheet.getId());
+		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
 		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
         	{
