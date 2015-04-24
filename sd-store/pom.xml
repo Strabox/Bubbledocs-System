@@ -104,7 +104,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<mainclass>pt.ulisboa.tecnico.sdis.store.ws.impl.SDStoreMain</mainclass>
 
-		<ws.name>SDStore</ws.name>
+		<ws.name>SD-STORE</ws.name>
 		<ws.url>http://localhost:8080/store-ws/endpoint</ws.url>
 		<uddi.url>http://localhost:8081</uddi.url>
 
@@ -113,6 +113,16 @@
 
 	<build>
 		<plugins>
+		 <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        
+        <configuration>
+           <source>1.7</source>
+           <target>1.7</target>
+           
+        </configuration>
+    </plugin>
 			<plugin>
 				<groupId>org.jvnet.jax-ws-commons</groupId>
 				<artifactId>jaxws-maven-plugin</artifactId>

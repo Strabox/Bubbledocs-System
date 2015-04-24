@@ -99,7 +99,7 @@
     <mainclass>pt.ulisboa.tecnico.sdis.store.cli.SDStoreClient</mainclass>
 
     <uddi.url>http://localhost:8081</uddi.url>
-    <ws.name>SDStore</ws.name>
+    <ws.name>SD-STORE</ws.name>
 
     <ws.url>http://localhost:8080/store-ws/endpoint</ws.url>
     <wsdl.url>${ws.url}?WSDL</wsdl.url>
@@ -107,6 +107,16 @@
 
   <build>
     <plugins>
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+
+		<configuration>
+			<source>1.7</source>
+			<target>1.7</target>
+
+		</configuration>
+	</plugin>
       <plugin>
         <groupId>org.jvnet.jax-ws-commons</groupId>
         <artifactId>jaxws-maven-plugin</artifactId>
