@@ -86,14 +86,6 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     /*
      * User permissions
      */
-    @Test
-    public void userPermissionsOwnerTest() {
-    	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
-    	arcs.execute();
-    	int result = arcs.getResult();
-		assertEquals("Result of referred cell different from unexpected.", result, 42);
-    }
     
     @Test(expected = UnauthorizedOperationException.class)
     public void userPermissionsReadTest() {
@@ -123,14 +115,6 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     /*
      * Spreadsheet id
      */
-    @Test
-    public void SpreadSheetExistsTest() {
-    	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
-    	arcs.execute();
-    	int result = arcs.getResult();
-		assertEquals("Result of referred cell different from unexpected.", result, 42);
-    }
     
     @Test(expected = SpreadSheetNotFoundException.class)
     public void SpreadSheetDoesNotExist() {
@@ -143,14 +127,6 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     /*
      * Cell protection
      */
-    @Test
-    public void cellProtectionUnprotectedTest() {
-    	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
-    	arcs.execute();
-    	int result = arcs.getResult();
-		assertEquals("Result of referred cell different from unexpected.", result, 42);
-    }
     
     @Test(expected = UnauthorizedOperationException.class)
     public void cellProtectionProtectedTest() {
@@ -160,37 +136,10 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	arcs.getResult();
     }
     
-    /*
-     * Cell location
-     */
-    @Test
-    public void cellLocationInBoundariesTest() {
-    	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
-    	arcs.execute();
-    	int result = arcs.getResult();
-		assertEquals("Result of referred cell different from unexpected.", result, 42);
-    }
-    
-    @Test(expected = OutOfSpreadsheetBoundariesException.class)
-    public void cellLocationOutOfBoundariesTest() {
-    	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"3;2","0;0");
-    	arcs.execute();
-    	arcs.getResult();
-    }
     
     /*
      * Bad coordinates (unreadable)
      */
-    @Test
-    public void coordArgumentsGoodTest() {
-    	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
-    	arcs.execute();
-    	int result = arcs.getResult();
-		assertEquals("Result of referred cell different from unexpected.", result, 42);
-    }
     
     @Test(expected = BadSpreadSheetValuesException.class)
     public void coordArgumentsFirstBadTest() {
@@ -209,16 +158,81 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     }
     
     /*
+     * Cell location to place
+     */
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest1() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"3;2","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest2() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"-1;2","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest3() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;3","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest4() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;-3","0;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    /*
+     * Cell location to point to
+     */
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest5() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","-1;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest6() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","3;0");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest7() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;-1");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    @Test(expected = OutOfSpreadsheetBoundariesException.class)
+    public void cellLocationOutOfBoundariesTest8() {
+    	String tokenOwner = addUserToSession(USERNAMEOWNER);
+    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;3");
+    	arcs.execute();
+    	arcs.getResult();
+    }
+    
+    
+    /*
      * Referred cell content
      */
-    @Test
-    public void referredCellHasContentTest() {
-    	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignReferenceCell arcs = new AssignReferenceCell(tokenOwner,sheet.getId(),"2;2","0;0");
-    	arcs.execute();
-    	int result = arcs.getResult();
-		assertEquals("Result of referred cell different from unexpected.", result, 42);
-    }
     
     @Test(expected = NoValueForReferenceException.class)
     public void referredCellHasNoContentTest() {
