@@ -34,7 +34,16 @@ Linux
 [1] Iniciar servidores de apoio
 
 JUDDI:
-> startup.sh
+
+>  download from http://disciplinas.tecnico.ulisboa.pt/leic-sod/2014-2015/download/juddi-3.2.1_tomcat-7.0.57_port-8081.zip
+
+> unzip
+
+> cd bin
+
+> chmod +x *.sh 
+
+> ./startup.sh
 
 [2] Criar pasta temporária
 
@@ -47,19 +56,19 @@ JUDDI:
 
 
 [4] Construir e executar **servidor**
-(corre testes também)
+
 > cd sd-store
 
-> mvn clean generate-sources package 
+> mvn clean compile 
 
 > mvn exec:java
 
 
 [5] Construir **cliente**
-(corre testes também)
+
 > cd sd-store-cli
 
-> mvn clean package
+> mvn clean compile
 
 
 
