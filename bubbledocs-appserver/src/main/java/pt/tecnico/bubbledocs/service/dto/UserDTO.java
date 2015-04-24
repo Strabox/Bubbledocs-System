@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.dto;
+package pt.tecnico.bubbledocs.service.dto;
 
 public class UserDTO {
 

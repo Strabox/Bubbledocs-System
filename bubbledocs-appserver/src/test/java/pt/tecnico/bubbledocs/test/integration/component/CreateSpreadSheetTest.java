@@ -8,7 +8,7 @@ import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
-import pt.tecnico.bubbledocs.service.CreateSpreadSheet;
+import pt.tecnico.bubbledocs.service.local.CreateSpreadSheet;
 
 
 public class CreateSpreadSheetTest extends BubbleDocsServiceTest {

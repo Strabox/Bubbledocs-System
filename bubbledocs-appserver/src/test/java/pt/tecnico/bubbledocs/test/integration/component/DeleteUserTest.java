@@ -11,7 +11,7 @@ import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
-import pt.tecnico.bubbledocs.service.DeleteUser;
+import pt.tecnico.bubbledocs.service.local.DeleteUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 

@@ -16,7 +16,7 @@ import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.InvalidLiteralException;
-import pt.tecnico.bubbledocs.service.AssignLiteralCell;
+import pt.tecnico.bubbledocs.service.local.AssignLiteralCell;
 
 public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 	

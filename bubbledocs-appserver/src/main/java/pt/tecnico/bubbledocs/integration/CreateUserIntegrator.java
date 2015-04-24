@@ -3,8 +3,8 @@ package pt.tecnico.bubbledocs.integration;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
-import pt.tecnico.bubbledocs.service.CreateUserService;
-import pt.tecnico.bubbledocs.service.DeleteUser;
+import pt.tecnico.bubbledocs.service.local.CreateUserService;
+import pt.tecnico.bubbledocs.service.local.DeleteUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
 
