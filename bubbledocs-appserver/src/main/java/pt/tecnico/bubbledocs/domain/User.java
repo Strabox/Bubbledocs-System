@@ -1,12 +1,9 @@
 package pt.tecnico.bubbledocs.domain;
 
-import pt.tecnico.bubbledocs.exceptions.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
-import pt.tecnico.bubbledocs.exceptions.InvalidEmailException;
 import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 
 public class User extends User_Base {
@@ -31,21 +28,6 @@ public class User extends User_Base {
 		setBubbledocsUsers(Bubbledocs.getInstance());
     }
     
-    /* setUsername(String) - Overrided to implement bussines logic. */
-    @Override
-    public void setEmail(String email)
-    	throws InvalidEmailException, DuplicateEmailException {
-    	if(email != null){
-    		if(!Pattern.matches(".+@.+\\..*", email))
-        		throw new InvalidEmailException();
-    		else{
-    			Bubbledocs.getInstance().emailExists(email);
-    			super.setEmail(email);
-    		}
-    	}
-    	else
-    		throw new InvalidEmailException();
-    }
     
     /* setUsername(String) - Overrided to implement bussines logic. */
     @Override

@@ -48,7 +48,6 @@ public class CreateUserService extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException,
     		UnavailableServiceException {
     	Bubbledocs bubble = Bubbledocs.getInstance();
-    	// Remote creation success, add user locally.	
     	bubble.addUser(new User(newUserIRLName,newUsername,newUserEmail));
     }
 }

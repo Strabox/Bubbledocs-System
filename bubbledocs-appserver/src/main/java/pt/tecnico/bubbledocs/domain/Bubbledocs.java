@@ -3,7 +3,6 @@ package pt.tecnico.bubbledocs.domain;
 import org.joda.time.LocalTime;
 
 import pt.ist.fenixframework.FenixFramework;
-import pt.tecnico.bubbledocs.exceptions.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
@@ -66,17 +65,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 			if(user.getUsername().equals(newUsername)){
 				throw new DuplicateUsernameException(newUsername);
 			}
-		}
-	}
-	
-	/*
-	 * emailExists(String) - Verify if the email exist already.
-	 */
-	public void emailExists(String email)
-		throws DuplicateEmailException {
-		for(User u : getUserSet()){
-			if(u.getEmail().equals(email))
-				throw new DuplicateEmailException();
 		}
 	}
 	
