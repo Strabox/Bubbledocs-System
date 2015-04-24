@@ -1,21 +1,31 @@
 package pt.tecnico.bubbledocs.service.dto;
 
+import pt.tecnico.bubbledocs.domain.User;
+
+/* UserDTO - used to pass information without reveal
+ * domain implementation. */
 public class UserDTO {
 
-	String username;
+	private String username;
 	
-	String email;
+	private String email;
 	
-	String password;
+	private String password;
 	
-	String name;
+	private String name;
 
 	public UserDTO(String username, String email, String password, String name) {
-		super();
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.name = name;
+	}
+	
+	public UserDTO(User user){
+		this.username = user.getUsername();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.name = user.getName();
 	}
 
 	/**
