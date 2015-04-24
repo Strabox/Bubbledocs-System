@@ -1,19 +1,63 @@
 package pt.tecnico.bubbledocs.service.remote;
 
+import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
+
+import java.util.Map;
+
+import javax.xml.registry.JAXRException;
+import javax.xml.ws.BindingProvider;
+
 import pt.tecnico.bubbledocs.exceptions.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.InvalidEmailException;
 import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
+import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.SDId;
+import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
+import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 
-public class IDRemoteServices {
+public class IDRemoteServices extends RemoteServices{
+	
+	
+	public SDId getSpecificProxie(String uddiUrl,String name){
+		String endpointAddress;
+		try {
+			endpointAddress = UDDILookup(uddiUrl,name);
+		} catch (JAXRException e) {
+			throw new RemoteInvocationException();
+		}
+		if (endpointAddress == null)
+		throw new RemoteInvocationException();
+		
+		SDId_Service service = new SDId_Service();
+		SDId id = service.getSDIdImplPort();
+		
+		BindingProvider bindingProvider = (BindingProvider) id;
+		Map<String, Object> requestContext = bindingProvider.getRequestContext();
+		requestContext.put(ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
+		return id;
+	}
 	
 	public void createUser(String username, String email)
 		throws InvalidUsernameException, DuplicateUsernameException,
 		DuplicateEmailException, InvalidEmailException,
 		RemoteInvocationException {
-		// TODO : the connection and invocation of the remote service
+		SDId idRemote = getSpecificProxie("http://localhost:8081", "SD-ID");
+		try {
+			idRemote.createUser(username, email);
+		} catch (EmailAlreadyExists_Exception e) {
+			throw new DuplicateEmailException();
+		} catch (InvalidEmail_Exception e) {
+			throw new InvalidEmailException();
+		} catch (InvalidUser_Exception e) {
+			throw new InvalidUsernameException();
+		} catch (UserAlreadyExists_Exception e) {
+			throw new DuplicateUsernameException(username);
+		}
 	}
 	
 	public void loginUser(String username, String password)

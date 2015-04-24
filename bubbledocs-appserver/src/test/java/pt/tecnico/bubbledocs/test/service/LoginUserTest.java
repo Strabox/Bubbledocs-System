@@ -19,7 +19,6 @@ import pt.tecnico.bubbledocs.service.local.LoginUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
-
 public class LoginUserTest extends BubbleDocsServiceTest {
 	
 	/* Mock RemoteServices to cover all test cases and avoid the need

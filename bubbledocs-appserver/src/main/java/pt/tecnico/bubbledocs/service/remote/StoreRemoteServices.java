@@ -4,7 +4,7 @@ import pt.tecnico.bubbledocs.exceptions.CannotStoreDocumentException;
 import pt.tecnico.bubbledocs.exceptions.CannotLoadDocumentException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 
-public class StoreRemoteServices {
+public class StoreRemoteServices extends RemoteServices{
 	
 	public void storeDocument(String username, String docName, byte[] document)
 		throws CannotStoreDocumentException, RemoteInvocationException {

@@ -15,7 +15,6 @@ import pt.tecnico.bubbledocs.service.local.DeleteUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
-
 public class DeleteUserTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME_TO_DELETE = "smf";

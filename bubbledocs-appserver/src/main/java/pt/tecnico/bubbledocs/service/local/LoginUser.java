@@ -7,7 +7,6 @@ import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
-
 public class LoginUser extends BubbleDocsService {
 
 	private IDRemoteServices id;

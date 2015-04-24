@@ -8,7 +8,6 @@ import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 
-
 public class DeleteUser extends BubbleDocsService {
 	
 	private static final String root = "root";

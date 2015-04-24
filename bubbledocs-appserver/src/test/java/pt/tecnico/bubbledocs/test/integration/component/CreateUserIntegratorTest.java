@@ -20,7 +20,6 @@ import pt.tecnico.bubbledocs.integration.CreateUserIntegrator;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
-
 public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
 
 	/* Mock RemoteServices to cover all test cases and avoid the need
