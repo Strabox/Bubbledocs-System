@@ -101,4 +101,14 @@ public class Cell extends Cell_Base {
     	}
     }
     
+    String resultToString(){
+    	try{
+    		int res = getContent().getResult();
+    		return Integer.toString(res);
+    	}
+    	catch(Exception e){
+    		return "()";
+    	}
+    }
+    
 }

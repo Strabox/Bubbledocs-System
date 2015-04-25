@@ -1,6 +1,5 @@
 package pt.tecnico.bubbledocs.service.local;
 
-import java.util.ArrayList;
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
@@ -41,16 +40,12 @@ public class AssignReferenceCell extends BubbleDocsService {
     	 * OK if it's the owner or has writing permissions
     	 * and then if the cell is unprotected.
     	 */
-    	boolean hasWritePermissions = false;
+    	/*boolean hasWritePermissions = false;
     	ArrayList<SpreadSheet> writable = user.listWritableSpreadSheets();
-    	/* 
-    	 * getting the sheets the user can write on and checking if the sheet
-    	 * is there
-    	 */
     	for(SpreadSheet ss : writable){
     		if (ss==sheet) hasWritePermissions = true;
-    	}
-    	if( !(sheet.getOwner()==user || hasWritePermissions)){
+    	}*/
+    	if( !(sheet.getOwner()==user || user.canWriteSpreadSheet(sheet))){
 			throw new UnauthorizedOperationException();
     	}
     	/*

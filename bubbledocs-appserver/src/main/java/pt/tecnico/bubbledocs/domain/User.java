@@ -132,6 +132,23 @@ public class User extends User_Base {
     	return folhas;
     }
     
+    public boolean canWriteSpreadSheet(SpreadSheet sheet){
+    	boolean hasWritePermissions = false;
+    	ArrayList<SpreadSheet> writable = listWritableSpreadSheets();
+    	for(SpreadSheet ss : writable){
+    		if (ss==sheet) hasWritePermissions = true;
+    	}
+    	return hasWritePermissions;
+    }
+    
+    public boolean canReadSpreadSheet(SpreadSheet sheet){
+    	boolean hasReadPermissions = false;
+    	ArrayList<SpreadSheet> readable = listReadableSpreadSheets();
+    	for(SpreadSheet ss : readable){
+    		if (ss==sheet) hasReadPermissions = true;
+    	}
+    	return hasReadPermissions;
+    }
     
     public void removeUserPermission(String username, SpreadSheet sp, AccessMode mode){
     	if (username == this.getName()) {

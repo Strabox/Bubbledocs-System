@@ -15,6 +15,13 @@ public class Reference extends Reference_Base {
         this.setColumn(column);
     }
     
+    public Reference(Cell referenciada) {
+        super();
+        this.setRefCell(referenciada);
+        this.setLine(referenciada.getLine());
+        this.setColumn(referenciada.getColumn());
+    }
+    
     public Reference(int linha,int coluna) {
         super();
         this.setLine(linha);

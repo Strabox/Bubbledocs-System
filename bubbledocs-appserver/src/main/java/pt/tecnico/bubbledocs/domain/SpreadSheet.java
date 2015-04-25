@@ -186,6 +186,18 @@ public class SpreadSheet extends SpreadSheet_Base {
     	return;
     }
     
+    public String[][] contentsToMatrix(){
+    	String [][] matrix = new String[getLines()][getColumns()];
+    	for(int line_i = 0; line_i <getLines(); line_i++){
+    		for (int column_i = 0; column_i <getColumns(); column_i++){
+    			matrix[line_i][column_i] = new String("()");
+    		}
+    	}
+    	for(Cell cell_i : getCellSet()){
+    		matrix[cell_i.getLine()][cell_i.getColumn()] = cell_i.resultToString();
+    	}
+    	return matrix;
+    }
     
     @Override
     public String toString(){
