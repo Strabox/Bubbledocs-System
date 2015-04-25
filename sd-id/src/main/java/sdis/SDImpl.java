@@ -17,6 +17,7 @@ import sdis.domain.UserManager;
     targetNamespace="urn:pt:ulisboa:tecnico:sdis:id:ws",
     serviceName="SDId"
 )
+@HandlerChain(file="/handler-chain.xml")
 public class SDImpl implements SDId {
 
 	private UserManager manager;

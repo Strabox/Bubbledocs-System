@@ -12,6 +12,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 import sdis.uddi.UDDINaming;
 
 
+
 public class SdIdClient {
 	
 	/*
@@ -67,7 +68,7 @@ public class SdIdClient {
         
         //------------ Some test Code ---------------------
         try{
-
+        	id.createUser("aa", "a2@a.a");
         }catch(Exception e){
         	System.out.println(e);
         }
