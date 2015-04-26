@@ -6,6 +6,7 @@ import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BadSpreadSheetValuesException;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.NoValueForReferenceException;
 import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
@@ -15,6 +16,7 @@ import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 public class AssignReferenceCell extends BubbleDocsService {
 
     private int result;
+    private boolean hasResult;
     private String tokenUser;
     private int sheetID;
     private String cellID;
@@ -92,10 +94,17 @@ public class AssignReferenceCell extends BubbleDocsService {
     		throw new BadSpreadSheetValuesException();
     	}
     	sheet.addReferenceToCell(l, c, lref, cref);
-    	result = sheet.getSingleCell(l, c).getResult();
+    	try{
+    		hasResult = true;
+    		result = sheet.getSingleCell(l, c).getResult();
+    	}
+    	catch(NoValueForReferenceException e){
+    		hasResult = false;
+    	}
     }
 
     public final int getResult() {
-        return result;
+    	if(hasResult) return result;
+    	else throw new NoValueForReferenceException();
     }
 }

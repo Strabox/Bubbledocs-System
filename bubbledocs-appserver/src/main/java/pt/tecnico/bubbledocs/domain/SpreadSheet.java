@@ -106,6 +106,15 @@ public class SpreadSheet extends SpreadSheet_Base {
     	return null;
     }
     
+    public Cell forceGetSingleCell(int l, int c){
+    	Cell f_cell = getSingleCell(l, c);
+    	if(f_cell == null){
+    		f_cell = new Cell(l,c);
+    		addCell(f_cell);
+    	}
+    	return f_cell;
+    }
+    
     public void addContentToCell(int l, int c, Content cont){
     	Cell cell = getSingleCell(l, c);
     	if (cell!=null){
@@ -138,6 +147,12 @@ public class SpreadSheet extends SpreadSheet_Base {
     	cell = new Cell(lholder, cholder, ref);
     	addCell(cell);
     	return;
+    }
+    
+    public void addBinaryFunctionToCell(int lholder, int cholder, String pattern){
+    	Cell c = forceGetSingleCell(lholder,cholder);
+    	Content cont = Recognizer.recogniseBinaryFunction(pattern, this);
+    	c.setContent(cont);
     }
     
     @Atomic
