@@ -1,7 +1,7 @@
-Planeamento da 2™ semana de trabalho para a 4™ entrega do projecto de ES+SDis
+Planeamento da 2¬™ semana de trabalho para a 4¬™ entrega do projecto de ES+SDis
 ###############################
 Group Member		Mon	Tue	Wed	Thu	Fri	Sat	Sun		Planned tasks	Implemented tasks
-AndrÈ Pires			0	0	0	0	0	0	0		-				#40 #41 #42 #60 #61 #62 #63
+Andr√© Pires			0	0	0	0	0	0	0		-				#40 #41 #42 #60 #61 #62 #63
 Ricardo Pires		0	0	0	0	0	0	0		-				#50 #53
 Miguel Cruz			0	0	0	0	0	0	0		-				#68 #48 #49 #46 #47
 Artur Fonseca		4	0	0	1	0	0	0		#44				#43 #67#66 #65
@@ -10,7 +10,7 @@ Mauro Teles			0	0	1	0	1	1	1		-				-
 
 Retrospectiva de cada pessoa
 ###############################
-AndrÈ Pires:
+Andr√© Pires:
 
 
 
@@ -23,34 +23,38 @@ Ricardo Pires:
 Miguel Cruz:
 
 No geral, foi uma semana de trabalho positiva.
-As 2 horas inicialmente marcadas para 3™ feira n„o chegaram a existir por trabalho no projecto de outra cadeira, mas foram compensadas na 6™ feira, focando na issue #68.
-As 2 horas marcadas para s·bado foram prÛximas do real.
-As 2 horas marcadas para domingo n„o se verificaram pois as funcionalidades do AssignBinaryFunctionToCell requereram trabalho extra.
+As 2 horas inicialmente marcadas para 3¬™ feira n√£o chegaram a existir por trabalho no projecto de outra cadeira, mas foram compensadas na 6¬™ feira, focando na issue #68.
+As 2 horas marcadas para s√°bado foram pr√≥ximas do real.
+As 2 horas marcadas para domingo n√£o se verificaram pois as funcionalidades do AssignBinaryFunctionToCell requereram trabalho extra.
 
 > #68 Fix AssignReferenceToCell service tests (pre Integration)
-Esta task serviu para corrigir os testes do serviÁo AssignReferenceToCell feitos para a 2™ entrega.
+Esta task serviu para corrigir os testes do servi√ßo AssignReferenceToCell feitos para a 2¬™ entrega.
 Foram adicionados mais testes de fronteira e removidos testes redundantes.
 
 > #48 Get Spreadsheet Content tests
-Esta task conteve os testes para o serviÁo GetSpreadsheetContent, e demorou o tempo estimado de 1 hora.
+Esta task conteve os testes para o servi√ßo GetSpreadsheetContent, e demorou o tempo estimado de 1 hora.
 
 > #49 Get Spreadsheet Content service (+integration)
-O trabalho desta task foi ligeiramente superior ao estimado pois incluiu algumas refactorizaÁıes para simplificar e facilitar o cÛdigo, mas os resultados foram bons.
+O trabalho desta task foi ligeiramente superior ao estimado pois incluiu algumas refactoriza√ß√µes para simplificar e facilitar o c√≥digo, mas os resultados foram bons.
 
 > #46 Assign Binary Function To Cell tests (+integration tests)
-Os testes deste serviÁo, embora relativamente simples e n„o muito diferentes dos de AssignReferenceeToCell, demoraram algum tempo devido a um erro na classe Recognizer (descrito em #47).
+Os testes deste servi√ßo, embora relativamente simples e n√£o muito diferentes dos de AssignReferenceeToCell, demoraram algum tempo devido a um erro na classe Recognizer (descrito em #47).
 
 > #47 Assign Binary Function To Cell Implement Service (+Integration)
-Este serviÁo demorou mais tempo do que o esperado, devido a refactorizaÁıes e correcÁ„o de erros.
-Para este serviÁo foi utilizado o cÛdigo de exemplo para reconhecer expressıes presente nuns slides das aulas teÛricas (class Recognizer).
-A correcÁ„o de uma pequena falha nessas expressıes demorou algum tempo a ser feita por n„o ser Ûbvia.
-TambÈm houve alguma refactorizaÁ„o e adiÁ„o de novo cÛdigo, de modo a torn·-lo mais simples e a oferecer as novas funcionalidades.
+Este servi√ßo demorou mais tempo do que o esperado, devido a refactoriza√ß√µes e correc√ß√£o de erros.
+Para este servi√ßo foi utilizado o c√≥digo de exemplo para reconhecer express√µes presente nuns slides das aulas te√≥ricas (class Recognizer).
+A correc√ß√£o de uma pequena falha nessas express√µes demorou algum tempo a ser feita por n√£o ser √≥bvia.
+Tamb√©m houve alguma refactoriza√ß√£o e adi√ß√£o de novo c√≥digo, de modo a torn√°-lo mais simples e a oferecer as novas funcionalidades.
 
 
 ###############################
 Artur Fonseca:
 
+> #45 Export document remake tests
+foi realizada facilmente
 
+> #44 Export Document new integrations tests
+ainda n√£o foi terminada. optei por iniciar a refatoriza√ß√£o do Export
 
 ###############################
 Mauro Teles:
