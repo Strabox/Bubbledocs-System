@@ -18,6 +18,7 @@ GetToken4Service e GetUserInformation ficaram completos e prontos a ser usados p
 ###############################
 Ricardo Pires:
 
+Foram implementadas as tarefas #50 e #53 que consistia na implementação dos Integrators dos serviços CreateSpreadSheetService e AssignReferenceCellService. Não foi preciso modificar os testes nem adicionar novos. Por essa razão as issues relacionadas com essas tarefas foram encerradas e classificadas como desnecessárias.
 
 
 ###############################
