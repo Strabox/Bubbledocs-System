@@ -11,7 +11,7 @@ public class Recognizer {
 	 final static String POSITIVE = "(?!0)\\d+";
 	 final static String LITERAL = "(" + NEGATIVE + "|" + ZERO + "|" + POSITIVE + ")";
 
-	 final static String CELL = POSITIVE + ";" + POSITIVE;
+	 final static String CELL = LITERAL + ";" + LITERAL;
 	 final static String PARSE_CELL = ";";
 	 final static String RANGE = CELL + ":" + CELL;
 	 final static String PARSE_RANGE = ":";
@@ -28,34 +28,33 @@ public class Recognizer {
 			 throw new BadContentExpressionException();
 		 }
 		 String[] tokens = pattern.split(PARSE_BINARY_FUNCTION);
-		 String operand = tokens[0];
-		 
+		 String operand = tokens[1];
 		 BinaryFunction bf;
 		 Content leftarg;
 		 Content rightarg;
 		 try{
-			 if(Pattern.matches(CELL, tokens[1])){
-				 String[] left = tokens[1].split(PARSE_CELL);
+			 if(Pattern.matches(CELL, tokens[2])){
+				 String[] left = tokens[2].split(PARSE_CELL);
 				 int x = Integer.parseInt(left[0]);
 				 int y = Integer.parseInt(left[1]);
 				 leftarg = new Reference(sheet.forceGetSingleCell(x, y));
 			 }
 			 else{
-				leftarg = new Literal(Integer.parseInt(tokens[1]));
+				leftarg = new Literal(Integer.parseInt(tokens[2]));
 			 }
 		 }
 		 catch(Exception e){
 			 throw new BadContentExpressionException();
 		 }
 		 try{
-			 if(Pattern.matches(CELL, tokens[2])){
-				 String[] right = tokens[2].split(PARSE_CELL);
+			 if(Pattern.matches(CELL, tokens[3])){
+				 String[] right = tokens[3].split(PARSE_CELL);
 				 int x = Integer.parseInt(right[0]);
 				 int y = Integer.parseInt(right[1]);
 				 rightarg = new Reference(sheet.forceGetSingleCell(x, y));
 			 }
 			 else{
-				rightarg = new Literal(Integer.parseInt(tokens[2]));				 
+				rightarg = new Literal(Integer.parseInt(tokens[3]));				 
 			 }
 		 }
 		 catch(Exception e){
