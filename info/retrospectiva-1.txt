@@ -1,0 +1,57 @@
+Planeamento da 2ª semana de trabalho para a 4ª entrega do projecto de ES+SDis
+###############################
+Group Member		Mon	Tue	Wed	Thu	Fri	Sat	Sun		Planned tasks	Implemented tasks
+André Pires			0	0	0	0	0	0	0		-				#40 #41 #42 #60 #61 #62 #63
+Ricardo Pires		0	0	0	0	0	0	0		-				#50 #53
+Miguel Cruz			0	0	0	0	0	0	0		-				#68 #48 #49 #46 #47
+Artur Fonseca		4	0	0	1	0	0	0		#44				#43 #67#66 #65
+Mauro Teles			0	0	1	0	1	1	1		-				-
+
+
+Retrospectiva de cada pessoa
+###############################
+André Pires:
+
+
+
+###############################
+Ricardo Pires:
+
+
+
+###############################
+Miguel Cruz:
+
+No geral, foi uma semana de trabalho positiva.
+As 2 horas inicialmente marcadas para 3ª feira não chegaram a existir por trabalho no projecto de outra cadeira, mas foram compensadas na 6ª feira, focando na issue #68.
+As 2 horas marcadas para sábado foram próximas do real.
+As 2 horas marcadas para domingo não se verificaram pois as funcionalidades do AssignBinaryFunctionToCell requereram trabalho extra.
+
+> #68 Fix AssignReferenceToCell service tests (pre Integration)
+Esta task serviu para corrigir os testes do serviço AssignReferenceToCell feitos para a 2ª entrega.
+Foram adicionados mais testes de fronteira e removidos testes redundantes.
+
+> #48 Get Spreadsheet Content tests
+Esta task conteve os testes para o serviço GetSpreadsheetContent, e demorou o tempo estimado de 1 hora.
+
+> #49 Get Spreadsheet Content service (+integration)
+O trabalho desta task foi ligeiramente superior ao estimado pois incluiu algumas refactorizações para simplificar e facilitar o código, mas os resultados foram bons.
+
+> #46 Assign Binary Function To Cell tests (+integration tests)
+Os testes deste serviço, embora relativamente simples e não muito diferentes dos de AssignReferenceeToCell, demoraram algum tempo devido a um erro na classe Recognizer (descrito em #47).
+
+> #47 Assign Binary Function To Cell Implement Service (+Integration)
+Este serviço demorou mais tempo do que o esperado, devido a refactorizações e correcção de erros.
+Para este serviço foi utilizado o código de exemplo para reconhecer expressões presente nuns slides das aulas teóricas (class Recognizer).
+A correcção de uma pequena falha nessas expressões demorou algum tempo a ser feita por não ser óbvia.
+Também houve alguma refactorização e adição de novo código, de modo a torná-lo mais simples e a oferecer as novas funcionalidades.
+
+
+###############################
+Artur Fonseca:
+
+
+
+###############################
+Mauro Teles:
+
