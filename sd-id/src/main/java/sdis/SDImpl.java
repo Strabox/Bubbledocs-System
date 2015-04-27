@@ -3,7 +3,10 @@ package sdis;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
 import javax.jws.*;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
 import sdis.domain.User;
@@ -21,6 +24,9 @@ import sdis.domain.UserManager;
 public class SDImpl implements SDId {
 
 	private UserManager manager;
+	
+	/* Used to pass information to SOAP handlers. */
+	private WebServiceContext wscont;
 	
 	
 	public SDImpl(){
@@ -67,9 +73,11 @@ public class SDImpl implements SDId {
 	public void createUser(String userId, String emailAddress)
 			throws EmailAlreadyExists_Exception, InvalidEmail_Exception,
 			InvalidUser_Exception, UserAlreadyExists_Exception {
+		
 		User user = new User(userId,emailAddress);
 		manager.addUser(user);
 		System.out.println("First password for " + user.getUsername()+ " : " + user.getPassword());	//Requested by professor.
+	
 	}
 
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {
@@ -99,9 +107,13 @@ public class SDImpl implements SDId {
 				AuthReqFailed arf = new AuthReqFailed();
 				throw new AuthReqFailed_Exception("Invalid username or password!!", arf);
 			}
+			
 			String password = (String) bytesToObject(reserved);
 			boolean loggedin = manager.verifyUserPassword(userId, password);
 			if(loggedin == true){
+				MessageContext context = wscont.getMessageContext();
+				context.put("A", "a");
+				
 				byte[] res = new byte[1];
 				res[0] = (byte) 1;
 				return res;

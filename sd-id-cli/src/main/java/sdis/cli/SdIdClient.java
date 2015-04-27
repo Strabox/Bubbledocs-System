@@ -19,7 +19,6 @@ public class SdIdClient {
 	 * stringToBytes(Object) - Transforms a (Serializable) object
 	 * in byte of arrays.
 	 */
-	@SuppressWarnings("unused")
 	private static byte[] objectToBytes(Object obj){
 		try{
 			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
@@ -63,12 +62,12 @@ public class SdIdClient {
         Map<String, Object> requestContext = bindingProvider.getRequestContext();
         requestContext.put(ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
         
-        System.out.print("Endpoint address:");
-        System.out.println(requestContext.get(ENDPOINT_ADDRESS_PROPERTY));
+        System.out.println("Endpoint address:" + requestContext.get(ENDPOINT_ADDRESS_PROPERTY));
         
         //------------ Some test Code ---------------------
         try{
-        	id.createUser("aa", "a2@a.a");
+        	requestContext.put("nounce", new Date());
+        	id.requestAuthentication("bruno", objectToBytes("Bbb2"));
         }catch(Exception e){
         	System.out.println(e);
         }
