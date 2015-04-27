@@ -1,7 +1,7 @@
 Planeamento da 2ª semana de trabalho para a 4ª entrega do projecto de ES+SDis
 ###############################
 Group Member		Mon	Tue	Wed	Thu	Fri	Sat	Sun		Planned tasks	Implemented tasks
-André Pires			0	0	0	0	4	4	0		-				#40 #41 #42 #60 #61 #62 #63
+André Pires			0	0	0	0	0	0	0		-				#40 #41 #42 #60 #61 #62 #63
 Ricardo Pires		0	0	0	0	0	0	0		-				#50 #53
 Miguel Cruz			0	0	0	0	0	0	0		-				#68 #48 #49 #46 #47
 Artur Fonseca		4	0	0	1	0	0	0		#44				#43 #67#66 #65
