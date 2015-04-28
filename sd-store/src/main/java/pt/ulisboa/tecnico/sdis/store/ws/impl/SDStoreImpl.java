@@ -3,15 +3,9 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jws.*;
-import javax.print.Doc;
-import javax.swing.text.Document;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 
 

@@ -1,12 +1,14 @@
 package pt.ulisboa.tecnico.sdis.store.test;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import pt.ulisboa.tecnico.sdis.store.ws.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
+import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 
 
 
@@ -39,6 +41,7 @@ public class loadTest extends SDStoreTest {
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId("ghostDocument");
 		pair.setUserId(user);		
+		@SuppressWarnings("unused")
 		byte[] content=port.load(pair);
 		assertEquals("...",true,true);
 	}
@@ -52,6 +55,7 @@ public class loadTest extends SDStoreTest {
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId("document42");
 		pair.setUserId(user);		
+		@SuppressWarnings("unused")
 		byte[] content=port.load(pair);
 		assertEquals("...",true,true);
 	}

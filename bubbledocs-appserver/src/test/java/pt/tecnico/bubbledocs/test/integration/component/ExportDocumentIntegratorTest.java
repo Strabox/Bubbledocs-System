@@ -6,21 +6,20 @@ import mockit.Mocked;
 
 import org.junit.Test;
 
+import pt.tecnico.bubbledocs.domain.ADD;
 import pt.tecnico.bubbledocs.domain.AccessMode;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.Cell;
-import pt.tecnico.bubbledocs.domain.ADD;
 import pt.tecnico.bubbledocs.domain.DIV;
 import pt.tecnico.bubbledocs.domain.Literal;
-import pt.tecnico.bubbledocs.domain.Reference;
 import pt.tecnico.bubbledocs.domain.Permission;
+import pt.tecnico.bubbledocs.domain.Reference;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.integration.ExportDocumentIntegrator;
-import pt.tecnico.bubbledocs.service.local.ExportDocument;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 

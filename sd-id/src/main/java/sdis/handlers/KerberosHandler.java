@@ -15,6 +15,7 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 
 	
+	@SuppressWarnings("unused")
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 		

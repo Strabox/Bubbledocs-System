@@ -2,6 +2,7 @@ package pt.tecnico.bubbledocs.domain;
 
 import org.joda.time.LocalTime;
 
+import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
@@ -88,6 +89,21 @@ public class Bubbledocs extends Bubbledocs_Base {
 				return s;
 		}
 		return null;
+	}
+	
+	/*
+	 * delete() - Reset all system database (Used for System Tests).
+	 */
+	@Atomic
+	public void delete(){
+		for(User u: getUserSet()){
+			u.delete();
+		}
+		for(Session s: getSessionSet()){
+			s.delete();
+		}
+		setRoot(null);
+		deleteDomainObject();
 	}
 	
 	/*
@@ -209,10 +225,10 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 */
 	public void loginUser(String user, String pass) throws UnavailableServiceException{
 		for (User u : getUserSet()) {
-			if (user.equals(u.getUsername()) && u.getPassword().equals(pass)) {
+			if (user.equals(u.getUsername()) && pass.equals(u.getPassword())) {
 				//LOGIN SUCCESSFUL
 				return;
-			}else if (user.equals(u.getUsername()) && !u.getPassword().equals(pass))
+			}else if (user.equals(u.getUsername()) && pass.equals(u.getPassword()))
 				//Wrong username - password combination.
 				throw new UnavailableServiceException();
 		}

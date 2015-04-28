@@ -27,14 +27,17 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 	private IDRemoteServices idRemote;
 	
     private static final String USERNAME = "jpa";
+    private static final String USERNAME_INVALID_PASS = "jna";
     private static final String UNKNOWN_USERNAME ="unknown";
     private static final String EMAIL = "jp@ESisAwesome.ist";
+    private static final String EMAIL2 = "jn@ESisAwesome.ist";
     private static final String PASSWORD = "jp#";
     private static final String NEW_PASSWORD = "new_pass";
     
     @Override
     public void populate4Test() {
         createUser(USERNAME,EMAIL ,PASSWORD, "João Pereira");
+        createUser(USERNAME_INVALID_PASS,EMAIL2,null,"Joana Antunes");
     }
 
 	// returns the time of the last access for the user with token userToken.
@@ -136,6 +139,21 @@ public class LoginUserTest extends BubbleDocsServiceTest {
          
          service.execute();
     }
+    
+    @Test(expected = UnavailableServiceException.class)
+    public void invalidPasswordLoginLocally(){
+		LoginUser service = new LoginUser(USERNAME_INVALID_PASS, "pass");
+    	
+    	 new Expectations(){
+         	{
+         		idRemote.loginUser(USERNAME_INVALID_PASS,"pass");
+         		result = new RemoteInvocationException();
+         	}
+         };
+         
+         service.execute();
+    }
+    
     
     @Test(expected = UnavailableServiceException.class)
     public void unknownUserLoginLocally(){

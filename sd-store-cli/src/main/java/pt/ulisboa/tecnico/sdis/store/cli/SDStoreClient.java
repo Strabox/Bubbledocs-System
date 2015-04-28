@@ -1,13 +1,14 @@
 package pt.ulisboa.tecnico.sdis.store.cli;
 
+import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
+
 import java.util.Map;
 
-import javax.xml.registry.JAXRException;
-import javax.xml.ws.*;
+import javax.xml.ws.BindingProvider;
 
-import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
+import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
+import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service; // classes generated from WSDL
 import pt.ulisboa.tecnico.sdis.store.ws.uddi.UDDINaming;
-import pt.ulisboa.tecnico.sdis.store.ws.*; // classes generated from WSDL
 
 
 public class SDStoreClient {

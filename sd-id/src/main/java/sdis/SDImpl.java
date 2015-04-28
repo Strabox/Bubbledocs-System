@@ -4,11 +4,18 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import javax.jws.*;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
+import javax.jws.HandlerChain;
+import javax.jws.WebService;
 
-import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
+import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed;
+import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.SDId; // classes generated from WSDL
+import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
+import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist;
+import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 import sdis.domain.User;
 import sdis.domain.UserManager;
 
@@ -26,7 +33,7 @@ public class SDImpl implements SDId {
 	private UserManager manager;
 	
 	/* Used to pass information to SOAP handlers. */
-	private WebServiceContext wscont;
+	//private WebServiceContext wscont;
 	
 	
 	public SDImpl(){
@@ -103,7 +110,7 @@ public class SDImpl implements SDId {
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 			throws AuthReqFailed_Exception {
 		try{		
-			if(userId == null | reserved == null){
+			if(userId == null || reserved == null){
 				AuthReqFailed arf = new AuthReqFailed();
 				throw new AuthReqFailed_Exception("Invalid username or password!!", arf);
 			}
@@ -111,9 +118,6 @@ public class SDImpl implements SDId {
 			String password = (String) bytesToObject(reserved);
 			boolean loggedin = manager.verifyUserPassword(userId, password);
 			if(loggedin == true){
-				MessageContext context = wscont.getMessageContext();
-				context.put("A", "a");
-				
 				byte[] res = new byte[1];
 				res[0] = (byte) 1;
 				return res;

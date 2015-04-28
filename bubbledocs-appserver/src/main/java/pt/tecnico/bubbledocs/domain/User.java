@@ -35,13 +35,10 @@ public class User extends User_Base {
     	throws DuplicateUsernameException, InvalidUsernameException{
     	final int MIN_USERNAME_SIZE = 3;
     	final int MAX_USERNAME_SIZE = 8;
-    	
-    	if(newUsername != null){
-	    	if(newUsername.isEmpty())
-	    		throw new InvalidUsernameException();
-	    	if(newUsername.length() < MIN_USERNAME_SIZE || 
-	    	   newUsername.length() > MAX_USERNAME_SIZE)
-	    		throw new InvalidUsernameException();
+    	if(newUsername != null && !newUsername.isEmpty() 
+    		&& newUsername.length() >= MIN_USERNAME_SIZE
+    		&& newUsername.length() <= MAX_USERNAME_SIZE){
+    		
 	    	Bubbledocs.getInstance().userExists(newUsername);
 	    	super.setUsername(newUsername);
     	}

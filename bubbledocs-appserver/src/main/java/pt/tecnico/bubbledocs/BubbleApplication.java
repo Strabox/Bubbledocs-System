@@ -1,8 +1,5 @@
 package pt.tecnico.bubbledocs;
 
-import pt.tecnico.bubbledocs.integration.CreateUserIntegrator;
-import pt.tecnico.bubbledocs.service.local.LoginUser;
-
 
 public class BubbleApplication {
 	

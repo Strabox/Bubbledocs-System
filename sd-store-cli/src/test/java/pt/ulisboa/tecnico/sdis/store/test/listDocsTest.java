@@ -43,7 +43,7 @@ public class listDocsTest extends SDStoreTest {
 	@Test (expected=UserDoesNotExist_Exception.class )
 	public void userDoesNotExist () throws UserDoesNotExist_Exception {
 		String user = "ghostUser";
-		List<String> _docs= port.listDocs(user);
+		port.listDocs(user);
 		assertEquals("...",true,true);
 	}
 	
