@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
-import sdis.uddi.UDDINaming;
+import util.uddi.UDDINaming;
 
 
 public class SdIdTest {

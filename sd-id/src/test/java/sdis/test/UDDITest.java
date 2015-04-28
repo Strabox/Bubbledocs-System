@@ -2,13 +2,14 @@ package sdis.test;
 
 import javax.xml.registry.JAXRException;
 
-import mockit.*;
+import mockit.Expectations;
+import mockit.Mocked;
 //import mockit.Mocked;
 
-import org.junit.*;
+import org.junit.Test;
 
 import sdis.SDIDMain;
-import sdis.uddi.UDDINaming;
+import util.uddi.UDDINaming;
 
 
 public class UDDITest {

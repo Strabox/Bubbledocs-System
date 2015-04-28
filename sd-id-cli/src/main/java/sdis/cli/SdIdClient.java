@@ -1,17 +1,21 @@
 package sdis.cli;
 
+import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.*;
+import java.security.Key;
+import java.util.Date;
+import java.util.Map;
 
-import javax.xml.ws.*;
+import javax.crypto.Cipher;
+import javax.xml.ws.BindingProvider;
 
-import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
-import pt.ulisboa.tecnico.sdis.id.ws.*; // classes generated from WSDL
-import sdis.uddi.UDDINaming;
-
-
+import pt.ulisboa.tecnico.sdis.id.ws.SDId;
+import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service; // classes generated from WSDL
+import util.Kerberos;
+import util.uddi.UDDINaming;
 
 public class SdIdClient {
 	
@@ -67,7 +71,13 @@ public class SdIdClient {
         //------------ Some test Code ---------------------
         try{
         	requestContext.put("nounce", new Date());
-        	id.requestAuthentication("bruno", objectToBytes("Bbb2"));
+        	byte[] ticket = id.requestAuthentication("bruno", objectToBytes("Bbb2"));
+        	Cipher newCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        	byte[] bytesKey = Kerberos.digestPassword("Bsb2", Kerberos.MD5);
+			Key key = Kerberos.getKeyFromBytes(bytesKey);
+        	newCipher.init(Cipher.DECRYPT_MODE, key);
+        	byte[] plain = newCipher.doFinal(ticket);
+        	System.out.println(new String(plain,"UTF-8"));
         }catch(Exception e){
         	System.out.println(e);
         }

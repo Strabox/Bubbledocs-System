@@ -4,11 +4,10 @@ import javax.xml.registry.JAXRException;
 
 import mockit.*;
 
-
 import org.junit.*;
 
 import pt.ulisboa.tecnico.sdis.store.ws.impl.*;
-import pt.ulisboa.tecnico.sdis.store.ws.impl.uddi.*;
+import util.uddi.UDDINaming;
 
 
 

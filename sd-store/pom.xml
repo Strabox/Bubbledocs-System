@@ -11,6 +11,11 @@
 	<name>${project.artifactId}</name>
 
 	<dependencies>
+	<dependency>
+            <groupId>sd</groupId>
+            <artifactId>sd-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 	<dependency> 
 		   <groupId>org.jmockit</groupId> 
 		   <artifactId>jmockit</artifactId>

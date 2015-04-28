@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 
 import javax.xml.registry.JAXRException;
 
-import pt.tecnico.bubbledocs.service.uddi.UDDINaming;
+import util.uddi.UDDINaming;
 
 public abstract class RemoteServices {
 

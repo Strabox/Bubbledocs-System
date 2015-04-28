@@ -8,7 +8,7 @@ import javax.xml.ws.BindingProvider;
 
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service; // classes generated from WSDL
-import pt.ulisboa.tecnico.sdis.store.ws.uddi.UDDINaming;
+import util.uddi.UDDINaming;
 
 
 public class SDStoreClient {

@@ -11,8 +11,7 @@ import org.junit.BeforeClass;
 
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
-
-import pt.ulisboa.tecnico.sdis.store.ws.uddi.UDDINaming;
+import util.uddi.UDDINaming;
 
 
 public class SDStoreTest {

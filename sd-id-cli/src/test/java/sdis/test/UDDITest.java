@@ -8,7 +8,7 @@ import mockit.Mocked;
 import org.junit.Test;
 
 import sdis.cli.SdIdClient;
-import sdis.uddi.UDDINaming;
+import util.uddi.UDDINaming;
 
 public class UDDITest extends SdIdTest{
 

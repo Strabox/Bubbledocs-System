@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.sdis.store.ws.impl.uddi;
+package util.uddi;
 
 import java.net.PasswordAuthentication;
 import java.util.*;

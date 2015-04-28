@@ -3,6 +3,7 @@ package sdis;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.security.Key;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
@@ -18,6 +19,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist;
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 import sdis.domain.User;
 import sdis.domain.UserManager;
+import util.Kerberos;
 
 @WebService(
     endpointInterface="pt.ulisboa.tecnico.sdis.id.ws.SDId", 
@@ -116,11 +118,13 @@ public class SDImpl implements SDId {
 			}
 			
 			String password = (String) bytesToObject(reserved);
+			
 			boolean loggedin = manager.verifyUserPassword(userId, password);
 			if(loggedin == true){
-				byte[] res = new byte[1];
-				res[0] = (byte) 1;
-				return res;
+				String text = Kerberos.createTicket(userId, null, null, null);
+				byte[] bytesKey = Kerberos.digestPassword(password, Kerberos.MD5);
+				Key key = Kerberos.getKeyFromBytes(bytesKey);
+				return Kerberos.cipherText(key, text);
 			}
 			else{
 				AuthReqFailed arf = new AuthReqFailed();

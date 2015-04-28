@@ -24,7 +24,6 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 			SOAPMessage message = context.getMessage();
 			SOAPPart sp = message.getSOAPPart();
 			SOAPEnvelope sh = sp.getEnvelope();
-			
 			SOAPHeader header = sh.getHeader();
 			
 			
