@@ -29,6 +29,11 @@ public class IDRemoteServices extends RemoteServices{
 	
 	private static final String ID_NAME = "SD-ID";
 	
+	private SDId idRemote;
+	
+	public IDRemoteServices(){
+		idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
+	}
 	
 	public SDId getSpecificProxy(String uddiUrl,String name)
 		throws RemoteInvocationException {
@@ -55,7 +60,6 @@ public class IDRemoteServices extends RemoteServices{
 		DuplicateEmailException, InvalidEmailException,
 		RemoteInvocationException {
 		
-		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
 		try {
 			idRemote.createUser(username, email);
 		} catch (EmailAlreadyExists_Exception e) {
@@ -72,7 +76,6 @@ public class IDRemoteServices extends RemoteServices{
 	public void loginUser(String username, String password)
 		throws LoginBubbleDocsException, RemoteInvocationException {
 		
-		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
 		try {
 			idRemote.requestAuthentication(username, objectToBytes(password));
 		} catch (AuthReqFailed_Exception | IOException e) {
@@ -83,7 +86,6 @@ public class IDRemoteServices extends RemoteServices{
 	public void removeUser(String username)
 		throws LoginBubbleDocsException, RemoteInvocationException {
 		
-		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
 		try {
 			idRemote.removeUser(username);
 		} catch (UserDoesNotExist_Exception e) {
@@ -94,7 +96,6 @@ public class IDRemoteServices extends RemoteServices{
 	public void renewPassword(String username)
 		throws LoginBubbleDocsException, RemoteInvocationException {
 		
-		SDId idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
 		try {
 			idRemote.renewPassword(username);
 		} catch (UserDoesNotExist_Exception e) {
