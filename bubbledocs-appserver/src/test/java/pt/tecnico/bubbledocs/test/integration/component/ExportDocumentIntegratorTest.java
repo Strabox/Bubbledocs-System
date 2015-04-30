@@ -16,6 +16,7 @@ import pt.tecnico.bubbledocs.domain.Permission;
 import pt.tecnico.bubbledocs.domain.Reference;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exceptions.CannotStoreDocumentException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
@@ -180,6 +181,35 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 			{
 				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
 				result = new RemoteInvocationException();
+
+			}
+		};
+		expDoc.execute();
+		removeUserFromSession(token);
+		// test
+		expDoc.deserialize(expDoc.getDocXMLBytes());
+		org.jdom2.Document tempDocXML = expDoc.getDocXML();
+		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
+		assertEquals("Name", sheet.getName(),importedSheet.getName());
+		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
+		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
+		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
+		for(Cell cell : sheet.getCellSet()){			
+			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
+			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
+
+		}
+	}
+	
+	@Test (expected=CannotStoreDocumentException.class)
+	public void cannotStoreDocumentException() {
+		String token = addUserToSession(USERNAMEREAD);
+		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
+		expDoc.createXML(); // create byte[] to be used as expectation
+		new Expectations(){
+			{
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+				result = new CannotStoreDocumentException();
 
 			}
 		};
