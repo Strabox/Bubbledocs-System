@@ -19,7 +19,8 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist;
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 import sdis.domain.User;
 import sdis.domain.UserManager;
-import util.Kerberos;
+import util.kerberos.Kerberos;
+import util.kerberos.KerberosTicket;
 
 @WebService(
     endpointInterface="pt.ulisboa.tecnico.sdis.id.ws.SDId", 
@@ -121,10 +122,10 @@ public class SDImpl implements SDId {
 			
 			boolean loggedin = manager.verifyUserPassword(userId, password);
 			if(loggedin == true){
-				String text = Kerberos.createTicket(userId, null, null, null);
+				KerberosTicket ticket = new KerberosTicket("client","server",8,null);
 				byte[] bytesKey = Kerberos.digestPassword(password, Kerberos.MD5);
 				Key key = Kerberos.getKeyFromBytes(bytesKey);
-				return Kerberos.cipherText(key, text);
+				return Kerberos.cipherText(key, ticket.serializeTicket(key));
 			}
 			else{
 				AuthReqFailed arf = new AuthReqFailed();

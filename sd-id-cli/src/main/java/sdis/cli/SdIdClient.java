@@ -5,16 +5,12 @@ import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.security.Key;
-import java.util.Date;
 import java.util.Map;
 
-import javax.crypto.Cipher;
 import javax.xml.ws.BindingProvider;
 
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service; // classes generated from WSDL
-import util.Kerberos;
 import util.uddi.UDDINaming;
 
 public class SdIdClient {
@@ -23,6 +19,7 @@ public class SdIdClient {
 	 * stringToBytes(Object) - Transforms a (Serializable) object
 	 * in byte of arrays.
 	 */
+	@SuppressWarnings("unused")
 	private static byte[] objectToBytes(Object obj){
 		try{
 			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
@@ -70,14 +67,13 @@ public class SdIdClient {
         
         //------------ Some test Code ---------------------
         try{
-        	requestContext.put("nounce", new Date());
-        	byte[] ticket = id.requestAuthentication("bruno", objectToBytes("Bbb2"));
+        	/*byte[] ticket = id.requestAuthentication("bruno", objectToBytes("Bbb2"));
         	Cipher newCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
         	byte[] bytesKey = Kerberos.digestPassword("Bsb2", Kerberos.MD5);
 			Key key = Kerberos.getKeyFromBytes(bytesKey);
         	newCipher.init(Cipher.DECRYPT_MODE, key);
         	byte[] plain = newCipher.doFinal(ticket);
-        	System.out.println(new String(plain,"UTF-8"));
+        	System.out.println(new String(plain,"UTF-8"));*/
         }catch(Exception e){
         	System.out.println(e);
         }
