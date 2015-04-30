@@ -161,8 +161,9 @@ public class KerberosTicket {
 	 */
 	private static void validateTicket(Document doc) throws ParserConfigurationException,
 			SAXException, IOException{
-        
-        File schemaFile = new File("/afs/.ist.utl.pt/users/4/6/ist176046/git/A_15_03_17-project/sd-util/src/main/resources/ticketFormat.xsd");
+        String dirFile = System.getProperty("user.dir") + "/src/main/resources/ticketFormat.xsd";
+		
+        File schemaFile = new File(dirFile);
         Source schemaSource = new StreamSource(schemaFile);
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = schemaFactory.newSchema(schemaSource);
