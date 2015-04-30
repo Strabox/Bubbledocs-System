@@ -4,7 +4,7 @@
 	<!-- http://maven.apache.org/pom.html#Quick_Overview -->
 
 	<groupId>store</groupId>
-	<artifactId>store-ws_wsdl</artifactId>
+	<artifactId>sd-store</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 

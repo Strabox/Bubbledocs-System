@@ -12,7 +12,8 @@
   <properties>
    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-   <version.java>1.8</version.java>
+   <version.java>1.6</version.java>
+    <version.maven.build-helper-plugin>1.7</version.maven.build-helper-plugin>
   </properties>
   
   <dependencies>
@@ -43,6 +44,7 @@
   
   <build>
   	<plugins>
+  		  
 		<plugin>
 	        <groupId>org.codehaus.mojo</groupId>
 	        <artifactId>exec-maven-plugin</artifactId>

@@ -78,9 +78,5 @@ public class Kerberos {
 		return cipher.doFinal(text);
 	}
 	
-	public static void createAuthPackage(){
-		
-	}
-	
 	
 }
