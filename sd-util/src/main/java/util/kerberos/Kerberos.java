@@ -5,6 +5,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
@@ -14,6 +15,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 public class Kerberos {
 	
@@ -22,6 +24,7 @@ public class Kerberos {
 	public final static String DES = "DES";
 	
 	public final static String CYPHER_MODE = "DES/ECB/PKCS5Padding";
+	
 	
 	/* digestPassword - used to get Simmetric key to talk
 	 * with user in the authentication process. */
@@ -79,6 +82,16 @@ public class Kerberos {
 		Cipher cipher = Cipher.getInstance(CYPHER_MODE);
 		cipher.init(Cipher.DECRYPT_MODE, key);
 		return cipher.doFinal(text);
+	}
+	
+	/*
+	 * generateRandomNumber() -
+	 */
+	public static String generateRandomNumber() throws NoSuchAlgorithmException{
+		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+		final byte[] bytes = new byte[16];
+		sr.nextBytes(bytes);
+		return DatatypeConverter.printBase64Binary(bytes);
 	}
 	
 	

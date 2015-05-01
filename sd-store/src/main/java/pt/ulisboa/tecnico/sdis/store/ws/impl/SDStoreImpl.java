@@ -1,24 +1,21 @@
 package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.*;
+
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 
-
-
 @WebService(
-		endpointInterface="pt.ulisboa.tecnico.sdis.store.ws.SDStore", 
-		wsdlLocation="SD-STORE.1_1.wsdl",
-		name="SDStore",
-		portName="SDStoreImplPort",
-		targetNamespace="urn:pt:ulisboa:tecnico:sdis:store:ws",
-		serviceName="SDStore"
-		)
-
+	endpointInterface="pt.ulisboa.tecnico.sdis.store.ws.SDStore", 
+	wsdlLocation="SD-STORE.1_1.wsdl",
+	name="SDStore",
+	portName="SDStoreImplPort",
+	targetNamespace="urn:pt:ulisboa:tecnico:sdis:store:ws",
+	serviceName="SDStore"
+)
+@HandlerChain(file="/handler-chain.xml")
 public class SDStoreImpl implements SDStore {
 
 	private List<Storage> storage;

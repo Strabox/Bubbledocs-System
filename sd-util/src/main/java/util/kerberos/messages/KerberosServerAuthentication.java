@@ -2,12 +2,16 @@ package util.kerberos.messages;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.lang3.SystemUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -25,15 +29,12 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\authenticationFormat.xsd";
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/authenticationFormat.xsd";
 	
-	private String kcs;
+	private Key kcs;
+	
 	private String nounce;
 	
-	public KerberosServerAuthentication(Key kcs,String nounce){
-		this.kcs = Base64.getEncoder().encodeToString(kcs.getEncoded());
-		this.nounce = nounce;
-	}
 	
-	private KerberosServerAuthentication(String kcs,String nounce){
+	public KerberosServerAuthentication(Key kcs,String nounce){
 		this.kcs = kcs;
 		this.nounce = nounce;
 	}
@@ -41,7 +42,7 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 	/**
 	 * @return the kcs
 	 */
-	public String getKcs() {
+	public Key getKcs() {
 		return kcs;
 	}
 
@@ -52,11 +53,11 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 		return nounce;
 	}
 	
-	
+	@Override
 	public byte[] serialize(Key kc) throws KerberosException {
 		String authentication,body = "";
 		body += "<nounce>"+ nounce + "</nounce>";
-		body += "<cliServKey>" + kcs +"</cliServKey>";
+		body += "<cliServKey>" + Base64.getEncoder().encodeToString(kcs.getEncoded()) +"</cliServKey>";
 		authentication = "<authentication>" + body + "</authentication>";
 		
 		try{
@@ -107,15 +108,21 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 					k = node.getTextContent();
 				}
 			}
-			return new KerberosServerAuthentication(k, n);
+			byte[] decodedKcs =  Base64.getDecoder().decode(k);
+			Key key = Kerberos.getKeyFromBytes(decodedKcs);
+			return new KerberosServerAuthentication(key, n);
 		}
 		catch(SAXException e){
 			throw new KerberosException();
-		}
-		catch(IOException e){
+		}catch(IOException e){
 			throw new KerberosException();
-		}
-		catch(ParserConfigurationException e){
+		}catch(ParserConfigurationException e){
+			throw new KerberosException();
+		} catch (InvalidKeyException e) {
+			throw new KerberosException();
+		} catch (InvalidKeySpecException e) {
+			throw new KerberosException();
+		} catch (NoSuchAlgorithmException e) {
 			throw new KerberosException();
 		}
 	}

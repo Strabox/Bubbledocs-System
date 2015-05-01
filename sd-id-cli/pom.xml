@@ -11,11 +11,16 @@
   <name>${project.artifactId}</name>
 
   <dependencies>
-  <dependency>
-            <groupId>sd</groupId>
-            <artifactId>sd-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+  	<dependency>
+      <groupId>store</groupId>
+      <artifactId>sd-store-cli</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+ 	<dependency>
+      <groupId>sd</groupId>
+      <artifactId>sd-util</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
     <!-- JAX-WS -->
     <dependency>
       <groupId>com.sun.xml.ws</groupId>
@@ -34,14 +39,13 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-  
-   <!-- JAX-R API -->
-		<dependency>
-			<groupId>javax.xml.registry</groupId>
-			<artifactId>javax.xml.registry-api</artifactId>
-			<version>1.0.5</version>
-		</dependency>
-   <!-- UDDI Web Services -->
+    <!-- JAX-R API -->
+	<dependency>
+		<groupId>javax.xml.registry</groupId>
+		<artifactId>javax.xml.registry-api</artifactId>
+		<version>1.0.5</version>
+	</dependency>
+	<!-- UDDI Web Services -->
 		<dependency>
 			<groupId>org.apache.juddi</groupId>
 			<artifactId>uddi-ws</artifactId>
@@ -109,7 +113,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mainclass>sdis.cli.SdIdClient</mainclass>
-
     <ws.name>SD-ID</ws.name>
     <ws.url>http://localhost:8080/id-ws/endpoint</ws.url>
     <uddi.url>http://localhost:8081</uddi.url>

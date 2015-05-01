@@ -103,11 +103,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mainclass>pt.ulisboa.tecnico.sdis.store.cli.SDStoreClient</mainclass>
-
     <uddi.url>http://localhost:8081</uddi.url>
     <ws.name>SD-STORE</ws.name>
-
-    <ws.url>http://localhost:8080/store-ws/endpoint</ws.url>
+    <ws.url>http://localhost:8082/store-ws/endpoint</ws.url>
     <wsdl.url>${ws.url}?WSDL</wsdl.url>
   </properties>
 

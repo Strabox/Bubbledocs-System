@@ -119,6 +119,15 @@ public class UserManager {
 		return false;
 	}
 	
+	public String getUserPassword(String username){
+		for (User u : users){
+			if (u.getUsername().equals(username)){
+				return u.getPassword();
+			}
+		}
+		return null;
+	}
+	
 	public void removeUser(String username){
 		
 		for (User u : users){

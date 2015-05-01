@@ -20,20 +20,20 @@ public class KerberosRequest extends KerberosMessage{
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\requestFormat.xsd";
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/requestFormat.xsd";
 	
-	private String server;
+	private Integer server;
 	
-	private String nounce;
+	private String nonce;
 	
 	
-	public KerberosRequest(String server,String nounce){
+	public KerberosRequest(Integer server,String nonce){
 		this.server = server;
-		this.nounce = nounce;
+		this.nonce = nonce;
 	}
 
 	/**
 	 * @return the server
 	 */
-	public String getServer() {
+	public Integer getServer() {
 		return server;
 	}
 
@@ -41,21 +41,21 @@ public class KerberosRequest extends KerberosMessage{
 	 * @return the nounce
 	 */
 	public String getNounce() {
-		return nounce;
+		return nonce;
 	}
 
 	public byte[] serialize() throws UnsupportedEncodingException{
 		String request, body;
-		body = "<server>" + server + "</server>";
-		body += "<nounce>" + nounce + "</nounce>";
+		body = "<server>" + server.toString() + "</server>";
+		body += "<nounce>" + nonce + "</nounce>";
 		request = "<request>" + body +"</request>";
 		return request.getBytes("UTF-8");
 	}
 	
 	public static KerberosRequest deserialize(byte[] request) throws 
 	ParserConfigurationException, SAXException, IOException, KerberosException{
-		
-		String s = "", n = "",dirFile = "";;
+		Integer s = 0;
+		String n = "",dirFile = "";;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document;
@@ -75,7 +75,7 @@ public class KerberosRequest extends KerberosMessage{
 				n = node.getTextContent();
 			}
 			else if(node.getNodeName().equals("server")){
-				s = node.getTextContent();
+				s = Integer.parseInt(node.getTextContent());
 			}
 		}
 		

@@ -2,38 +2,24 @@ package sdis.cli;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.security.Key;
 import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service; // classes generated from WSDL
+import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
+import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
+import sdis.kerberos.KerberosClientUtil;
+import util.kerberos.Kerberos;
+import util.kerberos.messages.KerberosClientAuthentication;
+import util.kerberos.messages.KerberosReply;
 import util.kerberos.messages.KerberosRequest;
+import util.kerberos.messages.KerberosServerAuthentication;
 import util.uddi.UDDINaming;
 
 public class SdIdClient {
-	
-	/*
-	 * stringToBytes(Object) - Transforms a (Serializable) object
-	 * in byte of arrays.
-	 */
-	@SuppressWarnings("unused")
-	private static byte[] objectToBytes(Object obj){
-		try{
-			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-			ObjectOutputStream oOut = new ObjectOutputStream(bOut);
-			oOut.writeObject(obj);
-			return bOut.toByteArray();
-		}
-		catch(IOException e){
-			System.err.println(e);
-			return null;
-		}
-	}
-	
 	
     public static void main(String[] args) throws Exception {
     	if(args.length < 2){
@@ -66,9 +52,27 @@ public class SdIdClient {
         
         System.out.println("Endpoint address:" + requestContext.get(ENDPOINT_ADDRESS_PROPERTY));
         
+        //----------- Get SD-STORE proxies ----------------
+        endpointAddress = UDDILookup("http://localhost:8082/store-ws/endpoint", "SD-STORE");	
+        SDStore_Service serv = new SDStore_Service();
+        SDStore store = serv.getSDStoreImplPort();
+        bindingProvider = (BindingProvider) store;
+        requestContext = bindingProvider.getRequestContext();
+        requestContext.put(ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
         //------------ Some test Code ---------------------
         try{
-        	id.requestAuthentication("bruno", new KerberosRequest("1", "400").serialize());
+        	String nonce = Kerberos.generateRandomNumber();
+        	byte[] r= id.requestAuthentication("bruno", new KerberosRequest(1, nonce).serialize());
+        	KerberosReply reply = KerberosReply.deSerializeReply(r);
+        	Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword("Bbb2", Kerberos.MD5));
+        	KerberosServerAuthentication l = KerberosServerAuthentication.deserialize(reply.getAuthentication(), kc);
+        	
+        	KerberosClientAuthentication hmm = new KerberosClientAuthentication("bruno");
+        	KerberosClientUtil.request(store,reply.getTicket(), hmm.serialize(l.getKcs()), Kerberos.generateRandomNumber().getBytes());
+    
+        	store.listDocs("bruno");
+        	
+       
         }catch(Exception e){
         	System.out.println(e);
         }

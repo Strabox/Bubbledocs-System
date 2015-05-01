@@ -11,12 +11,12 @@
 	<name>${project.artifactId}</name>
 
 	<dependencies>
-	<dependency>
+		<dependency>
             <groupId>sd</groupId>
             <artifactId>sd-util</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-	<dependency> 
+		<dependency> 
 		   <groupId>org.jmockit</groupId> 
 		   <artifactId>jmockit</artifactId>
 		   <version>1.16</version> 
@@ -104,21 +104,16 @@
 		</dependency>
 	</dependencies>
 
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<mainclass>pt.ulisboa.tecnico.sdis.store.ws.impl.SDStoreMain</mainclass>
-
 		<ws.name>SD-STORE</ws.name>
-		<ws.url>http://localhost:8080/store-ws/endpoint</ws.url>
+		<ws.url>http://localhost:8082/store-ws/endpoint</ws.url>
 		<uddi.url>http://localhost:8081</uddi.url>
-
-
 	</properties>
 
 	<build>
 		<plugins>
-	
 			<plugin>
 				<groupId>org.jvnet.jax-ws-commons</groupId>
 				<artifactId>jaxws-maven-plugin</artifactId>

@@ -2,7 +2,7 @@
   <xs:element name="request">
     <xs:complexType>
       <xs:sequence>
-        <xs:element type="xs:string" name="server"/>
+        <xs:element type="xs:integer" name="server"/>
         <xs:element type="xs:string" name="nounce"/>
       </xs:sequence>
     </xs:complexType>

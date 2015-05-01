@@ -28,24 +28,23 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/ticketFormat.xsd";
 
 	private String client;
-	private String server;
+	private Integer server;
 	private int hourDuration;
 	private Date beginTime;
 	private Date endTime;
-	private String cliServKey;
-	private String kcs;
+	private Key kcs;
 	
 	
-	public KerberosTicket(String client,String server,int duration,
+	public KerberosTicket(String client,int server,int duration,
 			Key kcs) {
 		this.client = client;
 		this.server = server;
 		this.hourDuration = duration;
-		this.kcs = Base64.getEncoder().encodeToString(kcs.getEncoded());
+		this.kcs = kcs;
 	}
 	
-	private KerberosTicket(String client,String server,
-			String kcs,Date beginTime,Date endTime) {
+	private KerberosTicket(String client,int server,
+			Key kcs,Date beginTime,Date endTime) {
 		this.client = client;
 		this.server = server;
 		this.kcs = kcs;
@@ -53,8 +52,8 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		this.endTime = endTime;
 	}
 	
-	
-	public byte[] serialize(Key ks) throws KerberosException{
+	@Override
+	public byte[] serialize(Key serverKey) throws KerberosException{
 		XMLGregorianCalendar createTime;
 		XMLGregorianCalendar endTime;
 		try{
@@ -65,19 +64,20 @@ public class KerberosTicket extends KerberosCypheredMessage{
 			Calendar cal = Calendar.getInstance();
 		    cal.setTime(new Date());
 		    cal.add(Calendar.HOUR_OF_DAY, hourDuration);
-		    
+		 
 		    gc.setTime(cal.getTime());
 		    endTime = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
 			
 			String ticketXML, ticketBody;
 			ticketBody = "<client>" + client + "</client>";
-			ticketBody += "<server>" + server + "</server>";
+			ticketBody += "<server>" + server.toString() + "</server>";
 			ticketBody += "<beginTime>" + createTime.toString() + "</beginTime>";
 			ticketBody += "<endTime>" + endTime.toString() + "</endTime>";
-			ticketBody += "<cliServKey>" + kcs + "</cliServKey>";
+			ticketBody += "<cliServKey>" + Base64.getEncoder().encodeToString(kcs.getEncoded()) + "</cliServKey>";
 			ticketXML = "<ticket>" + ticketBody +"</ticket>";
 			System.out.println(ticketXML);
-			return Kerberos.cipherText(ks, ticketXML.getBytes(UTF8));
+			System.out.println(Base64.getEncoder().encodeToString(kcs.getEncoded()));
+			return Kerberos.cipherText(serverKey, ticketXML.getBytes(UTF8));
 		}catch(Exception e){
 			throw new KerberosException();
 		}
@@ -108,8 +108,8 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	 */
 	private static KerberosTicket parseTicket(String strTicket) 
 	throws KerberosException {
-		
-		String client ="" ,server = "",kcs = "",dirFile = "";
+		int server = 0;
+		String client ="" ,kcs = "",dirFile = "";
 		Date beginTime = null ,endTime = null;
 		try{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -131,7 +131,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 					client = node.getTextContent();
 				}
 				else if(node.getNodeName().equals("server")){
-					server = node.getTextContent();
+					server = Integer.parseInt(node.getTextContent());
 				}
 				else if(node.getNodeName().equals("cliServKey")){
 					kcs = node.getTextContent();
@@ -145,7 +145,9 @@ public class KerberosTicket extends KerberosCypheredMessage{
 					endTime = cal.getTime();
 				}
 			}
-			return new KerberosTicket(client, server, kcs,beginTime,endTime);
+			byte[] keyInBytes = Base64.getDecoder().decode(kcs);
+			Key key = Kerberos.getKeyFromBytes(keyInBytes);
+			return new KerberosTicket(client, server, key,beginTime,endTime);
 		}catch(Exception e){
 			throw new KerberosException();
 		}
@@ -165,12 +167,6 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		return endTime;
 	}
 
-	/**
-	 * @return the cliServKey
-	 */
-	public String getCliServKey() {
-		return cliServKey;
-	}
 	
 	/**
 	 * 
@@ -184,7 +180,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	 * 
 	 * @return the kcs
 	 */
-	public String getKcs(){
+	public Key getKcs(){
 		return kcs;
 	}
 	
@@ -192,7 +188,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	 * 
 	 * @return the server
 	 */
-	public String getServer(){
+	public Integer getServer(){
 		return server;
 	}
 	

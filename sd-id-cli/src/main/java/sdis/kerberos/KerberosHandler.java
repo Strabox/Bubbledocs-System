@@ -7,7 +7,7 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-/* Kerberos Hadler - ID Client hanlder. */
+/* Kerberos Handler - Kerberos ID Client hanlder. */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 
 	
@@ -23,14 +23,17 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				if(hdr == null){
 					hdr = env.addHeader();
 				}
-				Name server = env.createName("server");
-				Name nounce = env.createName("nounce");
-                SOAPHeaderElement servEle = hdr.addHeaderElement(server);
-                SOAPHeaderElement nounEle = hdr.addHeaderElement(nounce);
-                servEle.addTextNode((String)context.get(Kerberos.SERVER_ENDPOINT));
-                nounEle.addTextNode((String)context.get(Kerberos.NOUNCE_ENDPOINT));
+				Name ticket = env.createName("ticket");
+				Name auth = env.createName("auth");
+				Name nonce = env.createName("nonce");
+                SOAPHeaderElement authEle = hdr.addHeaderElement(auth);
+                SOAPHeaderElement noncEle = hdr.addHeaderElement(nonce);
+                SOAPHeaderElement tickEle = hdr.addHeaderElement(ticket);
+                authEle.addTextNode((String)context.get("auth"));
+                noncEle.addTextNode((String)context.get("nonce"));
+                tickEle.addTextNode((String)context.get("ticket"));
                 */
-			}
+				} 
 			catch(Exception e){
 				System.out.println("ERROR Leaving");
 				return false;
@@ -38,7 +41,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 		}
 		else{						//If message is ARRIVING!!.
 			try{
-				// PROBABLY EMPTY in this handler.
+				
 			}catch(Exception e){
 				System.out.println("ERROR Arriving");
 				return false;
