@@ -14,6 +14,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 /* Class manager - Manages all users in the system. */
 public class UserManager {
 
+	
 	/* System users. Yea arraylist is a bit idiot and ineficcient.*/
 	private ArrayList<User> users;
 	

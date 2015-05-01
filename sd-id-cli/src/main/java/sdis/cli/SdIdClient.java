@@ -11,6 +11,7 @@ import javax.xml.ws.BindingProvider;
 
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service; // classes generated from WSDL
+import util.kerberos.messages.KerberosRequest;
 import util.uddi.UDDINaming;
 
 public class SdIdClient {
@@ -67,13 +68,7 @@ public class SdIdClient {
         
         //------------ Some test Code ---------------------
         try{
-        	/*byte[] ticket = id.requestAuthentication("bruno", objectToBytes("Bbb2"));
-        	Cipher newCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-        	byte[] bytesKey = Kerberos.digestPassword("Bsb2", Kerberos.MD5);
-			Key key = Kerberos.getKeyFromBytes(bytesKey);
-        	newCipher.init(Cipher.DECRYPT_MODE, key);
-        	byte[] plain = newCipher.doFinal(ticket);
-        	System.out.println(new String(plain,"UTF-8"));*/
+        	id.requestAuthentication("bruno", new KerberosRequest("1", "400").serialize());
         }catch(Exception e){
         	System.out.println(e);
         }

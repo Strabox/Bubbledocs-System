@@ -1,8 +1,5 @@
 package sdis;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.security.Key;
 
 import javax.jws.HandlerChain;
@@ -19,8 +16,10 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist;
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 import sdis.domain.User;
 import sdis.domain.UserManager;
+import sdis.kerberos.KerberosManager;
 import util.kerberos.Kerberos;
-import util.kerberos.KerberosTicket;
+import util.kerberos.messages.KerberosRequest;
+import util.kerberos.messages.KerberosTicket;
 
 @WebService(
     endpointInterface="pt.ulisboa.tecnico.sdis.id.ws.SDId", 
@@ -33,14 +32,16 @@ import util.kerberos.KerberosTicket;
 @HandlerChain(file="/handler-chain.xml")
 public class SDImpl implements SDId {
 
+	private final int TICKET_HOUR_DURATION = 2;
+	
 	private UserManager manager;
 	
-	/* Used to pass information to SOAP handlers. */
-	//private WebServiceContext wscont;
-	
+	@SuppressWarnings("unused")
+	private KerberosManager kerberosManager;
 	
 	public SDImpl(){
 		manager = new UserManager();
+		kerberosManager = new KerberosManager();
 		populateServer();
 	}
 
@@ -68,16 +69,6 @@ public class SDImpl implements SDId {
 		}
 	}
 	
-	/*
-	 * bytesToObject(bytes) - Transforms bytes in an object.
-	 */
-	private Object bytesToObject(byte[] bytes) throws IOException,
-		ClassNotFoundException {
-		ByteArrayInputStream b = new ByteArrayInputStream(bytes);
-		ObjectInputStream o = new ObjectInputStream(b);
-		return o.readObject();
-	}
-	
 	/* -----------------------WebService Methods---------------------------- */
 	
 	public void createUser(String userId, String emailAddress)
@@ -86,10 +77,11 @@ public class SDImpl implements SDId {
 		
 		User user = new User(userId,emailAddress);
 		manager.addUser(user);
-		System.out.println("First password for " + user.getUsername()+ " : " + user.getPassword());	//Requested by professor.
+		//Requested by professor.
+		System.out.println("First password for " + user.getUsername()+ " : " + user.getPassword());	
 	
 	}
-
+	
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {
 		if(!manager.usernameExists(userId)){
 			UserDoesNotExist udne = new UserDoesNotExist();
@@ -115,17 +107,15 @@ public class SDImpl implements SDId {
 		try{		
 			if(userId == null || reserved == null){
 				AuthReqFailed arf = new AuthReqFailed();
-				throw new AuthReqFailed_Exception("Invalid username or password!!", arf);
+				throw new AuthReqFailed_Exception("Invalid request null detected", arf);
 			}
-			
-			String password = (String) bytesToObject(reserved);
-			
-			boolean loggedin = manager.verifyUserPassword(userId, password);
-			if(loggedin == true){
-				KerberosTicket ticket = new KerberosTicket("client","server",8,null);
-				byte[] bytesKey = Kerberos.digestPassword(password, Kerberos.MD5);
-				Key key = Kerberos.getKeyFromBytes(bytesKey);
-				return Kerberos.cipherText(key, ticket.serializeTicket(key));
+			boolean userExists = manager.usernameExists(userId);
+			if(userExists == true){
+				KerberosRequest r = KerberosRequest.deserialize(reserved);
+				
+				Key kcs = Kerberos.generateSymKey(Kerberos.DES, 56);
+				KerberosTicket ticket = new KerberosTicket(userId, r.getServer(),TICKET_HOUR_DURATION, kcs);
+				return ticket.serialize(kcs);//TODO
 			}
 			else{
 				AuthReqFailed arf = new AuthReqFailed();
@@ -133,6 +123,7 @@ public class SDImpl implements SDId {
 			}
 		}catch(Exception e){
 			AuthReqFailed arf = new AuthReqFailed();
+			System.out.println(e);
 			throw new AuthReqFailed_Exception("Problem authenticating!!", arf);
 		}
 	}
