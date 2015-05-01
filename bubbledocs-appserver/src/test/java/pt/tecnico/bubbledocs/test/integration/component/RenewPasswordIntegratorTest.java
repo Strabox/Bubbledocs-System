@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.service;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertNull;
 
@@ -11,12 +11,11 @@ import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
-import pt.tecnico.bubbledocs.service.local.RenewPassword;
+import pt.tecnico.bubbledocs.integration.RenewPasswordIntegrator;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
 import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
-public class RenewPasswordTest extends BubbleDocsServiceTest {
-
+public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	@Mocked
 	private IDRemoteServices remoteID;
 	
@@ -52,7 +51,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
      */
     @Test
     public void success() {
-    	RenewPassword service = new RenewPassword(tokenExists);
+    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenExists);
         
         new Expectations(){
         	{
@@ -72,7 +71,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
     @Test(expected=UserNotInSessionException.class)
     public void testRenewUserNotInSession(){
     	removeUserFromSession(tokenExists);
-    	RenewPassword service = new RenewPassword(tokenExists);
+    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenExists);
         service.execute();
     }
     
@@ -81,7 +80,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
      */
     @Test(expected=UnavailableServiceException.class)
     public void testRenewCantReachServer(){
-    	RenewPassword service = new RenewPassword(tokenExists);
+    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenExists);
     	
     	new Expectations(){
         	{
@@ -95,7 +94,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
     
     @Test(expected=LoginBubbleDocsException.class)
     public void testRenewWrongLogin(){
-    	RenewPassword service = new RenewPassword(tokenExists);
+    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenExists);
     	
     	new Expectations(){
         	{
@@ -109,7 +108,7 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
     
     @Test(expected=LoginBubbleDocsException.class)
     public void testRenewUserNotInServer(){
-    	RenewPassword service = new RenewPassword(tokenDoesNotExist);
+    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenDoesNotExist);
     	
     	new Expectations(){
         	{
