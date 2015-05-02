@@ -1,6 +1,7 @@
 package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -78,22 +79,29 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
     /*
      * 
      */
-    @Test(expected=UnavailableServiceException.class)
-    public void testRenewCantReachServer(){
-    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenExists);
-    	
-    	new Expectations(){
-        	{
-        		remoteID.renewPassword(USERNAME_EXISTS);
-        		result = new RemoteInvocationException();
-        	}
-        };
-        
-        service.execute();
-    }
+   @Test
+   public void testRenewCantReachServer(){
+   	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenExists);
+   	
+   	new Expectations(){
+       	{
+       		remoteID.renewPassword(USERNAME_EXISTS);
+       		result = new RemoteInvocationException();
+       	}
+       };
+       try{
+       		service.execute();
+       		fail();
+       }
+       catch(UnavailableServiceException e){
+    	   User user = getUserFromUsername(USERNAME_EXISTS);
+           assertNull(user.getPassword());
+       }
+       
+   }
     
-    @Test(expected=LoginBubbleDocsException.class)
-    public void testRenewWrongLogin(){
+    @Test
+    public void testRenewWrongServerLogin(){
     	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenExists);
     	
     	new Expectations(){
@@ -102,11 +110,18 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
         		result = new LoginBubbleDocsException();
         	}
         };
-        
-        service.execute();
+        try{
+        	service.execute();
+        	fail();
+        }
+        catch(LoginBubbleDocsException e){
+        	User user = getUserFromUsername(USERNAME_EXISTS);
+            assertNull(user.getPassword());
+        }
+      
     }
     
-    @Test(expected=LoginBubbleDocsException.class)
+    @Test
     public void testRenewUserNotInServer(){
     	RenewPasswordIntegrator service = new RenewPasswordIntegrator(tokenDoesNotExist);
     	
@@ -116,7 +131,13 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
         		result = new LoginBubbleDocsException();
         	}
         };
-        
-        service.execute();
+        try{
+        	service.execute();
+        	fail();
+        }
+        catch(LoginBubbleDocsException e){
+        	User user = getUserFromUsername(USERNAME_DOES_NOT_EXIST);
+            assertNull(user.getPassword());
+        }
     }
 }
