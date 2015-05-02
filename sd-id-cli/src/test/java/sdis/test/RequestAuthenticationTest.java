@@ -1,8 +1,18 @@
 package sdis.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.security.Key;
+
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed_Exception;
+import util.kerberos.Kerberos;
+import util.kerberos.messages.KerberosReply;
+import util.kerberos.messages.KerberosRequest;
+import util.kerberos.messages.KerberosServerAuthentication;
 
 public class RequestAuthenticationTest extends SdIdTest{
 	
@@ -12,20 +22,38 @@ public class RequestAuthenticationTest extends SdIdTest{
 	private final String pass = "Aaa1";
 	private final String wrongPass = "wrong";
 	
-	/* Test a successful login. */
+	/* Test a successful authentication login. */
 	@Test
 	public void successLogin(){
-		/*try{
-			boolean login = false;
-			byte[] ans = idServer.requestAuthentication(user, objectToBytes(pass));
-			if(ans[0] == 1){
-				login = true;
-			}
-			Assert.assertTrue(login);
-		}
-		catch(AuthReqFailed_Exception e){
+		try{
+			String nonce = Kerberos.generateRandomNumber();
+			KerberosRequest req = new KerberosRequest(1,nonce);
+			byte[] ans = idServer.requestAuthentication(user, req.serialize());
+			KerberosReply re = KerberosReply.deserialize(ans);
+			Key k = Kerberos.getKeyFromBytes(Kerberos.digestPassword(pass, "MD5"));
+			KerberosServerAuthentication a;
+			a = KerberosServerAuthentication.deserialize(re.getAuthentication(), k);
+			
+			assertEquals(a.getNonce(),nonce);
+			assertNotNull(re.getTicket());
+		}catch(Exception e){
 			fail(e.toString());
-		}*/
+		}
+	}
+	
+	@Test
+	public void failLoginDuplicateNonce(){
+		try{
+			String nonce = Kerberos.generateRandomNumber();
+			KerberosRequest req = new KerberosRequest(1,nonce);
+			idServer.requestAuthentication(user, req.serialize());
+			idServer.requestAuthentication(user, req.serialize());
+		}catch(AuthReqFailed_Exception e){
+			//Success
+		}
+		catch(Exception e){
+			fail("Login Error");
+		}
 	}
 	
 	/* Test user login with wrong password. */

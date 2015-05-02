@@ -1,6 +1,5 @@
 package util.kerberos.messages;
 
-import java.io.ByteArrayInputStream;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,9 +8,6 @@ import java.util.GregorianCalendar;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.lang3.SystemUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -88,14 +84,12 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage{
 		String dirFile ="",c ="";
 		Date requestTime = null;
 		try{
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	        DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document;
-			document = builder.parse(new ByteArrayInputStream(auth));
+			Document document = getXMLDocumentFromBytes(auth);
 			
 			if(SystemUtils.IS_OS_WINDOWS)
 	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX)
+	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+	        		||SystemUtils.IS_OS_MAC_OSX )
 	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
 			validateXMLDocument(document,dirFile);
 			
@@ -111,7 +105,7 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage{
 					requestTime = cal.getTime();
 				}
 			}
-		return new KerberosClientAuthentication(c,requestTime);
+			return new KerberosClientAuthentication(c,requestTime);
 		}catch(Exception e){
 			throw new KerberosException();
 		}

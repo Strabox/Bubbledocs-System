@@ -113,18 +113,18 @@ public class SDImpl implements SDId {
 			}
 
 			boolean userExists = userManager.usernameExists(userId);
-			if(userExists == true){
+			if(userExists){
 				KerberosRequest r = KerberosRequest.deserialize(reserved);
-				System.out.println("Nounce: " + r.getNounce());
-				System.out.println("Server: " + r.getServer());
-				if(!kerberosManager.nonceExists(r.getNounce()) && 
+		
+				if(!kerberosManager.nonceExists(r.getNonce()) && 
 					kerberosManager.getServerKey(r.getServer()) != null){
-				
+					
+					kerberosManager.addNonce(r.getNonce());
 					Key ks = kerberosManager.getServerKey(r.getServer());
 					Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(userManager.getUserPassword(userId), Kerberos.MD5));
 					Key kcs = Kerberos.generateSymKey(Kerberos.DES, 56);
 					KerberosTicket ticket = new KerberosTicket(userId, r.getServer(),TICKET_HOUR_DURATION, kcs);
-					KerberosServerAuthentication ksa = new KerberosServerAuthentication(kcs, r.getNounce());
+					KerberosServerAuthentication ksa = new KerberosServerAuthentication(kcs, r.getNonce());
 				
 					return  new KerberosReply(ticket.serialize(ks), ksa.serialize(kc)).serialize();
 				}

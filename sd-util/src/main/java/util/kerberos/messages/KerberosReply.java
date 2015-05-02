@@ -1,20 +1,18 @@
 package util.kerberos.messages;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.SystemUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
 import util.kerberos.exception.KerberosException;
 
+/**
+ * Represents the reply from Kerberos Authentication server
+ * to the client.
+ * @Author André
+ */
 public class KerberosReply extends KerberosNormalMessage{
 
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\replyFormat.xsd";
@@ -54,24 +52,23 @@ public class KerberosReply extends KerberosNormalMessage{
 		body += "<authentication>" + auth +"</authentication>";
 		reply = "<reply>" + body + "</reply>";
 		try{
-			return reply.getBytes("UTF-8");
+			return reply.getBytes(UTF8);
 		}catch(UnsupportedEncodingException e){
 			throw new KerberosException();
 		}
 	}
 	
-	public static KerberosReply deSerializeReply(byte[] reply) 
+	public static KerberosReply deserialize(byte[] reply) 
 	throws KerberosException {
 		
 		String t = "",a = "",dirFile = "";
 		try{
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	        DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document;
-			document = builder.parse(new ByteArrayInputStream(reply));
+			Document document = getXMLDocumentFromBytes(reply);
+			
 	        if(SystemUtils.IS_OS_WINDOWS)
 	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX)
+	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+	        		|| SystemUtils.IS_OS_MAC_OSX)
 	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
 			validateXMLDocument(document,dirFile);
 			
@@ -89,18 +86,10 @@ public class KerberosReply extends KerberosNormalMessage{
 			byte[] tFinal = DatatypeConverter.parseBase64Binary(t);
 			byte[] aFinal = DatatypeConverter.parseBase64Binary(a);
 			return new KerberosReply(tFinal, aFinal);
-		}catch(ParserConfigurationException e){
+		}catch(IllegalArgumentException e){
 			throw new KerberosException();
 		}
-		catch(IllegalArgumentException e){
-			throw new KerberosException();
-		}
-		catch(IOException e){
-			throw new KerberosException();
-		}
-		catch(SAXException e){
-			throw new KerberosException();
-		}
+
 	}
 	
 	

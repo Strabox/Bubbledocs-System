@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
-import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
+import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 
 /*
  * Methods to id clients.
@@ -15,7 +15,7 @@ public class KerberosClientUtil {
 	/*
 	 * request - Used to pass request arguments to handler.
 	 */
-	public static void request(SDStore store,byte[] ticket,byte[] auth,byte[] nonce){
+	public static void request(SDId store,byte[] ticket,byte[] auth,byte[] nonce){
 		BindingProvider bp = (BindingProvider) store;
 		Map<String, Object> requestContext = bp.getRequestContext();
         requestContext.put("ticket", Base64.getEncoder().encode(ticket));

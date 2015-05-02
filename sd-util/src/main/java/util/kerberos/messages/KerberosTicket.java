@@ -1,6 +1,5 @@
 package util.kerberos.messages;
 
-import java.io.ByteArrayInputStream;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Calendar;
@@ -10,17 +9,15 @@ import java.util.GregorianCalendar;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.lang3.SystemUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 
-/*
- * KerberosTicket - class used to create, write and handle
- * kerberos ticket.
+/**
+ * KerberosTicket - Class used to create, serialize and
+ * deserialize tickets.
  */
 public class KerberosTicket extends KerberosCypheredMessage{
 
@@ -73,10 +70,8 @@ public class KerberosTicket extends KerberosCypheredMessage{
 			ticketBody += "<server>" + server.toString() + "</server>";
 			ticketBody += "<beginTime>" + createTime.toString() + "</beginTime>";
 			ticketBody += "<endTime>" + endTime.toString() + "</endTime>";
-			ticketBody += "<cliServKey>" + Base64.getEncoder().encodeToString(kcs.getEncoded()) + "</cliServKey>";
+			ticketBody += "<cliServKey>" + DatatypeConverter.printBase64Binary(kcs.getEncoded()) + "</cliServKey>";
 			ticketXML = "<ticket>" + ticketBody +"</ticket>";
-			System.out.println(ticketXML);
-			System.out.println(Base64.getEncoder().encodeToString(kcs.getEncoded()));
 			return Kerberos.cipherText(serverKey, ticketXML.getBytes(UTF8));
 		}catch(Exception e){
 			throw new KerberosException();
@@ -93,9 +88,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	throws KerberosException {
 		try{
 			byte[] plainTicket = Kerberos.decipherText(k, ticket);
-			String strTicket = new String(plainTicket,UTF8);
-			
-			return parseTicket(strTicket);
+			return parseTicket(plainTicket);
 		}catch(Exception e){
 			throw new KerberosException();
 		}
@@ -106,20 +99,18 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	 * @return
 	 * @throws KerberosException
 	 */
-	private static KerberosTicket parseTicket(String strTicket) 
+	private static KerberosTicket parseTicket(byte[] strTicket) 
 	throws KerberosException {
 		int server = 0;
 		String client ="" ,kcs = "",dirFile = "";
 		Date beginTime = null ,endTime = null;
 		try{
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	        DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document;
-			document = builder.parse(new ByteArrayInputStream(strTicket.getBytes()));
+			Document document = getXMLDocumentFromBytes(strTicket);
 			
 			if(SystemUtils.IS_OS_WINDOWS)
 	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX)
+	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+	        		||SystemUtils.IS_OS_MAC_OSX )
 	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
 			validateXMLDocument(document,dirFile);
 			
@@ -167,7 +158,6 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		return endTime;
 	}
 
-	
 	/**
 	 * 
 	 * @return the client

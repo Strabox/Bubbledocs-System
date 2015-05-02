@@ -11,7 +11,6 @@ import util.kerberos.Kerberos;
 public class KerberosManager {
 
 	public final String KEYS_FILE = "C:\\Maven\\A_15_03_17-project\\sd-util\\src\\main\\resources\\serverKeys";
-	
 	/*
 	 * Max nonces server maintain in record.
 	 */
@@ -73,6 +72,7 @@ public class KerberosManager {
 	 * @return
 	 */
 	public boolean nonceExists(String nonce){
+		System.out.println(nonces.toString());
 		return nonces.contains(nonce);
 	}
 	

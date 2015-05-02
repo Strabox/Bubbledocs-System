@@ -14,12 +14,14 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 		if(out.booleanValue()){		//If message is LEAVING!!.
-			try{
-				/*
+			try{/*
 				SOAPMessage msg = context.getMessage();
 				SOAPPart part = msg.getSOAPPart();
 				SOAPEnvelope env = part.getEnvelope();
 				SOAPHeader hdr = env.getHeader();
+				SOAPBody body = env.getBody();
+				NodeList nodes = body.getChildNodes();
+				System.out.println(nodes.item(0).getLocalName());
 				if(hdr == null){
 					hdr = env.addHeader();
 				}
@@ -33,7 +35,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 noncEle.addTextNode((String)context.get("nonce"));
                 tickEle.addTextNode((String)context.get("ticket"));
                 */
-				} 
+				}
 			catch(Exception e){
 				System.out.println("ERROR Leaving");
 				return false;
