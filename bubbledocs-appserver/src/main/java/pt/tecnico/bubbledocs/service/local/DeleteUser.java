@@ -20,7 +20,11 @@ public class DeleteUser extends BubbleDocsService {
 		this.usertodelete = toDeleteUsername;
     }
     
-    /* Verifies if give token is equal to root's token.
+    public String getUsertodelete() {
+		return usertodelete;
+	}
+
+	/* Verifies if give token is equal to root's token.
      * Only root can delete other users. */
     @Override
     protected void accessControl() throws BubbleDocsException{
