@@ -6,11 +6,16 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.lang3.SystemUtils;
+
 import util.kerberos.Kerberos;
 
 public class KerberosManager {
 
-	public final String KEYS_FILE = "C:\\Maven\\A_15_03_17-project\\sd-util\\src\\main\\resources\\serverKeys";
+	public final String KEYS_FILE_WIN = "\\..\\sd-util\\src\\main\\resources\\serverKeys";
+	public final String KEYS_FILE_LINUX = "/../sd-util/src/main/resources/serverKeys";
+	public final String KEYS_FILE_MAC = "/../sd-util/src/main/resources/serverKeys";
+	//public final String KEYS_FILE = "C:\\Maven\\A_15_03_17-project\\sd-util\\src\\main\\resources\\serverKeys";
 	/*
 	 * Max nonces server maintain in record.
 	 */
@@ -41,7 +46,15 @@ public class KerberosManager {
 	 */
 	public void loadServerKeys() throws Exception{
 		BufferedReader br;
-		br= new BufferedReader(new FileReader(KEYS_FILE));
+		//br= new BufferedReader(new FileReader(KEYS_FILE));
+		String directory="";
+		if(SystemUtils.IS_OS_WINDOWS)
+			directory = System.getProperty("user.dir") +KEYS_FILE_WIN;
+		else if(SystemUtils.IS_OS_LINUX)
+			directory =System.getProperty("user.dir") +KEYS_FILE_LINUX;
+		else if(SystemUtils.IS_OS_MAC)
+			directory =System.getProperty("user.dir") +KEYS_FILE_MAC;
+		br= new BufferedReader(new FileReader(directory));
 		String line = "";
 		while((line = br.readLine()) != null){
 			if(line.matches("[1-9][ \t]+[[a-z][A-Z][0-9]]+")){
