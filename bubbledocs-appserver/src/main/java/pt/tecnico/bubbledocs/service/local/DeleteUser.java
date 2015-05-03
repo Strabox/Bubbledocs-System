@@ -31,7 +31,7 @@ public class DeleteUser extends BubbleDocsService {
     	Bubbledocs bubble = Bubbledocs.getInstance();
     	String rootToken = bubble.getUserInSessionToken(root);
     	//User not in session cant execute the command.
-    	if(token == null || bubble.getUserFromSession(token) == null ||rootToken == null)
+    	if(token == null || bubble.getUserFromSession(token) == null || rootToken == null)
     		throw new UserNotInSessionException();
     	//If the user tokens isnt root's token cant execute command.
 		else if(!token.equals(rootToken))
