@@ -44,8 +44,8 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 	private Cell cell4;
 	private Cell cell5;
 	SpreadSheet importedSheet;
-	
-	
+
+
 	@Override
 	public void populate4Test() {
 		userNoPerm = createUser(USERNAMENOPERM, "user1@user.pt","pass" ,"no permissions");
@@ -85,170 +85,132 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		importedSheet = new SpreadSheet();
 	}
 
+	public void compareSpreadsheet(){
+		assertEquals("Name", sheet.getName(),importedSheet.getName());
+		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
+		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
+		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
+		for(Cell cell : sheet.getCellSet()){			
+			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
+			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
+
+		}
+
+	}
 
 	@Test
 	public void owner() {
 		String tokenOwner = addUserToSession(USERNAMEOWNER);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(tokenOwner,sheet.getId());
-		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
-        	{
-        		storeRemote.storeDocument(userOwner.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
-        		
-        	}
-        };
-        
+			{
+				storeRemote.storeDocument(userOwner.getUsername(),sheet.getName(),withNotNull());
+
+			}
+		};
+
 		expDoc.execute();
 		removeUserFromSession(tokenOwner);
-		// test
 		expDoc.deserialize(expDoc.getDocXMLBytes());
 		org.jdom2.Document tempDocXML = expDoc.getDocXML();
 		importedSheet.importFromXML(tempDocXML, USERNAMEOWNER);
-		assertEquals("Name", sheet.getName(),importedSheet.getName());
-		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
-		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
-		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
-		for(Cell cell : sheet.getCellSet()){			
-			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
-			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
-
-		}
+		compareSpreadsheet();
 	}
 
-	
-	
+
+
 	@Test
 	public void canWrite() {
 		String token = addUserToSession(USERNAMEWRITE);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
-		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
-        	{
-        		storeRemote.storeDocument(userWrite.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
-        		
-        	}
-        };
+			{
+				storeRemote.storeDocument(userWrite.getUsername(),sheet.getName(),withNotNull());
+
+			}
+		};
 		expDoc.execute();
 		removeUserFromSession(token);
-		// test
 		expDoc.deserialize(expDoc.getDocXMLBytes());
 		org.jdom2.Document tempDocXML = expDoc.getDocXML();
 		importedSheet.importFromXML(tempDocXML, USERNAMEWRITE);
-		assertEquals("Name", sheet.getName(),importedSheet.getName());
-		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
-		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
-		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
-		for(Cell cell : sheet.getCellSet()){			
-			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
-			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
-
-		}
+		compareSpreadsheet();
 	}
 	@Test
 	public void canRead() {
 		String token = addUserToSession(USERNAMEREAD);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
-		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
-        	{
-        		storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
-        		
-        	}
-        };
+			{
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),withNotNull());
+
+			}
+		};
 		expDoc.execute();
 		removeUserFromSession(token);
-		// test
 		expDoc.deserialize(expDoc.getDocXMLBytes());
 		org.jdom2.Document tempDocXML = expDoc.getDocXML();
 		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
-		assertEquals("Name", sheet.getName(),importedSheet.getName());
-		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
-		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
-		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
-		for(Cell cell : sheet.getCellSet()){			
-			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
-			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
-
-		}
+		compareSpreadsheet();
 	}
-	
+
 	@Test (expected=UnavailableServiceException.class)
 	public void unavailableService() {
 		String token = addUserToSession(USERNAMEREAD);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
-		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
 			{
-				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),withNotNull());
 				result = new RemoteInvocationException();
 
 			}
 		};
 		expDoc.execute();
 		removeUserFromSession(token);
-		// test
 		expDoc.deserialize(expDoc.getDocXMLBytes());
 		org.jdom2.Document tempDocXML = expDoc.getDocXML();
 		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
-		assertEquals("Name", sheet.getName(),importedSheet.getName());
-		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
-		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
-		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
-		for(Cell cell : sheet.getCellSet()){			
-			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
-			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
-
-		}
+		compareSpreadsheet();
 	}
-	
+
 	@Test (expected=CannotStoreDocumentException.class)
 	public void cannotStoreDocumentException() {
 		String token = addUserToSession(USERNAMEREAD);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
-		expDoc.createXML(); // create byte[] to be used as expectation
+
 		new Expectations(){
 			{
-				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),withNotNull());
 				result = new CannotStoreDocumentException();
 
 			}
 		};
 		expDoc.execute();
 		removeUserFromSession(token);
-		// test
 		expDoc.deserialize(expDoc.getDocXMLBytes());
 		org.jdom2.Document tempDocXML = expDoc.getDocXML();
 		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
-		assertEquals("Name", sheet.getName(),importedSheet.getName());
-		assertEquals("Size: n.lines", sheet.getLines(),importedSheet.getLines());
-		assertEquals("Size: n.columns", sheet.getColumns(),importedSheet.getColumns());
-		assertEquals("N. cells", sheet.getCellSet().size(),importedSheet.getCellSet().size());
-		for(Cell cell : sheet.getCellSet()){			
-			assertEquals("Cell: content",cell.getContent().getClass(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getContent().getClass());
-			assertEquals("Cell: content",cell.getResult(),importedSheet.getSingleCell(cell.getLine(),cell.getColumn()).getResult());
-
-		}
+		compareSpreadsheet();
 	}
-	
+
 	@Test (expected=UnauthorizedOperationException.class)
 	public void cantRead() {
 		String token = addUserToSession(USERNAMENOPERM);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
-		expDoc.createXML(); // create byte[] to be used as expectation
 		new Expectations(){
-        	{
-        		storeRemote.storeDocument(userNoPerm.getUsername(),sheet.getName(),expDoc.getDocXMLBytes());
-        		
-        	}
-        };
+			{
+				storeRemote.storeDocument(null,null,null);
+				times=0;
+			}
+		};
 		expDoc.execute();
 		removeUserFromSession(token);    
 		//this assert wont execute
 		assertEquals("...", 0, 0);
 	}
-	
-	
-	
+
+
+
 
 }
 

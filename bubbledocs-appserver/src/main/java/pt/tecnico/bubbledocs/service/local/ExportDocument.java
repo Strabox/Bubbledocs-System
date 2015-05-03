@@ -50,7 +50,7 @@ public class ExportDocument extends BubbleDocsService {
 	}
 
 
-	//Aux funcs
+
 
 	public void serialize(Object obj){
 		try{
@@ -71,7 +71,7 @@ public class ExportDocument extends BubbleDocsService {
 		catch (IOException | ClassNotFoundException e){}
 	}
 
-	//
+	
 
 	@Override
 	protected void accessControl(){
@@ -103,15 +103,7 @@ public class ExportDocument extends BubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-		createXML();
-
-		try{
-			StoreRemoteServices store = new StoreRemoteServices();
-			store.storeDocument(getUsername(),getSheetname() , docXMLbytes);
-		}
-		catch (RemoteInvocationException e){
-			throw new UnavailableServiceException();
-		}
+		createXML();		
 	}
 
 

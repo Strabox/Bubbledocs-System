@@ -67,13 +67,8 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		String username = expDoc.getUsername();
 		String sheetname = expDoc.getSheetname();
 		byte[] docXMLbytes = expDoc.getDocXMLBytes();
-		try{
-			exportDocumentRemote(username,sheetname,docXMLbytes);
-		}catch(Exception e){
-			/* Compensation if the remote call fails. */
-
-			throw e;
-		}
+		exportDocumentRemote(username,sheetname,docXMLbytes);
+		
 	}
 
 }
