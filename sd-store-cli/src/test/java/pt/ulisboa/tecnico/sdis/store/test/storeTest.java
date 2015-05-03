@@ -1,6 +1,9 @@
 package pt.ulisboa.tecnico.sdis.store.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.security.NoSuchAlgorithmException;
 
 import org.junit.Test;
 
@@ -9,6 +12,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
+import util.kerberos.exception.KerberosException;
 
 
 
@@ -26,7 +30,17 @@ public class storeTest extends SDStoreTest {
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId("document31");
 		pair.setUserId(user);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		port.createDoc(pair);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		port.store(pair, content);
 		assertEquals("...",true,true);	
 	}
@@ -42,6 +56,11 @@ public class storeTest extends SDStoreTest {
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId("ghostDocument");
 		pair.setUserId(user);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		port.store(pair, content);
 		assertEquals("...",true,true);	
 	}
@@ -61,7 +80,17 @@ public class storeTest extends SDStoreTest {
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId("document32");
 		pair.setUserId(user);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		port.createDoc(pair);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		port.store(pair, hugeContent);
 		assertEquals("...",true,true);	
 	}
@@ -75,7 +104,12 @@ public class storeTest extends SDStoreTest {
 		
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId("document33");
-		pair.setUserId(user);		
+		pair.setUserId(user);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		port.store(pair, content);
 		assertEquals("...",true,true);
 	}

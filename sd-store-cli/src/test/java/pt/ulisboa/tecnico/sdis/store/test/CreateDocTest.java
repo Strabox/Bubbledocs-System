@@ -1,7 +1,11 @@
 package pt.ulisboa.tecnico.sdis.store.test;
 
 import static org.junit.Assert.*;
+
+import java.security.NoSuchAlgorithmException;
+
 import pt.ulisboa.tecnico.sdis.store.ws.*;
+import util.kerberos.exception.KerberosException;
 
 import org.junit.Test;
 
@@ -15,6 +19,11 @@ public class CreateDocTest extends SDStoreTest {
 	public void createDocSuccess() throws DocAlreadyExists_Exception {
 		String document ="document11";
 		String user = "User1";
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId(document);
@@ -27,6 +36,11 @@ public class CreateDocTest extends SDStoreTest {
 	public void createOtherDocSuccess() throws DocAlreadyExists_Exception {
 		String document ="otherdocument12";
 		String user = "User1";
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId(document);
@@ -40,7 +54,11 @@ public class CreateDocTest extends SDStoreTest {
 	public void docAlreadyExists () throws DocAlreadyExists_Exception {
 		String document ="document13";
 		String user = "User1";
-		
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (NoSuchAlgorithmException | KerberosException e) {
+			fail("Erro");
+		}
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId(document);
 		pair.setUserId(user);

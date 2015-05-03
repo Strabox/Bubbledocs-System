@@ -1,9 +1,7 @@
 package util.kerberos.messages;
 
-import java.security.InvalidKeyException;
+import java.io.UnsupportedEncodingException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 import javax.xml.bind.DatatypeConverter;
@@ -51,64 +49,49 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 	@Override
 	public byte[] serialize(Key kc) throws KerberosException {
 		String authentication,body = "";
-		body += "<nounce>"+ nonce + "</nounce>";
+		body += "<nonce>"+ nonce + "</nonce>";
 		body += "<cliServKey>" + DatatypeConverter.printBase64Binary(kcs.getEncoded()) +"</cliServKey>";
 		authentication = "<authentication>" + body + "</authentication>";
-		
-		try{
+		try {
 			return Kerberos.cipherText(kc, authentication.getBytes(UTF8));
-		}
-		catch(Exception e){
+		} catch (UnsupportedEncodingException e) {
 			throw new KerberosException();
 		}
 	}
 	
 	
 	public static KerberosServerAuthentication deserialize(byte[] auth,Key k) 
-			throws KerberosException{
-		try{
-			byte[] plainAuth = Kerberos.decipherText(k, auth);
-			return parseTicket(plainAuth);
-		}catch(Exception e){
-			throw new KerberosException();
-		}
+	throws KerberosException {
+		byte[] plainAuth = Kerberos.decipherText(k, auth);
+		return parseTicket(plainAuth);
 	}
 	
 	private static KerberosServerAuthentication parseTicket(byte[] auth) 
 	throws KerberosException {
-		
 		String n = "",k = "",dirFile = "";
-		try{
-			Document document = getXMLDocumentFromBytes(auth);
-			
-			if(SystemUtils.IS_OS_WINDOWS)
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
-	        		||SystemUtils.IS_OS_MAC_OSX )
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
-			validateXMLDocument(document,dirFile);
-			
-			for (Node node = document.getDocumentElement().getFirstChild();
-		        node != null;
-		        node = node.getNextSibling()) {
-			
-				if(node.getNodeName().equals("nounce")){
-					n = node.getTextContent();
-				}
-				else if(node.getNodeName().equals("cliServKey")){
-					k = node.getTextContent();
-				}
+		Document document = getXMLDocumentFromBytes(auth);
+		
+		if(SystemUtils.IS_OS_WINDOWS)
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
+        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+        		||SystemUtils.IS_OS_MAC_OSX )
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
+		validateXMLDocument(document,dirFile);
+		
+		for (Node node = document.getDocumentElement().getFirstChild();
+	        node != null;
+	        node = node.getNextSibling()) {
+		
+			if(node.getNodeName().equals("nonce")){
+				n = node.getTextContent();
 			}
-			byte[] decodedKcs =  Base64.getDecoder().decode(k);
-			Key key = Kerberos.getKeyFromBytes(decodedKcs);
-			return new KerberosServerAuthentication(key, n);
-		}catch (InvalidKeyException e) {
-			throw new KerberosException();
-		} catch (InvalidKeySpecException e) {
-			throw new KerberosException();
-		} catch (NoSuchAlgorithmException e) {
-			throw new KerberosException();
+			else if(node.getNodeName().equals("cliServKey")){
+				k = node.getTextContent();
+			}
 		}
+		byte[] decodedKcs =  Base64.getDecoder().decode(k);
+		Key key = Kerberos.getKeyFromBytes(decodedKcs);
+		return new KerberosServerAuthentication(key, n);
 	}
 
 }

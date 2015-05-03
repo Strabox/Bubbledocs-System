@@ -65,9 +65,9 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		    gc.setTime(cal.getTime());
 		    endTime = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
 			
-			String ticketXML, ticketBody;
-			ticketBody = "<client>" + client + "</client>";
+			String ticketXML = "", ticketBody = "";
 			ticketBody += "<server>" + server.toString() + "</server>";
+			ticketBody += "<client>" + client + "</client>";
 			ticketBody += "<beginTime>" + createTime.toString() + "</beginTime>";
 			ticketBody += "<endTime>" + endTime.toString() + "</endTime>";
 			ticketBody += "<cliServKey>" + DatatypeConverter.printBase64Binary(kcs.getEncoded()) + "</cliServKey>";
@@ -86,12 +86,8 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	 */
 	public static KerberosTicket deserialize(byte[] ticket,Key k) 
 	throws KerberosException {
-		try{
-			byte[] plainTicket = Kerberos.decipherText(k, ticket);
-			return parseTicket(plainTicket);
-		}catch(Exception e){
-			throw new KerberosException();
-		}
+		byte[] plainTicket = Kerberos.decipherText(k, ticket);
+		return parseTicket(plainTicket);
 	}
 
 	/**
@@ -104,44 +100,41 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		int server = 0;
 		String client ="" ,kcs = "",dirFile = "";
 		Date beginTime = null ,endTime = null;
-		try{
-			Document document = getXMLDocumentFromBytes(strTicket);
-			
-			if(SystemUtils.IS_OS_WINDOWS)
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
-	        		||SystemUtils.IS_OS_MAC_OSX )
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
-			validateXMLDocument(document,dirFile);
-			
-			for (Node node = document.getDocumentElement().getFirstChild();
-		        node != null;
-		        node = node.getNextSibling()) {
-			
-				if(node.getNodeName().equals("client")){
-					client = node.getTextContent();
-				}
-				else if(node.getNodeName().equals("server")){
-					server = Integer.parseInt(node.getTextContent());
-				}
-				else if(node.getNodeName().equals("cliServKey")){
-					kcs = node.getTextContent();
-				}
-				else if(node.getNodeName().equals("beginTime")){
-					Calendar cal  = DatatypeConverter.parseDateTime(node.getTextContent());
-					beginTime = cal.getTime();
-				}
-				else if(node.getNodeName().equals("endTime")){
-					Calendar cal  = DatatypeConverter.parseDateTime(node.getTextContent());
-					endTime = cal.getTime();
-				}
+		
+		Document document = getXMLDocumentFromBytes(strTicket);
+		
+		if(SystemUtils.IS_OS_WINDOWS)
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
+        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+        		||SystemUtils.IS_OS_MAC_OSX )
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
+		validateXMLDocument(document,dirFile);
+		
+		for (Node node = document.getDocumentElement().getFirstChild();
+	        node != null;
+	        node = node.getNextSibling()) {
+		
+			if(node.getNodeName().equals("client")){
+				client = node.getTextContent();
 			}
-			byte[] keyInBytes = Base64.getDecoder().decode(kcs);
-			Key key = Kerberos.getKeyFromBytes(keyInBytes);
-			return new KerberosTicket(client, server, key,beginTime,endTime);
-		}catch(Exception e){
-			throw new KerberosException();
+			else if(node.getNodeName().equals("server")){
+				server = Integer.parseInt(node.getTextContent());
+			}
+			else if(node.getNodeName().equals("cliServKey")){
+				kcs = node.getTextContent();
+			}
+			else if(node.getNodeName().equals("beginTime")){
+				Calendar cal  = DatatypeConverter.parseDateTime(node.getTextContent());
+				beginTime = cal.getTime();
+			}
+			else if(node.getNodeName().equals("endTime")){
+				Calendar cal  = DatatypeConverter.parseDateTime(node.getTextContent());
+				endTime = cal.getTime();
+			}
 		}
+		byte[] keyInBytes = Base64.getDecoder().decode(kcs);
+		Key key = Kerberos.getKeyFromBytes(keyInBytes);
+		return new KerberosTicket(client, server, key,beginTime,endTime);
 	}
 	
 	/**

@@ -1,10 +1,10 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="reply">
     <xs:complexType>
-      <xs:sequence>
+      <xs:all>
         <xs:element type="xs:base64Binary" name="ticket"/>
         <xs:element type="xs:base64Binary" name="authentication"/>
-      </xs:sequence>
+      </xs:all>
     </xs:complexType>
   </xs:element>
 </xs:schema>

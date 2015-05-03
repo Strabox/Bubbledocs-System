@@ -70,45 +70,37 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage{
 	
 	public static KerberosClientAuthentication deserialize(byte[] auth,Key kcs)
 	throws KerberosException{
-		try{
-			byte[] plainAuth = Kerberos.decipherText(kcs,auth);
-			
-			return parse(plainAuth);
-		}catch(Exception e){
-			throw new KerberosException();
-		}
+		byte[] plainAuth = Kerberos.decipherText(kcs,auth);
+		return parse(plainAuth);
 	}
 	
 	private static KerberosClientAuthentication parse(byte[] auth)
 	throws KerberosException{
 		String dirFile ="",c ="";
 		Date requestTime = null;
-		try{
-			Document document = getXMLDocumentFromBytes(auth);
-			
-			if(SystemUtils.IS_OS_WINDOWS)
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
-	        		||SystemUtils.IS_OS_MAC_OSX )
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
-			validateXMLDocument(document,dirFile);
-			
-			for (Node node = document.getDocumentElement().getFirstChild();
-		        node != null;
-		        node = node.getNextSibling()) {
-			
-				if(node.getNodeName().equals("client")){
-					c = node.getTextContent();
-				}
-				else if(node.getNodeName().equals("requestTime")){
-					Calendar cal  = DatatypeConverter.parseDateTime(node.getTextContent());
-					requestTime = cal.getTime();
-				}
+		
+		Document document = getXMLDocumentFromBytes(auth);
+		
+		if(SystemUtils.IS_OS_WINDOWS)
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
+        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+        		||SystemUtils.IS_OS_MAC_OSX )
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
+		validateXMLDocument(document,dirFile);
+		
+		for (Node node = document.getDocumentElement().getFirstChild();
+	        node != null;
+	        node = node.getNextSibling()) {
+		
+			if(node.getNodeName().equals("client")){
+				c = node.getTextContent();
 			}
-			return new KerberosClientAuthentication(c,requestTime);
-		}catch(Exception e){
-			throw new KerberosException();
+			else if(node.getNodeName().equals("requestTime")){
+				Calendar cal  = DatatypeConverter.parseDateTime(node.getTextContent());
+				requestTime = cal.getTime();
+			}
 		}
+		return new KerberosClientAuthentication(c,requestTime);
 	}
 
 

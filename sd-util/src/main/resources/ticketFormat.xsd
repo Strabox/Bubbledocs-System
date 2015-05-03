@@ -1,13 +1,16 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="types.xsd" />
+ 
+  <!-- Document Format -->		
   <xs:element name="ticket">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element type="xs:string" name="client"/>
-        <xs:element type="xs:integer" name="server"/>
+      <xs:all>
+        <xs:element type="clientType" name="client"/>
+        <xs:element type="serverType" name="server"/>
         <xs:element type="xs:dateTime" name="beginTime"/>
         <xs:element type="xs:dateTime" name="endTime"/>
         <xs:element type="xs:base64Binary" name="cliServKey"/>
-      </xs:sequence>
+      </xs:all>
     </xs:complexType>
   </xs:element>
 </xs:schema>

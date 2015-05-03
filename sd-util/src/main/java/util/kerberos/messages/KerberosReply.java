@@ -62,34 +62,29 @@ public class KerberosReply extends KerberosNormalMessage{
 	throws KerberosException {
 		
 		String t = "",a = "",dirFile = "";
-		try{
-			Document document = getXMLDocumentFromBytes(reply);
-			
-	        if(SystemUtils.IS_OS_WINDOWS)
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
-	        		|| SystemUtils.IS_OS_MAC_OSX)
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
-			validateXMLDocument(document,dirFile);
-			
-			for (Node node = document.getDocumentElement().getFirstChild();
-		        node != null;
-		        node = node.getNextSibling()) {
-			
-				if(node.getNodeName().equals("ticket")){
-					t = node.getTextContent();
-				}
-				else if(node.getNodeName().equals("authentication")){
-					a = node.getTextContent();
-				}
+		Document document = getXMLDocumentFromBytes(reply);
+		
+        if(SystemUtils.IS_OS_WINDOWS)
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
+        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+        		|| SystemUtils.IS_OS_MAC_OSX)
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
+		validateXMLDocument(document,dirFile);
+		
+		for (Node node = document.getDocumentElement().getFirstChild();
+	        node != null;
+	        node = node.getNextSibling()) {
+		
+			if(node.getNodeName().equals("ticket")){
+				t = node.getTextContent();
 			}
-			byte[] tFinal = DatatypeConverter.parseBase64Binary(t);
-			byte[] aFinal = DatatypeConverter.parseBase64Binary(a);
-			return new KerberosReply(tFinal, aFinal);
-		}catch(IllegalArgumentException e){
-			throw new KerberosException();
+			else if(node.getNodeName().equals("authentication")){
+				a = node.getTextContent();
+			}
 		}
-
+		byte[] tFinal = DatatypeConverter.parseBase64Binary(t);
+		byte[] aFinal = DatatypeConverter.parseBase64Binary(a);
+		return new KerberosReply(tFinal, aFinal);
 	}
 	
 	

@@ -2,7 +2,7 @@
   <xs:element name="authentication">
     <xs:complexType>
       <xs:sequence>
-        <xs:element type="xs:string" name="nounce"/>
+        <xs:element type="xs:base64Binary" name="nonce"/>
         <xs:element type="xs:base64Binary" name="cliServKey"/>
       </xs:sequence>
     </xs:complexType>

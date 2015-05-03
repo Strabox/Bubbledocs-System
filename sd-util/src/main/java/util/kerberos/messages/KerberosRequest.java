@@ -41,7 +41,7 @@ public class KerberosRequest extends KerberosNormalMessage{
 		try{
 			String request, body;
 			body = "<server>" + server.toString() + "</server>";
-			body += "<nounce>" + nonce + "</nounce>";
+			body += "<nonce>" + nonce + "</nonce>";
 			request = "<request>" + body +"</request>";
 			return request.getBytes(UTF8);
 		}catch(UnsupportedEncodingException a){
@@ -51,33 +51,29 @@ public class KerberosRequest extends KerberosNormalMessage{
 	
 	public static KerberosRequest deserialize(byte[] request)
 	throws KerberosException{
-		try{
-			Integer s = 0;
-			String n = "",dirFile = "";
-			Document document = getXMLDocumentFromBytes(request);
-			
-	        if(SystemUtils.IS_OS_WINDOWS)
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
-	        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
-	        		|| SystemUtils.IS_OS_MAC_OSX)
-	        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
-			validateXMLDocument(document,dirFile);
-			
-			for (Node node = document.getDocumentElement().getFirstChild();
-		        node != null;
-		        node = node.getNextSibling()) {
-			
-				if(node.getNodeName().equals("nounce")){
-					n = node.getTextContent();
-				}
-				else if(node.getNodeName().equals("server")){
-					s = Integer.parseInt(node.getTextContent());
-				}
+		Integer s = 0;
+		String n = "",dirFile = "";
+		Document document = getXMLDocumentFromBytes(request);
+		
+        if(SystemUtils.IS_OS_WINDOWS)
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_WINDOWS_PATH;
+        else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC 
+        		|| SystemUtils.IS_OS_MAC_OSX)
+        	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
+		validateXMLDocument(document,dirFile);
+		
+		for (Node node = document.getDocumentElement().getFirstChild();
+	        node != null;
+	        node = node.getNextSibling()) {
+		
+			if(node.getNodeName().equals("nonce")){
+				n = node.getTextContent();
 			}
-			return new KerberosRequest(s, n);
-		}catch(IllegalArgumentException e){
-			throw new KerberosException();
+			else if(node.getNodeName().equals("server")){
+				s = Integer.parseInt(node.getTextContent());
+			}
 		}
+		return new KerberosRequest(s, n);
 	}
 
 }
