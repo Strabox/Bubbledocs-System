@@ -69,8 +69,6 @@ public class CreateDocTest extends SDStoreTest {
 			fail("Erro");
 		} 
 		port.createDoc(pair1);
-		
-		
 		assertEquals("...",1,1);
 		
 	}

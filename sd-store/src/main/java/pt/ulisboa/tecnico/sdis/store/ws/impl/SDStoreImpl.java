@@ -61,6 +61,7 @@ public class SDStoreImpl implements SDStore {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" && docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
 		
 		for (Storage storage2 : storage) {
 			
@@ -74,6 +75,7 @@ public class SDStoreImpl implements SDStore {
 		storage.add(newstor);
 		
 	}
+		}
 
 	/**
 	 * 
@@ -84,6 +86,11 @@ public class SDStoreImpl implements SDStore {
 	 */
 
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception {
+		if (userId==null || userId.equals("")==true){
+			UserDoesNotExist E = new UserDoesNotExist();
+			throw new UserDoesNotExist_Exception ("User does not exist", E); 
+			
+		}
 		checkUserExistence(userId);
 		List<String> doclist = new ArrayList<String>();
 		
@@ -106,12 +113,23 @@ public class SDStoreImpl implements SDStore {
 
 	public void store(DocUserPair docUserPair, byte[] contents) throws UserDoesNotExist_Exception, 
 	DocDoesNotExist_Exception, CapacityExceeded_Exception {
-
+		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
+			UserDoesNotExist E = new UserDoesNotExist();
+			throw new UserDoesNotExist_Exception("User does not exist", E); 
+			
+		}
+		if (docUserPair.getDocumentId()==null || docUserPair.getDocumentId()==""){
+			DocDoesNotExist E = new DocDoesNotExist();
+			throw new DocDoesNotExist_Exception("Doc does not exist", E); 
+			
+		}
+		if (contents!=null){
 		checkUserExistence(docUserPair.getUserId());
 		for (Storage s : storage) {
 			if(s.getUserId().equals(docUserPair.getUserId()))
 				s.setContent(docUserPair.getDocumentId(), contents);
 		}
+	}
 	}
 
 
@@ -125,7 +143,16 @@ public class SDStoreImpl implements SDStore {
 	 */
 
 	public byte[] load(DocUserPair docUserPair) throws UserDoesNotExist_Exception, DocDoesNotExist_Exception{
-
+		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
+			UserDoesNotExist E = new UserDoesNotExist();
+			throw new UserDoesNotExist_Exception("User does not exist", E); 
+			
+		}
+		if (docUserPair.getDocumentId()==null || docUserPair.getDocumentId()==""){
+			DocDoesNotExist E = new DocDoesNotExist();
+			throw new DocDoesNotExist_Exception("Doc does not exist", E); 
+			
+		}
 		checkUserExistence(docUserPair.getUserId());
 		for (Storage s : storage) {
 			if(s.getUserId().equals(docUserPair.getUserId()))

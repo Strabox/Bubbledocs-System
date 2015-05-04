@@ -1,0 +1,44 @@
+Planeamento da 3ª semana de trabalho para a 4ª entrega do projecto de ES+SDis
+###############################
+COPY 3rd WEEK TABLE TO HERE
+
+
+
+
+Retrospectiva de cada pessoa
+###############################
+André Pires:
+
+
+
+###############################
+Ricardo Pires:
+
+
+
+
+###############################
+Miguel Cruz:
+
+
+###############################
+Artur Fonseca:
+
+> #65 #66 #67
+	bugs da 1º parte de SD corrigidos na 2ª
+
+> Missing test case in ExportDocumentService #82 (teacher feedback)
+    teste adicionado na 5ª
+	
+	
+> Export Document new integrations tests #44
+> Export Document refactoring #43
+	Servico Export +tests terminado no Domingo
+	
+
+
+
+
+###############################
+Mauro Teles:
+
