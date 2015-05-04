@@ -155,6 +155,7 @@
 						<argument>${uddi.url}</argument>
 						<argument>${ws.name}</argument>
 						<argument>${ws.url}</argument>
+						<commandlineArgs></commandlineArgs>
 					</arguments>
 				</configuration>
 			</plugin>

@@ -17,7 +17,7 @@ public class SDStoreMain {
         String uddiURL = args[0];
         String name = args[1];
         String url = args[2];
-        
+      
         Endpoint endpoint = null;
         UDDINaming uddiNaming = null;
         

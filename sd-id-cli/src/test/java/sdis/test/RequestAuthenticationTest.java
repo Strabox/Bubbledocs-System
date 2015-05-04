@@ -20,8 +20,6 @@ public class RequestAuthenticationTest extends SdIdTest{
 	private final String inexistentUser = "Andre21";
 	
 	private final String pass = "Aaa1";
-	private final String wrongPass = "wrong";
-	
 	/* Test a successful authentication login. */
 	@Test
 	public void successLogin(){
@@ -54,12 +52,6 @@ public class RequestAuthenticationTest extends SdIdTest{
 		catch(Exception e){
 			fail("Login Error");
 		}
-	}
-	
-	/* Test user login with wrong password. */
-	@Test(expected = AuthReqFailed_Exception.class)
-	public void wrongPassword() throws AuthReqFailed_Exception{
-		idServer.requestAuthentication(user, objectToBytes(wrongPass));
 	}
 	
 	/* Test an inexistent user login. */

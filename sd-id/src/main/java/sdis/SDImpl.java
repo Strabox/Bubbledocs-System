@@ -2,7 +2,6 @@ package sdis;
 
 import java.security.Key;
 
-import javax.jws.HandlerChain;
 import javax.jws.WebService;
 
 import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed;
@@ -31,7 +30,6 @@ import util.kerberos.messages.KerberosTicket;
     targetNamespace="urn:pt:ulisboa:tecnico:sdis:id:ws",
     serviceName="SDId"
 )
-@HandlerChain(file="/handler-chain.xml")
 public class SDImpl implements SDId {
 
 	private final int TICKET_HOUR_DURATION = 2;

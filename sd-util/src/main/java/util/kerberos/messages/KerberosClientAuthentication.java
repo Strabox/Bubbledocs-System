@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.apache.commons.lang3.SystemUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -48,7 +49,18 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage{
 	public Date getRequestTime() {
 		return requestTime;
 	}
-
+	
+	
+	/**
+	 * @return true if request is valid and false otherwise.
+	 */
+	public boolean validateRequest(){
+		Date currentTime = new Date();
+		if(currentTime.getTime() < getRequestTime().getTime())
+			return true;
+		return false;
+	}
+	
 	@Override
 	public byte[] serialize(Key kcs) throws KerberosException {
 		String auth = "", body ="";

@@ -9,9 +9,11 @@ import java.util.GregorianCalendar;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.apache.commons.lang3.SystemUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
 import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 
@@ -49,6 +51,24 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		this.endTime = endTime;
 	}
 	
+	/**
+	 * 
+	 * @param serverID server identifier that is requesting
+	 * validation.
+	 * @return true if Ticket is valid and false otherwise.
+	 */
+	public boolean isValidTicket(int serverID){
+		if(getServer() != serverID)
+			return false;
+		Date beginTicket = getBeginTime();
+		Date endTime = getEndTime();
+		Date currentTime = new Date();
+		if(beginTicket.getTime() < currentTime.getTime() && 
+		  currentTime.getTime() < endTime.getTime())
+			return true;
+		return false;
+	}
+	
 	@Override
 	public byte[] serialize(Key serverKey) throws KerberosException{
 		XMLGregorianCalendar createTime;
@@ -78,10 +98,12 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		}
 	}
 	
+	
+	
 	/**
 	 * @param ticket
-	 * @param k
-	 * @return
+	 * @param k size to decypher ticket.
+	 * @return KerberosTicket object.
 	 * @throws KerberosException
 	 */
 	public static KerberosTicket deserialize(byte[] ticket,Key k) 
