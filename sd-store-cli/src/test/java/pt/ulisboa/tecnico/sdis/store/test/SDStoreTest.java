@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -23,6 +24,8 @@ import util.uddi.UDDINaming;
 
 public class SDStoreTest {
 
+	public final String KEYS_FILE_WIN = "\\..\\sd-util\\src\\main\\resources\\serverKeys";
+	public final String KEYS_FILE_LINUX_MAC = "/../sd-util/src/main/resources/serverKeys";
 	
 	protected static SDStore port;
 	
@@ -68,7 +71,13 @@ public class SDStoreTest {
 	
 	public Key loadServerKey(int serverID) throws Exception{
 		BufferedReader br;
-		br = new BufferedReader(new FileReader("C:\\Maven\\A_15_03_17-project\\sd-util\\src\\main\\resources\\serverKeys"));
+		String currentKeysFile = "";
+		if(SystemUtils.IS_OS_WINDOWS)
+			currentKeysFile = System.getProperty("user.dir") + KEYS_FILE_WIN;
+		else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC)
+			currentKeysFile = System.getProperty("user.dir") + KEYS_FILE_LINUX_MAC;
+		
+		br = new BufferedReader(new FileReader(currentKeysFile));
 		String line = "";
 		while((line = br.readLine()) != null){
 			if(line.matches("[1-9][ \t]+[[a-z][A-Z][0-9]]+")){
