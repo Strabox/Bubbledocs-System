@@ -1,11 +1,11 @@
 Planeamento da 3a semana de trabalho para a 4a entrega do projecto de ES+SDis
 ###############################
 Group Member		Mon	Tue	Wed	Thu	Fri	Sat	Sun		Planned tasks	Implemented tasks
-Andre Pires			1	0	0	0	2	5	2		#85 #86			-
-Ricardo Pires		0	0	0	0	0	0	0		-				-
-Miguel Cruz			0	0	0	0	0	0	0		-				-
-Artur Fonseca		1	0	0	0	0	0	0		-				-
-Mauro Teles			0	0	0	0	0	0	0		-				-
+Andre Pires		1	0	0	0	2	5	2		#85 #86		-
+Ricardo Pires		0	0	0	0	0	0	0		-		-
+Miguel Cruz		1	3	2	2	1	0	0		SD Issues	-
+Artur Fonseca		1	0	0	0	0	0	0		-		-
+Mauro Teles		0	0	0	0	0	0	0		-		-
 
 
 
