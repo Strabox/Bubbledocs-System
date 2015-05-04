@@ -2,8 +2,9 @@ package pt.ulisboa.tecnico.sdis.store.test;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
@@ -15,7 +16,6 @@ import pt.ulisboa.tecnico.sdis.store.cli.kerberos.KerberosClientUtil;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
 import util.kerberos.Kerberos;
-import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosClientAuthentication;
 import util.kerberos.messages.KerberosTicket;
 import util.uddi.UDDINaming;
@@ -52,18 +52,35 @@ public class SDStoreTest {
 	/**
 	 * Used to access SD-STRE this function simulates asking
 	 * Kerberos Authenticator Server.
-	 * @throws NoSuchAlgorithmException
-	 * @throws KerberosException 
+	 * @throws Exception 
 	 */
 	public void uploadKerberosInfo(SDStore store, String username) 
-	throws NoSuchAlgorithmException, KerberosException{
+	throws Exception{
 		String nonce = Kerberos.generateRandomNumber();
 		KerberosClientUtil util = new KerberosClientUtil();
 		Key kcs = Kerberos.generateSymKey(Kerberos.DES, 56);
 		KerberosTicket ticket = new KerberosTicket(username,1,8,kcs);
 		KerberosClientAuthentication auth;
 		auth = new KerberosClientAuthentication(username);
-		util.request(store, ticket.serialize(kcs), auth.serialize(kcs), nonce.getBytes());
+		Key ks = loadServerKey(1);
+		util.request(store, ticket.serialize(ks), auth.serialize(kcs), nonce.getBytes());
+	}
+	
+	public Key loadServerKey(int serverID) throws Exception{
+		BufferedReader br;
+		br = new BufferedReader(new FileReader("C:\\Maven\\A_15_03_17-project\\sd-util\\src\\main\\resources\\serverKeys"));
+		String line = "";
+		while((line = br.readLine()) != null){
+			if(line.matches("[1-9][ \t]+[[a-z][A-Z][0-9]]+")){
+				String[] divs = line.split("[ \t]+");
+				if(Integer.parseInt(divs[0]) == serverID){
+					br.close();
+					return Kerberos.getKeyFromBytes(divs[1].getBytes("UTF-8"));
+				}
+			}
+		}
+		br.close();
+		return null;
 	}
 	
 	@AfterClass

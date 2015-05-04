@@ -2,11 +2,7 @@ package pt.ulisboa.tecnico.sdis.store.test;
 
 import static org.junit.Assert.*;
 
-import java.security.NoSuchAlgorithmException;
-
 import pt.ulisboa.tecnico.sdis.store.ws.*;
-import util.kerberos.exception.KerberosException;
-
 import org.junit.Test;
 
 
@@ -21,7 +17,7 @@ public class CreateDocTest extends SDStoreTest {
 		String user = "User1";
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		
@@ -38,7 +34,7 @@ public class CreateDocTest extends SDStoreTest {
 		String user = "User1";
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		
@@ -54,18 +50,24 @@ public class CreateDocTest extends SDStoreTest {
 	public void docAlreadyExists () throws DocAlreadyExists_Exception {
 		String document ="document13";
 		String user = "User1";
-		try {
-			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
-			fail("Erro");
-		}
+	
 		DocUserPair pair = new DocUserPair();
 		pair.setDocumentId(document);
 		pair.setUserId(user);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (Exception e) {
+			fail("Erro");
+		} 
 		port.createDoc(pair);
 		DocUserPair pair1 = new DocUserPair();
 		pair1.setDocumentId(document);
 		pair1.setUserId(user);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (Exception e) {
+			fail("Erro");
+		} 
 		port.createDoc(pair1);
 		
 		

@@ -54,12 +54,16 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage{
 	/**
 	 * @return true if request is valid and false otherwise.
 	 */
-	public boolean validateRequest(){
+	public boolean isValid(String username,Date lastRequest){
+		if(!client.equals(username))
+			return false;
 		Date currentTime = new Date();
-		if(currentTime.getTime() < getRequestTime().getTime())
+		if(lastRequest == null|| (currentTime.getTime() > getRequestTime().getTime() &&
+			getRequestTime().getTime() > lastRequest.getTime()))
 			return true;
 		return false;
 	}
+	
 	
 	@Override
 	public byte[] serialize(Key kcs) throws KerberosException {

@@ -3,13 +3,22 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
+
 import org.apache.commons.lang3.SystemUtils;
 
 import util.kerberos.Kerberos;
+import util.kerberos.messages.KerberosClientAuthentication;
 import util.kerberos.messages.KerberosTicket;
 
 /**
- * Used to manage Kerberos protocol, in servers side. 
+ * Used to manage Kerberos protocol, in servers side,
+ * verify the authenticity of the request/client. 
  * @author André
  */
 public class KerberosManager {
@@ -29,9 +38,15 @@ public class KerberosManager {
 	 */
 	private Key ks;
 	
+	/**
+	 * Used to maintain client last request timestamp.
+	 */
+	private HashMap<String, Date> lastRequest;
+	
 	
 	public KerberosManager(int serverID) throws Exception{
 		this.serverID = serverID;
+		lastRequest = new HashMap<String,Date>();
 		if(SystemUtils.IS_OS_WINDOWS)
 			currentKeysFile = System.getProperty("user.dir") + KEYS_FILE_WIN;
 		else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC)
@@ -60,18 +75,53 @@ public class KerberosManager {
 	}
 	
 	/**
-	 * Decypher a Kerberos Ticket and returns Kcs
-	 * (Key used to talk with client)
-	 * @param ticket Kerberos Ticket in bytes.
-	 * @return Client/Server key
-	 * @throws Exception 
+	 * Validate a client request.
+	 * @throws Exception
 	 */
-	public Key decypherTicket(byte[] byteTicket) throws Exception{
+	public Key processRequest(WebServiceContext webContext) 
+	throws Exception {
+		//--Get all the information from handlers --
+		MessageContext msgContext = webContext.getMessageContext();
+		byte[] byteTicket = DatatypeConverter.parseBase64Binary((String) msgContext.get("ticket"));
+		byte[] auth = DatatypeConverter.parseBase64Binary((String) msgContext.get("auth"));
+		String nonceBase64 = (String) msgContext.get("nonce");
+		//--Validate Nonce--
+		DatatypeConverter.parseBase64Binary(nonceBase64).toString();
+		//TODO
+		//--Validate Ticket--
 		KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
 		if(!ticket.isValidTicket(serverID))
 			throw new Exception();
-		return ticket.getKcs();
+		Key kcs = ticket.getKcs();
+		//--Validate authenticator--
+		KerberosClientAuthentication authentication;
+		authentication = KerberosClientAuthentication.deserialize(auth, kcs);
+		Date lastReq = lastRequest.get(authentication.getClient());
+		if(!authentication.isValid(ticket.getClient(),lastReq))
+			throw new Exception();
+		if(lastRequest.containsKey(authentication.getClient()))
+			lastRequest.replace(authentication.getClient(), authentication.getRequestTime());
+		else
+			lastRequest.put(authentication.getClient(), authentication.getRequestTime());
+		return kcs;
 	}
+	
+	/**
+	 * Process reply passing information to server handlers.
+	 * ->1 
+	 * @param webContext
+	 * @param kcs Client Server Key.
+	 */
+	public void processReply(Key kcs,WebServiceContext webContext) 
+	throws Exception{
+		MessageContext msgContext = webContext.getMessageContext();
+		String nonceBase64 = (String) msgContext.get("nonce");
+		String nonce = DatatypeConverter.parseBase64Binary(nonceBase64).toString();
+		byte[] cypheredNonce = Kerberos.cipherText(kcs, nonce.getBytes("UTF-8"));
+		String cyph64BaseNonce = DatatypeConverter.printBase64Binary(cypheredNonce);
+		msgContext.put("auth", cyph64BaseNonce);
+	}
+	
 	
 	
 }

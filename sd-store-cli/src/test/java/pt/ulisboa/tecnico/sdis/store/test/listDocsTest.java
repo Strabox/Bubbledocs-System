@@ -2,12 +2,9 @@ package pt.ulisboa.tecnico.sdis.store.test;
 
 import static org.junit.Assert.*;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import pt.ulisboa.tecnico.sdis.store.ws.*;
-import util.kerberos.exception.KerberosException;
-
 import org.junit.Test;
 
 
@@ -21,7 +18,7 @@ public class listDocsTest extends SDStoreTest {
 		String user = "User2";
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		DocUserPair pair1 = new DocUserPair();
@@ -31,7 +28,7 @@ public class listDocsTest extends SDStoreTest {
 		
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		DocUserPair pair2 = new DocUserPair();
@@ -41,7 +38,7 @@ public class listDocsTest extends SDStoreTest {
 		
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		DocUserPair pair3 = new DocUserPair();
@@ -61,7 +58,7 @@ public class listDocsTest extends SDStoreTest {
 		String user = "ghostUser";
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		port.listDocs(user);

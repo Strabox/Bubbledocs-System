@@ -3,9 +3,12 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.jws.*;
+import javax.xml.ws.WebServiceContext;
 
 import pt.ulisboa.tecnico.sdis.store.ws.*;
+import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 
 @WebService(
 	endpointInterface="pt.ulisboa.tecnico.sdis.store.ws.SDStore", 
@@ -20,8 +23,18 @@ public class SDStoreImpl implements SDStore {
 
 	private List<Storage> storage;
 
-	public SDStoreImpl() {
+	/**
+	 * kerberos manager - Used to manage kerberos protocol in server side.
+	 */
+	
+	private KerberosManager kerberosManager;
+	
+	@Resource
+	private WebServiceContext webServiceContext;
+	
+	public SDStoreImpl() throws Exception {
 		super();
+		this.kerberosManager = new KerberosManager(1);	//FIXME Hardcoded 1.
 		this.storage = new ArrayList<Storage>();
 	}
 
@@ -34,13 +47,21 @@ public class SDStoreImpl implements SDStore {
 		UserDoesNotExist E = new UserDoesNotExist();
 		throw new UserDoesNotExist_Exception(UserId+" does not exist", E);
 	}
-
+	
+	/* ========================= WEB SERVICES METHODS =============================== */
+	
 	/**
 	 * 
 	 * @param docUserPair
 	 * @throws DocAlreadyExists_Exception 
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
+		try {
+			kerberosManager.processRequest(webServiceContext);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 		for (Storage storage2 : storage) {
 			
 			if (storage2.getUserId().equals(docUserPair.getUserId())) {

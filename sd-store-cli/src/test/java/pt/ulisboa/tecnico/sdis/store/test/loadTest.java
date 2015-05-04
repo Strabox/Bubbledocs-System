@@ -3,8 +3,6 @@ package pt.ulisboa.tecnico.sdis.store.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.security.NoSuchAlgorithmException;
-
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
@@ -12,7 +10,6 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
-import util.kerberos.exception.KerberosException;
 
 
 
@@ -32,13 +29,13 @@ public class loadTest extends SDStoreTest {
 		pair.setUserId(user);
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		port.createDoc(pair);
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		port.store(pair, expectedContent);		
@@ -57,7 +54,7 @@ public class loadTest extends SDStoreTest {
 		pair.setUserId(user);		
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		// FIXME isto está estranho digo eu (andré)
@@ -76,7 +73,7 @@ public class loadTest extends SDStoreTest {
 		pair.setUserId(user);		
 		try {
 			uploadKerberosInfo(port, user);
-		} catch (NoSuchAlgorithmException | KerberosException e) {
+		} catch (Exception e) {
 			fail("Erro");
 		}
 		port.load(pair);
