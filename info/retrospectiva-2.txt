@@ -1,11 +1,15 @@
-Planeamento da 3ª semana de trabalho para a 4ª entrega do projecto de ES+SDis
+Planeamento da 3a semana de trabalho para a 4a entrega do projecto de ES+SDis
 ###############################
-COPY 3rd WEEK TABLE TO HERE
+Group Member		Mon	Tue	Wed	Thu	Fri	Sat	Sun		Planned tasks	Implemented tasks
+Andre Pires			0	0	0	0	0	0	0		-				-
+Ricardo Pires		0	0	0	0	0	0	0		-				-
+Miguel Cruz			0	0	0	0	0	0	0		-				-
+Artur Fonseca		1	0	0	0	0	0	0		-				-
+Mauro Teles			0	0	0	0	0	0	0		-				-
 
 
 
-
-Retrospectiva de cada pessoa
+Retrospectiva de cada pessoa (2a semana)
 ###############################
 André Pires:
 
@@ -19,6 +23,11 @@ Ricardo Pires:
 
 ###############################
 Miguel Cruz:
+
+> #77 Renew Password service - remake tests
+> #78 Renew Password service - new integration tests
+> #79 Renew Password service - refactor service
+A reformulacao das componentes deste serviao foi bastante mais simples do que o esperado, demorando menos do que as 2h30 previstas.
 
 
 ###############################
