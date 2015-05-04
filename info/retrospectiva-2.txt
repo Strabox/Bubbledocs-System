@@ -1,7 +1,7 @@
 Planeamento da 3a semana de trabalho para a 4a entrega do projecto de ES+SDis
 ###############################
 Group Member		Mon	Tue	Wed	Thu	Fri	Sat	Sun		Planned tasks	Implemented tasks
-Andre Pires			0	0	0	0	0	0	0		-				-
+Andre Pires			1	0	0	0	2	5	2		#85 #86			-
 Ricardo Pires		0	0	0	0	0	0	0		-				-
 Miguel Cruz			0	0	0	0	0	0	0		-				-
 Artur Fonseca		1	0	0	0	0	0	0		-				-
@@ -12,8 +12,11 @@ Mauro Teles			0	0	0	0	0	0	0		-				-
 Retrospectiva de cada pessoa (2a semana)
 ###############################
 André Pires:
+> #80 Clean CreateUserService (teacher feedback) - feito dentro do tempo expectavel na issue (meia hora). 
+> #81 Add missing test to LoginUserService - feito em 15 minutos em vez da meia hora expectavel na issue.
+> #83 Create Kerberos Structures - Feito em 5 horas em vez das 4 horas expectaveis na issue.
 
-
+Logo, o tempo gasto é de cerca de 5:45 horas dentro das 6 horas alocadas para a semana.
 
 ###############################
 Ricardo Pires:
