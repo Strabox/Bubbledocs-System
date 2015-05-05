@@ -23,12 +23,11 @@ public class Kerberos {
 	
 	/* digestPassword - used to get Simmetric key to talk
 	 * with user in the authentication process. */
-	public static byte[] digestPassword(String password,String alg) 
+	public static byte[] digestPassword(byte[] password,String alg) 
 	throws KerberosException{
 		try{
-			byte[] passInBytes = password.getBytes();
 			MessageDigest md = MessageDigest.getInstance(alg);
-			md.update(passInBytes);
+			md.update(password);
 			return md.digest();
 		}catch(NoSuchAlgorithmException e){
 			throw new KerberosException();

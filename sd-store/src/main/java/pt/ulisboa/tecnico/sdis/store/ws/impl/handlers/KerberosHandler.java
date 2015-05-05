@@ -10,28 +10,51 @@ import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.MessageContext.Scope;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-/* Kerberos Handler - Kerberos Store Server hanlder. */
+import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
+
+/**
+ *  Kerberos Handler - Kerberos Store Server hanlder. 
+ */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 
+	/**
+	 * kerberos manager - Used to manage kerberos protocol in server side.
+	 */
+	private KerberosManager kerberosManager;
+	
+	
+	public KerberosHandler() throws Exception{
+		kerberosManager = new KerberosManager(1);		//FIXME !!!!!!!!!!!
+	}
 	
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 		
 		if(out.booleanValue()){		//If message is LEAVING!!.
 			try{
-				
+				/*
+				SOAPMessage msg = context.getMessage();
+				SOAPPart part = msg.getSOAPPart();
+				SOAPEnvelope env = part.getEnvelope();
+				SOAPHeader hdr = env.getHeader();
+				if(hdr == null){
+					hdr = env.addHeader();
+				}
+				Name nonce = env.createName("nonce","n","urn:req");
+				SOAPHeaderElement noncEle = hdr.addHeaderElement(nonce);
+				noncEle.addTextNode((String)context.get("nonce"));
+			*/
 			}
 			catch(Exception e){
 				System.out.println("ERROR Leaving");
-				return false;
 			}
 		}
 		else{						//If message is ARRIVING!!.
 			try{
+				String ticket = "",auth ="",nonce = "";
 				SOAPMessage msg = context.getMessage();
 				SOAPPart part = msg.getSOAPPart();
 				SOAPEnvelope env = part.getEnvelope();
@@ -47,21 +70,19 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 	SOAPHeaderElement ele = (SOAPHeaderElement) it.next();
                 	String nodeName = ele.getLocalName();
                 	if(nodeName.equals("ticket")){
-                		context.put("ticket",ele.getTextContent());
-                		context.setScope("ticket", Scope.APPLICATION);
+                		ticket = ele.getTextContent();
                 	}
                 	else if(nodeName.equals("auth")){
-                		context.put("auth",ele.getTextContent());
-                		context.setScope("auth", Scope.APPLICATION);
+                		auth = ele.getTextContent();
                 	}
                 	else if(nodeName.equals("nonce")){
-                		context.put("nonce",ele.getTextContent());
-                		context.setScope("nonce", Scope.APPLICATION);
+                		nonce = ele.getTextContent();
                 	}
                 }
+                kerberosManager.processRequest(ticket, auth, nonce);
 			}catch(Exception e){
-				System.out.println("ERROR Arriving" + e);
-				return false;
+				System.out.println("ERROR Arriving: ");
+				e.printStackTrace();
 			}
 		}
 		return true;

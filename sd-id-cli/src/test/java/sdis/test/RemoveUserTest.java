@@ -8,6 +8,10 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 
 public class RemoveUserTest extends SdIdTest {
 	
+	public RemoveUserTest() throws Exception {
+		super();
+	}
+
 	private final String ExistingUsername = "duarte";
 	private final String MissingUsername = "Adama";
 	

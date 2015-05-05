@@ -131,7 +131,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
         		||SystemUtils.IS_OS_MAC_OSX )
         	dirFile = System.getProperty("user.dir") + XSD_FILE_LINUX_PATH;
 		validateXMLDocument(document,dirFile);
-		
+
 		for (Node node = document.getDocumentElement().getFirstChild();
 	        node != null;
 	        node = node.getNextSibling()) {

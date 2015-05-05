@@ -17,6 +17,11 @@ import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 
 public class loadTest extends SDStoreTest {
 	
+	public loadTest() throws Exception {
+		super();
+	}
+
+
 	@Test 
 	public void loadSucess () throws DocDoesNotExist_Exception, UserDoesNotExist_Exception, DocAlreadyExists_Exception, CapacityExceeded_Exception  {
 		String user ="user4";
@@ -39,6 +44,11 @@ public class loadTest extends SDStoreTest {
 			fail("Erro");
 		}
 		port.store(pair, expectedContent);		
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (Exception e) {
+			fail("Erro");
+		}
 		byte[] content=port.load(pair);
 		String text = new String(content);
 		assertEquals("Text",expectedText,text);

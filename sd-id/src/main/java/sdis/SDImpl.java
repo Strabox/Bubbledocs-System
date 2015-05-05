@@ -119,7 +119,7 @@ public class SDImpl implements SDId {
 					
 					kerberosManager.addNonce(r.getNonce());
 					Key ks = kerberosManager.getServerKey(r.getServer());
-					Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(userManager.getUserPassword(userId), Kerberos.MD5));
+					Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(userManager.getUserPassword(userId).getBytes(), Kerberos.MD5));
 					Key kcs = Kerberos.generateSymKey(Kerberos.DES, 56);
 					KerberosTicket ticket = new KerberosTicket(userId, r.getServer(),TICKET_HOUR_DURATION, kcs);
 					KerberosServerAuthentication ksa = new KerberosServerAuthentication(kcs, r.getNonce());

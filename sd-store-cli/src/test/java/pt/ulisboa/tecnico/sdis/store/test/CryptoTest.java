@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sdis.store.test;
 
 import static org.junit.Assert.*;
 import pt.ulisboa.tecnico.sdis.store.cli.Crypto;
+
 import org.junit.Test;
 
 
@@ -10,6 +11,10 @@ import org.junit.Test;
 
 public class CryptoTest extends SDStoreTest {
 	
+	public CryptoTest() throws Exception {
+		super();
+	}
+
 	@Test
 	public void cypherSuccess() throws Exception {
 		String expectedString ="ABCDabcd123456";

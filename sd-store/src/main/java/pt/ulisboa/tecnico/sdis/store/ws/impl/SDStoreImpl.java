@@ -3,12 +3,8 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.jws.*;
-import javax.xml.ws.WebServiceContext;
-
 import pt.ulisboa.tecnico.sdis.store.ws.*;
-import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 
 @WebService(
 	endpointInterface="pt.ulisboa.tecnico.sdis.store.ws.SDStore", 
@@ -22,19 +18,10 @@ import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 public class SDStoreImpl implements SDStore {
 
 	private List<Storage> storage;
-
-	/**
-	 * kerberos manager - Used to manage kerberos protocol in server side.
-	 */
-	
-	private KerberosManager kerberosManager;
-	
-	@Resource
-	private WebServiceContext webServiceContext;
 	
 	public SDStoreImpl() throws Exception {
 		super();
-		this.kerberosManager = new KerberosManager(1);	//FIXME Hardcoded 1.
+		
 		this.storage = new ArrayList<Storage>();
 	}
 
@@ -56,26 +43,21 @@ public class SDStoreImpl implements SDStore {
 	 * @throws DocAlreadyExists_Exception 
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
-		try {
-			kerberosManager.processRequest(webServiceContext);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+
 		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" && docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
-		
-		for (Storage storage2 : storage) {
-			
-			if (storage2.getUserId().equals(docUserPair.getUserId())) {
+			for (Storage storage2 : storage) {
 				
-				storage2.addDoc(docUserPair.getDocumentId());				
-				return;
+				if (storage2.getUserId().equals(docUserPair.getUserId())) {
+					
+					storage2.addDoc(docUserPair.getDocumentId());				
+					return;
+				}
 			}
+			Storage newstor = new Storage(docUserPair.getUserId(), docUserPair.getDocumentId());
+			storage.add(newstor);
+	
 		}
-		Storage newstor = new Storage(docUserPair.getUserId(), docUserPair.getDocumentId());
-		storage.add(newstor);
-		
 	}
-		}
 
 	/**
 	 * 

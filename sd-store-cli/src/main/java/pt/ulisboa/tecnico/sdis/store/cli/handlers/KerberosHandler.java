@@ -44,8 +44,26 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 			}
 		}
 		else{						//If message is ARRIVING!!.
-			try{
+			try{/*
+				SOAPMessage msg = context.getMessage();
+				SOAPPart part = msg.getSOAPPart();
+				SOAPEnvelope env = part.getEnvelope();
+				SOAPHeader hdr = env.getHeader();
 				
+				@SuppressWarnings("rawtypes")
+				Iterator it = hdr.getChildElements();
+                if (!it.hasNext()) {
+                	//Header 404!
+                    return false;
+                }
+                SOAPHeaderElement ele = (SOAPHeaderElement) it.next();
+            	String nodeName = ele.getLocalName();
+            	if(nodeName.equals("nonce")){
+            		context.put("nonce",ele.getTextContent());
+            		context.setScope("nonce", Scope.APPLICATION);
+            	}
+            	else
+            		return false;*/
 			}catch(Exception e){
 				System.out.println("ERROR Arriving");
 				return false;

@@ -15,6 +15,10 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 /* Test suit for CreateUser service. */
 public class CreateUserTest extends SdIdTest {
 
+	public CreateUserTest() throws Exception {
+		super();
+	}
+
 	private final String username = "Andre69";
 	private final String bruno = "bruno";
 	private final String username2 = "Andre70";

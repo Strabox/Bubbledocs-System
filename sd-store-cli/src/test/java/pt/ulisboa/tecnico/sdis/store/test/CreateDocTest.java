@@ -1,8 +1,8 @@
 package pt.ulisboa.tecnico.sdis.store.test;
 
 import static org.junit.Assert.*;
-
 import pt.ulisboa.tecnico.sdis.store.ws.*;
+
 import org.junit.Test;
 
 
@@ -11,6 +11,10 @@ import org.junit.Test;
 
 public class CreateDocTest extends SDStoreTest {
 	
+	public CreateDocTest() throws Exception {
+		super();
+	}
+
 	@Test
 	public void createDocSuccess() throws DocAlreadyExists_Exception {
 		String document ="document11";
@@ -35,6 +39,7 @@ public class CreateDocTest extends SDStoreTest {
 		try {
 			uploadKerberosInfo(port, user);
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Erro");
 		}
 		

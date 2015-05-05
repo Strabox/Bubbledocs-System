@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import pt.ulisboa.tecnico.sdis.store.ws.*;
+
 import org.junit.Test;
 
 
@@ -13,6 +14,11 @@ import org.junit.Test;
 
 public class listDocsTest extends SDStoreTest {
 	
+	public listDocsTest() throws Exception {
+		super();
+	}
+
+
 	@Test
 	public void listDocsSuccess() throws UserDoesNotExist_Exception, DocAlreadyExists_Exception  {
 		String user = "User2";
@@ -45,6 +51,11 @@ public class listDocsTest extends SDStoreTest {
 		pair3.setDocumentId("document23");
 		pair3.setUserId(user);
 		port.createDoc(pair3);
+		try {
+			uploadKerberosInfo(port, user);
+		} catch (Exception e) {
+			fail("Erro");
+		}
 		List<String> _docs= port.listDocs(user);
 						
 		assertEquals("index=0",_docs.get(0),"document21");

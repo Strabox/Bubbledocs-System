@@ -1,13 +1,5 @@
 package pt.tecnico.bubbledocs.service.remote;
 
-import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
-
-import java.io.IOException;
-import java.util.Map;
-
-import javax.xml.registry.JAXRException;
-import javax.xml.ws.BindingProvider;
-
 import pt.tecnico.bubbledocs.exceptions.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.InvalidEmailException;
@@ -18,50 +10,25 @@ import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.EmailAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidEmail_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.InvalidUser_Exception;
-import pt.ulisboa.tecnico.sdis.id.ws.SDId;
-import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
+import sdis.cli.SdIdClient;
 
 public class IDRemoteServices extends RemoteServices{
 	
-	private static final String UDDI_URL = "http://localhost:8081";
-	
 	private static final String ID_NAME = "SD-ID";
 	
-	private SDId idRemote;
+	SdIdClient idClient;
 	
-	public IDRemoteServices(){
-		idRemote = getSpecificProxy(UDDI_URL, ID_NAME);
-	}
-	
-	public SDId getSpecificProxy(String uddiUrl,String name)
-		throws RemoteInvocationException {
-		String endpointAddress;
-		try {
-			endpointAddress = UDDILookup(uddiUrl,name);
-		} catch (JAXRException e) {
-			throw new RemoteInvocationException();
-		}
-		if (endpointAddress == null)
-			throw new RemoteInvocationException();
-		
-		SDId_Service service = new SDId_Service();
-		SDId id = service.getSDIdImplPort();
-		
-		BindingProvider bindingProvider = (BindingProvider) id;
-		Map<String, Object> requestContext = bindingProvider.getRequestContext();
-		requestContext.put(ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
-		return id;
-	}
-	
+
 	public void createUser(String username, String email)
 		throws InvalidUsernameException, DuplicateUsernameException,
 		DuplicateEmailException, InvalidEmailException,
 		RemoteInvocationException {
 		
 		try {
-			idRemote.createUser(username, email);
+			idClient = new SdIdClient(UDDI_URL, ID_NAME);
+			idClient.createUser(username, email);
 		} catch (EmailAlreadyExists_Exception e) {
 			throw new DuplicateEmailException();
 		} catch (InvalidEmail_Exception e) {
@@ -70,6 +37,8 @@ public class IDRemoteServices extends RemoteServices{
 			throw new InvalidUsernameException();
 		} catch (UserAlreadyExists_Exception e) {
 			throw new DuplicateUsernameException(username);
+		} catch (Exception e){
+			throw new RemoteInvocationException();
 		}
 	}
 	
@@ -77,9 +46,12 @@ public class IDRemoteServices extends RemoteServices{
 		throws LoginBubbleDocsException, RemoteInvocationException {
 		
 		try {
-			idRemote.requestAuthentication(username, objectToBytes(password));
-		} catch (AuthReqFailed_Exception | IOException e) {
+			idClient = new SdIdClient(UDDI_URL, ID_NAME);
+			idClient.requestAuthentication(username, password.getBytes());
+		} catch (AuthReqFailed_Exception e) {
 			throw new LoginBubbleDocsException();
+		} catch (Exception e){
+			throw new RemoteInvocationException();
 		}
 	}
 	
@@ -87,9 +59,12 @@ public class IDRemoteServices extends RemoteServices{
 		throws LoginBubbleDocsException, RemoteInvocationException {
 		
 		try {
-			idRemote.removeUser(username);
+			idClient = new SdIdClient(UDDI_URL, ID_NAME);
+			idClient.removeUser(username);
 		} catch (UserDoesNotExist_Exception e) {
 			throw new LoginBubbleDocsException();
+		} catch (Exception e){
+			throw new RemoteInvocationException();
 		}
 	}
 	
@@ -97,9 +72,12 @@ public class IDRemoteServices extends RemoteServices{
 		throws LoginBubbleDocsException, RemoteInvocationException {
 		
 		try {
-			idRemote.renewPassword(username);
+			idClient = new SdIdClient(UDDI_URL, ID_NAME);
+			idClient.renewPassword(username);
 		} catch (UserDoesNotExist_Exception e) {
 			throw new LoginBubbleDocsException();
+		} catch (Exception e){
+			throw new RemoteInvocationException();
 		}
 	}
 }

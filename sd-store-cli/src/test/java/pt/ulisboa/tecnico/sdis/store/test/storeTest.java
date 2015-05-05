@@ -17,8 +17,15 @@ import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 
 public class storeTest extends SDStoreTest {
 	
+	public storeTest() throws Exception {
+		super();
+	}
+
+
 	@Test 
-	public void storeSucess() throws DocAlreadyExists_Exception, CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception   {
+	public void storeSucess() throws DocAlreadyExists_Exception, 
+	CapacityExceeded_Exception, DocDoesNotExist_Exception, 
+	UserDoesNotExist_Exception   {
 		String user = "User3";
 		
 		String text = "abcdABCD1234";
