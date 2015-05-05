@@ -1,12 +1,11 @@
 package pt.tecnico.bubbledocs.service.local;
 
-import java.util.ArrayList;
+
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.SpreadSheet;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
-import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.UserNotInSessionException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,22 +13,26 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-
-public class ExportDocument extends BubbleDocsService {
+// import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
+public class ImportDocument extends BubbleDocsService {
 	private byte[] docXMLbytes;
 	private String _token;
 	private int _docId;
 	private org.jdom2.Document docXML;
 	private SpreadSheet sheet;
 	private User user;
+	private SpreadSheet importedSheet;
 
-	public ExportDocument(String userToken, int docId) {
+	public ImportDocument(String userToken, int docId) {
 		_token=userToken;
 		_docId=docId;
 	}
 
 	public byte[] getDocXMLBytes() {
 		return docXMLbytes;
+	}
+	public void setDocXMLBytes(byte[] doc) {
+		docXMLbytes=doc;
 	}
 	public org.jdom2.Document getDocXML() {
 		return docXML;
@@ -44,7 +47,12 @@ public class ExportDocument extends BubbleDocsService {
 		return sheet.getName();
 
 	}
+	
+	public SpreadSheet getImportedSpreadSheet(){
+		return importedSheet;
 
+	}
+	
 
 
 
@@ -74,24 +82,17 @@ public class ExportDocument extends BubbleDocsService {
 		Bubbledocs bubbled = Bubbledocs.getInstance();
 		if(_token == null || bubbled.getUserFromSession(_token) == null)
 			throw new UserNotInSessionException();
+		sheet = bubbled.getSpreadSheet(_docId);
+		user = bubbled.getUserFromSession(_token);
 		//IMPORTANT!! Resets the user session time.
 		bubbled.resetsSessionTime(_token);
 	}
 
-	public void createXML() throws BubbleDocsException{
-		Bubbledocs bubbled = Bubbledocs.getInstance();
-		sheet = bubbled.getSpreadSheet(_docId);
-		user = bubbled.getUserFromSession(_token);
-		boolean hasReadPermissions = false;
-		ArrayList<SpreadSheet> readable = user.listReadableSpreadSheets();
-		for(SpreadSheet ss : readable){
-			if (ss==sheet) hasReadPermissions = true;
-		}
-		if(!(sheet.getOwner()==user || hasReadPermissions)){
-			throw new UnauthorizedOperationException();
-		}
-		serialize(sheet.exportToXML());
-		docXML = sheet.exportToXML();		
+	public void createSpreadSheet() throws BubbleDocsException{
+		importedSheet= new SpreadSheet();
+		deserialize(docXMLbytes);
+		importedSheet.importFromXML(docXML, user.getUsername());
+			
 
 	}
 
@@ -99,7 +100,7 @@ public class ExportDocument extends BubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-		createXML();		
+		createSpreadSheet();		
 	}
 
 
