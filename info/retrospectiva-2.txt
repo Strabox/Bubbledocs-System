@@ -21,7 +21,9 @@ Logo, o tempo gasto é de cerca de 5:45 horas dentro das 6 horas alocadas para a
 ###############################
 Ricardo Pires:
 
-
+> Delete User Service integration tests #57 - Acabou por levar mais tempo do que o previsto.
+> Delete User Service integration #56 - Foi rápido de implementar.
+Foi necessário corrigir alguns erros cometidos na #56, o que atrasou um pouco a conclusão das tarefas
 
 
 ###############################
@@ -30,7 +32,7 @@ Miguel Cruz:
 > #77 Renew Password service - remake tests
 > #78 Renew Password service - new integration tests
 > #79 Renew Password service - refactor service
-A reformulacao das componentes deste serviao foi bastante mais simples do que o esperado, demorando menos do que as 2h30 previstas.
+A reformulacao das componentes deste serviço foi bastante mais simples do que o esperado, demorando menos do que as 2h30 previstas.
 
 
 ###############################
