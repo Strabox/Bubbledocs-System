@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.sdis.store.cli.handlers;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -10,6 +11,7 @@ import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.handler.MessageContext.Scope;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
@@ -18,6 +20,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+		
 		if(out.booleanValue()){		//If message is LEAVING!!.
 			try{
 				SOAPMessage msg = context.getMessage();
@@ -27,7 +30,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				if(hdr == null){
 					hdr = env.addHeader();
 				}
-				
+				System.out.println("Sen to nonce: "+ (String)context.get("nonce"));
 				Name ticket = env.createName("ticket","t","urn:req");
 				Name auth = env.createName("auth","a","urn:req");
 				Name nonce = env.createName("nonce","n","urn:req");
@@ -44,7 +47,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 			}
 		}
 		else{						//If message is ARRIVING!!.
-			try{/*
+			try{
 				SOAPMessage msg = context.getMessage();
 				SOAPPart part = msg.getSOAPPart();
 				SOAPEnvelope env = part.getEnvelope();
@@ -61,12 +64,13 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
             	if(nodeName.equals("nonce")){
             		context.put("nonce",ele.getTextContent());
             		context.setScope("nonce", Scope.APPLICATION);
+            		System.out.println("Received Nonce: " + ele.getTextContent());
             	}
             	else
-            		return false;*/
+            		return true;
 			}catch(Exception e){
 				System.out.println("ERROR Arriving");
-				return false;
+				return true;
 			}
 		}
 		return true;

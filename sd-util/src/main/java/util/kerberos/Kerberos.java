@@ -4,8 +4,10 @@ import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -34,8 +36,11 @@ public class Kerberos {
 		}
 	}
 	
-	/*
-	 * getKeyFromBytes - transform some bytes in a Key;
+	/**
+	 * Transform byte[] in a Key.
+	 * @param bytesKey
+	 * @return
+	 * @throws KerberosException
 	 */
 	public static Key getKeyFromBytes(byte[] bytesKey) 
 	throws KerberosException{
@@ -118,6 +123,29 @@ public class Kerberos {
 			throw new KerberosException();
 		}
 	}
+	
+	/**
+	 * 
+	 * @param bytes
+	 * @param key
+	 * @return Cyphered MAC signature.
+	 * @throws Exception
+	 */
+	public static byte[] makeMAC(byte[] bytes, SecretKey key) 
+	throws Exception {
+        MessageDigest messageDigest = MessageDigest.getInstance(MD5);
+
+        messageDigest.update(bytes);
+        byte[] digest = messageDigest.digest();
+
+        Cipher cipher = Cipher.getInstance(CYPHER_MODE);
+
+        // encrypt the plaintext using the key
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] cipherDigest = cipher.doFinal(digest);
+
+        return cipherDigest;
+    }
 	
 	
 	

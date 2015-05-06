@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.Name;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
@@ -13,6 +14,7 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
+import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 
 /**
@@ -35,7 +37,9 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 		
 		if(out.booleanValue()){		//If message is LEAVING!!.
 			try{
-				/*
+				String nonceBase64;
+				nonceBase64 = kerberosManager.processReply((String)context.get("userId"));
+				
 				SOAPMessage msg = context.getMessage();
 				SOAPPart part = msg.getSOAPPart();
 				SOAPEnvelope env = part.getEnvelope();
@@ -45,11 +49,10 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				}
 				Name nonce = env.createName("nonce","n","urn:req");
 				SOAPHeaderElement noncEle = hdr.addHeaderElement(nonce);
-				noncEle.addTextNode((String)context.get("nonce"));
-			*/
+				noncEle.addTextNode(nonceBase64);
 			}
 			catch(Exception e){
-				System.out.println("ERROR Leaving");
+				System.out.println("ERROR Processing Leaving Message");
 			}
 		}
 		else{						//If message is ARRIVING!!.
@@ -81,15 +84,15 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 }
                 kerberosManager.processRequest(ticket, auth, nonce);
 			}catch(Exception e){
-				System.out.println("ERROR Arriving: ");
-				e.printStackTrace();
+				System.out.println("ERROR Processing Request Message!!");
+				throw new InvalidRequest();
 			}
 		}
 		return true;
 	}
 
 	public boolean handleFault(SOAPMessageContext context) {
-		return true;
+		return false;						//Sent back incoming faults!!!!
 	}
 
 	public void close(MessageContext context) {

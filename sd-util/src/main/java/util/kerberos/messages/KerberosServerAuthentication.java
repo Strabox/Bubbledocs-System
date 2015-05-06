@@ -16,14 +16,25 @@ import util.kerberos.exception.KerberosException;
 /**
  * Authentication - Used to authenticate server in
  * first kerberos round trip.
+ * 
+ * <authentication>
+ *   <nonce>base64</nonce>
+ *   <cliServKey>base64</cliServKey>
+ * </authentication>
  */
 public class KerberosServerAuthentication extends KerberosCypheredMessage{
 
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\authenticationFormat.xsd";
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/authenticationFormat.xsd";
 	
+	/**
+	 * Kcs key.
+	 */
 	private Key kcs;
 	
+	/**
+	 * nonce in base64
+	 */
 	private String nonce;
 	
 	

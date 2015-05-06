@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
-
 import org.apache.commons.lang3.SystemUtils;
 
 import util.kerberos.Kerberos;
@@ -48,11 +45,17 @@ public class KerberosManager {
 	 */
 	private HashMap<String, Key> kcsKeys;
 	
+	/**
+	 * Used to maintain client nonces.
+	 */
+	private HashMap<String, String> clientNonces;
+	
 	
 	public KerberosManager(int serverID) throws Exception{
 		this.serverID = serverID;
 		lastRequest = new HashMap<String,Date>();
 		kcsKeys = new HashMap<String, Key>();
+		clientNonces = new HashMap<String, String>();
 		if(SystemUtils.IS_OS_WINDOWS)
 			currentKeysFile = System.getProperty("user.dir") + KEYS_FILE_WIN;
 		else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC)
@@ -60,6 +63,12 @@ public class KerberosManager {
 		loadServerKey();
 	}
 	
+	public void addLastNonce(String client,String nonce){
+		if(clientNonces.containsKey(client))
+			clientNonces.replace(client, nonce);
+		else
+			clientNonces.put(client, nonce);
+	}
 	
 	public void addLastRequest(String client,Date requestTime){
 		if(lastRequest.containsKey(client))
@@ -103,15 +112,19 @@ public class KerberosManager {
 	throws Exception {
 		byte[] byteTicket = DatatypeConverter.parseBase64Binary(base64Ticket);
 		byte[] auth = DatatypeConverter.parseBase64Binary(base64Auth);
-		//--Validate Nonce--
-		DatatypeConverter.parseBase64Binary(base64Nonce).toString();
-		//TODO
-		//--Validate Ticket--
+		//================Validate Ticket=====================
 		KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
 		if(!ticket.isValidTicket(serverID))
 			throw new Exception();
 		Key kcs = ticket.getKcs();
-		//--Validate authenticator--
+		System.out.println("Ticket : " + ticket.getClient());
+		System.out.println("Ticket : " + ticket.getServer());
+		System.out.println("Ticket : " + ticket.getBeginTime());
+		System.out.println("Ticket : " + ticket.getEndTime());
+		//================Validate Nonce======================
+		addLastNonce(ticket.getClient(), base64Nonce);
+		//TODO .......
+		//==============Validate authenticator================
 		KerberosClientAuthentication authentication;
 		authentication = KerberosClientAuthentication.deserialize(auth, kcs);
 		Date lastReq = lastRequest.get(authentication.getClient());
@@ -127,14 +140,13 @@ public class KerberosManager {
 	 * @param webContext
 	 * @param kcs Client Server Key.
 	 */
-	public void processReply(Key kcs,WebServiceContext webContext) 
+	public String processReply(String client) 
 	throws Exception{
-		MessageContext msgContext = webContext.getMessageContext();
-		String nonceBase64 = (String) msgContext.get("nonce");
-		String nonce = DatatypeConverter.parseBase64Binary(nonceBase64).toString();
+		Key kcs = kcsKeys.get(client);
+		String nonce = clientNonces.get(client);
 		byte[] cypheredNonce = Kerberos.cipherText(kcs, nonce.getBytes("UTF-8"));
 		String cyph64BaseNonce = DatatypeConverter.printBase64Binary(cypheredNonce);
-		msgContext.put("nonce", cyph64BaseNonce);
+		return cyph64BaseNonce;
 	}
 	
 	

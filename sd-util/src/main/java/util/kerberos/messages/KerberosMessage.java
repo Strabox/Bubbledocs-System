@@ -32,8 +32,8 @@ public class KerberosMessage {
 	 */
 	protected static final void validateXMLDocument(Document document,String schemaPath) 
 	throws KerberosException {
-		
 		File schemaFile = new File(schemaPath);
+
 		Source schemaSource = new StreamSource(schemaFile);
 		SchemaFactory schemaFactory;
 		schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

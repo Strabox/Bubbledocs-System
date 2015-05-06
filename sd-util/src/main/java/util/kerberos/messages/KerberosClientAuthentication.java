@@ -16,7 +16,14 @@ import org.w3c.dom.Node;
 import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 
-
+/**
+ * 
+ * @author André
+ * <clientAuth>
+ * 	 <client>xs:dateTime</client>
+ *   <requestTime>xs:dateTime</requestTime>
+ * </clientAuth>
+ */
 public class KerberosClientAuthentication extends KerberosCypheredMessage{
 	
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\clientAuthenticationFormat.xsd";

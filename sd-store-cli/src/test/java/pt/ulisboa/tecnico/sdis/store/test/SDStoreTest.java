@@ -40,7 +40,7 @@ public class SDStoreTest {
 		KerberosClientAuthentication auth;
 		auth = new KerberosClientAuthentication(username);
 		Key ks = loadServerKey(1);
-		port.processRequest(ticket.serialize(ks), auth.serialize(kcs), nonce.getBytes());
+		port.processRequest(ticket.serialize(ks), auth.serialize(kcs), nonce);
 	}
 	
 	public Key loadServerKey(int serverID) throws Exception{

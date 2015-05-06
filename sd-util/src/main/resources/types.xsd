@@ -11,4 +11,5 @@
       	<xs:minInclusive value="0"/>
 	  </xs:restriction>
 	</xs:simpleType>
+
 </xs:schema>

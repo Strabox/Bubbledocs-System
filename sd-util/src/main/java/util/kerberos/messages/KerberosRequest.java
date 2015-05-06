@@ -7,6 +7,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import util.kerberos.exception.KerberosException;
 
+/**
+ * 
+ * @author André
+ *
+ *	<request>
+ *	  <server>integer</server>
+ *    <nonce>base64</nonce>
+ *	</request>
+ */
 public class KerberosRequest extends KerberosNormalMessage{
 
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\requestFormat.xsd";

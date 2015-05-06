@@ -1,6 +1,5 @@
 package sdis.test;
 
-import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import sdis.cli.SdIdClient;
 
 
@@ -11,7 +10,7 @@ public class SdIdTest {
 	private static final String ID_NAME = "SD-ID";
 	
 	/* Proxy for idServer. */
-	protected static SDId idServer;
+	protected static SdIdClient idServer;
 	
 	public SdIdTest() throws Exception{
 		idServer = new SdIdClient(UDDI_URL, ID_NAME);

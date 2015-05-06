@@ -3,7 +3,11 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.jws.*;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
+
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 
 @WebService(
@@ -19,12 +23,19 @@ public class SDStoreImpl implements SDStore {
 
 	private List<Storage> storage;
 	
-	public SDStoreImpl() throws Exception {
+	@Resource
+	WebServiceContext wsc;
+	
+	public SDStoreImpl(){
 		super();
-		
 		this.storage = new ArrayList<Storage>();
 	}
-
+	
+	private void passUser(String userId){
+		MessageContext msg = wsc.getMessageContext();
+		msg.put("userId", userId);
+	}
+	
 	private void checkUserExistence(String UserId) throws UserDoesNotExist_Exception{
 		for (Storage storage2 : storage) {
 			if (storage2.getUserId().equals(UserId)) {
@@ -43,7 +54,7 @@ public class SDStoreImpl implements SDStore {
 	 * @throws DocAlreadyExists_Exception 
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
-
+		passUser(docUserPair.getUserId());
 		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" && docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
 			for (Storage storage2 : storage) {
 				
@@ -57,6 +68,7 @@ public class SDStoreImpl implements SDStore {
 			storage.add(newstor);
 	
 		}
+		passUser(docUserPair.getUserId());
 	}
 
 	/**
@@ -68,6 +80,7 @@ public class SDStoreImpl implements SDStore {
 	 */
 
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception {
+		passUser(userId);
 		if (userId==null || userId.equals("")==true){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception ("User does not exist", E); 
@@ -81,6 +94,7 @@ public class SDStoreImpl implements SDStore {
 				doclist = store.getDocs();
 			}
 		}
+		passUser(userId);
 		return doclist;
 	}
 
@@ -95,6 +109,7 @@ public class SDStoreImpl implements SDStore {
 
 	public void store(DocUserPair docUserPair, byte[] contents) throws UserDoesNotExist_Exception, 
 	DocDoesNotExist_Exception, CapacityExceeded_Exception {
+		passUser(docUserPair.getUserId());
 		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 
@@ -106,12 +121,12 @@ public class SDStoreImpl implements SDStore {
 			
 		}
 		if (contents!=null){
-		checkUserExistence(docUserPair.getUserId());
-		for (Storage s : storage) {
-			if(s.getUserId().equals(docUserPair.getUserId()))
-				s.setContent(docUserPair.getDocumentId(), contents);
+			checkUserExistence(docUserPair.getUserId());
+			for (Storage s : storage) {
+				if(s.getUserId().equals(docUserPair.getUserId()))
+					s.setContent(docUserPair.getDocumentId(), contents);
+			}
 		}
-	}
 	}
 
 
@@ -125,6 +140,7 @@ public class SDStoreImpl implements SDStore {
 	 */
 
 	public byte[] load(DocUserPair docUserPair) throws UserDoesNotExist_Exception, DocDoesNotExist_Exception{
+		passUser(docUserPair.getUserId());
 		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 

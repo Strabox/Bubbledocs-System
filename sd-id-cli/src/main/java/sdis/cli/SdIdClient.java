@@ -17,6 +17,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 import util.kerberos.Kerberos;
+import util.kerberos.messages.KerberosCredential;
 import util.kerberos.messages.KerberosReply;
 import util.kerberos.messages.KerberosRequest;
 import util.kerberos.messages.KerberosServerAuthentication;
@@ -75,13 +76,14 @@ public class SdIdClient extends UDDIClient implements SDId{
 			String sentNonce = Kerberos.generateRandomNumber();
 			KerberosRequest req = new KerberosRequest(1,sentNonce);		//FIXME server identifier
 			byte[] ans = idRemote.requestAuthentication(userId, req.serialize());
+			System.out.println("aaaa");
 			KerberosReply serverReply = KerberosReply.deserialize(ans);
 			Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(reserved, "MD5"));
 			KerberosServerAuthentication receivedAuth;
 			receivedAuth = KerberosServerAuthentication.deserialize(serverReply.getAuthentication(), kc);
 			if(!sentNonce.equals(receivedAuth.getNonce()))
-				throw new Exception();	//FIXME can i use wsdl exceptions ?
-			return ans;				
+				throw new Exception();									//FIXME can i use wsdl exceptions ?
+			return new KerberosCredential(serverReply.getTicket(), receivedAuth.getKcs()).serialize();				
 		}catch(Exception e){
 			AuthReqFailed auth = new AuthReqFailed();
 			throw new AuthReqFailed_Exception(userId, auth);
