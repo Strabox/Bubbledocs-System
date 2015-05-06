@@ -78,5 +78,89 @@ public class CreateDocTest extends SDStoreTest {
 		
 	}
 	
+	@Test
+    public void testCreateDoc() throws Exception {
+        final DocUserPair docUser = new DocUserPair();
+        docUser.setDocumentId("a1");
+        docUser.setUserId("alice");
+        try {
+			uploadKerberosInfo(port, "alice");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+    }
+
+    @Test
+    public void testCreateDocNullUser() throws Exception {
+        final DocUserPair docUser = new DocUserPair();
+        docUser.setDocumentId("a1");
+        docUser.setUserId(null);
+        try {
+			uploadKerberosInfo(port, null);
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+    }
+
+    @Test
+    public void testCreateDocEmptyUser() throws Exception {
+        final DocUserPair docUser = new DocUserPair();
+        docUser.setDocumentId("a1");
+        docUser.setUserId("");
+        try {
+			uploadKerberosInfo(port, "");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+    }
+
+    @Test
+    public void testCreateNullDoc() throws Exception {
+        final DocUserPair docUser = new DocUserPair();
+        docUser.setDocumentId(null);
+        docUser.setUserId("alice");
+        try {
+			uploadKerberosInfo(port, "alice");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+    }
+
+    @Test
+    public void testCreateEmptyDoc() throws Exception {
+        final DocUserPair docUser = new DocUserPair();
+        docUser.setDocumentId("");
+        docUser.setUserId("alice");
+        try {
+			uploadKerberosInfo(port, "alice");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+    }
+
+    @Test(expected = DocAlreadyExists_Exception.class)
+    public void tesCreateDocTwice() throws Exception {
+        final DocUserPair docUser = new DocUserPair();
+        docUser.setDocumentId("a2");
+        docUser.setUserId("alice");
+        try {
+			uploadKerberosInfo(port, "alice");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+        try {
+			uploadKerberosInfo(port, "alice");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+    }
+	
 	
 }

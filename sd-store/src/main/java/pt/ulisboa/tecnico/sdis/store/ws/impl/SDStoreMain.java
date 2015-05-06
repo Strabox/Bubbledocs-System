@@ -1,73 +1,55 @@
 package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
+import java.io.IOException;
+
+
+import javax.xml.registry.JAXRException;
 import javax.xml.ws.Endpoint;
 
 import util.uddi.UDDINaming;
 
 public class SDStoreMain {
 
-    public static void main(String[] args) {
-        // Check arguments
-        if (args.length < 3) {
-            System.err.println("Argument(s) missing!");
-            System.err.printf("Usage: java %s url%n", SDStoreMain.class.getName());
-            return;
-        }
+	public static void main(String[] args) throws IOException {
+		int nservers = 2;  //CHANGE ME
+		int [] rt = new int[nservers];
+		int [] wt = new int[nservers];
 
-        String uddiURL = args[0];
-        String name = args[1];
-        String url = args[2];
-      
-        Endpoint endpoint = null;
-        UDDINaming uddiNaming = null;
-        
-        try {
-            endpoint = Endpoint.create(new SDStoreImpl());
+		// Check arguments
+		if (args.length < 3) {
+			System.err.println("Argument(s) missing!");
+			System.err.printf("Usage: java %s url%n", SDStoreMain.class.getName());
+			return;
+		}
+		try{
+			String uddiURL = args[0];
+			UDDINaming uddiNaming = new UDDINaming(uddiURL);
+			Endpoint[] endpoints= new Endpoint[nservers];
+			for (int i=1;i<=nservers;i++){
+				endpoints[i-1]=Endpoint.create(new SDStoreImpl());
+				startup(uddiURL, "SD-STORE-"+i+"", "http://localhost:80"+(81+i)+""+"/store-ws/endpoint",uddiNaming,endpoints[i-1]);
+			}
+			System.out.println("All servers up. Awaiting connections");
+			System.out.println("Press enter to shutdown");
+			System.in.read();
+			for (int i=1;i<=nservers;i++){
+				endpoints[i-1].stop();
+				uddiNaming.unbind("SD-STORE-"+i+"");
+			}
 
-            // publish endpoint
-            System.out.printf("Starting %s%n", url);
-            endpoint.publish(url);
-            
-         // publish to UDDI
-            System.out.printf("Publishing '%s' to UDDI at %s%n", name, uddiURL);
-            uddiNaming = bindUDDI(uddiURL,name,url);
-            
+		}
+		catch (Exception e){
+			System.out.printf("Caught exception: %s%n", e);
+			e.printStackTrace();
+		}
+	}
+	public static void startup(String uddiURL, String name, String url, UDDINaming uddi, Endpoint endpoint) throws JAXRException {
+		uddi.rebind(name, url);			
+		endpoint.publish(url);					
+		uddi.rebind(name, url);
 
-            // wait
-            System.out.println("Awaiting connections");
-            System.out.println("Press enter to shutdown");
-            System.in.read();
-
-        } catch(Exception e) {
-            System.out.printf("Caught exception: %s%n", e);
-            e.printStackTrace();
-
-        } finally {
-            try {
-                if (endpoint != null) {
-                    // stop endpoint
-                    unbindUDDI(uddiNaming,name);
-                    endpoint.stop();
-                    System.out.printf("Stopped %s%n", url);
-                }
-            } catch(Exception e) {
-                System.out.printf("Caught exception when stopping: %s%n", e);
-            }
-        }
-
-    }
-    public static UDDINaming bindUDDI(String uddiURL, String name, String url) throws Exception {
-    	UDDINaming uddiNaming = new UDDINaming(uddiURL);
-        uddiNaming.rebind(name, url);
-        return uddiNaming;
-    }
-    
-    public static void unbindUDDI(UDDINaming uddi, String name) throws Exception {
-    	uddi.unbind(name);
-    }
-
+	}
 }
 
 
 
-  

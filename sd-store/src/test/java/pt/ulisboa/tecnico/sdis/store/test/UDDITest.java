@@ -13,7 +13,7 @@ import util.uddi.UDDINaming;
 
 public class UDDITest {
 	
-	/* Mocked UDDI naming server. */
+	/* Mocked UDDI naming server. 
 	@Mocked
 	UDDINaming uddi;
 
@@ -68,5 +68,5 @@ public class UDDITest {
 		};
 		SDStoreMain.unbindUDDI(uddi,NAME);
 	}
-	
+	*/
 }
