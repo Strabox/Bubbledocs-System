@@ -4,6 +4,7 @@ import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
@@ -68,16 +69,16 @@ public class FrontEndB {
 	    		
 	}
 	
-	public String listDocs(){
+	public List<String> listDocs(String userId){
 		for(String proxyName : clones.keySet()){
 			try{
-				//clones.get(proxyName).listDocs();
+				//clones.get(proxyName).listDocs(userId);
 			}
 			catch(Exception e){
 				
 			}
 		}
-		return "";
+		return null;
 	}
 	
 }
