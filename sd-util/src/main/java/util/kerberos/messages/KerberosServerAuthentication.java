@@ -16,11 +16,14 @@ import util.kerberos.exception.KerberosException;
 /**
  * Authentication - Used to authenticate server in
  * first kerberos round trip.
- * 
+ * <pre>
+ * {@code
  * <authentication>
- *   <nonce>base64</nonce>
- *   <cliServKey>base64</cliServKey>
+ *   <nonce>base64Binary</nonce>
+ *   <cliServKey>base64Binary</cliServKey>
  * </authentication>
+ * }
+ * </pre>
  */
 public class KerberosServerAuthentication extends KerberosCypheredMessage{
 

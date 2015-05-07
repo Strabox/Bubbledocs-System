@@ -6,17 +6,21 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.MessageContext.Scope;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-/* Kerberos Handler - Kerberos Store Client hanlder. */
+/**
+ * Kerberos Handler - Kerberos Store Client hanlder. 
+ */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
+	
+	
 	
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
@@ -30,18 +34,14 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				if(hdr == null){
 					hdr = env.addHeader();
 				}
-				System.out.println("Sen to nonce: "+ (String)context.get("nonce"));
-				Name ticket = env.createName("ticket","t","urn:req");
-				Name auth = env.createName("auth","a","urn:req");
-				Name nonce = env.createName("nonce","n","urn:req");
+				Name ticket = env.createName("ticket","t","urn:tick");
+				Name auth = env.createName("auth","a","urn:auth");
                 SOAPHeaderElement authEle = hdr.addHeaderElement(auth);
-                SOAPHeaderElement noncEle = hdr.addHeaderElement(nonce);
                 SOAPHeaderElement tickEle = hdr.addHeaderElement(ticket);
                 authEle.addTextNode((String)context.get("auth"));
-                noncEle.addTextNode((String)context.get("nonce"));
                 tickEle.addTextNode((String)context.get("ticket"));
 				}
-			catch(Exception e){
+			catch(SOAPException e){
 				System.out.println("ERROR Leaving " + e);
 				return false;
 			}
@@ -62,9 +62,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 SOAPHeaderElement ele = (SOAPHeaderElement) it.next();
             	String nodeName = ele.getLocalName();
             	if(nodeName.equals("nonce")){
-            		context.put("nonce",ele.getTextContent());
-            		context.setScope("nonce", Scope.APPLICATION);
-            		System.out.println("Received Nonce: " + ele.getTextContent());
+            		// TODO
             	}
             	else
             		return true;

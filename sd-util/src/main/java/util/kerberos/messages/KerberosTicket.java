@@ -18,8 +18,20 @@ import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 
 /**
- * KerberosTicket - Class used to create, serialize and
+ * KerberosTicket - Class used to create,valdiate, serialize and
  * deserialize tickets.
+ * 
+ * <pre>
+ * {@code XML KerberosTicket
+ * <ticket>
+     <server>xs:string</server>
+     <client>xs:client</client>
+     <beginTime>xs:dateTime</beginTime>
+     <endTime>xs:dateTime</endTime>
+     <cliServKey>xs:base64Binary</cliServKey>
+ * </ticket>
+ * }
+ * </pre>
  */
 public class KerberosTicket extends KerberosCypheredMessage{
 
@@ -27,14 +39,19 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/ticketFormat.xsd";
 
 	private String client;
-	private Integer server;
+	
+	private String server;
+	
 	private int hourDuration;
+	
 	private Date beginTime;
+	
 	private Date endTime;
+	
 	private Key kcs;
 	
 	
-	public KerberosTicket(String client,int server,int duration,
+	public KerberosTicket(String client,String server,int duration,
 			Key kcs) {
 		this.client = client;
 		this.server = server;
@@ -42,7 +59,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		this.kcs = kcs;
 	}
 	
-	private KerberosTicket(String client,int server,
+	private KerberosTicket(String client,String server,
 			Key kcs,Date beginTime,Date endTime) {
 		this.client = client;
 		this.server = server;
@@ -52,13 +69,67 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	}
 	
 	/**
+	 * @return the beginTime
+	 */
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+	/**
+	 * @return the endTime
+	 */
+	public Date getEndTime() {
+		return endTime;
+	}
+	
+	/**
 	 * 
+	 * @param d
+	 */
+	public void setEndTime(Date d){
+		endTime = d;
+	}
+	
+	/**
+	 * 
+	 * @param d
+	 */
+	public void setBeginTime(Date d){
+		beginTime = d;
+	}
+	
+	/**
+	 * 
+	 * @return the client
+	 */
+	public String getClient(){
+		return client;
+	}
+	
+	/**
+	 * 
+	 * @return the kcs
+	 */
+	public Key getKcs(){
+		return kcs;
+	}
+	
+	/**
+	 * 
+	 * @return the server
+	 */
+	public String getServer(){
+		return server;
+	}
+	
+	/**
+	 * Validate ticket given server identifier.
 	 * @param serverID server identifier that is requesting
 	 * validation.
 	 * @return true if Ticket is valid and false otherwise.
 	 */
-	public boolean isValidTicket(int serverID){
-		if(getServer() != serverID)
+	public boolean isValidTicket(String serverID){
+		if(!getServer().equals(serverID))
 			return false;
 		Date beginTicket = getBeginTime();
 		Date endTime = getEndTime();
@@ -68,6 +139,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 			return true;
 		return false;
 	}
+	
 	
 	@Override
 	public byte[] serialize(Key serverKey) throws KerberosException{
@@ -101,6 +173,8 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	
 	
 	/**
+	 * Create a kerberos Ticket from a serialized KerberosTicket with
+	 * the correct symmetric Key.
 	 * @param ticket
 	 * @param k size to decypher ticket.
 	 * @return KerberosTicket object.
@@ -113,14 +187,14 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	}
 
 	/**
+	 * Parse the XML to create KerberosTicket.
 	 * @param strTicket
-	 * @return
+	 * @return KerberosTicket
 	 * @throws KerberosException
 	 */
 	private static KerberosTicket parseTicket(byte[] strTicket) 
 	throws KerberosException {
-		int server = 0;
-		String client ="" ,kcs = "",dirFile = "";
+		String client ="" ,kcs = "",dirFile = "",server = "";
 		Date beginTime = null ,endTime = null;
 		
 		Document document = getXMLDocumentFromBytes(strTicket);
@@ -140,7 +214,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 				client = node.getTextContent();
 			}
 			else if(node.getNodeName().equals("server")){
-				server = Integer.parseInt(node.getTextContent());
+				server = node.getTextContent();
 			}
 			else if(node.getNodeName().equals("cliServKey")){
 				kcs = node.getTextContent();
@@ -158,43 +232,6 @@ public class KerberosTicket extends KerberosCypheredMessage{
 		Key key = Kerberos.getKeyFromBytes(keyInBytes);
 		return new KerberosTicket(client, server, key,beginTime,endTime);
 	}
-	
-	/**
-	 * @return the beginTime
-	 */
-	public Date getBeginTime() {
-		return beginTime;
-	}
 
-	/**
-	 * @return the endTime
-	 */
-	public Date getEndTime() {
-		return endTime;
-	}
-
-	/**
-	 * 
-	 * @return the client
-	 */
-	public String getClient(){
-		return client;
-	}
-	
-	/**
-	 * 
-	 * @return the kcs
-	 */
-	public Key getKcs(){
-		return kcs;
-	}
-	
-	/**
-	 * 
-	 * @return the server
-	 */
-	public Integer getServer(){
-		return server;
-	}
 	
 }

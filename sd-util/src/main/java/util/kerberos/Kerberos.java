@@ -8,8 +8,7 @@ import java.security.SecureRandom;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import util.kerberos.exception.KerberosException;
@@ -18,10 +17,13 @@ public class Kerberos {
 	
 	public final static String MD5 = "MD5";
 	
+	public final static String AES = "AES";
+	
 	public final static String DES = "DES";
 	
-	public final static String CYPHER_MODE = "DES/ECB/PKCS5Padding";
+	public final static String DES_MODE = "DES/ECB/PKCS5Padding";
 	
+	public final static String AES_MODE = "AES/ECB/PKCS5Padding";
 	
 	/* digestPassword - used to get Simmetric key to talk
 	 * with user in the authentication process. */
@@ -39,15 +41,14 @@ public class Kerberos {
 	/**
 	 * Transform byte[] in a Key.
 	 * @param bytesKey
-	 * @return
+	 * @return Key
 	 * @throws KerberosException
 	 */
 	public static Key getKeyFromBytes(byte[] bytesKey) 
 	throws KerberosException{
 		try{
-			DESKeySpec keySpec = new DESKeySpec(bytesKey);
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(DES);
-			return keyFactory.generateSecret(keySpec);
+			//DESKeySpec keySpec = new DESKeySpec(bytesKey);
+			return new SecretKeySpec(bytesKey, AES);
 		}catch(Exception e){
 			throw new KerberosException();
 		}
@@ -72,6 +73,22 @@ public class Kerberos {
 	}
 	
 	/**
+	 * Generate
+	 * @return
+	 * @throws KerberosException
+	 */
+	public static Key generateKerberosKey() 
+	throws KerberosException{
+		try{
+			KeyGenerator keyGen = KeyGenerator.getInstance(AES);
+			keyGen.init(128);
+			return keyGen.generateKey();
+		}catch(NoSuchAlgorithmException e){
+			throw new KerberosException();
+		}
+	}
+	
+	/**
 	 * Cypher a message given a key and bytes.
 	 * @param key
 	 * @param text
@@ -81,7 +98,7 @@ public class Kerberos {
 	public static byte[] cipherText(Key key,byte[] text) 
 	throws KerberosException {
 		try{
-			Cipher cipher = Cipher.getInstance(CYPHER_MODE);
+			Cipher cipher = Cipher.getInstance(AES_MODE);
 			cipher.init(Cipher.ENCRYPT_MODE, key);
 			return cipher.doFinal(text);
 		}catch(Exception e){
@@ -99,7 +116,7 @@ public class Kerberos {
 	public static byte[] decipherText(Key key,byte[] text) 
 	throws KerberosException {
 		try{
-			Cipher cipher = Cipher.getInstance(CYPHER_MODE);
+			Cipher cipher = Cipher.getInstance(AES_MODE);
 			cipher.init(Cipher.DECRYPT_MODE, key);
 			return cipher.doFinal(text);
 		}catch(Exception e){
@@ -125,7 +142,7 @@ public class Kerberos {
 	}
 	
 	/**
-	 * 
+	 * Make MAC.
 	 * @param bytes
 	 * @param key
 	 * @return Cyphered MAC signature.
@@ -138,7 +155,7 @@ public class Kerberos {
         messageDigest.update(bytes);
         byte[] digest = messageDigest.digest();
 
-        Cipher cipher = Cipher.getInstance(CYPHER_MODE);
+        Cipher cipher = Cipher.getInstance(AES_MODE);
 
         // encrypt the plaintext using the key
         cipher.init(Cipher.ENCRYPT_MODE, key);

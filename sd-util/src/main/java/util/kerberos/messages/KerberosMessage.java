@@ -20,7 +20,12 @@ import org.xml.sax.SAXException;
 
 import util.kerberos.exception.KerberosException;
 
-public class KerberosMessage {
+/**
+ * Abstract class for traded kerberos Messages.
+ * @author André
+ *
+ */
+public abstract class KerberosMessage {
 
 	protected final static String UTF8 = "UTF-8";
 	
@@ -53,7 +58,7 @@ public class KerberosMessage {
 	/**
 	 * Convert XML in bytes to Document object.
 	 * @param docBytes
-	 * @return
+	 * @return Document
 	 * @throws KerberosException
 	 */
 	protected static final Document getXMLDocumentFromBytes(byte[] docBytes)

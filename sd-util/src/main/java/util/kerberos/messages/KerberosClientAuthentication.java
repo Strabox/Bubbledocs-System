@@ -17,20 +17,30 @@ import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 
 /**
- * 
+ * Message used to validate client request.
  * @author André
+ * <pre>
+ * {@code
  * <clientAuth>
  * 	 <client>xs:dateTime</client>
  *   <requestTime>xs:dateTime</requestTime>
  * </clientAuth>
+ * }
+ * </pre>
  */
-public class KerberosClientAuthentication extends KerberosCypheredMessage{
+public class KerberosClientAuthentication extends KerberosCypheredMessage {
 	
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\clientAuthenticationFormat.xsd";
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/clientAuthenticationFormat.xsd";
 	
+	/**
+	 * Client making the request. 
+	 */
 	private String client;
 	
+	/**
+	 * Request timestamp.
+	 */
 	private Date requestTime;
 	
 	
@@ -59,7 +69,10 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage{
 	
 	
 	/**
-	 * @return true if request is valid and false otherwise.
+	 * Used to validate authenticator.
+	 * @param username
+	 * @param lastRequest
+	 * @return true if valid, false otherwise
 	 */
 	public boolean isValid(String username,Date lastRequest){
 		if(!client.equals(username))
@@ -91,12 +104,25 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage{
 		}
 	}
 	
+	/**
+	 * 
+	 * @param auth
+	 * @param kcs
+	 * @return
+	 * @throws KerberosException
+	 */
 	public static KerberosClientAuthentication deserialize(byte[] auth,Key kcs)
 	throws KerberosException{
 		byte[] plainAuth = Kerberos.decipherText(kcs,auth);
 		return parse(plainAuth);
 	}
 	
+	/**
+	 * 
+	 * @param auth
+	 * @return
+	 * @throws KerberosException
+	 */
 	private static KerberosClientAuthentication parse(byte[] auth)
 	throws KerberosException{
 		String dirFile ="",c ="";

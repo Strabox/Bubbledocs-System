@@ -4,9 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.security.Key;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.apache.commons.lang3.SystemUtils;
 
 import util.kerberos.Kerberos;
@@ -28,7 +32,7 @@ public class KerberosManager {
 	/**
 	 * Unique server identifier.
 	 */
-	private int serverID;
+	private String serverID;
 	
 	/**
 	 * Server secret symmetric key.
@@ -45,17 +49,11 @@ public class KerberosManager {
 	 */
 	private HashMap<String, Key> kcsKeys;
 	
-	/**
-	 * Used to maintain client nonces.
-	 */
-	private HashMap<String, String> clientNonces;
 	
-	
-	public KerberosManager(int serverID) throws Exception{
+	public KerberosManager(String serverID) throws Exception{
 		this.serverID = serverID;
 		lastRequest = new HashMap<String,Date>();
 		kcsKeys = new HashMap<String, Key>();
-		clientNonces = new HashMap<String, String>();
 		if(SystemUtils.IS_OS_WINDOWS)
 			currentKeysFile = System.getProperty("user.dir") + KEYS_FILE_WIN;
 		else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC)
@@ -63,12 +61,6 @@ public class KerberosManager {
 		loadServerKey();
 	}
 	
-	public void addLastNonce(String client,String nonce){
-		if(clientNonces.containsKey(client))
-			clientNonces.replace(client, nonce);
-		else
-			clientNonces.put(client, nonce);
-	}
 	
 	public void addLastRequest(String client,Date requestTime){
 		if(lastRequest.containsKey(client))
@@ -92,23 +84,24 @@ public class KerberosManager {
 		br = new BufferedReader(new FileReader(currentKeysFile));
 		String line = "";
 		while((line = br.readLine()) != null){
-			if(line.matches("[1-9][ \t]+[[a-z][A-Z][0-9]]+")){
-				String[] divs = line.split("[ \t]+");
-				if(Integer.parseInt(divs[0]) == serverID){
-					ks = Kerberos.getKeyFromBytes(divs[1].getBytes("UTF-8"));
-					br.close();
-					return;
-				}
+			String[] divs = line.split("[ \t]+");
+			if(divs[0].equals(serverID)){
+				byte[] k = DatatypeConverter.parseBase64Binary(divs[1]);
+				ks = Kerberos.getKeyFromBytes(k);
+				br.close();
+				return;
 			}
 		}
 		br.close();
 	}
 	
 	/**
-	 * Validate a client request.
+	 * Validate a client request, "Kerberos cerebrus".
+	 * @param base64Ticket
+	 * @param base64Auth
 	 * @throws Exception
 	 */
-	public void processRequest(String base64Ticket,String base64Auth,String base64Nonce) 
+	public void processRequest(String base64Ticket,String base64Auth) 
 	throws Exception {
 		byte[] byteTicket = DatatypeConverter.parseBase64Binary(base64Ticket);
 		byte[] auth = DatatypeConverter.parseBase64Binary(base64Auth);
@@ -117,36 +110,33 @@ public class KerberosManager {
 		if(!ticket.isValidTicket(serverID))
 			throw new Exception();
 		Key kcs = ticket.getKcs();
-		System.out.println("Ticket : " + ticket.getClient());
-		System.out.println("Ticket : " + ticket.getServer());
-		System.out.println("Ticket : " + ticket.getBeginTime());
-		System.out.println("Ticket : " + ticket.getEndTime());
-		//================Validate Nonce======================
-		addLastNonce(ticket.getClient(), base64Nonce);
-		//TODO .......
 		//==============Validate authenticator================
 		KerberosClientAuthentication authentication;
 		authentication = KerberosClientAuthentication.deserialize(auth, kcs);
 		Date lastReq = lastRequest.get(authentication.getClient());
 		if(!authentication.isValid(ticket.getClient(),lastReq))
 			throw new Exception();
+		//Request is valid (I Hope So).
 		addLastRequest(authentication.getClient(), authentication.getRequestTime());
 		addKcsKey(authentication.getClient(), kcs);
 	}
 	
 	/**
-	 * Process reply passing information to server handlers.
-	 * ->1 
+	 * Process reply.
 	 * @param webContext
 	 * @param kcs Client Server Key.
+	 * @return nonce cyphered in base64
 	 */
 	public String processReply(String client) 
 	throws Exception{
+		Date lastDate = lastRequest.get(client);
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(lastDate); 
+		XMLGregorianCalendar t = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+		String tString = t.toXMLFormat();
 		Key kcs = kcsKeys.get(client);
-		String nonce = clientNonces.get(client);
-		byte[] cypheredNonce = Kerberos.cipherText(kcs, nonce.getBytes("UTF-8"));
-		String cyph64BaseNonce = DatatypeConverter.printBase64Binary(cypheredNonce);
-		return cyph64BaseNonce;
+		byte[] tCyphered = Kerberos.cipherText(kcs, tString.getBytes());
+		return DatatypeConverter.printBase64Binary(tCyphered);
 	}
 	
 	

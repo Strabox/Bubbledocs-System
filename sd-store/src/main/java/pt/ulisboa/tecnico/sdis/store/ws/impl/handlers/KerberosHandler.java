@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.Name;
+import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
@@ -18,10 +19,10 @@ import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 
 /**
- *  Kerberos Handler - Kerberos Store Server hanlder. 
+ *  Kerberos Handler - Kerberos Store Server handler. 
  */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
-
+	
 	/**
 	 * kerberos manager - Used to manage kerberos protocol in server side.
 	 */
@@ -29,7 +30,10 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
 	
 	public KerberosHandler() throws Exception{
-		kerberosManager = new KerberosManager(1);		//FIXME !!!!!!!!!!!
+		int id = GenerateServerId.getId();
+		String serverId = "SD-STORE-"+id;
+		kerberosManager = new KerberosManager(serverId);
+		System.out.println(serverId);
 	}
 	
 	public boolean handleMessage(SOAPMessageContext context) {
@@ -37,9 +41,9 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 		
 		if(out.booleanValue()){		//If message is LEAVING!!.
 			try{
-				String nonceBase64;
-				nonceBase64 = kerberosManager.processReply((String)context.get("userId"));
-				
+				String nonceBase64,client;
+				client = (String) context.get("userId");
+				nonceBase64 = kerberosManager.processReply(client);
 				SOAPMessage msg = context.getMessage();
 				SOAPPart part = msg.getSOAPPart();
 				SOAPEnvelope env = part.getEnvelope();
@@ -47,17 +51,17 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				if(hdr == null){
 					hdr = env.addHeader();
 				}
-				Name nonce = env.createName("nonce","n","urn:req");
-				SOAPHeaderElement noncEle = hdr.addHeaderElement(nonce);
-				noncEle.addTextNode(nonceBase64);
+				Name name = env.createName("nonce", "n", ":n");
+				SOAPElement n = hdr.addHeaderElement(name);
+				n.setTextContent(nonceBase64);
 			}
 			catch(Exception e){
-				System.out.println("ERROR Processing Leaving Message");
+				System.out.println("ERROR Leaving " + e);
 			}
 		}
 		else{						//If message is ARRIVING!!.
 			try{
-				String ticket = "",auth ="",nonce = "";
+				String ticket = "",auth ="";
 				SOAPMessage msg = context.getMessage();
 				SOAPPart part = msg.getSOAPPart();
 				SOAPEnvelope env = part.getEnvelope();
@@ -78,11 +82,8 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 	else if(nodeName.equals("auth")){
                 		auth = ele.getTextContent();
                 	}
-                	else if(nodeName.equals("nonce")){
-                		nonce = ele.getTextContent();
-                	}
                 }
-                kerberosManager.processRequest(ticket, auth, nonce);
+                kerberosManager.processRequest(ticket, auth);
 			}catch(Exception e){
 				System.out.println("ERROR Processing Request Message!!");
 				throw new InvalidRequest();

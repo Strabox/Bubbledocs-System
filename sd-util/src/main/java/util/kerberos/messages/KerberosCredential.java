@@ -12,13 +12,16 @@ import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 
 /**
- * Used by clients to make remote calls.
+ * Used by clients to make authenticated remote calls.
  * @author André
- * 
+ * <pre>
+ * {@code
  * <credential>
- * 	 <ticket>base64</ticket>
- * 	 <kcs>base64</kcs>
+ * 	 <ticket>xs:base64Binary</ticket>
+ * 	 <kcs>xs:base64Binary</kcs>
  * </credential>
+ * }
+ * </pre>
  */
 public class KerberosCredential extends KerberosNormalMessage{
 	
@@ -50,6 +53,13 @@ public class KerberosCredential extends KerberosNormalMessage{
 		return credential.getBytes();
 	}
 	
+	/**
+	 * Given a serialized KerberosCredential it return
+	 * the correct Object
+	 * @param credential
+	 * @return
+	 * @throws KerberosException
+	 */
 	public static KerberosCredential deserialize(byte[] credential) 
 	throws KerberosException{
 		String dirFile = "";

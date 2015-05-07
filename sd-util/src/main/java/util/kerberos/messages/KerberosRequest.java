@@ -8,25 +8,35 @@ import org.w3c.dom.Node;
 import util.kerberos.exception.KerberosException;
 
 /**
- * 
+ * Kerberos Request message, it's used to request
+ * authentication to SD-ID (kerberos SAut).
  * @author André
- *
- *	<request>
- *	  <server>integer</server>
- *    <nonce>base64</nonce>
- *	</request>
+ * <pre>
+ * {@code
+   <request>
+     <server>integer</server>
+     <nonce>base64</nonce>
+   </request>
+ * }
+ * </pre>
  */
 public class KerberosRequest extends KerberosNormalMessage{
 
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\requestFormat.xsd";
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/requestFormat.xsd";
 	
-	private Integer server;
+	/**
+	 * Service server we want contact in future requests.
+	 */
+	private String server;
 	
+	/**
+	 * Nonce to authenticate server.
+	 */
 	private String nonce;
 	
 	
-	public KerberosRequest(Integer server,String nonce){
+	public KerberosRequest(String server,String nonce){
 		this.server = server;
 		this.nonce = nonce;
 	}
@@ -34,7 +44,7 @@ public class KerberosRequest extends KerberosNormalMessage{
 	/**
 	 * @return the server
 	 */
-	public Integer getServer() {
+	public String getServer() {
 		return server;
 	}
 
@@ -44,6 +54,7 @@ public class KerberosRequest extends KerberosNormalMessage{
 	public String getNonce() {
 		return nonce;
 	}
+	
 	
 	@Override
 	public byte[] serialize() throws KerberosException{
@@ -58,10 +69,16 @@ public class KerberosRequest extends KerberosNormalMessage{
 		}
 	}
 	
+	/**
+	 * Given a KerberosRequest serialized returns the
+	 * correct object.
+	 * @param request
+	 * @return KerberosRequest
+	 * @throws KerberosException
+	 */
 	public static KerberosRequest deserialize(byte[] request)
 	throws KerberosException{
-		Integer s = 0;
-		String n = "",dirFile = "";
+		String n = "",dirFile = "",s ="";
 		Document document = getXMLDocumentFromBytes(request);
 		
         if(SystemUtils.IS_OS_WINDOWS)
@@ -79,7 +96,7 @@ public class KerberosRequest extends KerberosNormalMessage{
 				n = node.getTextContent();
 			}
 			else if(node.getNodeName().equals("server")){
-				s = Integer.parseInt(node.getTextContent());
+				s = node.getTextContent();
 			}
 		}
 		return new KerberosRequest(s, n);

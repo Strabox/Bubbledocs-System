@@ -7,6 +7,11 @@ import util.kerberos.exception.KerberosException;
  */
 public abstract class KerberosNormalMessage extends KerberosMessage{
 	
+	/**
+	 * Serialize the message from XML to byte[].
+	 * @return byte[] serialized message
+	 * @throws KerberosException
+	 */
 	public abstract byte[] serialize() throws KerberosException;
 	
 	

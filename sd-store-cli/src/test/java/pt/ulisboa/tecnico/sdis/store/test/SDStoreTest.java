@@ -3,8 +3,12 @@ package pt.ulisboa.tecnico.sdis.store.test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.security.Key;
+
+import javax.xml.bind.DatatypeConverter;
+
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.AfterClass;
+
 import pt.ulisboa.tecnico.sdis.store.cli.SDStoreClient;
 import util.kerberos.Kerberos;
 import util.kerberos.messages.KerberosClientAuthentication;
@@ -34,16 +38,15 @@ public class SDStoreTest {
 	 */
 	public void uploadKerberosInfo(SDStoreClient store, String username) 
 	throws Exception{
-		String nonce = Kerberos.generateRandomNumber();
-		Key kcs = Kerberos.generateSymKey(Kerberos.DES, 56);
-		KerberosTicket ticket = new KerberosTicket(username,1,8,kcs);
+		Key kcs = Kerberos.generateKerberosKey();
+		KerberosTicket ticket = new KerberosTicket(username,ID_NAME,8,kcs);
 		KerberosClientAuthentication auth;
 		auth = new KerberosClientAuthentication(username);
-		Key ks = loadServerKey(1);
-		port.processRequest(ticket.serialize(ks), auth.serialize(kcs), nonce);
+		Key ks = loadServerKey(ID_NAME);
+		port.processRequest(ticket.serialize(ks), auth.serialize(kcs));
 	}
 	
-	public Key loadServerKey(int serverID) throws Exception{
+	public Key loadServerKey(String serverID) throws Exception{
 		BufferedReader br;
 		String currentKeysFile = "";
 		if(SystemUtils.IS_OS_WINDOWS)
@@ -54,12 +57,11 @@ public class SDStoreTest {
 		br = new BufferedReader(new FileReader(currentKeysFile));
 		String line = "";
 		while((line = br.readLine()) != null){
-			if(line.matches("[1-9][ \t]+[[a-z][A-Z][0-9]]+")){
-				String[] divs = line.split("[ \t]+");
-				if(Integer.parseInt(divs[0]) == serverID){
-					br.close();
-					return Kerberos.getKeyFromBytes(divs[1].getBytes("UTF-8"));
-				}
+			String[] divs = line.split("[ \t]+");
+			if(divs[0].equals(serverID)) {
+				byte[] k = DatatypeConverter.parseBase64Binary(divs[1]);
+				br.close();
+				return Kerberos.getKeyFromBytes(k);
 			}
 		}
 		br.close();

@@ -18,7 +18,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.*;
 	targetNamespace="urn:pt:ulisboa:tecnico:sdis:store:ws",
 	serviceName="SDStore"
 )
-@HandlerChain(file="/handler-chain.xml")
+@HandlerChain(file = "/handler-chain.xml")
 public class SDStoreImpl implements SDStore {
 
 	private List<Storage> storage;
@@ -55,7 +55,8 @@ public class SDStoreImpl implements SDStore {
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
 		passUser(docUserPair.getUserId());
-		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" && docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
+		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" 
+			&& docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
 			for (Storage storage2 : storage) {
 				
 				if (storage2.getUserId().equals(docUserPair.getUserId())) {
@@ -68,7 +69,6 @@ public class SDStoreImpl implements SDStore {
 			storage.add(newstor);
 	
 		}
-		passUser(docUserPair.getUserId());
 	}
 
 	/**

@@ -2,7 +2,6 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 
 import java.io.IOException;
 
-
 import javax.xml.registry.JAXRException;
 import javax.xml.ws.Endpoint;
 
@@ -14,7 +13,7 @@ public class SDStoreMain {
 		int nservers = 2;  //CHANGE ME
 		int [] rt = new int[nservers];
 		int [] wt = new int[nservers];
-
+		
 		// Check arguments
 		if (args.length < 3) {
 			System.err.println("Argument(s) missing!");

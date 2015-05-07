@@ -74,15 +74,14 @@ public class SdIdClient extends UDDIClient implements SDId{
 			throws AuthReqFailed_Exception {
 		try{
 			String sentNonce = Kerberos.generateRandomNumber();
-			KerberosRequest req = new KerberosRequest(1,sentNonce);		//FIXME server identifier
+			KerberosRequest req = new KerberosRequest("SD-STORE-1",sentNonce);		//FIXME server identifier
 			byte[] ans = idRemote.requestAuthentication(userId, req.serialize());
-			System.out.println("aaaa");
 			KerberosReply serverReply = KerberosReply.deserialize(ans);
 			Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(reserved, "MD5"));
 			KerberosServerAuthentication receivedAuth;
 			receivedAuth = KerberosServerAuthentication.deserialize(serverReply.getAuthentication(), kc);
 			if(!sentNonce.equals(receivedAuth.getNonce()))
-				throw new Exception();									//FIXME can i use wsdl exceptions ?
+				throw new Exception();
 			return new KerberosCredential(serverReply.getTicket(), receivedAuth.getKcs()).serialize();				
 		}catch(Exception e){
 			AuthReqFailed auth = new AuthReqFailed();

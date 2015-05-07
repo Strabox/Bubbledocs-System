@@ -10,16 +10,30 @@ import util.kerberos.exception.KerberosException;
 
 /**
  * Represents the reply from Kerberos Authentication server
- * to the client.
+ * (Kerberos Saut) to the client.
  * @Author André
+ * <pre>
+ * {@code
+ * <reply>
+ *   <ticket>xs:base64Binary</ticket>
+ *   <authentication>xs:base64Binary</authentication>
+ * </reply>
+ * }
+ * </pre>
  */
 public class KerberosReply extends KerberosNormalMessage{
 
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\replyFormat.xsd";
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/replyFormat.xsd";
 	
+	/**
+	 * Serialized ticker.
+	 */
 	private byte[] ticket;
 	
+	/**
+	 * Serialized authentication message.
+	 */
 	private byte[] authentication;
 	
 	
@@ -58,6 +72,13 @@ public class KerberosReply extends KerberosNormalMessage{
 		}
 	}
 	
+	/**
+	 * Given a kerberosReply serialized it returns the
+	 * correct object.
+	 * @param reply
+	 * @return KerberosReply
+	 * @throws KerberosException
+	 */
 	public static KerberosReply deserialize(byte[] reply) 
 	throws KerberosException {
 		

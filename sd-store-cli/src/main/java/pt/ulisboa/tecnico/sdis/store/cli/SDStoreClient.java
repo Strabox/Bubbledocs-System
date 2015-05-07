@@ -74,12 +74,11 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	 * @param auth
 	 * @param nonce
 	 */
-	public void processRequest(byte[] ticket,byte[] auth,String base64Nonce){
+	public void processRequest(byte[] ticket,byte[] auth){
 		BindingProvider bp = (BindingProvider) storeRemote;
 		Map<String, Object> requestContext = bp.getRequestContext();
         requestContext.put("ticket", Base64.getEncoder().encodeToString(ticket));
         requestContext.put("auth", Base64.getEncoder().encodeToString(auth));
-        requestContext.put("nonce", base64Nonce);
 	}
 
 }
