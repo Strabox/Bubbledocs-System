@@ -3,11 +3,14 @@ package pt.tecnico.bubbledocs.service.local;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 
 public class LoginUser extends BubbleDocsService {
 	
 	private String userToken;
+	
 	private String username;
+	
 	private String password;
 
 	
@@ -31,9 +34,16 @@ public class LoginUser extends BubbleDocsService {
 		}
 		catch(BubbleDocsException bube){
 			/* Well not now my friend.. not now... */
-			throw bube;
+			throw new UnavailableServiceException();
 		}
+	}
 
+	public final String getUserToken() {
+		return userToken;
+	}
+
+	public void updatePassLocaly(String username, String password) {
+		Bubbledocs bubble = Bubbledocs.getInstance();
 		//Update User password locally to use in future local logins.
 		User user = bubble.getUserByName(username);
 		user.setPassword(password);
@@ -42,8 +52,5 @@ public class LoginUser extends BubbleDocsService {
 		//SUCCESSFUL LOGIN!!!!
 		bubble.removeAllInvalidSessions();
 	}
-
-	public final String getUserToken() {
-		return userToken;
-	}
+	
 }

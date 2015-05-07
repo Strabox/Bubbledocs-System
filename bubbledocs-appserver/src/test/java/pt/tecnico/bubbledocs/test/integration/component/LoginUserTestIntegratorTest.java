@@ -12,8 +12,8 @@ import org.joda.time.Seconds;
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.User;
-//import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
-//import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
+import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.integration.LoginUserIntegrator;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
@@ -100,6 +100,9 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
 		assertTrue("diference in seconds greater than expected", difference < 2);
     }
     
+    /*
+     *Testa o login local quando a password é válida
+     */
     @Test
     public void successLoginLocally(){
     	LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
@@ -124,7 +127,9 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
  		assertTrue("Access time in session not correctly set", difference >= 0);
  		assertTrue("diference in seconds greater than expected", difference < 2);
     }
-    
+    /*
+     *Testa o login local quando a password é inválida
+     */
     @Test(expected = UnavailableServiceException.class)
     public void wrongPasswordLoginLocally(){
     	LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, "wrongpass");
@@ -132,12 +137,15 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
     	 new Expectations(){
          	{
          		idRemote.loginUser(USERNAME,"wrongpass");
-         		times = 0;         	}
+         		result = new RemoteInvocationException();         	}
     	 };
-         
-         service.execute();
+    	 
+        	 service.execute();
     }
     
+    /*
+     *Testa o login local quando a password é inválida
+     */
     @Test(expected = UnavailableServiceException.class)
     public void invalidPasswordLoginLocally(){
     	LoginUserIntegrator service = new LoginUserIntegrator(USERNAME_INVALID_PASS, "pass");
@@ -145,14 +153,16 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
     	 new Expectations(){
          	{
          		idRemote.loginUser(USERNAME_INVALID_PASS,"pass");
-         		times = 0;
+         		result = new RemoteInvocationException();
          	}
          };
          
          service.execute();
     }
     
-    
+    /*
+     *Testa o login local quando o username é desconhecido
+     */
     @Test(expected = UnavailableServiceException.class)
     public void unknownUserLoginLocally(){
     	LoginUserIntegrator service = new LoginUserIntegrator(UNKNOWN_USERNAME, PASSWORD);
@@ -160,13 +170,16 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
     	 new Expectations(){
          	{
          		idRemote.loginUser(UNKNOWN_USERNAME,PASSWORD);
-         		times = 0;
+         		result = new RemoteInvocationException();
          	}
          };
-         
+  
          service.execute();
     }
     
+    /*
+     *Testa o login duas vezes
+     */
     @Test
     public void successLoginTwice() {
     	LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
@@ -194,13 +207,22 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
         user = getUserFromSession(token2);
         assertEquals(USERNAME, user.getUsername());
     }
-/*
+
     @Test(expected = LoginBubbleDocsException.class)
     public void remoteLoginUnknownUser() {
     	LoginUserIntegrator service = new LoginUserIntegrator("jp2", PASSWORD);
-        
-        service.execute();
+
+    	new Expectations(){
+    		{
+    			idRemote.loginUser("jp2",anyString);
+    			result = new LoginBubbleDocsException();
+    		}
+    	};
+
+    		service.execute();
+    	
     }
+
 
     @Test(expected = LoginBubbleDocsException.class)
     public void remoteLoginWrongPassword() {
@@ -209,12 +231,12 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
         new Expectations(){
         	{
         		idRemote.loginUser(USERNAME,"jp2");
-        		times = 0;
+        		result = new LoginBubbleDocsException();
         	}
         };
         
         service.execute();
     }
-  */
+  
     
 }

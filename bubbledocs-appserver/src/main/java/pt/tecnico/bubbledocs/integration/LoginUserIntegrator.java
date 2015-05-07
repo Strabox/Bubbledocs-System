@@ -4,11 +4,9 @@ import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.service.local.LoginUser;
 import pt.tecnico.bubbledocs.service.remote.IDRemoteServices;
-import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 
 
 public class LoginUserIntegrator extends BubbleDocsIntegrator {
-
 	
 	private LoginUser localLoginUser;
 	private IDRemoteServices remote;
@@ -23,13 +21,13 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
 	}
 
 	public void execute() throws BubbleDocsException{
-		localLoginUser.execute();
+		
 		try{
-			remote.loginUser(username, pass);
-		}catch(RemoteInvocationException e){
-			throw e;
-		}catch(LoginBubbleDocsException e){
-			throw e;
+			remote.loginUser(username, pass);//remote login
+			localLoginUser.updatePassLocaly(username, pass);
+		}
+		catch(RemoteInvocationException rie){ //remoto falhou, tentar local
+			localLoginUser.execute();//local login
 		}
 	}
 

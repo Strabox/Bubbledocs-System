@@ -223,14 +223,14 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 * loginUser(String,String) - Create a new session for the user and put him 
 	 * logged in returns the generated token.
 	 */
-	public void loginUser(String user, String pass) throws UnavailableServiceException, LoginBubbleDocsException{
+	public void loginUser(String user, String pass) throws UnavailableServiceException{
 		for (User u : getUserSet()) {
 			if (user.equals(u.getUsername()) && pass.equals(u.getPassword())) {
 				//LOGIN SUCCESSFUL
 				return;
 			}else if (user.equals(u.getUsername()) && pass.equals(u.getPassword()))
 				//Wrong username - password combination.
-				throw new LoginBubbleDocsException();
+				throw new UnavailableServiceException();
 		}
 		//User doesnt exist in local Database.
 		throw new UnavailableServiceException();
