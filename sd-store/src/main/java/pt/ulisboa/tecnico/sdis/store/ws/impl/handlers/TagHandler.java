@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
@@ -48,7 +49,7 @@ public class TagHandler implements SOAPHandler<SOAPMessageContext> {
 
 	public boolean handleMessage(SOAPMessageContext context) {
 		boolean b = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
-		if (b) { //leaving
+		if (b) {	//leaving
 			
 			try{
 				SOAPMessage msg = context.getMessage();
@@ -59,14 +60,15 @@ public class TagHandler implements SOAPHandler<SOAPMessageContext> {
 					header = env.addHeader();
 				}
 				
-				header.addChildElement("Tag", ""+clientid+","+version);
+				SOAPElement tag = header.addChildElement("Tag");
+				tag.addTextNode(""+clientid+","+version);
 				 
 			}catch(Exception e){
 				System.out.println("Exception Caught:" + e);
 			}
 			
 		}
-		else { //receiving
+		else {	//receiving
 			
 			try{
 				String tag = null;
