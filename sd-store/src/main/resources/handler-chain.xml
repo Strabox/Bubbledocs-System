@@ -4,16 +4,9 @@
     <handler-chain>
         <handler>
             <handler-class>pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.KerberosHandler</handler-class>
-            <init-param>
-               <param-name>TestParam</param-name>
-               <param-value>TestValue</param-value>
-            </init-param>
         </handler>
         <handler>
             <handler-class>util.handlers.LoggingHandler</handler-class>
-        </handler>
-        <handler>
-            <handler-class>pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.TagHandler</handler-class>
         </handler>
     </handler-chain>
 </handler-chains>

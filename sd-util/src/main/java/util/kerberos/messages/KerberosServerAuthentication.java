@@ -60,6 +60,17 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 		return nonce;
 	}
 	
+	/**
+	 * Used to validate Server reply (authenticator).
+	 * @param nonce
+	 * @return true if valid false otherwise.
+	 */
+	public boolean isValid(String nonce64){
+		if(nonce.equals(nonce64))
+			return true;
+		return false;
+	}
+	
 	@Override
 	public byte[] serialize(Key kc) throws KerberosException {
 		String authentication,body = "";

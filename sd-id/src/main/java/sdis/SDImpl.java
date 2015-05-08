@@ -17,6 +17,7 @@ import sdis.domain.User;
 import sdis.domain.UserManager;
 import sdis.kerberos.KerberosManager;
 import util.kerberos.Kerberos;
+import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosReply;
 import util.kerberos.messages.KerberosRequest;
 import util.kerberos.messages.KerberosServerAuthentication;
@@ -32,10 +33,13 @@ import util.kerberos.messages.KerberosTicket;
 )
 public class SDImpl implements SDId {
 
-	private final int TICKET_HOUR_DURATION = 2;
+	private final int TICKET_HOUR_DURATION = 5;
 	
 	private UserManager userManager;
 	
+	/**
+	 * Used to manage Kerberos Protocol
+	 */
 	private KerberosManager kerberosManager;
 	
 	
@@ -69,7 +73,7 @@ public class SDImpl implements SDId {
 		}
 	}
 	
-	/* -----------------------WebService Methods---------------------------- */
+	/* ========================= WebService Methods ============================ */
 	
 	public void createUser(String userId, String emailAddress)
 			throws EmailAlreadyExists_Exception, InvalidEmail_Exception,
@@ -82,6 +86,7 @@ public class SDImpl implements SDId {
 	
 	}
 	
+	
 	public void renewPassword(String userId) throws UserDoesNotExist_Exception {
 		if(!userManager.usernameExists(userId)){
 			UserDoesNotExist udne = new UserDoesNotExist();
@@ -92,6 +97,7 @@ public class SDImpl implements SDId {
 		System.out.println("Password for "+ userId+ ": " + pass);
 	}
 
+	
 	public void removeUser(String userId) throws UserDoesNotExist_Exception {
 		if (!userManager.usernameExists(userId)){
 			UserDoesNotExist udne = new UserDoesNotExist();
@@ -102,34 +108,30 @@ public class SDImpl implements SDId {
 			userManager.removeUser(userId);
 	}
 
+	
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 			throws AuthReqFailed_Exception {
 		try{		
-			if(userId == null || reserved == null){
-				AuthReqFailed arf = new AuthReqFailed();
-				throw new AuthReqFailed_Exception("Invalid request null detected", arf);
-			}
-
+		if(userId != null && reserved != null) {
 			boolean userExists = userManager.usernameExists(userId);
 			if(userExists){
 				KerberosRequest r = KerberosRequest.deserialize(reserved);
-				
 				if(!kerberosManager.nonceExists(r.getNonce()) && 
 					kerberosManager.getServerKey(r.getServer()) != null){
 					
 					kerberosManager.addNonce(r.getNonce());
 					Key ks = kerberosManager.getServerKey(r.getServer());
 					Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(userManager.getUserPassword(userId).getBytes(), Kerberos.MD5));
-					Key kcs = Kerberos.generateSymKey(Kerberos.DES, 56);
+					Key kcs = Kerberos.generateKerberosKey();
 					KerberosTicket ticket = new KerberosTicket(userId, r.getServer(),TICKET_HOUR_DURATION, kcs);
 					KerberosServerAuthentication ksa = new KerberosServerAuthentication(kcs, r.getNonce());
-				
-					return  new KerberosReply(ticket.serialize(ks), ksa.serialize(kc)).serialize();
+					return new KerberosReply(ticket.serialize(ks), ksa.serialize(kc)).serialize();
 				}
 			}
-			AuthReqFailed arf = new AuthReqFailed();
-			throw new AuthReqFailed_Exception("Invalid Request!!", arf);
-		}catch(Exception e){
+		}
+		AuthReqFailed arf = new AuthReqFailed();
+		throw new AuthReqFailed_Exception("Invalid Request!!", arf);
+		}catch(KerberosException e){
 			AuthReqFailed arf = new AuthReqFailed();
 			throw new AuthReqFailed_Exception("Problem authenticating!!", arf);
 		}

@@ -20,7 +20,15 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
  */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
+	public static final String TIMESTAMP_PROPERTY = "time";
 	
+	public static final String AUTH_PROPERTY = "auth";
+	public static final String AUTH_PREFIX = "a";
+	public static final String AUTH_NAMESPACE = "urn:auth";
+	
+	public static final String TICKET_PROPERTY = "ticket";
+	public static final String TICKET_PREFIX = "t";
+	public static final String TICKET_NAMESPACE = "urn:tick";
 	
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
@@ -34,12 +42,14 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				if(hdr == null){
 					hdr = env.addHeader();
 				}
-				Name ticket = env.createName("ticket","t","urn:tick");
-				Name auth = env.createName("auth","a","urn:auth");
+				Name ticket = env.createName(TICKET_PROPERTY,
+				TICKET_PREFIX,TICKET_NAMESPACE);
+				Name auth = env.createName(AUTH_PROPERTY,AUTH_PREFIX,
+						AUTH_NAMESPACE);
                 SOAPHeaderElement authEle = hdr.addHeaderElement(auth);
                 SOAPHeaderElement tickEle = hdr.addHeaderElement(ticket);
-                authEle.addTextNode((String)context.get("auth"));
-                tickEle.addTextNode((String)context.get("ticket"));
+                authEle.addTextNode((String)context.get(AUTH_PROPERTY));
+                tickEle.addTextNode((String)context.get(TICKET_PROPERTY));
 				}
 			catch(SOAPException e){
 				System.out.println("ERROR Leaving " + e);
@@ -61,7 +71,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 }
                 SOAPHeaderElement ele = (SOAPHeaderElement) it.next();
             	String nodeName = ele.getLocalName();
-            	if(nodeName.equals("nonce")){
+            	if(nodeName.equals(TIMESTAMP_PROPERTY)){
             		// TODO
             	}
             	else

@@ -17,6 +17,7 @@ import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
 import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 import util.kerberos.Kerberos;
+import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosCredential;
 import util.kerberos.messages.KerberosReply;
 import util.kerberos.messages.KerberosRequest;
@@ -25,6 +26,8 @@ import util.uddi.UDDIClient;
 
 
 public class SdIdClient extends UDDIClient implements SDId{
+	
+	private static final String STORE_SERVICE = "SD-STORE";
 	
 	/**
 	 * Proxy for webService.
@@ -72,18 +75,24 @@ public class SdIdClient extends UDDIClient implements SDId{
 
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 			throws AuthReqFailed_Exception {
+		if(reserved == null){
+			AuthReqFailed auth = new AuthReqFailed();
+			throw new AuthReqFailed_Exception(userId, auth);
+		}
 		try{
 			String sentNonce = Kerberos.generateRandomNumber();
-			KerberosRequest req = new KerberosRequest("SD-STORE-1",sentNonce);		//FIXME server identifier
+			KerberosRequest req = new KerberosRequest(STORE_SERVICE,sentNonce);
 			byte[] ans = idRemote.requestAuthentication(userId, req.serialize());
 			KerberosReply serverReply = KerberosReply.deserialize(ans);
-			Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(reserved, "MD5"));
+			Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(reserved, Kerberos.MD5));
 			KerberosServerAuthentication receivedAuth;
 			receivedAuth = KerberosServerAuthentication.deserialize(serverReply.getAuthentication(), kc);
-			if(!sentNonce.equals(receivedAuth.getNonce()))
-				throw new Exception();
-			return new KerberosCredential(serverReply.getTicket(), receivedAuth.getKcs()).serialize();				
-		}catch(Exception e){
+			if(!receivedAuth.isValid(sentNonce)){
+				AuthReqFailed auth = new AuthReqFailed();
+				throw new AuthReqFailed_Exception(userId, auth);
+			}
+			return new KerberosCredential(userId,serverReply.getTicket(), receivedAuth.getKcs()).serialize();				
+		}catch(KerberosException e){
 			AuthReqFailed auth = new AuthReqFailed();
 			throw new AuthReqFailed_Exception(userId, auth);
 		}

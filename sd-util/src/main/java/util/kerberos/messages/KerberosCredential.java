@@ -17,6 +17,7 @@ import util.kerberos.exception.KerberosException;
  * <pre>
  * {@code
  * <credential>
+ *   <client>xs:string</client>
  * 	 <ticket>xs:base64Binary</ticket>
  * 	 <kcs>xs:base64Binary</kcs>
  * </credential>
@@ -38,8 +39,33 @@ public class KerberosCredential extends KerberosNormalMessage{
 	 */
 	private Key kcs;
 	
+	/**
+	 * Client ID.
+	 */
+	private String client;
 	
-	public KerberosCredential(byte[] ticket,Key kcs) {
+	/**
+	 * 
+	 * @return
+	 */
+	public byte[] getTicket(){
+		return ticket;
+	}
+	
+	/**
+	 * 
+	 * @return kcs
+	 */
+	public Key getKcs(){
+		return kcs;
+	}
+	
+	public String getClient(){
+		return client;
+	}
+	
+	public KerberosCredential(String client,byte[] ticket,Key kcs) {
+		this.client = client;
 		this.ticket = ticket;
 		this.kcs = kcs;
 	}
@@ -48,6 +74,7 @@ public class KerberosCredential extends KerberosNormalMessage{
 	public byte[] serialize() throws KerberosException {
 		String credential = "",body ="";
 		body += "<ticket>" + DatatypeConverter.printBase64Binary(ticket) +"</ticket>";
+		body += "<client>" + client +"</client>";
 		body += "<kcs>" + DatatypeConverter.printBase64Binary(kcs.getEncoded()) + "</kcs>";
 		credential += "<credential>" + body + "</credential>";
 		return credential.getBytes();
@@ -62,7 +89,7 @@ public class KerberosCredential extends KerberosNormalMessage{
 	 */
 	public static KerberosCredential deserialize(byte[] credential) 
 	throws KerberosException{
-		String dirFile = "";
+		String dirFile = "",c = "";
 		byte[] k = null,t = null;
 		Document document = getXMLDocumentFromBytes(credential);
 		if(SystemUtils.IS_OS_WINDOWS)
@@ -82,9 +109,12 @@ public class KerberosCredential extends KerberosNormalMessage{
 			else if(node.getNodeName().equals("kcs")){
 				k = DatatypeConverter.parseBase64Binary(node.getTextContent());
 			}
+			else if(node.getNodeName().equals("client")){
+				c = node.getTextContent();
+			}
 		}
 		Key key = Kerberos.getKeyFromBytes(k);
-		return new KerberosCredential(t,key);
+		return new KerberosCredential(c,t,key);
 	}
 	
 

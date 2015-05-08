@@ -5,7 +5,7 @@
     <xs:complexType>
       <xs:all>
         <xs:element type="serverType" name="server"/>
-        <xs:element type="xs:base64Binary" name="nonce"/>
+        <xs:element type="nonceType" name="nonce"/>
       </xs:all>
     </xs:complexType>
   </xs:element>

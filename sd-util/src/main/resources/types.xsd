@@ -5,7 +5,12 @@
 	</xs:simpleType>
   	<xs:simpleType name="serverType">
 	  <xs:restriction base="xs:string">
+	   <xs:minLength value="1"/>
 	  </xs:restriction>
 	</xs:simpleType>
-
+	<xs:simpleType name="nonceType">
+	  <xs:restriction base="xs:base64Binary">
+	  	<xs:minLength value="6"/>
+	  </xs:restriction>
+	</xs:simpleType>
 </xs:schema>

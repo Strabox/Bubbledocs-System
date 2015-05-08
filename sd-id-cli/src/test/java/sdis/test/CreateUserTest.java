@@ -37,7 +37,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test
 	public void createUserSuccess() {
 		try{
-			idServer.createUser(username, correctEmail);
+			idClient.createUser(username, correctEmail);
 		}
 		catch(Exception e){
 			fail(e.toString());
@@ -48,7 +48,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = UserAlreadyExists_Exception.class)
 	public void createDuplicateUser() throws UserAlreadyExists_Exception{
 		try {
-			idServer.createUser(bruno, brunoEmail);
+			idClient.createUser(bruno, brunoEmail);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidEmail_Exception e) {
@@ -62,7 +62,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = InvalidUser_Exception.class)
 	public void createUserWithInvalidUsername() throws InvalidUser_Exception{
 		try {
-			idServer.createUser(invalidUsername, correctEmail2);
+			idClient.createUser(invalidUsername, correctEmail2);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidEmail_Exception e) {
@@ -77,7 +77,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = InvalidUser_Exception.class)
 	public void createUserWithNullUsername() throws InvalidUser_Exception{
 		try {
-			idServer.createUser(null, correctEmail2);
+			idClient.createUser(null, correctEmail2);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidEmail_Exception e) {
@@ -92,7 +92,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = EmailAlreadyExists_Exception.class)
 	public void createUserWithInvalidEmail() throws EmailAlreadyExists_Exception{
 		try {
-			idServer.createUser(username2, brunoEmail);
+			idClient.createUser(username2, brunoEmail);
 		} catch (InvalidEmail_Exception e) {
 			fail();
 		} catch (InvalidUser_Exception e) {
@@ -106,7 +106,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = InvalidEmail_Exception.class)
 	public void createUserWithInvalidEmail1() throws InvalidEmail_Exception{
 		try {
-			idServer.createUser(username3, invalidEmail1);
+			idClient.createUser(username3, invalidEmail1);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidUser_Exception e) {
@@ -120,7 +120,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = InvalidEmail_Exception.class)
 	public void createUserWithInvalidEmail2() throws InvalidEmail_Exception{
 		try {
-			idServer.createUser(username3, invalidEmail2);
+			idClient.createUser(username3, invalidEmail2);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidUser_Exception e) {
@@ -134,7 +134,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = InvalidEmail_Exception.class)
 	public void createUserWithInvalidEmail3() throws InvalidEmail_Exception {
 		try {
-			idServer.createUser(username3, invalidEmail3);
+			idClient.createUser(username3, invalidEmail3);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidUser_Exception e) {
@@ -148,7 +148,7 @@ public class CreateUserTest extends SdIdTest {
 	@Test(expected = InvalidEmail_Exception.class)
 	public void createUserWithNullEmail4() throws InvalidEmail_Exception {
 		try {
-			idServer.createUser(username3, null);
+			idClient.createUser(username3, null);
 		} catch (EmailAlreadyExists_Exception e) {
 			fail();
 		} catch (InvalidUser_Exception e) {

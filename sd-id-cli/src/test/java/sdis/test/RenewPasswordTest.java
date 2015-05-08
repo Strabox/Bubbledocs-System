@@ -18,7 +18,7 @@ public class RenewPasswordTest extends SdIdTest {
 	@Test
 	public void renewPasswordTestSuccess() {
 		try{
-			idServer.renewPassword(usernameExists1);
+			idClient.renewPassword(usernameExists1);
 			// ATTENTION: don't we need to make sure the new password is indeed new?
 		}
 		catch(Exception e){
@@ -28,16 +28,16 @@ public class RenewPasswordTest extends SdIdTest {
 	
 	@Test(expected = UserDoesNotExist_Exception.class)
 	public void renewPasswordTestNoUser() throws UserDoesNotExist_Exception{
-		idServer.renewPassword(usernameDoesntExist);
+		idClient.renewPassword(usernameDoesntExist);
 	}
 	
 	@Test(expected = UserDoesNotExist_Exception.class)
 	public void renewPasswordTestNullUsername() throws UserDoesNotExist_Exception{
-		idServer.renewPassword(null);
+		idClient.renewPassword(null);
 	}
 	
 	@Test(expected = UserDoesNotExist_Exception.class)
 	public void renewPasswordTestEmptyUsername() throws UserDoesNotExist_Exception{
-		idServer.renewPassword("");
+		idClient.renewPassword("");
 	}
 }

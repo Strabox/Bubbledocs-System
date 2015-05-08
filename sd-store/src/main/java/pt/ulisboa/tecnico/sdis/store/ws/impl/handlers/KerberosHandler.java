@@ -23,6 +23,15 @@ import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
  */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
+	public static final String SERVICE_ID = "SD-STORE";
+	
+	public static final String TICKET_PROPERTY = "ticket";
+	
+	public static final String AUTH_PROPERTY = "auth";
+	
+	public static final String TIMESTAMP_PROPERTY = "time";
+	public static final String TIMESTAMP_PREFIX = "t";
+	public static final String TIMESTAMP_NAMESPACE = "urn:time";
 	/**
 	 * kerberos manager - Used to manage kerberos protocol in server side.
 	 */
@@ -30,10 +39,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
 	
 	public KerberosHandler() throws Exception{
-		int id = GenerateServerId.getId();
-		String serverId = "SD-STORE-"+id;
-		kerberosManager = new KerberosManager(serverId);
-		System.out.println(serverId);
+		kerberosManager = new KerberosManager(SERVICE_ID);
 	}
 	
 	public boolean handleMessage(SOAPMessageContext context) {
@@ -51,7 +57,8 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				if(hdr == null){
 					hdr = env.addHeader();
 				}
-				Name name = env.createName("nonce", "n", ":n");
+				Name name = env.createName(TIMESTAMP_PROPERTY, 
+				TIMESTAMP_PREFIX, TIMESTAMP_NAMESPACE);
 				SOAPElement n = hdr.addHeaderElement(name);
 				n.setTextContent(nonceBase64);
 			}
@@ -76,15 +83,16 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 while(it.hasNext()){
                 	SOAPHeaderElement ele = (SOAPHeaderElement) it.next();
                 	String nodeName = ele.getLocalName();
-                	if(nodeName.equals("ticket")){
+                	if(nodeName.equals(TICKET_PROPERTY)){
                 		ticket = ele.getTextContent();
                 	}
-                	else if(nodeName.equals("auth")){
+                	else if(nodeName.equals(AUTH_PROPERTY)){
                 		auth = ele.getTextContent();
                 	}
                 }
                 kerberosManager.processRequest(ticket, auth);
 			}catch(Exception e){
+				e.printStackTrace();
 				System.out.println("ERROR Processing Request Message!!");
 				throw new InvalidRequest();
 			}
@@ -93,7 +101,7 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	}
 
 	public boolean handleFault(SOAPMessageContext context) {
-		return false;						//Sent back incoming faults!!!!
+		return true;						
 	}
 
 	public void close(MessageContext context) {

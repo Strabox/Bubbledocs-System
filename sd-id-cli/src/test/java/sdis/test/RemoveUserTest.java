@@ -19,7 +19,7 @@ public class RemoveUserTest extends SdIdTest {
 	@Test
 	public void removeExistingUser() {
 		try{
-			idServer.removeUser(ExistingUsername);
+			idClient.removeUser(ExistingUsername);
 		}
 		catch(Exception e){
 			fail(e.toString());
@@ -29,12 +29,12 @@ public class RemoveUserTest extends SdIdTest {
 	// Remove a user that does not exist in the SDID 
 	@Test(expected = UserDoesNotExist_Exception.class)
 	public void removeMissingUser() throws UserDoesNotExist_Exception{
-			idServer.removeUser(MissingUsername);
+		idClient.removeUser(MissingUsername);
 	}
 	
 	// Remove a user that does not exist in the SDID 
 	@Test(expected = UserDoesNotExist_Exception.class)
 	public void removeNullUser() throws UserDoesNotExist_Exception{
-			idServer.removeUser(null);
+		idClient.removeUser(null);
 	}
 }

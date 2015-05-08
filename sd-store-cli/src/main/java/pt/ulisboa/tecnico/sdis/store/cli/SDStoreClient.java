@@ -15,6 +15,9 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
+import util.kerberos.exception.KerberosException;
+import util.kerberos.messages.KerberosClientAuthentication;
+import util.kerberos.messages.KerberosCredential;
 import util.uddi.UDDIClient;
 
 
@@ -69,16 +72,18 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	}
     
 	/**
-	 * Pass kerberos Strucures to the handler.
-	 * @param ticket
-	 * @param auth
-	 * @param nonce
+	 * Pass client credentials to the request, and convert it
+	 * to request structures.
+	 * @param credentials
+	 * @throws KerberosException 
 	 */
-	public void processRequest(byte[] ticket,byte[] auth){
+	public void processRequest(byte[] credentials) throws KerberosException{
 		BindingProvider bp = (BindingProvider) storeRemote;
 		Map<String, Object> requestContext = bp.getRequestContext();
-        requestContext.put("ticket", Base64.getEncoder().encodeToString(ticket));
-        requestContext.put("auth", Base64.getEncoder().encodeToString(auth));
+		KerberosCredential cred = KerberosCredential.deserialize(credentials);
+		KerberosClientAuthentication auth = new KerberosClientAuthentication(cred.getClient());
+        requestContext.put("auth", Base64.getEncoder().encodeToString(auth.serialize(cred.getKcs())));
+        requestContext.put("ticket", Base64.getEncoder().encodeToString(cred.getTicket()));
 	}
 
 }

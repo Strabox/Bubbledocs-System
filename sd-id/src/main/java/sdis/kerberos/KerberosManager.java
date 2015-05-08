@@ -37,7 +37,7 @@ public class KerberosManager {
 	private ArrayList<String> nonces;	//FIXME !!!!!!!!!!!
 	
 	/**
-	 * Used do maintain pairs <servers, secret keys>.
+	 * Used do maintain pairs <servers service, secret keys>.
 	 */
 	private HashMap<String,Key> serverKeys;
 	
@@ -52,24 +52,17 @@ public class KerberosManager {
 		generateServerKeys();
 	}
 	
+	/**
+	 * Generate Ks Secret key do Services Servers.
+	 * @throws Exception
+	 */
 	public void generateServerKeys() throws Exception{
 		BufferedWriter br = new BufferedWriter(new FileWriter(currentKeysFile));
 		Key k;
-		br.write("SD-STORE-1 ");
+		br.write("SD-STORE ");
 		k = Kerberos.generateKerberosKey();
-		serverKeys.put("SD-STORE-1", k);
+		serverKeys.put("SD-STORE", k);
 		br.write(DatatypeConverter.printBase64Binary(k.getEncoded()));
-		br.newLine();
-		br.write("SD-STORE-2 ");
-		k = Kerberos.generateKerberosKey();
-		serverKeys.put("SD-STORE-2", k);
-		br.write(DatatypeConverter.printBase64Binary(k.getEncoded()));
-		br.newLine();
-		br.write("SD-STORE-3 ");
-		k = Kerberos.generateKerberosKey();
-		serverKeys.put("SD-STORE-3", k);
-		br.write(DatatypeConverter.printBase64Binary(k.getEncoded()));
-		br.newLine();
 		br.close();
 	}
 	
@@ -90,7 +83,6 @@ public class KerberosManager {
 	 * @return
 	 */
 	public boolean nonceExists(String nonce){
-		System.out.println(nonces.toString());
 		return nonces.contains(nonce);
 	}
 	

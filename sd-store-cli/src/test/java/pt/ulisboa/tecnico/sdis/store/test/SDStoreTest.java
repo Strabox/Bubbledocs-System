@@ -11,7 +11,7 @@ import org.junit.AfterClass;
 
 import pt.ulisboa.tecnico.sdis.store.cli.SDStoreClient;
 import util.kerberos.Kerberos;
-import util.kerberos.messages.KerberosClientAuthentication;
+import util.kerberos.messages.KerberosCredential;
 import util.kerberos.messages.KerberosTicket;
 
 
@@ -19,7 +19,9 @@ public class SDStoreTest {
 	
 	private static final String UDDI_URL = "http://localhost:8081";
 	
-	private static final String ID_NAME = "SD-STORE-1";
+	private static final String SERVICE_NAME = "SD-STORE";
+	
+	private static final String SPECIFIC_SERVER = "SD-STORE-1";
 	
 	public final String KEYS_FILE_WIN = "\\..\\sd-util\\src\\main\\resources\\serverKeys";
 	public final String KEYS_FILE_LINUX_MAC = "/../sd-util/src/main/resources/serverKeys";
@@ -27,23 +29,24 @@ public class SDStoreTest {
 	protected static SDStoreClient port;
 	
 	public SDStoreTest() throws Exception{
-		port = new SDStoreClient(UDDI_URL, ID_NAME);
+		port = new SDStoreClient(UDDI_URL, SPECIFIC_SERVER);
 	}
 	
 	
 	/**
-	 * Used to access SD-STRE this function simulates asking
-	 * Kerberos Authenticator Server.
+	 * Used to access SD-SOTRE this function simulates asking
+	 * Kerberos Authenticator Server for credentials.
+	 * @param client
+	 * @param username
 	 * @throws Exception 
 	 */
 	public void uploadKerberosInfo(SDStoreClient store, String username) 
 	throws Exception{
 		Key kcs = Kerberos.generateKerberosKey();
-		KerberosTicket ticket = new KerberosTicket(username,ID_NAME,8,kcs);
-		KerberosClientAuthentication auth;
-		auth = new KerberosClientAuthentication(username);
-		Key ks = loadServerKey(ID_NAME);
-		port.processRequest(ticket.serialize(ks), auth.serialize(kcs));
+		KerberosTicket ticket = new KerberosTicket(username,SERVICE_NAME,8,kcs);
+		Key ks = loadServerKey(SERVICE_NAME);
+		KerberosCredential cred = new KerberosCredential(username,ticket.serialize(ks), kcs);
+		port.processRequest(cred.serialize());
 	}
 	
 	public Key loadServerKey(String serverID) throws Exception{
