@@ -46,12 +46,6 @@ public class Storage{
 		super();
 		this.userId = userId;
 		docs = new ArrayList<Storage.Document>(DEFAULT_SIZE);
-		for (Document document : docs) {
-			if (document.getDocId().equals(docId)) {
-				DocAlreadyExists E = new DocAlreadyExists();
-				throw new DocAlreadyExists_Exception(docId+"already exists", E);
-			}
-		}
 		Document newdoc = new Document(docId);
 		docs.add(newdoc);
 	}
@@ -59,9 +53,8 @@ public class Storage{
 		for (Document document : docs) {
 			if (docId.equals(document.getDocId())) {				
 				document.setContent(content);
+				return;
 			}
-
-
 		}
 		DocDoesNotExist E = new DocDoesNotExist();
 		throw new DocDoesNotExist_Exception("Document: "+docId+" not found", E);

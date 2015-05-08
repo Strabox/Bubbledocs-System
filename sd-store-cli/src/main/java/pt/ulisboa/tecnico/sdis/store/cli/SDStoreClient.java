@@ -32,7 +32,7 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	public SDStoreClient(String uddiURL, String idName) throws Exception {
 		super(uddiURL, idName);
 		//connectUDDI();
-		frontend = new FrontEnd(uddiURL,idName,1);
+		frontend = new FrontEnd(uddiURL,idName,3);
 	}
 
 	@Override

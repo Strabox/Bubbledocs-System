@@ -46,17 +46,6 @@ public class StorageTest {
 	}
 	
 	
-	@Test (expected=CapacityExceeded_Exception.class)
-	public void capacityExceeded() throws Exception {
-		String document1 ="document71";		
-		String user = "User7";
-		byte[] hugeContent = new byte[50000];
-		Storage s = new Storage(user,document1);
-		s.setContent(document1, hugeContent);
-		assertEquals("...",true,true);
-		
-		
-	}
 	
 	
 	@Test (expected=DocDoesNotExist_Exception.class)
