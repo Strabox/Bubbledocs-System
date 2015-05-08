@@ -85,7 +85,7 @@ public class FrontEnd {
 
 	}
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception{
-		/*List<String> result = null;
+		List<String> result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{
 				result = clones[i-1].listDocs(userId);
@@ -98,8 +98,8 @@ public class FrontEnd {
 				//SERVER DOWN
 			}
 		}
-		return result;*/
-		
+		return result;
+		/*
 		Response<ListDocsResponse>[] responses = new Response[numberClones];
 		int numberOfResponses = 0;
 		
@@ -117,18 +117,18 @@ public class FrontEnd {
 	    			numberOfResponses++;
 	    		}
 	    	}*/
-	    	try{
-	    		Thread.sleep(100 /* milliseconds */);
-	    	}
-	    	catch(InterruptedException e){
-	    		System.out.println("interrupted sleep");
-	    	}
-		}
-		for(Response response : responses){
+	    	//try{
+	    		//Thread.sleep(100 /* milliseconds */);
+	    	//}
+	    	//catch(InterruptedException e){
+	    	//	System.out.println("interrupted sleep");
+	    	//}
+		//}
+		/*for(Response response : responses){
     		response.cancel(false);
-		}
+		}*/
 		//mergeLists(makeStringsFromResponses(responses));
-		return null;
+		//return null;
 	}
 
 
