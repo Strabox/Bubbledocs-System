@@ -16,6 +16,8 @@ import javax.xml.ws.BindingProvider;
 
 
 
+import javax.xml.ws.Response;
+
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosClientAuthentication;
@@ -27,14 +29,18 @@ public class FrontEnd {
 	private String uddiURL;
 	private String baseEndpointName;
 	private int numberClones;
+	private int quorumRT;
+	private int quorumWT;
 	//private int [] rt = new int[nservers];
 	//private int [] wt = new int[nservers];
 
 
-	public FrontEnd(String _urluddi, String _name, int _numberClones) throws Exception{
+	public FrontEnd(String _urluddi, String _name, int _numberClones, int _RT, int _WT) throws Exception{
 		this.uddiURL = _urluddi;
 		this.baseEndpointName = _name;
 		this.numberClones = _numberClones;
+		this.quorumRT = _RT;
+        this.quorumWT = _WT;
 		clones = new SDStore[_numberClones];
 		UDDINaming uddiNaming = new UDDINaming(uddiURL);
 		for(int i = 1; i<= _numberClones; i++){
@@ -79,7 +85,7 @@ public class FrontEnd {
 
 	}
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception{
-		List<String> result = null;
+		/*List<String> result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{
 				result = clones[i-1].listDocs(userId);
@@ -92,8 +98,37 @@ public class FrontEnd {
 				//SERVER DOWN
 			}
 		}
-		return result;
-
+		return result;*/
+		
+		Response<ListDocsResponse>[] responses = new Response[numberClones];
+		int numberOfResponses = 0;
+		
+		for(int i=1;i<=numberClones;){
+			try{
+				//responses[i-1] = clones[i-1].listDocsAsync(userId);
+			}
+			catch(Exception e){
+				//SERVER DOWN
+			}
+		}
+		while(numberOfResponses <= quorumRT){
+	    	/*for(Response responseUnknown : responses){
+	    		if(responseUnknown.isDone()){
+	    			numberOfResponses++;
+	    		}
+	    	}*/
+	    	try{
+	    		Thread.sleep(100 /* milliseconds */);
+	    	}
+	    	catch(InterruptedException e){
+	    		System.out.println("interrupted sleep");
+	    	}
+		}
+		for(Response response : responses){
+    		response.cancel(false);
+		}
+		//mergeLists(makeStringsFromResponses(responses));
+		return null;
 	}
 
 

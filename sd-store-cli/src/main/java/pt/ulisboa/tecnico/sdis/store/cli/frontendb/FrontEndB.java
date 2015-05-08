@@ -114,8 +114,6 @@ public class FrontEndB {
 	private ArrayList<ArrayList<String>> makeStringsFromResponses(Response<ListDocsResponse> responsesraw){
 		ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
 		
-		//ArrayList<ArrayList<String>>
-		
 		//for(Response response : responses){
     		try{
     			//arrays.add(response.get().getReturn());
