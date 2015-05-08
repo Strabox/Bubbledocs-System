@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
+import pt.ulisboa.tecnico.sdis.store.cli.frontendb.FrontEnd;
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
@@ -27,10 +28,11 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	 * Proxy for webService.
 	 */
 	SDStore storeRemote;
-	
+	FrontEnd frontend;
 	public SDStoreClient(String uddiURL, String idName) throws Exception {
 		super(uddiURL, idName);
-		connectUDDI();
+		//connectUDDI();
+		frontend = new FrontEnd(uddiURL,idName,1);
 	}
 
 	@Override
@@ -48,27 +50,27 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	@Override
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
-		storeRemote.createDoc(docUserPair);
+		frontend.createDoc(docUserPair);
 	}
 
 	@Override
 	public List<String> listDocs(String userId)
 			throws UserDoesNotExist_Exception {
-		return storeRemote.listDocs(userId);
+		return frontend.listDocs(userId);
 	}
 
 	@Override
 	public void store(DocUserPair docUserPair, byte[] contents)
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception,
 			UserDoesNotExist_Exception {
-		storeRemote.store(docUserPair, contents);
+		frontend.store(docUserPair, contents);
 		
 	}
 
 	@Override
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		return storeRemote.load(docUserPair);
+		return frontend.load(docUserPair);
 	}
     
 	/**
@@ -78,12 +80,7 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	 * @throws KerberosException 
 	 */
 	public void processRequest(byte[] credentials) throws KerberosException{
-		BindingProvider bp = (BindingProvider) storeRemote;
-		Map<String, Object> requestContext = bp.getRequestContext();
-		KerberosCredential cred = KerberosCredential.deserialize(credentials);
-		KerberosClientAuthentication auth = new KerberosClientAuthentication(cred.getClient());
-        requestContext.put("auth", Base64.getEncoder().encodeToString(auth.serialize(cred.getKcs())));
-        requestContext.put("ticket", Base64.getEncoder().encodeToString(cred.getTicket()));
+		frontend.processRequest(credentials);
 	}
 
 }

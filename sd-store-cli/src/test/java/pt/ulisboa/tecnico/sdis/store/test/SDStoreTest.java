@@ -29,7 +29,7 @@ public class SDStoreTest {
 	protected static SDStoreClient port;
 	
 	public SDStoreTest() throws Exception{
-		port = new SDStoreClient(UDDI_URL, SPECIFIC_SERVER);
+		port = new SDStoreClient(UDDI_URL, SERVICE_NAME);
 	}
 	
 	

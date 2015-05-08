@@ -57,17 +57,8 @@ public class Storage{
 	}
 	public void setContent(String docId, byte[] content) throws CapacityExceeded_Exception, DocDoesNotExist_Exception{
 		for (Document document : docs) {
-			if (docId.equals(document.getDocId())) {
-				if(currentsize+content.length<=capacity){
-					document.setContent(content);
-					currentsize+=content.length;
-					return;
-				}
-				else{
-					CapacityExceeded E = new CapacityExceeded();
-					throw new CapacityExceeded_Exception("Exceeded maximum capacity", E);
-
-				}
+			if (docId.equals(document.getDocId())) {				
+				document.setContent(content);
 			}
 
 

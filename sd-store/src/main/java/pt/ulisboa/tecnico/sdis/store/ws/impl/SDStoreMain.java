@@ -10,10 +10,8 @@ import util.uddi.UDDINaming;
 public class SDStoreMain {
 
 	public static void main(String[] args) throws IOException {
-		int nservers = 2;  //CHANGE ME
-		int [] rt = new int[nservers];
-		int [] wt = new int[nservers];
-		
+		int nservers = 3;  //CHANGE ME
+
 		// Check arguments
 		if (args.length < 3) {
 			System.err.println("Argument(s) missing!");
@@ -45,8 +43,6 @@ public class SDStoreMain {
 	public static void startup(String uddiURL, String name, String url, UDDINaming uddi, Endpoint endpoint) throws JAXRException {
 		uddi.rebind(name, url);			
 		endpoint.publish(url);					
-		uddi.rebind(name, url);
-
 	}
 }
 

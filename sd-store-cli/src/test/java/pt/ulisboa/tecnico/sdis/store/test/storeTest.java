@@ -71,33 +71,7 @@ public class storeTest extends SDStoreTest {
 	
 	
 	
-	
-	
-	
-	@Test (expected=CapacityExceeded_Exception.class )
-	public void capacityExceeded() throws DocAlreadyExists_Exception, CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception   {
-		String user = "User3";
 
-		
-	   	byte[] hugeContent = new byte[50000];
-		
-		DocUserPair pair = new DocUserPair();
-		pair.setDocumentId("document32");
-		pair.setUserId(user);
-		try {
-			uploadKerberosInfo(port, user);
-		} catch (Exception e) {
-			fail("Erro");
-		}
-		port.createDoc(pair);
-		try {
-			uploadKerberosInfo(port, user);
-		} catch (Exception e) {
-			fail("Erro");
-		}
-		port.store(pair, hugeContent);
-		assertEquals("...",true,true);	
-	}
 	
 	@Test (expected=UserDoesNotExist_Exception.class )
 	public void userDoesNotExist () throws UserDoesNotExist_Exception, CapacityExceeded_Exception, DocDoesNotExist_Exception {
