@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -25,8 +26,16 @@ public class Kerberos {
 	
 	public final static String AES_MODE = "AES/ECB/PKCS5Padding";
 	
-	/* digestPassword - used to get Simmetric key to talk
-	 * with user in the authentication process. */
+	public final static String RNG = "SHA1PRNG";
+	
+	/**
+	 * Digest password, make a hash from a password, using
+	 * a non reversible function.
+	 * @param password
+	 * @param alg
+	 * @return
+	 * @throws KerberosException
+	 */
 	public static byte[] digestPassword(byte[] password,String alg) 
 	throws KerberosException{
 		try{
@@ -39,7 +48,7 @@ public class Kerberos {
 	}
 	
 	/**
-	 * Transform byte[] in a Key.
+	 * Transform byte[] in a Key to use.
 	 * @param bytesKey
 	 * @return Key
 	 * @throws KerberosException
@@ -47,7 +56,6 @@ public class Kerberos {
 	public static Key getKeyFromBytes(byte[] bytesKey) 
 	throws KerberosException{
 		try{
-			//DESKeySpec keySpec = new DESKeySpec(bytesKey);
 			return new SecretKeySpec(bytesKey, AES);
 		}catch(Exception e){
 			throw new KerberosException();
@@ -73,8 +81,8 @@ public class Kerberos {
 	}
 	
 	/**
-	 * Generate
-	 * @return
+	 * Generate an AES (128 bits) Key, for kerberos.
+	 * @return Key
 	 * @throws KerberosException
 	 */
 	public static Key generateKerberosKey() 
@@ -107,7 +115,7 @@ public class Kerberos {
 	}
 	
 	/**
-	 * Decipher a message.
+	 * Decipher a text using the given key.
 	 * @param key used to decipher message.
 	 * @param text to be decyphered.
 	 * @return return plain message.
@@ -125,14 +133,14 @@ public class Kerberos {
 	}
 	
 	/**
-	 * Generate a random number.
+	 * Generate a random number/string.
 	 * @return random 16 byte array in base64 to use in XML.
 	 * @throws KerberosException
 	 */
 	public static String generateRandomNumber() 
 	throws KerberosException {
 		try{
-			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+			SecureRandom sr = SecureRandom.getInstance(RNG);
 			final byte[] bytes = new byte[16];
 			sr.nextBytes(bytes);
 			return DatatypeConverter.printBase64Binary(bytes);
@@ -142,26 +150,21 @@ public class Kerberos {
 	}
 	
 	/**
-	 * Make MAC.
-	 * @param bytes
-	 * @param key
+	 * Make MAC (Message Authentication Code).
+	 * @param bytes plain text
+	 * @param key used to cypher
 	 * @return Cyphered MAC signature.
-	 * @throws Exception
+	 * @throws KerberosException
 	 */
 	public static byte[] makeMAC(byte[] bytes, SecretKey key) 
-	throws Exception {
-        MessageDigest messageDigest = MessageDigest.getInstance(MD5);
-
-        messageDigest.update(bytes);
-        byte[] digest = messageDigest.digest();
-
-        Cipher cipher = Cipher.getInstance(AES_MODE);
-
-        // encrypt the plaintext using the key
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] cipherDigest = cipher.doFinal(digest);
-
-        return cipherDigest;
+	throws KerberosException {
+		try{
+	        Mac cipher = Mac.getInstance("HmacMD5");
+	    	cipher.init(key);
+	        return cipher.doFinal(bytes);
+		}catch(Exception e){
+			throw new KerberosException();
+		}
     }
 	
 	

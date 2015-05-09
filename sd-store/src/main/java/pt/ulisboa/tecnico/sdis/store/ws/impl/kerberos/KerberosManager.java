@@ -3,10 +3,12 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import javax.crypto.SecretKey;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -14,6 +16,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.SystemUtils;
 
 import util.kerberos.Kerberos;
+import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosClientAuthentication;
 import util.kerberos.messages.KerberosTicket;
 
@@ -101,7 +104,8 @@ public class KerberosManager {
 	 * @param base64Auth
 	 * @throws Exception
 	 */
-	public void processRequest(String base64Ticket,String base64Auth) 
+	public void processRequest(String base64Ticket,String base64Auth,
+	byte[] msgByte,byte[] mac) 
 	throws Exception {
 		byte[] byteTicket = DatatypeConverter.parseBase64Binary(base64Ticket);
 		byte[] auth = DatatypeConverter.parseBase64Binary(base64Auth);
@@ -110,6 +114,9 @@ public class KerberosManager {
 		if(!ticket.isValidTicket(serverID))
 			throw new Exception();
 		Key kcs = ticket.getKcs();
+		//================Validate MAC =======================
+		if(!verifyMAC(mac, msgByte, kcs))
+			throw new Exception();
 		//==============Validate authenticator================
 		KerberosClientAuthentication authentication;
 		authentication = KerberosClientAuthentication.deserialize(auth, kcs);
@@ -122,9 +129,25 @@ public class KerberosManager {
 	}
 	
 	/**
-	 * Process reply.
-	 * @param webContext
-	 * @param kcs Client Server Key.
+	 * Verify if the message integrity wasnt compromised between client
+	 * and server.
+	 * @param mac
+	 * @param received
+	 * @param kcs
+	 * @return true if its correct false otherwise
+	 * @throws KerberosException 
+	 */
+	public boolean verifyMAC(byte[] mac,byte[] received,Key kcs) 
+	throws Exception{
+		byte [] mac2 = Kerberos.makeMAC(received, (SecretKey) kcs);
+		System.out.println(new String(mac));
+		System.out.println(new String(mac2));
+		return Arrays.equals(mac, mac2);
+	}
+	
+	/**
+	 * Process reply to send to client.
+	 * @param Client
 	 * @return nonce cyphered in base64
 	 */
 	public String processReply(String client) 

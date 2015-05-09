@@ -65,7 +65,8 @@ public class FrontEnd {
 			KerberosCredential cred = KerberosCredential.deserialize(credentials);
 			KerberosClientAuthentication auth = new KerberosClientAuthentication(cred.getClient());
 			requestContext.put("auth", Base64.getEncoder().encodeToString(auth.serialize(cred.getKcs())));
-			requestContext.put("ticket", Base64.getEncoder().encodeToString(cred.getTicket()));	
+			requestContext.put("ticket", Base64.getEncoder().encodeToString(cred.getTicket()));
+			requestContext.put("kcs", Base64.getEncoder().encodeToString(cred.getKcs().getEncoded()));
 		}
 	}
 

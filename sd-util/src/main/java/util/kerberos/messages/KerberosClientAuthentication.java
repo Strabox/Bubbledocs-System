@@ -22,7 +22,7 @@ import util.kerberos.exception.KerberosException;
  * <pre>
  * {@code
  * <clientAuth>
- * 	 <client>xs:dateTime</client>
+ * 	 <client>xs:string</client>
  *   <requestTime>xs:dateTime</requestTime>
  * </clientAuth>
  * }
@@ -67,6 +67,12 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage {
 		return requestTime;
 	}
 	
+	/**
+	 * @param d
+	 */
+	public void setDate(Date d){
+		requestTime = d;
+	}
 	
 	/**
 	 * Used to validate authenticator.

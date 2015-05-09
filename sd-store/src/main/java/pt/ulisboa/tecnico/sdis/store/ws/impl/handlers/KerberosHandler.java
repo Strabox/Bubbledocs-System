@@ -1,8 +1,10 @@
 package pt.ulisboa.tecnico.sdis.store.ws.impl.handlers;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.namespace.QName;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPElement;
@@ -19,7 +21,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 
 /**
- *  Kerberos Handler - Kerberos Store Server handler. 
+ *  Kerberos Handler - Kerberos Server handler. 
  */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
@@ -29,9 +31,12 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
 	public static final String AUTH_PROPERTY = "auth";
 	
+	public static final String MAC_PROPERTY = "mac";
+	
 	public static final String TIMESTAMP_PROPERTY = "time";
 	public static final String TIMESTAMP_PREFIX = "t";
 	public static final String TIMESTAMP_NAMESPACE = "urn:time";
+	
 	/**
 	 * kerberos manager - Used to manage kerberos protocol in server side.
 	 */
@@ -41,6 +46,15 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	public KerberosHandler() throws Exception{
 		kerberosManager = new KerberosManager(SERVICE_ID);
 	}
+	
+	private String soapMessageToString(SOAPMessage soapMsg) 
+	throws Exception {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		soapMsg.writeTo(out);
+		String soapMsgStr = new String(out.toByteArray());
+		return soapMsgStr;
+	}
+	
 	
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
@@ -63,12 +77,13 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				n.setTextContent(nonceBase64);
 			}
 			catch(Exception e){
+				e.printStackTrace();
 				System.out.println("ERROR Leaving " + e);
 			}
 		}
 		else{						//If message is ARRIVING!!.
 			try{
-				String ticket = "",auth ="";
+				String ticket = "",auth ="",mac ="";
 				SOAPMessage msg = context.getMessage();
 				SOAPPart part = msg.getSOAPPart();
 				SOAPEnvelope env = part.getEnvelope();
@@ -89,8 +104,15 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 	else if(nodeName.equals(AUTH_PROPERTY)){
                 		auth = ele.getTextContent();
                 	}
+                	else if(nodeName.equals(MAC_PROPERTY)){
+                		mac = ele.getTextContent();
+                		hdr.removeChild(ele);
+                	}
                 }
-                kerberosManager.processRequest(ticket, auth);
+                msg.saveChanges();
+                byte[] msgByte = soapMessageToString(msg).getBytes();
+                byte[] macByte = DatatypeConverter.parseBase64Binary(mac);
+                kerberosManager.processRequest(ticket, auth,msgByte,macByte);
 			}catch(Exception e){
 				e.printStackTrace();
 				System.out.println("ERROR Processing Request Message!!");
