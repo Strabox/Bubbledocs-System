@@ -35,6 +35,9 @@ public class SDImpl implements SDId {
 
 	private final int TICKET_HOUR_DURATION = 5;
 	
+	/**
+	 * Used to control business logic.
+	 */
 	private UserManager userManager;
 	
 	/**
@@ -83,7 +86,6 @@ public class SDImpl implements SDId {
 		userManager.addUser(user);
 		//Requested by professor.
 		System.out.println("First password for " + user.getUsername()+ " : " + user.getPassword());	
-	
 	}
 	
 	

@@ -21,8 +21,6 @@ public class SDStoreTest {
 	
 	private static final String SERVICE_NAME = "SD-STORE";
 	
-	private static final String SPECIFIC_SERVER = "SD-STORE-1";
-	
 	public final String KEYS_FILE_WIN = "\\..\\sd-util\\src\\main\\resources\\serverKeys";
 	public final String KEYS_FILE_LINUX_MAC = "/../sd-util/src/main/resources/serverKeys";
 	

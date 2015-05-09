@@ -15,6 +15,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang3.SystemUtils;
 
+import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
 import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosClientAuthentication;
@@ -99,33 +100,41 @@ public class KerberosManager {
 	}
 	
 	/**
-	 * Validate a client request, "Kerberos cerebrus".
+	 * Validate a client request, "Kerberos cerebrus", and returns 
+	 * kerberos authenticator for response.
 	 * @param base64Ticket
 	 * @param base64Auth
-	 * @throws Exception
+	 * @throws InvalidRequest (RunTimeException)
 	 */
-	public void processRequest(String base64Ticket,String base64Auth,
-	byte[] msgByte,byte[] mac) 
-	throws Exception {
-		byte[] byteTicket = DatatypeConverter.parseBase64Binary(base64Ticket);
-		byte[] auth = DatatypeConverter.parseBase64Binary(base64Auth);
+	public byte[] processRequest(byte[] byteTicket,byte[] auth,
+	byte[] msgByte,byte[] mac) {
+		try{
 		//================Validate Ticket=====================
 		KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
 		if(!ticket.isValidTicket(serverID))
-			throw new Exception();
+			throw new InvalidRequest();
 		Key kcs = ticket.getKcs();
 		//================Validate MAC =======================
 		if(!verifyMAC(mac, msgByte, kcs))
-			throw new Exception();
+			throw new InvalidRequest();
 		//==============Validate authenticator================
 		KerberosClientAuthentication authentication;
 		authentication = KerberosClientAuthentication.deserialize(auth, kcs);
 		Date lastReq = lastRequest.get(authentication.getClient());
 		if(!authentication.isValid(ticket.getClient(),lastReq))
-			throw new Exception();
+			throw new InvalidRequest();
 		//Request is valid (I Hope So).
 		addLastRequest(authentication.getClient(), authentication.getRequestTime());
 		addKcsKey(authentication.getClient(), kcs);
+		//=======Compute the response authenticator===========
+		Date reqDate = authentication.getRequestTime();
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(reqDate);
+		XMLGregorianCalendar t = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+		return Kerberos.cipherText(kcs, t.toXMLFormat().getBytes());
+		}catch(Exception e){
+			throw new InvalidRequest();
+		}
 	}
 	
 	/**
@@ -137,30 +146,15 @@ public class KerberosManager {
 	 * @return true if its correct false otherwise
 	 * @throws KerberosException 
 	 */
-	public boolean verifyMAC(byte[] mac,byte[] received,Key kcs) 
-	throws Exception{
-		byte [] mac2 = Kerberos.makeMAC(received, (SecretKey) kcs);
-		System.out.println(new String(mac));
-		System.out.println(new String(mac2));
-		return Arrays.equals(mac, mac2);
+	public boolean verifyMAC(byte[] mac,byte[] received,Key kcs) {
+		try{
+			byte [] mac2 = Kerberos.makeMAC(received, (SecretKey) kcs);
+			return Arrays.equals(mac, mac2);
+		}catch(Exception e){
+			throw new InvalidRequest();
+		}
 	}
 	
-	/**
-	 * Process reply to send to client.
-	 * @param Client
-	 * @return nonce cyphered in base64
-	 */
-	public String processReply(String client) 
-	throws Exception{
-		Date lastDate = lastRequest.get(client);
-		GregorianCalendar gc = new GregorianCalendar();
-		gc.setTime(lastDate); 
-		XMLGregorianCalendar t = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
-		String tString = t.toXMLFormat();
-		Key kcs = kcsKeys.get(client);
-		byte[] tCyphered = Kerberos.cipherText(kcs, tString.getBytes());
-		return DatatypeConverter.printBase64Binary(tCyphered);
-	}
 	
 	
 	

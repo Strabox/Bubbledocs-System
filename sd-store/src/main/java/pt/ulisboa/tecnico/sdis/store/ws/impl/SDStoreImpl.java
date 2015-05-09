@@ -9,6 +9,9 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 import pt.ulisboa.tecnico.sdis.store.ws.*;
+import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
+import pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.KerberosHandler;
+import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 
 @WebService(
 	endpointInterface="pt.ulisboa.tecnico.sdis.store.ws.SDStore", 
@@ -21,20 +24,46 @@ import pt.ulisboa.tecnico.sdis.store.ws.*;
 @HandlerChain(file = "/handler-chain.xml")
 public class SDStoreImpl implements SDStore {
 
+	public static final String SERVICE_ID = "SD-STORE";
+	
+	/**
+	 * Used to manage business logic.
+	 */
 	private List<Storage> storage;
+	
+	/**
+	 * kerberos manager - Used to manage kerberos protocol in server side.
+	 */
+	private KerberosManager kerberosManager;
 	
 	@Resource
 	WebServiceContext wsc;
 	
-	public SDStoreImpl(){
+	
+	public SDStoreImpl() throws Exception{
 		super();
+		this.kerberosManager = new KerberosManager(SERVICE_ID);
 		this.storage = new ArrayList<Storage>();
 	}
 	
-	private void passUser(String userId){
+	/**
+	 * Used to trade arguments between server and handlers.
+	 * @throws Exception
+	 */
+	private void kerberosProcessRequest(){
+		try{
 		MessageContext msg = wsc.getMessageContext();
-		msg.put("userId", userId);
+		byte[] mac = (byte[]) msg.get(KerberosHandler.MAC_PROPERTY);
+		byte[] ms = (byte[]) msg.get(KerberosHandler.MSG_PROPERTY);
+		byte[] ticket = (byte[]) msg.get(KerberosHandler.TICKET_PROPERTY);
+		byte[] auth = (byte[]) msg.get(KerberosHandler.AUTH_PROPERTY);
+		byte[] time = kerberosManager.processRequest(ticket, auth, ms, mac);
+		msg.put(KerberosHandler.TIMESTAMP_PROPERTY, time);
+		}catch(Exception e){
+			throw new InvalidRequest();
+		}
 	}
+	
 	
 	private void checkUserExistence(String UserId) throws UserDoesNotExist_Exception{
 		for (Storage storage2 : storage) {
@@ -54,7 +83,7 @@ public class SDStoreImpl implements SDStore {
 	 * @throws DocAlreadyExists_Exception 
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
-		passUser(docUserPair.getUserId());
+		kerberosProcessRequest();
 		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" 
 			&& docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
 			for (Storage storage2 : storage) {
@@ -75,12 +104,12 @@ public class SDStoreImpl implements SDStore {
 	 * 
 	 * @param userId
 	 * @return
-	 *     returns java.util.List<java.lang.String>
+	 * @returns java.util.List<java.lang.String>
 	 * @throws UserDoesNotExist_Exception
 	 */
 
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception {
-		passUser(userId);
+		kerberosProcessRequest();
 		if (userId==null || userId.equals("")==true){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception ("User does not exist", E); 
@@ -94,7 +123,6 @@ public class SDStoreImpl implements SDStore {
 				doclist = store.getDocs();
 			}
 		}
-		passUser(userId);
 		return doclist;
 	}
 
@@ -109,7 +137,7 @@ public class SDStoreImpl implements SDStore {
 
 	public void store(DocUserPair docUserPair, byte[] contents) throws UserDoesNotExist_Exception, 
 	DocDoesNotExist_Exception, CapacityExceeded_Exception {
-		passUser(docUserPair.getUserId());
+		kerberosProcessRequest();
 		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 
@@ -140,7 +168,7 @@ public class SDStoreImpl implements SDStore {
 	 */
 
 	public byte[] load(DocUserPair docUserPair) throws UserDoesNotExist_Exception, DocDoesNotExist_Exception{
-		passUser(docUserPair.getUserId());
+		kerberosProcessRequest();
 		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 
