@@ -6,18 +6,23 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
+import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Response;
 
 import pt.ulisboa.tecnico.sdis.store.cli.frontendb.FrontEnd;
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.CreateDocResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.ListDocsResponse;
+import pt.ulisboa.tecnico.sdis.store.ws.LoadResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
+import pt.ulisboa.tecnico.sdis.store.ws.StoreResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosClientAuthentication;
@@ -76,6 +81,7 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
 		return frontend.load(docUserPair);
 	}
+	
     
 	/**
 	 * Pass client credentials to the request, and convert it
@@ -108,5 +114,58 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public Response<CreateDocResponse> createDocAsync(DocUserPair docUserPair) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Future<?> createDocAsync(DocUserPair docUserPair,
+			AsyncHandler<CreateDocResponse> asyncHandler) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response<ListDocsResponse> listDocsAsync(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Future<?> listDocsAsync(String userId,
+			AsyncHandler<ListDocsResponse> asyncHandler) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response<StoreResponse> storeAsync(DocUserPair docUserPair,
+			byte[] contents) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Future<?> storeAsync(DocUserPair docUserPair, byte[] contents,
+			AsyncHandler<StoreResponse> asyncHandler) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response<LoadResponse> loadAsync(DocUserPair docUserPair) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Future<?> loadAsync(DocUserPair docUserPair,
+			AsyncHandler<LoadResponse> asyncHandler) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
