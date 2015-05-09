@@ -40,7 +40,7 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	public SDStoreClient(String uddiURL, String idName) throws Exception {
 		super(uddiURL, idName);
 		//connectUDDI();
-		int rt = 0, wt = 0;
+		int rt = 2, wt = 2;
 		frontend = new FrontEnd(uddiURL,idName,3,rt,wt);
 	}
 

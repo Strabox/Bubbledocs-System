@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.BindingProvider;
 
 
@@ -18,6 +21,8 @@ import javax.xml.ws.BindingProvider;
 
 
 import javax.xml.ws.Response;
+
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 import util.kerberos.exception.KerberosException;
@@ -72,22 +77,98 @@ public class FrontEnd {
 	}
 
 	public void createDoc(DocUserPair pair) throws DocAlreadyExists_Exception{
+		/*ArrayList<Response<CreateDocResponse>> responses = new ArrayList<Response<CreateDocResponse>>(numberClones);
+		int numberOfResponses = 0;
+		
 		for(int i=1;i<=numberClones;i++){
+			Response<CreateDocResponse> resp;
 			try{
-				clones[i-1].createDoc(pair);
-			}
-			catch(DocAlreadyExists_Exception e){
-				DocAlreadyExists E = new DocAlreadyExists();
-				throw new DocAlreadyExists_Exception("Doc already exists", E);
+				resp = clones[i-1].createDocAsync(pair);
+				responses.add(resp);
 			}
 			catch(Exception e){
-				//SERVER DOWN
+				//resp.cancel(false);
 			}
-		}		
-
+		}
+		if(responses.size()>quorumRT){
+			while(numberOfResponses <= quorumRT){
+		    	for(Response<CreateDocResponse> responseUnknown : responses){
+		    		if(responseUnknown.isDone()){
+		    			numberOfResponses++;
+		    		}
+		    	}
+		    	try{
+					System.out.println("sleeping");
+		    		Thread.sleep(100);
+		    	}
+		    	catch(InterruptedException e){
+		    		System.out.println("interrupted sleep");
+		    	}
+			}
+		}
+		for(Response<CreateDocResponse> response : responses){
+    		response.cancel(false);
+		}*/
+		final MutableInt numberOfResponses = new MutableInt(0);
+		final MutableInt numberOfSuccesses = new MutableInt(0);
+		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
+		for(int i=1;i<=numberClones;i++){
+			try{
+				System.out.print("generating an async call");
+				responses.add(clones[i-1].createDocAsync(pair, new AsyncHandler<CreateDocResponse>() {
+			        @Override
+			        public void handleResponse(Response<CreateDocResponse> response) {
+			            try {
+			                System.out.println("entered handler");
+			                numberOfResponses.increment();
+			                System.out.print("Asynchronous call result arrived. checking if exception ");
+			                response.get();
+			                System.out.print("not exception - success");
+			                numberOfSuccesses.increment();
+			            } catch (InterruptedException e) {
+			                System.out.println("Caught interrupted exception.");
+			                System.out.println(e.getCause());
+			            } catch (ExecutionException e) {
+			                System.out.println("Caught execution exception.");
+			                System.out.println(e.getCause());
+			            }
+			        }
+				}));
+			}
+			catch(Exception e){
+				
+			}
+		}
+		int numberOfChecks = 0;
+		int maxChecks = 10;
+		System.out.println("\n\n\n\n\nWaiting for answers");
+		while (numberOfResponses.intValue()<=quorumRT) {
+			System.out.print("responses received before sleeping: "+numberOfResponses.intValue());
+			numberOfChecks++;
+	    	if(numberOfChecks>maxChecks) break;
+	    	try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				System.out.print("waiting...");
+			}
+	    	System.out.print(".");
+	    	System.out.flush();
+	    }
+	    System.out.println("\n\n\n\n\nStopping requests");
+	    for(Future<?> response : responses){
+    		response.cancel(false);
+		}
+	    
+	    System.out.print("number of successes: "+numberOfSuccesses.intValue());
+	    if(numberOfSuccesses.intValue()==0){
+	    	DocAlreadyExists E = new DocAlreadyExists();
+			throw new DocAlreadyExists_Exception("Failed to create doc on all servers", E);
+	    }
+	    
+		return;
 	}
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception{
-		List<String> result = null;
+		/*List<String> result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{
 				result = clones[i-1].listDocs(userId);
@@ -100,38 +181,97 @@ public class FrontEnd {
 				//SERVER DOWN
 			}
 		}
-		return result;
+		return result;*/
 		/*
-		Response<ListDocsResponse>[] responses = new Response[numberClones];
+		ArrayList<Response<ListDocsResponse>> responses = new ArrayList<Response<ListDocsResponse>>(numberClones);
 		int numberOfResponses = 0;
 		
 		for(int i=1;i<=numberClones;){
 			try{
-				//responses[i-1] = clones[i-1].listDocsAsync(userId);
+				responses.add(clones[i-1].listDocsAsync(userId));
 			}
 			catch(Exception e){
 				//SERVER DOWN
 			}
 		}
 		while(numberOfResponses <= quorumRT){
-	    	/*for(Response responseUnknown : responses){
+	    	for(Response<ListDocsResponse> responseUnknown : responses){
 	    		if(responseUnknown.isDone()){
 	    			numberOfResponses++;
 	    		}
-	    	}*/
-	    	//try{
-				//System.out.println("sleeping");
-	    		//Thread.sleep(100 /* milliseconds */);
-	    	//}
-	    	//catch(InterruptedException e){
-	    	//	System.out.println("interrupted sleep");
-	    	//}
-		//}
-		/*for(Response response : responses){
+	    	}
+	    	try{
+				System.out.println("sleeping");
+	    		Thread.sleep(100);
+	    	}
+	    	catch(InterruptedException e){
+	    		System.out.println("interrupted sleep");
+	    	}
+		}
+		for(Response<ListDocsResponse> response : responses){
     		response.cancel(false);
 		}*/
-		//mergeLists(makeStringsFromResponses(responses));
-		//return null;
+		final MutableInt numberOfResponses = new MutableInt(0);
+		final MutableInt numberOfSuccesses = new MutableInt(0);
+		final ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
+		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
+		for(int i=1;i<=numberClones;i++){
+			try{
+				System.out.print("generating an async call");
+				responses.add(clones[i-1].listDocsAsync(userId, new AsyncHandler<ListDocsResponse>() {
+			        @Override
+			        public void handleResponse(Response<ListDocsResponse> response) {
+			            try {
+			                System.out.println("entered handler");
+			                numberOfResponses.increment();
+			                System.out.print("Asynchronous call result arrived: ");
+			                ArrayList<String> aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
+			                System.out.print("valid list from a server");
+			                System.out.print("not exception - success");
+			                numberOfSuccesses.increment();
+			                arrays.add(aListFromAServer);
+			                System.out.print("added list to TO-MERGE list");
+			            } catch (InterruptedException e) {
+			                System.out.println("Caught interrupted exception.");
+			                System.out.println(e.getCause());
+			            } catch (ExecutionException e) {
+			                System.out.println("Caught execution exception.");
+			                System.out.println(e.getCause());
+			            }
+			        }
+				}));
+			}
+			catch(Exception e){
+				
+			}
+		}
+		int numberOfChecks = 0;
+		int maxChecks = 10;
+		System.out.println("\n\n\n\n\nWaiting for answers");
+		while (numberOfResponses.intValue()<=quorumRT) {
+			System.out.print("responses received before sleeping: "+numberOfResponses.intValue());
+			numberOfChecks++;
+	    	if(numberOfChecks>maxChecks) break;
+	    	try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				System.out.print("waiting...");
+			}
+	    	System.out.print(".");
+	    	System.out.flush();
+	    }
+	    System.out.println("\n\n\n\n\nStopping requests");
+	    for(Future<?> response : responses){
+    		response.cancel(false);
+		}
+	    
+	    System.out.print("number of successes: "+numberOfSuccesses.intValue());
+	    if(numberOfSuccesses.intValue()==0){
+	    	UserDoesNotExist E = new UserDoesNotExist();
+			throw new UserDoesNotExist_Exception("Failed to fetch list from servers", E);
+	    }
+	    
+		return mergeLists(arrays);
 	}
 
 
@@ -177,16 +317,17 @@ public class FrontEnd {
 		return result;
 	}
 
-	private ArrayList<ArrayList<String>> makeStringsFromResponses(Response<ListDocsResponse> responsesraw){
+	private ArrayList<ArrayList<String>> makeStringsFromResponses(ArrayList<Response<ListDocsResponse>> responsesraw){
 		ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
 		
-		//for(Response response : responsesraw){
+		for(Response<ListDocsResponse> response : responsesraw){
     		try{
-    			//arrays.add(response.get().getReturn());
+    			arrays.add((ArrayList<String>) response.get().getDocumentId());
     		}
     		catch(Exception e){
     			//IGNORES BECAUSE IT'S UNNECESSARY
     		}
+		}
     	return arrays;
 	}
 	
