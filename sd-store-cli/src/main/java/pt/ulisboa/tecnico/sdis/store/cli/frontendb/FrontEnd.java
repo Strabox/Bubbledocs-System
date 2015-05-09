@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sdis.store.cli.frontendb;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -176,6 +177,27 @@ public class FrontEnd {
 		return result;
 	}
 
-
+	private ArrayList<ArrayList<String>> makeStringsFromResponses(Response<ListDocsResponse> responsesraw){
+		ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
+		
+		//for(Response response : responsesraw){
+    		try{
+    			//arrays.add(response.get().getReturn());
+    		}
+    		catch(Exception e){
+    			//IGNORES BECAUSE IT'S UNNECESSARY
+    		}
+    	return arrays;
+	}
+	
+	private ArrayList<String> mergeLists(ArrayList<ArrayList<String>> lists){
+		ArrayList<String> result = new ArrayList<String>();
+		for(ArrayList<String> array : lists){
+			for(String string : array){
+				if(!result.contains(string)) result.add(string);
+			}
+		}
+		return result;
+	}
 
 }

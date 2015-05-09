@@ -93,28 +93,6 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 		frontend.processRequest(credentials);
 	}
 	
-	private ArrayList<ArrayList<String>> makeStringsFromResponses(Response<ListDocsResponse> responsesraw){
-		ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
-		
-		//for(Response response : responsesraw){
-    		try{
-    			//arrays.add(response.get().getReturn());
-    		}
-    		catch(Exception e){
-    			//IGNORES BECAUSE IT'S UNNECESSARY
-    		}
-    	return arrays;
-	}
-	
-	private ArrayList<String> mergeLists(ArrayList<ArrayList<String>> lists){
-		ArrayList<String> result = new ArrayList<String>();
-		for(ArrayList<String> array : lists){
-			for(String string : array){
-				if(!result.contains(string)) result.add(string);
-			}
-		}
-		return result;
-	}
 
 	@Override
 	public Response<CreateDocResponse> createDocAsync(DocUserPair docUserPair) {
