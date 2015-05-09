@@ -1,11 +1,9 @@
-package pt.ulisboa.tecnico.sdis.store.cli.frontendb;
+package pt.ulisboa.tecnico.sdis.store.cli.frontend;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;

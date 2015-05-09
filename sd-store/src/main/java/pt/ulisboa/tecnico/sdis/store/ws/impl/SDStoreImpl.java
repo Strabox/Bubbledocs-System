@@ -14,57 +14,88 @@ import pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.KerberosHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 
 @WebService(
-	endpointInterface="pt.ulisboa.tecnico.sdis.store.ws.SDStore", 
-	wsdlLocation="SD-STORE.1_1.wsdl",
-	name="SDStore",
-	portName="SDStoreImplPort",
-	targetNamespace="urn:pt:ulisboa:tecnico:sdis:store:ws",
-	serviceName="SDStore"
-)
+		endpointInterface="pt.ulisboa.tecnico.sdis.store.ws.SDStore", 
+		wsdlLocation="SD-STORE.1_1.wsdl",
+		name="SDStore",
+		portName="SDStoreImplPort",
+		targetNamespace="urn:pt:ulisboa:tecnico:sdis:store:ws",
+		serviceName="SDStore"
+		)
 @HandlerChain(file = "/handler-chain.xml")
 public class SDStoreImpl implements SDStore {
 
 	public static final String SERVICE_ID = "SD-STORE";
-	
+
 	/**
 	 * Used to manage business logic.
 	 */
 	private List<Storage> storage;
-	
+
 	/**
 	 * kerberos manager - Used to manage kerberos protocol in server side.
 	 */
 	private KerberosManager kerberosManager;
-	
+
 	@Resource
 	WebServiceContext wsc;
-	
-	
+
+
 	public SDStoreImpl() throws Exception{
 		super();
 		this.kerberosManager = new KerberosManager(SERVICE_ID);
 		this.storage = new ArrayList<Storage>();
+		//testSetup();
 	}
-	
+
+	private void testSetup() {
+		try{			
+			//alice
+			Storage newstor = new Storage("alice","a1");
+			newstor.setContent("a1","AAAAAAAAAA".getBytes());
+			newstor.addDoc("a2");
+			newstor.setContent("a2","aaaaaaaaaa".getBytes());
+			storage.add(newstor);
+			//bruno
+
+			newstor = new Storage("bruno","b1");
+			newstor.setContent("b1","BBBBBBBBBBBBBBBBBBBB".getBytes());
+			storage.add(newstor);
+			//carla
+			newstor = new Storage("carla");
+			storage.add(newstor);
+			//duarte
+			newstor = new Storage("duarte");
+			storage.add(newstor);
+			//eduardo
+			newstor = new Storage("eduardo");
+			storage.add(newstor);
+
+
+		}
+		catch(Exception e){
+		}
+
+	}
+
 	/**
 	 * Used to trade arguments between server and handlers.
 	 * @throws Exception
 	 */
 	private void kerberosProcessRequest(){
 		try{
-		MessageContext msg = wsc.getMessageContext();
-		byte[] mac = (byte[]) msg.get(KerberosHandler.MAC_PROPERTY);
-		byte[] ms = (byte[]) msg.get(KerberosHandler.MSG_PROPERTY);
-		byte[] ticket = (byte[]) msg.get(KerberosHandler.TICKET_PROPERTY);
-		byte[] auth = (byte[]) msg.get(KerberosHandler.AUTH_PROPERTY);
-		byte[] time = kerberosManager.processRequest(ticket, auth, ms, mac);
-		msg.put(KerberosHandler.TIMESTAMP_PROPERTY, time);
+			MessageContext msg = wsc.getMessageContext();
+			byte[] mac = (byte[]) msg.get(KerberosHandler.MAC_PROPERTY);
+			byte[] ms = (byte[]) msg.get(KerberosHandler.MSG_PROPERTY);
+			byte[] ticket = (byte[]) msg.get(KerberosHandler.TICKET_PROPERTY);
+			byte[] auth = (byte[]) msg.get(KerberosHandler.AUTH_PROPERTY);
+			byte[] time = kerberosManager.processRequest(ticket, auth, ms, mac);
+			msg.put(KerberosHandler.TIMESTAMP_PROPERTY, time);
 		}catch(Exception e){
 			throw new InvalidRequest();
 		}
 	}
-	
-	
+
+
 	private void checkUserExistence(String UserId) throws UserDoesNotExist_Exception{
 		for (Storage storage2 : storage) {
 			if (storage2.getUserId().equals(UserId)) {
@@ -74,9 +105,9 @@ public class SDStoreImpl implements SDStore {
 		UserDoesNotExist E = new UserDoesNotExist();
 		throw new UserDoesNotExist_Exception(UserId+" does not exist", E);
 	}
-	
+
 	/* ========================= WEB SERVICES METHODS =============================== */
-	
+
 	/**
 	 * 
 	 * @param docUserPair
@@ -85,18 +116,18 @@ public class SDStoreImpl implements SDStore {
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
 		kerberosProcessRequest();
 		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" 
-			&& docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
+				&& docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
 			for (Storage storage2 : storage) {
-				
+
 				if (storage2.getUserId().equals(docUserPair.getUserId())) {
-					
+
 					storage2.addDoc(docUserPair.getDocumentId());				
 					return;
 				}
 			}
 			Storage newstor = new Storage(docUserPair.getUserId(), docUserPair.getDocumentId());
 			storage.add(newstor);
-	
+
 		}
 	}
 
@@ -113,11 +144,11 @@ public class SDStoreImpl implements SDStore {
 		if (userId==null || userId.equals("")==true){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception ("User does not exist", E); 
-			
+
 		}
 		checkUserExistence(userId);
 		List<String> doclist = new ArrayList<String>();
-		
+
 		for (Storage store : storage) {
 			if (userId.equals(store.getUserId())) {
 				doclist = store.getDocs();
@@ -141,18 +172,21 @@ public class SDStoreImpl implements SDStore {
 		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 
-			
+
 		}
 		if (docUserPair.getDocumentId()==null || docUserPair.getDocumentId()==""){
 			DocDoesNotExist E = new DocDoesNotExist();
 			throw new DocDoesNotExist_Exception("Doc does not exist", E); 
-			
+
 		}
 		if (contents!=null){
 			checkUserExistence(docUserPair.getUserId());
 			for (Storage s : storage) {
-				if(s.getUserId().equals(docUserPair.getUserId()))
+				if(s.getUserId().equals(docUserPair.getUserId())){
+					s.setTemp_cid(111); //GET INFO FROM HANDLERS
+					s.setTemp_seq(222); //GET INFO FROM HANDLERS
 					s.setContent(docUserPair.getDocumentId(), contents);
+				}					
 			}
 		}
 	}
@@ -172,17 +206,20 @@ public class SDStoreImpl implements SDStore {
 		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 
-			
+
 		}
 		if (docUserPair.getDocumentId()==null || docUserPair.getDocumentId()==""){
 			DocDoesNotExist E = new DocDoesNotExist();
 			throw new DocDoesNotExist_Exception("Doc does not exist", E); 
-			
+
 		}
 		checkUserExistence(docUserPair.getUserId());
 		for (Storage s : storage) {
-			if(s.getUserId().equals(docUserPair.getUserId()))
+			if(s.getUserId().equals(docUserPair.getUserId())){
+				s.getTemp_cid(); //PUT ON HANDLERS
+				s.getTemp_seq(); //PUT ON HANDLERS
 				return s.getContent(docUserPair.getDocumentId());
+			}
 		}
 		return null;
 	}

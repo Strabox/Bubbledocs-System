@@ -3,7 +3,6 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded;
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists;
 import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
@@ -13,39 +12,38 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 
 public class Storage{
 	private String userId;
-	private final int capacity = 10240;
 	private List<Document> docs;
-	private static final int DEFAULT_SIZE = 5;
-	private int currentsize = 0;
-
-	private class Document{
-		private String docId;
-		private byte[] content;
-
-
-		public Document(String docId) {
-			super();
-			this.docId = docId;
-		}
-		public String getDocId() {
-			return docId;
-		}
-		public byte[] getContent() {
-			return content;
-		}
-		public void setContent(byte[] content) {
-			this.content = content;
-		}
+	private static final int DEFAULT_SIZE = 100;	
+	private int temp_cid;
+	private int temp_seq;
+	
+	
+	
+	public int getTemp_cid() {
+		return temp_cid;
 	}
+	public void setTemp_cid(int temp_cid) {
+		this.temp_cid = temp_cid;
+	}
+	public int getTemp_seq() {
+		return temp_seq;
+	}
+	public void setTemp_seq(int temp_seq) {
+		this.temp_seq = temp_seq;
+	}
+	
+
+	
 
 	public Storage(String userId) {
 		super();
 		this.userId = userId;
+		docs = new ArrayList<Document>(DEFAULT_SIZE);
 	}
 	public Storage(String userId, String docId) throws DocAlreadyExists_Exception {
 		super();
 		this.userId = userId;
-		docs = new ArrayList<Storage.Document>(DEFAULT_SIZE);
+		docs = new ArrayList<Document>(DEFAULT_SIZE);
 		Document newdoc = new Document(docId);
 		docs.add(newdoc);
 	}
@@ -53,6 +51,8 @@ public class Storage{
 		for (Document document : docs) {
 			if (docId.equals(document.getDocId())) {				
 				document.setContent(content);
+				document.setCid(temp_cid);
+				document.setSeq(temp_seq);
 				return;
 			}
 		}
@@ -66,6 +66,8 @@ public class Storage{
 	public byte[] getContent(String docId) throws DocDoesNotExist_Exception{
 		for (Document document : docs) {
 			if (docId.equals(document.getDocId())) {
+				temp_cid =document.getCid();
+				temp_seq =document.getSeq();
 				return document.getContent();
 			}
 		}

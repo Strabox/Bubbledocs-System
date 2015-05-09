@@ -4,7 +4,11 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 public class Document{
 	private String docId;
 	private byte[] content;
-
+	private int cid;
+	private int seq;
+	
+	
+	
 
 	public Document(String docId) {
 		super();
@@ -19,5 +23,24 @@ public class Document{
 	public void setContent(byte[] content) {
 		this.content = content;
 	}
+	
+	public void setCid(int _cid){
+		cid=_cid;				
+	}
+	
+	public int getCid(){
+		return cid;
+	}
+	
+	public void setSeq(int _seq){
+		seq=_seq;				
+	}
+	
+	public int getSeq(){
+		return seq;
+	}
+	
+	
+	
 }
 

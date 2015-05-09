@@ -12,7 +12,7 @@ import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Response;
 
-import pt.ulisboa.tecnico.sdis.store.cli.frontendb.FrontEnd;
+import pt.ulisboa.tecnico.sdis.store.cli.frontend.FrontEnd;
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.CreateDocResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
