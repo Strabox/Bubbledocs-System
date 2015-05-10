@@ -1,11 +1,18 @@
 package pt.tecnico.bubbledocs.test.integration.system;
 
 import static org.junit.Assert.assertEquals;
+
+import javax.transaction.SystemException;
+
 import mockit.Expectations;
 import mockit.Mocked;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import pt.ist.fenixframework.FenixFramework;
+import pt.ist.fenixframework.core.WriteOnReadError;
 import pt.tecnico.bubbledocs.integration.CreateUserIntegrator;
 import pt.tecnico.bubbledocs.integration.DeleteUserIntegrator;
 import pt.tecnico.bubbledocs.integration.LoginUserIntegrator;
@@ -30,11 +37,22 @@ public class LocalSystemTest{
 	private static final String USERNAME_01_PASSWORD = "Vegas";
 	private static final String USERNAME_01_EMAIL = "Mr_House@Lucky38";
 	private static final String NAME_01 = "Mr. House";
+	
+	
+	@Before
+    public void setUp() throws Exception {
+
+        try {
+            FenixFramework.getTransactionManager().begin(false);
+        }  catch (WriteOnReadError | SystemException e) {
+        	System.out.println(e);
+        }
+    }
 
 
 	@Test
 	public void SequencialTest(){
-
+		
 		LoginUserIntegrator service = new LoginUserIntegrator(ROOT_USERNAME, ROOT_PASSWORD);
 		
 		new Expectations(){
@@ -51,7 +69,7 @@ public class LocalSystemTest{
 
 		new Expectations(){
 			{
-				idRemote.createUser(USERNAME_01, USERNAME_01_PASSWORD);
+				idRemote.createUser(USERNAME_01, USERNAME_01_EMAIL);
 			}
 		};
 		service1.execute();
@@ -76,6 +94,7 @@ public class LocalSystemTest{
 			}
 		}; 
 		service2.execute();
+		userToken = service2.getUserToken();
 
 
 		CreateSpreadSheet service3 = new CreateSpreadSheet(userToken, "folha", 10, 10);
@@ -94,10 +113,10 @@ public class LocalSystemTest{
 		assertEquals("Result of assigned cell different from unexpected.", result, 11);
 
 
-		AssignReferenceCell service6 = new AssignReferenceCell(userToken, service3.getSheetId(),"2;2","0;0");
+		AssignReferenceCell service6 = new AssignReferenceCell(userToken, service3.getSheetId(),"0;0","2;2");
 		service6.execute();
 		result = service6.getResult();
-		assertEquals("Result of referred cell different from unexpected.", result, 42);
+		assertEquals("Result of referred cell different from unexpected.", result, 2);
 
 
 		DeleteUserIntegrator integrator0 = new DeleteUserIntegrator(rootToken, USERNAME_01);
@@ -108,5 +127,14 @@ public class LocalSystemTest{
 		};
 		integrator0.execute();
 	}
+	
+	@After
+    public void tearDown() {
+        try {
+            FenixFramework.getTransactionManager().rollback();
+        } catch (SystemException | IllegalStateException | SecurityException e) {
+            System.out.println(e);
+        }
+    }
 
 }
