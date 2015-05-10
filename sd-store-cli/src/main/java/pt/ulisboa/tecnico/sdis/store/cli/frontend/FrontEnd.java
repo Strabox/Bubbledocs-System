@@ -107,64 +107,39 @@ public class FrontEnd {
 		} catch (KerberosException e1) {
 			throw new RuntimeException();
 		}
-		/*											NOT USING CALLBACK
-		ArrayList<Response<CreateDocResponse>> responses = new ArrayList<Response<CreateDocResponse>>(numberClones);
-		int numberOfResponses = 0;
-		
-		for(int i=1;i<=numberClones;i++){
-			Response<CreateDocResponse> resp;
-			try{
-				resp = clones[i-1].createDocAsync(pair);
-				responses.add(resp);
-			}
-			catch(Exception e){
-				//resp.cancel(false);
-			}
-		}
-		if(responses.size()>quorumRT){
-			while(numberOfResponses <= quorumRT){
-		    	for(Response<CreateDocResponse> responseUnknown : responses){
-		    		if(responseUnknown.isDone()){
-		    			numberOfResponses++;
-		    		}
-		    	}
-		    	try{
-					System.out.println("sleeping");
-		    		Thread.sleep(100);
-		    	}
-		    	catch(InterruptedException e){
-		    		System.out.println("interrupted sleep");
-		    	}
-			}
-		}
-		for(Response<CreateDocResponse> response : responses){
-    		response.cancel(false);
-		}*/
+
 		final MutableInt numberOfResponses = new MutableInt(0);
 		final MutableInt numberOfFailures = new MutableInt(0);
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-				System.out.println("generating an async call");
+				System.out.println("\n\n\n\ngenerating an async call"+pair.getDocumentId());			 //check the test with document13
 				responses.add(clones[i-1].createDocAsync(pair, new AsyncHandler<CreateDocResponse>() {
 			        @Override
 			        public void handleResponse(Response<CreateDocResponse> response) {
 			            try {
 			                System.out.println("entered handler");
-			                if(!processReply(response, credential,requestTime))
-			                	throw new ExecutionException(null);
 			                numberOfResponses.increment();
+			                if(!processReply(response, credential,requestTime)){		// this if never happens because of the exception that shouldn't happen
+			                	System.out.println("GOT KERBEROS FAILURE");				// this happens if there is no exception from processreply, but there was an exception, andré!
+			                	throw new ExecutionException(null);
+			                }
 			                System.out.println("Asynchronous call result arrived. checking if exception ");
 			                response.get();
 			                System.out.println("not exception - success");
 			            } catch (InterruptedException e) {
 			                System.out.println("Caught interrupted exception.");
 			                System.out.println(e.getCause());
-			            } catch (ExecutionException e) {
+			            } catch (ExecutionException e) {								// this catches the exception that shouldn't happen but does!
 			                System.out.println("Caught execution exception.  Incrementing!");
 			                numberOfFailures.increment();
 			                System.out.println(e.getCause());
 			            }
+			            catch (RuntimeException e) {
+			                System.out.println("GOT KERBEROS EXCEPTION");
+			                numberOfFailures.increment();
+			                System.out.println(e.getCause());
+			        	}
 			        }
 				}));
 			}
@@ -178,7 +153,16 @@ public class FrontEnd {
 		while (numberOfResponses.intValue()<=quorumRT) {
 			System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
-	    	if(numberOfChecks > maxChecks || numberOfFailures.intValue()>0) break;
+	    	if(numberOfChecks > maxChecks){
+	    		System.out.println("took too long to get responses");
+	    		break;
+	    	}
+	    		
+	    	if(numberOfFailures.intValue()>0){
+	    		System.out.println("got a failure that stopped responses");
+	    		break;
+	    	}
+	    	
 	    	try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -192,7 +176,7 @@ public class FrontEnd {
     		response.cancel(false);
 		}
 	    
-	    System.out.println("number of successes: "+numberOfFailures.intValue());
+	    System.out.println("number of failures: "+numberOfFailures.intValue());
 	    if(numberOfFailures.intValue()>0){
 	    	DocAlreadyExists E = new DocAlreadyExists();
 			throw new DocAlreadyExists_Exception("Failed to create doc on all servers", E);
@@ -208,50 +192,7 @@ public class FrontEnd {
 		} catch (KerberosException e1) {
 			throw new RuntimeException();
 		}
-		/*					SYNCHRONOUS
-		List<String> result = null;
-		for(int i=1;i<=numberClones;i++){
-			try{
-				result = clones[i-1].listDocs(userId);
-			}
-			catch(UserDoesNotExist_Exception e){
-				UserDoesNotExist E = new UserDoesNotExist();
-				throw new UserDoesNotExist_Exception("User does not exists", E);
-			}
-			catch(Exception e){
-				//SERVER DOWN
-			}
-		}
-		return result;*/
-		/*//				NOT USING CALLBACK
-		ArrayList<Response<ListDocsResponse>> responses = new ArrayList<Response<ListDocsResponse>>(numberClones);
-		int numberOfResponses = 0;
 		
-		for(int i=1;i<=numberClones;){
-			try{
-				responses.add(clones[i-1].listDocsAsync(userId));
-			}
-			catch(Exception e){
-				//SERVER DOWN
-			}
-		}
-		while(numberOfResponses <= quorumRT){
-	    	for(Response<ListDocsResponse> responseUnknown : responses){
-	    		if(responseUnknown.isDone()){
-	    			numberOfResponses++;
-	    		}
-	    	}
-	    	try{
-				System.out.println("sleeping");
-	    		Thread.sleep(100);
-	    	}
-	    	catch(InterruptedException e){
-	    		System.out.println("interrupted sleep");
-	    	}
-		}
-		for(Response<ListDocsResponse> response : responses){
-    		response.cancel(false);
-		}*/
 		final MutableInt numberOfResponses = new MutableInt(0);
 		final MutableInt numberOfSuccesses = new MutableInt(0);
 		final ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
