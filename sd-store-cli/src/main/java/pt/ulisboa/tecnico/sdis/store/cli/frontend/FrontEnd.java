@@ -151,7 +151,8 @@ public class FrontEnd {
 			        public void handleResponse(Response<CreateDocResponse> response) {
 			            try {
 			                System.out.println("entered handler");
-			                System.out.println("VALIDATION: "+ processReply(response, credential,requestTime));
+			                if(!processReply(response, credential,requestTime))
+			                	throw new ExecutionException(null);
 			                numberOfResponses.increment();
 			                System.out.println("Asynchronous call result arrived. checking if exception ");
 			                response.get();
@@ -263,7 +264,8 @@ public class FrontEnd {
 			        public void handleResponse(Response<ListDocsResponse> response) {
 			            try {
 			                System.out.println("entered handler");
-			                System.out.println("VALIDATION: "+ processReply(response, credential,requestTime));
+			                if(!processReply(response, credential,requestTime))
+			                	throw new ExecutionException(null);
 			                numberOfResponses.increment();
 			                System.out.println("Asynchronous call result arrived: ");
 			                ArrayList<String> aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
