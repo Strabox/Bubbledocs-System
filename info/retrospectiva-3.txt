@@ -3,7 +3,7 @@ Planeamento da 4a semana de trabalho para a 4a entrega do projecto de ES+SDis
 Group Member		Mon	Tue	Wed		Planned tasks	Implemented tasks
 Andre Pires		0	0	0		-		-
 Ricardo Pires		0	0	0		-		-
-Miguel Cruz		0	0	0		SD Issues	-
+Miguel Cruz		4	4	2		SD Issues	-
 Artur Fonseca		0	0	0		-		-
 Mauro Teles		0	0	0		-		-
 
@@ -21,6 +21,9 @@ Ricardo Pires:
 ###############################
 Miguel Cruz:
 
+Only worked on issue #87 - SD_STORE.B
+Left it pretty much working vanilla, with some errors corrected and functionality added. May need further testing.
+The work is still in progress, as expected.
 
 ###############################
 Artur Fonseca:
