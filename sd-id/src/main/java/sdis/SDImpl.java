@@ -33,7 +33,7 @@ import util.kerberos.messages.KerberosTicket;
 )
 public class SDImpl implements SDId {
 
-	private final int TICKET_HOUR_DURATION = 5;
+	private static final int TICKET_HOUR_DURATION = 5;
 	
 	/**
 	 * Used to control business logic.
@@ -126,7 +126,8 @@ public class SDImpl implements SDId {
 					
 					kerberosManager.addNonce(r.getNonce());
 					Key ks = kerberosManager.getServerKey(r.getServer());
-					Key kc = Kerberos.getKeyFromBytes(Kerberos.digestPassword(userManager.getUserPassword(userId).getBytes(), Kerberos.MD5));
+					Key kc = Kerberos.getKeyFromBytes(
+					Kerberos.digestPassword(userManager.getUserPassword(userId).getBytes(), Kerberos.MD5));
 					Key kcs = Kerberos.generateKerberosKey();
 					KerberosTicket ticket = new KerberosTicket(userId, r.getServer(),TICKET_HOUR_DURATION, kcs);
 					KerberosServerAuthentication ksa = new KerberosServerAuthentication(kcs, r.getNonce());

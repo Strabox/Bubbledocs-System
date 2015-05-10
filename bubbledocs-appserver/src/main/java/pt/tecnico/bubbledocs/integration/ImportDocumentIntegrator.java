@@ -3,9 +3,8 @@ package pt.tecnico.bubbledocs.integration;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
-import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
-import pt.tecnico.bubbledocs.service.local.GetUserInfoService;
 import pt.tecnico.bubbledocs.service.local.ImportDocument;
+import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
 
 
 

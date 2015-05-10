@@ -23,7 +23,7 @@ public class StoreRemoteServices extends RemoteServices{
 			DocUserPair d = new DocUserPair();
 			d.setDocumentId(docName);
 			d.setUserId(username);
-			storeClient.processRequest(IDRemoteServices.credentials);
+			storeClient.credentials = IDRemoteServices.credentials;
 			storeClient.store(d, document);
 		}catch(CapacityExceeded_Exception e){
 			throw new CannotStoreDocumentException();
@@ -43,7 +43,7 @@ public class StoreRemoteServices extends RemoteServices{
 			DocUserPair d = new DocUserPair();
 			d.setDocumentId(docName);
 			d.setUserId(username);
-			storeClient.processRequest(IDRemoteServices.credentials);
+			storeClient.credentials = IDRemoteServices.credentials;
 			return storeClient.load(d);
 		}catch(DocDoesNotExist_Exception e){
 			throw new CannotLoadDocumentException();

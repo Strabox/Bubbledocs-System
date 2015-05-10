@@ -52,7 +52,7 @@ public class SdIdClient extends UDDIClient implements SDId{
 	
 	
     /*======================= SD-ID Client =========================== */
-    /* Mehtods encapsulate remote calls in a perfect client. */
+    /* Methods encapsulate remote calls in a perfect client. */
     
 	
 	public void createUser(String username,String email) throws
@@ -75,7 +75,7 @@ public class SdIdClient extends UDDIClient implements SDId{
 
 	public byte[] requestAuthentication(String userId, byte[] reserved)
 			throws AuthReqFailed_Exception {
-		if(reserved == null){
+		if(userId == null || reserved == null){
 			AuthReqFailed auth = new AuthReqFailed();
 			throw new AuthReqFailed_Exception(userId, auth);
 		}

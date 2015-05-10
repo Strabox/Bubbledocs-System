@@ -24,14 +24,15 @@ public class KerberosClientAuthenticatorTest {
 	private static Key kcs;
 	
 	private static KerberosClientAuthentication auth;
-	/*
+	
 	@Before
 	public void cleanBeforeTest() throws KerberosException,
 	InterruptedException{
 		kcs = Kerberos.generateKerberosKey();
 		beforeDate = new Date();
 		Thread.sleep(2);
-		auth = new KerberosClientAuthentication(CLIENT);
+		auth = new KerberosClientAuthentication(CLIENT,new Date());
+		Thread.sleep(2);
 		auth.setDate(new Date());
 		Thread.sleep(2);
 		afterDate = new Date();
@@ -49,7 +50,7 @@ public class KerberosClientAuthenticatorTest {
 
 	@Test
 	public void nullFieldsSerializeDeserialize() throws KerberosException{
-		KerberosClientAuthentication a = new KerberosClientAuthentication(null);
+		KerberosClientAuthentication a = new KerberosClientAuthentication(null,new Date());
 		byte[] byteAuth = a.serialize(kcs);
 		a = KerberosClientAuthentication.deserialize(byteAuth, kcs);
 	}
@@ -80,6 +81,6 @@ public class KerberosClientAuthenticatorTest {
 	public void validAuthenticatorFirstTimeForClient(){
 		assertTrue(auth.isValid(CLIENT, null));
 	}
-	*/
+	
 	
 }

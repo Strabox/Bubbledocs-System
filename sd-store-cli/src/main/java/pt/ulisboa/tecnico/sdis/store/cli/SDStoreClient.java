@@ -23,7 +23,7 @@ import util.uddi.UDDIClient;
 
 public class SDStoreClient extends UDDIClient implements SDStore{
 	
-	public static byte[] credentials;
+	public byte[] credentials;
 	
 	
 	FrontEnd frontend;
@@ -42,39 +42,30 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	@Override
 	public void createDoc(DocUserPair docUserPair)
 			throws DocAlreadyExists_Exception {
-		frontend.createDoc(docUserPair);
+		frontend.createDoc(docUserPair,credentials);
 	}
 
 	@Override
 	public List<String> listDocs(String userId)
 			throws UserDoesNotExist_Exception {
-		return frontend.listDocs(userId);
+		return frontend.listDocs(userId,credentials);
 	}
 
 	@Override
 	public void store(DocUserPair docUserPair, byte[] contents)
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception,
 			UserDoesNotExist_Exception {
-		frontend.store(docUserPair, contents);
+		frontend.store(docUserPair, contents,credentials);
 		
 	}
 
 	@Override
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		return frontend.load(docUserPair);
+		return frontend.load(docUserPair,credentials);
 	}
 	
-    
-	/**
-	 * Pass client credentials to the request, and convert it
-	 * to request structures.
-	 * @param credentials
-	 * @throws KerberosException 
-	 */
-	public void processRequest(byte[] credentials) throws KerberosException{
-		frontend.processRequest(credentials);
-	}
+ 
 	
 	/*===================== ASYNC METHODS NEED TO COMPILE =================== */
 	@Override

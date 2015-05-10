@@ -89,6 +89,7 @@ public class KerberosCredential extends KerberosNormalMessage{
 	 */
 	public static KerberosCredential deserialize(byte[] credential) 
 	throws KerberosException{
+		if(credential == null) throw new KerberosException();
 		String dirFile = "",c = "";
 		byte[] k = null,t = null;
 		Document document = getXMLDocumentFromBytes(credential);

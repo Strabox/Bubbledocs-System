@@ -60,7 +60,7 @@ public class KerberosRequest extends KerberosNormalMessage{
 	public byte[] serialize() throws KerberosException{
 		try{
 			String request, body;
-			body = "<server>" + server.toString() + "</server>";
+			body = "<server>" + server + "</server>";
 			body += "<nonce>" + nonce + "</nonce>";
 			request = "<request>" + body +"</request>";
 			return request.getBytes(UTF8);
@@ -78,6 +78,7 @@ public class KerberosRequest extends KerberosNormalMessage{
 	 */
 	public static KerberosRequest deserialize(byte[] request)
 	throws KerberosException{
+		if(request == null) throw new KerberosException();
 		String n = "",dirFile = "",s ="";
 		Document document = getXMLDocumentFromBytes(request);
 		

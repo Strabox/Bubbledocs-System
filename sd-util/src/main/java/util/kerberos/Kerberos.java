@@ -40,6 +40,7 @@ public class Kerberos {
 	 */
 	public static byte[] digestPassword(byte[] password,String alg) 
 	throws KerberosException{
+		if(password == null || alg == null) throw new KerberosException();
 		try{
 			MessageDigest md = MessageDigest.getInstance(alg);
 			md.update(password);

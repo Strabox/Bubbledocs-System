@@ -44,7 +44,7 @@ public class SDStoreTest {
 		KerberosTicket ticket = new KerberosTicket(username,SERVICE_NAME,8,kcs);
 		Key ks = loadServerKey(SERVICE_NAME);
 		KerberosCredential cred = new KerberosCredential(username,ticket.serialize(ks), kcs);
-		port.processRequest(cred.serialize());
+		port.credentials = cred.serialize();
 	}
 	
 	public Key loadServerKey(String serverID) throws Exception{

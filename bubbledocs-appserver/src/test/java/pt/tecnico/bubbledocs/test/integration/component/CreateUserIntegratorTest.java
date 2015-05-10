@@ -70,7 +70,6 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
         assertEquals("José Ferreira", user.getName());
     }
     
-    /*-------------------- Local fail remote never executed ------------------ */
     
     @Test(expected = DuplicateUsernameException.class)
     public void usernameExists() {
@@ -167,9 +166,6 @@ public class CreateUserIntegratorTest extends BubbleDocsServiceTest {
     		assertNull(Bubbledocs.getInstance().getUserByName(USERNAME_DOES_NOT_EXIST));
     	}
     }
-    
-    /*-----------------------------------------------------------------------*/
-    /*---------------------- Local Success Remote Fails ---------------------*/
     
     
     /*-----------------------------------------------------------------------*/

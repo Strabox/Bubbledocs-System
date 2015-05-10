@@ -2,14 +2,17 @@ package pt.ulisboa.tecnico.sdis.store.cli.frontend;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.BindingProvider;
 
@@ -23,7 +26,9 @@ import javax.xml.ws.Response;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 
+import pt.ulisboa.tecnico.sdis.store.cli.handlers.KerberosHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
+import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosClientAuthentication;
 import util.kerberos.messages.KerberosCredential;
@@ -62,20 +67,46 @@ public class FrontEnd {
 		}
 	}
 
-	public void processRequest(byte[] credentials) throws KerberosException{
+	private Date processRequest(byte[] credentials) throws KerberosException{
+		Date requestDate = new Date();
 		for(int i = 1; i<= numberClones; i++){
 			SDStore aux = clones [i-1];
 			BindingProvider bp = (BindingProvider) aux;		
 			Map<String, Object> requestContext = bp.getRequestContext();
 			KerberosCredential cred = KerberosCredential.deserialize(credentials);
-			KerberosClientAuthentication auth = new KerberosClientAuthentication(cred.getClient(),new Date());
+			KerberosClientAuthentication auth = new KerberosClientAuthentication(cred.getClient(),requestDate);
 			requestContext.put("auth", Base64.getEncoder().encodeToString(auth.serialize(cred.getKcs())));
 			requestContext.put("ticket", Base64.getEncoder().encodeToString(cred.getTicket()));
 			requestContext.put("kcs", Base64.getEncoder().encodeToString(cred.getKcs().getEncoded()));
 		}
+		return requestDate;
 	}
 
-	public void createDoc(DocUserPair pair) throws DocAlreadyExists_Exception{
+	
+	private boolean processReply(@SuppressWarnings("rawtypes") Response response,byte[] cred,Date d){
+		try{
+			KerberosCredential credential = KerberosCredential.deserialize(cred);
+			byte[] b = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+			String date = new String(Kerberos.decipherText(credential.getKcs(), b));
+			Calendar cal  = DatatypeConverter.parseDateTime(date);
+			Date requestTime = cal.getTime();
+			if(requestTime.equals(d))
+				return true;
+			return false;
+		}catch(KerberosException e){
+			throw new RuntimeException();
+		}
+	}
+	
+	/*===========================================================================*/
+	public void createDoc(DocUserPair pair,final byte[] credential) 
+	throws DocAlreadyExists_Exception{
+		final Date requestTime;
+		try {
+			requestTime = processRequest(credential);
+		} catch (KerberosException e1) {
+			throw new RuntimeException();
+		}
 		/*											NOT USING CALLBACK
 		ArrayList<Response<CreateDocResponse>> responses = new ArrayList<Response<CreateDocResponse>>(numberClones);
 		int numberOfResponses = 0;
@@ -120,6 +151,7 @@ public class FrontEnd {
 			        public void handleResponse(Response<CreateDocResponse> response) {
 			            try {
 			                System.out.println("entered handler");
+			                System.out.println("VALIDATION: "+ processReply(response, credential,requestTime));
 			                numberOfResponses.increment();
 			                System.out.println("Asynchronous call result arrived. checking if exception ");
 			                response.get();
@@ -167,7 +199,14 @@ public class FrontEnd {
 	    
 		return;
 	}
-	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception{
+	public List<String> listDocs(String userId,final byte[] credential) 
+	throws UserDoesNotExist_Exception{
+		final Date requestTime;
+		try {
+			requestTime = processRequest(credential);
+		} catch (KerberosException e1) {
+			throw new RuntimeException();
+		}
 		/*					SYNCHRONOUS
 		List<String> result = null;
 		for(int i=1;i<=numberClones;i++){
@@ -224,6 +263,7 @@ public class FrontEnd {
 			        public void handleResponse(Response<ListDocsResponse> response) {
 			            try {
 			                System.out.println("entered handler");
+			                System.out.println("VALIDATION: "+ processReply(response, credential,requestTime));
 			                numberOfResponses.increment();
 			                System.out.println("Asynchronous call result arrived: ");
 			                ArrayList<String> aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
@@ -277,7 +317,14 @@ public class FrontEnd {
 
 
 
-	public void store(DocUserPair docUserPair, byte[] contents) throws CapacityExceeded_Exception, DocDoesNotExist_Exception, UserDoesNotExist_Exception {
+	public void store(DocUserPair docUserPair, byte[] contents,byte[] credential) 
+	throws CapacityExceeded_Exception, DocDoesNotExist_Exception, 
+	UserDoesNotExist_Exception {
+		try {
+			Date requestRime = processRequest(credential);
+		} catch (KerberosException e1) {
+			throw new RuntimeException();
+		}
 		for(int i=1;i<=numberClones;i++){
 			try{
 				clones[i-1].store(docUserPair,contents);
@@ -297,7 +344,13 @@ public class FrontEnd {
 	}
 
 
-	public byte[] load(DocUserPair docUserPair) throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
+	public byte[] load(DocUserPair docUserPair,byte[] credential) 
+	throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
+		try {
+			Date requestRime = processRequest(credential);
+		} catch (KerberosException e1) {
+			throw new RuntimeException();
+		}
 		byte [] result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{

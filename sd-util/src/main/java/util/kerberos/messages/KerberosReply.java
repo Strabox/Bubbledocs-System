@@ -26,8 +26,9 @@ public class KerberosReply extends KerberosNormalMessage{
 	private final static String XSD_FILE_WINDOWS_PATH = "\\..\\sd-util\\src\\main\\resources\\replyFormat.xsd";
 	private final static String XSD_FILE_LINUX_PATH = "/../sd-util/src/main/resources/replyFormat.xsd";
 	
+	
 	/**
-	 * Serialized ticker.
+	 * Serialized ticket.
 	 */
 	private byte[] ticket;
 	
