@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.sdis.store.ws.impl.handlers;
+package pt.ulisboa.tecnico.sdis.store.cli.handlers;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -15,7 +15,6 @@ import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 
-@SuppressWarnings("restriction")
 public class TagHandler implements SOAPHandler<SOAPMessageContext> {
 	private int clientid=-1, version=-1;
 	

@@ -8,5 +8,8 @@
         <handler>
             <handler-class>util.handlers.LoggingHandler</handler-class>
         </handler>
+        <handler>
+            <handler-class>pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.TagHandler</handler-class>
+        </handler>
     </handler-chain>
 </handler-chains>
