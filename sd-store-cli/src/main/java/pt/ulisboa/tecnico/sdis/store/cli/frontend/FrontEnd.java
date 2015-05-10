@@ -76,7 +76,8 @@ public class FrontEnd {
 	}
 
 	public void createDoc(DocUserPair pair) throws DocAlreadyExists_Exception{
-		/*ArrayList<Response<CreateDocResponse>> responses = new ArrayList<Response<CreateDocResponse>>(numberClones);
+		/*											NOT USING CALLBACK
+		ArrayList<Response<CreateDocResponse>> responses = new ArrayList<Response<CreateDocResponse>>(numberClones);
 		int numberOfResponses = 0;
 		
 		for(int i=1;i<=numberClones;i++){
@@ -113,16 +114,16 @@ public class FrontEnd {
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-				System.out.print("generating an async call");
+				System.out.println("generating an async call");
 				responses.add(clones[i-1].createDocAsync(pair, new AsyncHandler<CreateDocResponse>() {
 			        @Override
 			        public void handleResponse(Response<CreateDocResponse> response) {
 			            try {
 			                System.out.println("entered handler");
 			                numberOfResponses.increment();
-			                System.out.print("Asynchronous call result arrived. checking if exception ");
+			                System.out.println("Asynchronous call result arrived. checking if exception ");
 			                response.get();
-			                System.out.print("not exception - success");
+			                System.out.println("not exception - success");
 			            } catch (InterruptedException e) {
 			                System.out.println("Caught interrupted exception.");
 			                System.out.println(e.getCause());
@@ -142,15 +143,15 @@ public class FrontEnd {
 		int maxChecks = 10;
 		System.out.println("\n\n\n\n\nWaiting for answers");
 		while (numberOfResponses.intValue()<=quorumRT) {
-			System.out.print("responses received before sleeping: "+numberOfResponses.intValue());
+			System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
 	    	if(numberOfChecks > maxChecks || numberOfFailures.intValue()>0) break;
 	    	try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				System.out.print("waiting...");
+				System.out.println("waiting...");
 			}
-	    	System.out.print(".");
+	    	System.out.println(".");
 	    	System.out.flush();
 	    }
 	    System.out.println("\n\n\n\n\nStopping requests");
@@ -158,7 +159,7 @@ public class FrontEnd {
     		response.cancel(false);
 		}
 	    
-	    System.out.print("number of successes: "+numberOfFailures.intValue());
+	    System.out.println("number of successes: "+numberOfFailures.intValue());
 	    if(numberOfFailures.intValue()>0){
 	    	DocAlreadyExists E = new DocAlreadyExists();
 			throw new DocAlreadyExists_Exception("Failed to create doc on all servers", E);
@@ -167,7 +168,8 @@ public class FrontEnd {
 		return;
 	}
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception{
-		/*List<String> result = null;
+		/*					SYNCHRONOUS
+		List<String> result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{
 				result = clones[i-1].listDocs(userId);
@@ -181,7 +183,7 @@ public class FrontEnd {
 			}
 		}
 		return result;*/
-		/*
+		/*//				NOT USING CALLBACK
 		ArrayList<Response<ListDocsResponse>> responses = new ArrayList<Response<ListDocsResponse>>(numberClones);
 		int numberOfResponses = 0;
 		
@@ -216,20 +218,20 @@ public class FrontEnd {
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-				System.out.print("generating an async call");
+				System.out.println("generating an async call");
 				responses.add(clones[i-1].listDocsAsync(userId, new AsyncHandler<ListDocsResponse>() {
 			        @Override
 			        public void handleResponse(Response<ListDocsResponse> response) {
 			            try {
 			                System.out.println("entered handler");
 			                numberOfResponses.increment();
-			                System.out.print("Asynchronous call result arrived: ");
+			                System.out.println("Asynchronous call result arrived: ");
 			                ArrayList<String> aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
-			                System.out.print("valid list from a server");
-			                System.out.print("not exception - success");
+			                System.out.println("valid list from a server");
+			                System.out.println("not exception - success");
 			                numberOfSuccesses.increment();
 			                arrays.add(aListFromAServer);
-			                System.out.print("added list to TO-MERGE list");
+			                System.out.println("added list to TO-MERGE list");
 			            } catch (InterruptedException e) {
 			                System.out.println("Caught interrupted exception.");
 			                System.out.println(e.getCause());
@@ -248,15 +250,15 @@ public class FrontEnd {
 		int maxChecks = 10;
 		System.out.println("\n\n\n\n\nWaiting for answers");
 		while (numberOfResponses.intValue()<=quorumRT) {
-			System.out.print("responses received before sleeping: "+numberOfResponses.intValue());
+			System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
 	    	if(numberOfChecks>maxChecks) break;
 	    	try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				System.out.print("waiting...");
+				System.out.println("waiting...");
 			}
-	    	System.out.print(".");
+	    	System.out.println(".");
 	    	System.out.flush();
 	    }
 	    System.out.println("\n\n\n\n\nStopping requests");
@@ -264,7 +266,7 @@ public class FrontEnd {
     		response.cancel(false);
 		}
 	    
-	    System.out.print("number of successes: "+numberOfSuccesses.intValue());
+	    System.out.println("number of successes: "+numberOfSuccesses.intValue());
 	    if(numberOfSuccesses.intValue()==0){
 	    	UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("Failed to fetch list from servers", E);
