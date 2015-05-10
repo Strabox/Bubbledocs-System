@@ -56,7 +56,7 @@ public class loadTest extends SDStoreTest {
 
 	@Test
 	public void loadSetupSucess () throws DocDoesNotExist_Exception, UserDoesNotExist_Exception{
-/*
+
 		DocUserPair pair1 = new DocUserPair();
 		pair1.setDocumentId("a1");
 		pair1.setUserId("alice");
@@ -94,7 +94,7 @@ public class loadTest extends SDStoreTest {
 		assertEquals("2","aaaaaaaaaa",text2);
 		assertEquals("3","BBBBBBBBBBBBBBBBBBBB",text3);
 
-*/
+
 	}
 
 	@Test (expected=DocDoesNotExist_Exception.class )
