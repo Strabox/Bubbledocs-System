@@ -1,5 +1,6 @@
 package pt.tecnico.bubbledocs.service.local;
 
+import pt.ist.fenixframework.Atomic;
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.User;
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
@@ -41,7 +42,8 @@ public class LoginUser extends BubbleDocsService {
 	public final String getUserToken() {
 		return userToken;
 	}
-
+	
+	@Atomic
 	public void updatePassLocaly(String username, String password) {
 		Bubbledocs bubble = Bubbledocs.getInstance();
 		//Update User password locally to use in future local logins.
@@ -49,6 +51,7 @@ public class LoginUser extends BubbleDocsService {
 		user.setPassword(password);
 		//Create/update the session for the user.
 		userToken = bubble.createSession(username);
+		System.out.println(userToken);
 		//SUCCESSFUL LOGIN!!!!
 		bubble.removeAllInvalidSessions();
 	}

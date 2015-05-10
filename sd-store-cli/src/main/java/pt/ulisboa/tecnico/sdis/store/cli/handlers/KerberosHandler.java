@@ -9,7 +9,6 @@ import javax.xml.bind.DatatypeConverter;
 import javax.xml.namespace.QName;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
@@ -21,7 +20,7 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 import util.kerberos.Kerberos;
 
 /**
- * Kerberos Handler - Kerberos Client hanlder. 
+ * Kerberos Handler - Kerberos Client handler. 
  */
 public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 	
@@ -61,9 +60,9 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 			Name ticketName = env.createName(TICKET_PROPERTY,
 			TICKET_PREFIX,TICKET_NAMESPACE);
 			Name authName = env.createName(AUTH_PROPERTY,AUTH_PREFIX,
-					AUTH_NAMESPACE);
+			AUTH_NAMESPACE);
 			Name macName = env.createName(MAC_PROPERTY,MAC_PREFIX,
-					MAC_NAMESPACE);
+			MAC_NAMESPACE);
             SOAPHeaderElement authEle = hdr.addHeaderElement(authName);
             SOAPHeaderElement tickEle = hdr.addHeaderElement(ticketName);
             authEle.addTextNode((String)context.get(AUTH_PROPERTY));
@@ -79,11 +78,9 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
             mac64 = DatatypeConverter.printBase64Binary(macByte);
             SOAPHeaderElement macEle = hdr.addHeaderElement(macName);
             macEle.addTextNode(mac64);
-			}catch(SOAPException e){
-				System.out.println("ERROR Leaving " + e);
-				return false;
-			} catch (Exception e) {
+			}catch (Exception e) {
 				e.printStackTrace();
+				System.out.println("ERROR Leaving " + e);
 				return false;
 			}
 		}
@@ -93,17 +90,17 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 			SOAPPart part = msg.getSOAPPart();
 			SOAPEnvelope env = part.getEnvelope();
 			SOAPHeader hdr = env.getHeader();
-			
 			@SuppressWarnings("rawtypes")
 			Iterator it = hdr.getChildElements();
-            if (!it.hasNext()) {
-            	//Header 404!
-                return false;
-            }
+            if (!it.hasNext()) //Header 404!
+                return true;
             SOAPHeaderElement ele = (SOAPHeaderElement) it.next();
         	String nodeName = ele.getLocalName();
         	if(nodeName.equals(TIMESTAMP_PROPERTY)){
-        		// TODO
+        		@SuppressWarnings("unused")
+				byte[] time;
+        		time = DatatypeConverter.parseBase64Binary(ele.getTextContent());
+        		System.out.println(ele.getTextContent());
         	}
         	else
         		return true;

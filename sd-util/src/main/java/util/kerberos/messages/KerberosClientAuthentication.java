@@ -44,11 +44,7 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage {
 	private Date requestTime;
 	
 	
-	public KerberosClientAuthentication(String client) {
-		this.client = client;
-	}
-	
-	private KerberosClientAuthentication(String client,Date requestTime){
+	public KerberosClientAuthentication(String client,Date requestTime){
 		this.client = client;
 		this.requestTime = requestTime;
 	}
@@ -94,14 +90,14 @@ public class KerberosClientAuthentication extends KerberosCypheredMessage {
 	@Override
 	public byte[] serialize(Key kcs) throws KerberosException {
 		String auth = "", body ="";
-		XMLGregorianCalendar requestTime;
+		XMLGregorianCalendar requesttime;
 		try{
 			GregorianCalendar gc = new GregorianCalendar();
-			gc.setTime(new Date()); 
-			requestTime = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+			gc.setTime(requestTime); 
+			requesttime = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
 			
 			body += "<client>" + client + "</client>";
-			body += "<requestTime>" + requestTime.toXMLFormat() + "</requestTime>";
+			body += "<requestTime>" + requesttime.toXMLFormat() + "</requestTime>";
 			auth ="<clientAuth>"+ body + "</clientAuth>";
 		
 			return Kerberos.cipherText(kcs, auth.getBytes(UTF8));

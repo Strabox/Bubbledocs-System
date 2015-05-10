@@ -42,7 +42,7 @@ public class CreateUserIntegrator extends BubbleDocsIntegrator {
 		createUserService.execute();
 		try{
 			createUserRemote(username,email);
-		}catch(Exception e){
+		}catch(BubbleDocsException e){
 			/* Compensation if the remote call fails. */
 			DeleteUser du = new DeleteUser(token, username);
 			du.execute();

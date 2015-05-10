@@ -28,12 +28,14 @@ public class Kerberos {
 	
 	public final static String RNG = "SHA1PRNG";
 	
+	public final static String SHA_256 = "HmacSHA256";
+	
 	/**
 	 * Digest password, make a hash from a password, using
 	 * a non reversible function.
 	 * @param password
 	 * @param alg
-	 * @return
+	 * @return password digested.
 	 * @throws KerberosException
 	 */
 	public static byte[] digestPassword(byte[] password,String alg) 
@@ -159,7 +161,7 @@ public class Kerberos {
 	public static byte[] makeMAC(byte[] bytes, SecretKey key) 
 	throws KerberosException {
 		try{
-	        Mac cipher = Mac.getInstance("HmacMD5");
+	        Mac cipher = Mac.getInstance(SHA_256);
 	    	cipher.init(key);
 	        return cipher.doFinal(bytes);
 		}catch(Exception e){

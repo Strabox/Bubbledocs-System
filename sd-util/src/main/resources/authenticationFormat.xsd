@@ -4,7 +4,7 @@
     <xs:complexType>
       <xs:all>
         <xs:element type="nonceType" name="nonce"/>
-        <xs:element type="xs:base64Binary" name="cliServKey"/>
+        <xs:element type="keyType" name="cliServKey"/>
       </xs:all>
     </xs:complexType>
   </xs:element>

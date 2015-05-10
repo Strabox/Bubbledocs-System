@@ -71,6 +71,9 @@ public class SDImpl implements SDId {
 			user = new User("eduardo","eduardo@tecnico.pt");
 			user.setPassword("Eee5");
 			userManager.addUser(user);
+			user = new User("root","root@tecnico.pt");
+			user.setPassword("root");
+			userManager.addUser(user);
 		}catch(Exception e){
 			System.out.println(e);
 		}

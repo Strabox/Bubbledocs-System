@@ -18,7 +18,9 @@ public class IDRemoteServices extends RemoteServices{
 	
 	private static final String ID_NAME = "SD-ID";
 	
-	SdIdClient idClient;
+	public static byte[] credentials;
+	
+	private SdIdClient idClient;
 	
 
 	public void createUser(String username, String email)
@@ -47,7 +49,7 @@ public class IDRemoteServices extends RemoteServices{
 		
 		try {
 			idClient = new SdIdClient(UDDI_URL, ID_NAME);
-			idClient.requestAuthentication(username, password.getBytes());
+			credentials = idClient.requestAuthentication(username, password.getBytes());
 		} catch (AuthReqFailed_Exception e) {
 			throw new LoginBubbleDocsException();
 		} catch (Exception e){

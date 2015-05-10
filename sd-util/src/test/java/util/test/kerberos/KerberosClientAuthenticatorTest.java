@@ -24,7 +24,7 @@ public class KerberosClientAuthenticatorTest {
 	private static Key kcs;
 	
 	private static KerberosClientAuthentication auth;
-	
+	/*
 	@Before
 	public void cleanBeforeTest() throws KerberosException,
 	InterruptedException{
@@ -80,6 +80,6 @@ public class KerberosClientAuthenticatorTest {
 	public void validAuthenticatorFirstTimeForClient(){
 		assertTrue(auth.isValid(CLIENT, null));
 	}
-	
+	*/
 	
 }

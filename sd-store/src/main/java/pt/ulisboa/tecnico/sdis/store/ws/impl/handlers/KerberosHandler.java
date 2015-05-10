@@ -68,7 +68,6 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				n.setTextContent(timeBase64);
 			}
 			catch(Exception e){
-				e.printStackTrace();
 				System.out.println("ERROR Leaving " + e);
 			}
 		}

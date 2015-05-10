@@ -2,8 +2,6 @@ package pt.ulisboa.tecnico.sdis.store.cli;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -25,8 +23,6 @@ import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
 import pt.ulisboa.tecnico.sdis.store.ws.StoreResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import util.kerberos.exception.KerberosException;
-import util.kerberos.messages.KerberosClientAuthentication;
-import util.kerberos.messages.KerberosCredential;
 import util.uddi.UDDIClient;
 
 
@@ -37,7 +33,7 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	 */
 	SDStore storeRemote;
 	FrontEnd frontend;
-	public SDStoreClient(String uddiURL, String idName) throws Exception {
+	public SDStoreClient(String uddiURL, String idName) throws Exception  {
 		super(uddiURL, idName);
 		//connectUDDI();
 		int rt = 2, wt = 2;
@@ -93,7 +89,7 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 		frontend.processRequest(credentials);
 	}
 	
-
+	/*===================== ASYNC METHODS NEED TO COMPILE =================== */
 	@Override
 	public Response<CreateDocResponse> createDocAsync(DocUserPair docUserPair) {
 		// TODO Auto-generated method stub

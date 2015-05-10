@@ -24,6 +24,7 @@ public class CreateSpreadSheet extends BubbleDocsService {
 
 	@Override
 	protected void accessControl(){
+		bubble = Bubbledocs.getInstance();
 		usr = bubble.getUserFromSession(usrtoken);
 		if(usrtoken == null || usr == null)
     		throw new UserNotInSessionException();
@@ -37,7 +38,6 @@ public class CreateSpreadSheet extends BubbleDocsService {
 		}
 		usrtoken = userToken; sheetname = name;
 		sheetrows = lines; sheetcolumns = columns;
-		bubble = Bubbledocs.getInstance();
 	}
 
 	@Override

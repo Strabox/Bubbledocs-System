@@ -36,7 +36,7 @@ public class KerberosManager {
 	/**
 	 * Unique server identifier.
 	 */
-	private String serverID;
+	private String serviceId;
 	
 	/**
 	 * Server secret symmetric key.
@@ -54,8 +54,8 @@ public class KerberosManager {
 	private HashMap<String, Key> kcsKeys;
 	
 	
-	public KerberosManager(String serverID) throws Exception{
-		this.serverID = serverID;
+	public KerberosManager(String serviceId) throws Exception{
+		this.serviceId = serviceId;
 		lastRequest = new HashMap<String,Date>();
 		kcsKeys = new HashMap<String, Key>();
 		if(SystemUtils.IS_OS_WINDOWS)
@@ -89,7 +89,7 @@ public class KerberosManager {
 		String line = "";
 		while((line = br.readLine()) != null){
 			String[] divs = line.split("[ \t]+");
-			if(divs[0].equals(serverID)){
+			if(divs[0].equals(serviceId)){
 				byte[] k = DatatypeConverter.parseBase64Binary(divs[1]);
 				ks = Kerberos.getKeyFromBytes(k);
 				br.close();
@@ -108,16 +108,17 @@ public class KerberosManager {
 	 */
 	public byte[] processRequest(byte[] byteTicket,byte[] auth,
 	byte[] msgByte,byte[] mac) {
+		System.out.println("========PROCESSING REQUEST======"); 
 		try{
 		//================Validate Ticket=====================
 		KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
-		if(!ticket.isValidTicket(serverID))
+		if(!ticket.isValidTicket(serviceId))
 			throw new InvalidRequest();
 		Key kcs = ticket.getKcs();
 		//================Validate MAC =======================
 		if(!verifyMAC(mac, msgByte, kcs))
 			throw new InvalidRequest();
-		//==============Validate authenticator================
+		//==============Validate Authenticator================
 		KerberosClientAuthentication authentication;
 		authentication = KerberosClientAuthentication.deserialize(auth, kcs);
 		Date lastReq = lastRequest.get(authentication.getClient());
@@ -126,12 +127,13 @@ public class KerberosManager {
 		//Request is valid (I Hope So).
 		addLastRequest(authentication.getClient(), authentication.getRequestTime());
 		addKcsKey(authentication.getClient(), kcs);
-		//=======Compute the response authenticator===========
+		//=======Compute the Response Authenticator===========
 		Date reqDate = authentication.getRequestTime();
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(reqDate);
 		XMLGregorianCalendar t = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
-		return Kerberos.cipherText(kcs, t.toXMLFormat().getBytes());
+		System.out.println("========PROCESSING DONE======"); 
+		return Kerberos.cipherText(kcs, t.toXMLFormat().getBytes("UTF-8"));
 		}catch(Exception e){
 			throw new InvalidRequest();
 		}

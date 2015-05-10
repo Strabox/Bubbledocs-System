@@ -51,7 +51,7 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
 		user.setPassword(password);
 	}
 	
-    @Test
+   @Test
     public void success() {
     	LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
         
@@ -180,7 +180,7 @@ public class LoginUserTestIntegratorTest extends BubbleDocsServiceTest {
     /*
      *Testa o login duas vezes
      */
-    @Test
+    
     public void successLoginTwice() {
     	LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
         

@@ -13,4 +13,9 @@
 	  	<xs:minLength value="6"/>
 	  </xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="keyType">
+	  <xs:restriction base="xs:base64Binary">
+	  	<xs:minLength value="6"/>
+	  </xs:restriction>
+	</xs:simpleType>
 </xs:schema>

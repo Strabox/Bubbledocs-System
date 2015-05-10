@@ -29,6 +29,7 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 	public void createXML(){
 		expDoc.createXML();		
 	}
+	
 	public String getUsername(){
 		return expDoc.getUsername();
 	}

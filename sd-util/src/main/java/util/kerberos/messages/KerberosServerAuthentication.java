@@ -1,6 +1,5 @@
 package util.kerberos.messages;
 
-import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.util.Base64;
 
@@ -64,8 +63,10 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 	 * Used to validate Server reply (authenticator).
 	 * @param nonce
 	 * @return true if valid false otherwise.
+	 * @throws KerberosException 
 	 */
-	public boolean isValid(String nonce64){
+	public boolean isValid(String nonce64) throws KerberosException{
+		if(nonce == null) throw new KerberosException();
 		if(nonce.equals(nonce64))
 			return true;
 		return false;
@@ -73,13 +74,14 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 	
 	@Override
 	public byte[] serialize(Key kc) throws KerberosException {
+		if(kc == null) throw new KerberosException();
+		try{
 		String authentication,body = "";
 		body += "<nonce>"+ nonce + "</nonce>";
 		body += "<cliServKey>" + DatatypeConverter.printBase64Binary(kcs.getEncoded()) +"</cliServKey>";
 		authentication = "<authentication>" + body + "</authentication>";
-		try {
-			return Kerberos.cipherText(kc, authentication.getBytes(UTF8));
-		} catch (UnsupportedEncodingException e) {
+		return Kerberos.cipherText(kc, authentication.getBytes(UTF8));
+		} catch (Exception e) {
 			throw new KerberosException();
 		}
 	}
@@ -87,6 +89,7 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 	
 	public static KerberosServerAuthentication deserialize(byte[] auth,Key k) 
 	throws KerberosException {
+		if(auth == null || k == null) throw new KerberosException();
 		byte[] plainAuth = Kerberos.decipherText(k, auth);
 		return parseTicket(plainAuth);
 	}
