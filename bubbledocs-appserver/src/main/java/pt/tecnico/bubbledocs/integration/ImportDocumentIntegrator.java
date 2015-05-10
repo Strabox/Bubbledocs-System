@@ -15,15 +15,14 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 	private ImportDocument impDoc;
 
 	private StoreRemoteServices storeRemote;
-	private GetUserInfoService userInfo;
+
 	
 
 
 	public ImportDocumentIntegrator(String userToken, int docId) {
 		impDoc = new ImportDocument(userToken,docId);
 		storeRemote = new StoreRemoteServices();
-		userInfo=new GetUserInfoService(userToken);
-		
+				
 	}
 	
 	public void createSpreadSheet(){
