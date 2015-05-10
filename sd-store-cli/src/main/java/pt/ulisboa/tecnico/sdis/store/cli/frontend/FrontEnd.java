@@ -109,7 +109,7 @@ public class FrontEnd {
     		response.cancel(false);
 		}*/
 		final MutableInt numberOfResponses = new MutableInt(0);
-		final MutableInt numberOfSuccesses = new MutableInt(0);
+		final MutableInt numberOfFailures = new MutableInt(0);
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
@@ -123,12 +123,12 @@ public class FrontEnd {
 			                System.out.print("Asynchronous call result arrived. checking if exception ");
 			                response.get();
 			                System.out.print("not exception - success");
-			                numberOfSuccesses.increment();
 			            } catch (InterruptedException e) {
 			                System.out.println("Caught interrupted exception.");
 			                System.out.println(e.getCause());
 			            } catch (ExecutionException e) {
-			                System.out.println("Caught execution exception.");
+			                System.out.println("Caught execution exception.  Incrementing!");
+			                numberOfFailures.increment();
 			                System.out.println(e.getCause());
 			            }
 			        }
@@ -144,7 +144,7 @@ public class FrontEnd {
 		while (numberOfResponses.intValue()<=quorumRT) {
 			System.out.print("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
-	    	if(numberOfChecks>maxChecks) break;
+	    	if(numberOfChecks > maxChecks || numberOfFailures.intValue()>0) break;
 	    	try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -158,8 +158,8 @@ public class FrontEnd {
     		response.cancel(false);
 		}
 	    
-	    System.out.print("number of successes: "+numberOfSuccesses.intValue());
-	    if(numberOfSuccesses.intValue()==0){
+	    System.out.print("number of successes: "+numberOfFailures.intValue());
+	    if(numberOfFailures.intValue()>0){
 	    	DocAlreadyExists E = new DocAlreadyExists();
 			throw new DocAlreadyExists_Exception("Failed to create doc on all servers", E);
 	    }
