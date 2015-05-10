@@ -4,6 +4,7 @@ import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.remote.StoreRemoteServices;
+import pt.tecnico.bubbledocs.service.local.GetUserInfoService;
 import pt.tecnico.bubbledocs.service.local.ImportDocument;
 
 
@@ -14,13 +15,14 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 	private ImportDocument impDoc;
 
 	private StoreRemoteServices storeRemote;
-
+	private GetUserInfoService userInfo;
 	
 
 
 	public ImportDocumentIntegrator(String userToken, int docId) {
 		impDoc = new ImportDocument(userToken,docId);
 		storeRemote = new StoreRemoteServices();
+		userInfo=new GetUserInfoService(userToken);
 		
 	}
 	

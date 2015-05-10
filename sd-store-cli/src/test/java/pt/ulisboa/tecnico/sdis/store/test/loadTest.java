@@ -75,15 +75,24 @@ public class loadTest extends SDStoreTest {
 		}
 		byte[] content1=port.load(pair1);
 		String text1 = new String(content1);
-		
-		//byte[] content2=port.load(pair2);
-		//String text2 = new String(content2);
-		//byte[] content3=port.load(pair3);
-		//String text3 = new String(content3);
+		try {
+			uploadKerberosInfo(port, "alice");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+		byte[] content2=port.load(pair2);
+		String text2 = new String(content2);
+		try {
+			uploadKerberosInfo(port, "bruno");
+		} catch (Exception e) {
+			fail("Erro");
+		}
+		byte[] content3=port.load(pair3);
+		String text3 = new String(content3);
 
 		assertEquals("1","AAAAAAAAAA",text1);
-		//assertEquals("2","aaaaaaaaaa",text2);
-		//assertEquals("3","BBBBBBBBBBBBBBBBBBBB",text3);
+		assertEquals("2","aaaaaaaaaa",text2);
+		assertEquals("3","BBBBBBBBBBBBBBBBBBBB",text3);
 
 */
 	}

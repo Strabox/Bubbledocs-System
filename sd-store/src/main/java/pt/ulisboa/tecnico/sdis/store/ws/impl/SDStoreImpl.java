@@ -44,7 +44,7 @@ public class SDStoreImpl implements SDStore {
 		super();
 		this.kerberosManager = new KerberosManager(SERVICE_ID);
 		this.storage = new ArrayList<Storage>();
-		//testSetup();
+		testSetup();
 	}
 
 	private void testSetup() {

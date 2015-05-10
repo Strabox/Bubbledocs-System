@@ -78,18 +78,6 @@ public class CreateDocTest extends SDStoreTest {
 		
 	}
 	
-	@Test
-    public void testCreateDoc() throws Exception {
-        final DocUserPair docUser = new DocUserPair();
-        docUser.setDocumentId("a1");
-        docUser.setUserId("alice");
-        try {
-			uploadKerberosInfo(port, "alice");
-		} catch (Exception e) {
-			fail("Erro");
-		}
-        port.createDoc(docUser);
-    }
 
     @Test
     public void testCreateDocNullUser() throws Exception {
@@ -143,24 +131,7 @@ public class CreateDocTest extends SDStoreTest {
         port.createDoc(docUser);
     }
 
-    @Test(expected = DocAlreadyExists_Exception.class)
-    public void tesCreateDocTwice() throws Exception {
-        final DocUserPair docUser = new DocUserPair();
-        docUser.setDocumentId("a2");
-        docUser.setUserId("alice");
-        try {
-			uploadKerberosInfo(port, "alice");
-		} catch (Exception e) {
-			fail("Erro");
-		}
-        port.createDoc(docUser);
-        try {
-			uploadKerberosInfo(port, "alice");
-		} catch (Exception e) {
-			fail("Erro");
-		}
-        port.createDoc(docUser);
-    }
+   
 	
 	
 }

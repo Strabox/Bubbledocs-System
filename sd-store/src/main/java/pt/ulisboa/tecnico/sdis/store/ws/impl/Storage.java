@@ -14,8 +14,8 @@ public class Storage{
 	private String userId;
 	private List<Document> docs;
 	private static final int DEFAULT_SIZE = 100;	
-	private int temp_cid;
-	private int temp_seq;
+	private int temp_cid=1;
+	private int temp_seq=1;
 	
 	
 	
