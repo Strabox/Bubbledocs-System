@@ -1,4 +1,4 @@
-package pt.tecnico.bubbledocs.test.service;
+package pt.tecnico.bubbledocs.test.integration.component;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,10 +16,10 @@ import pt.tecnico.bubbledocs.exceptions.OutOfSpreadsheetBoundariesException;
 import pt.tecnico.bubbledocs.exceptions.SpreadSheetNotFoundException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
 import pt.tecnico.bubbledocs.exceptions.InvalidLiteralException;
-import pt.tecnico.bubbledocs.service.local.AssignLiteralCell;
+import pt.tecnico.bubbledocs.integration.AssignLiteralCellIntegrator;
 import pt.tecnico.bubbledocs.test.BubbleDocsServiceTest;
 
-public class AssignLiteralCellTest extends BubbleDocsServiceTest {
+public class AssignLiteralCellIntegratorTest extends BubbleDocsServiceTest {
 	
 	private Bubbledocs bubbled;
 	private static User userNoPerm;
@@ -74,7 +74,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test
     public void userPermissionsOwnerTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"1;1","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"1;1","11");
     	alc.execute();
     	int result = alc.getResult();
 		assertEquals("Result of assigned cell different from unexpected.", result, 11);
@@ -88,7 +88,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = UnauthorizedOperationException.class)
     public void userPermissionsReadTest() {
     	String tokenOwner = addUserToSession(USERNAMEREAD);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"1;1","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"1;1","11");
     	alc.execute();
     	alc.getResult();
     }
@@ -97,7 +97,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test
     public void userPermissionsWriteTest() {
     	String tokenOwner = addUserToSession(USERNAMEWRITE);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"1;1","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"1;1","11");
     	alc.execute();
     	int result = alc.getResult();
 		assertEquals("Result of assigned cell different from unexpected.", result, 11);
@@ -107,7 +107,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = UnauthorizedOperationException.class)
     public void userPermissionsNoneTest() {
     	String tokenOwner = addUserToSession(USERNAMENOPERM);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"1;1","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"1;1","11");
     	alc.execute();
     	alc.getResult();
     }
@@ -120,7 +120,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = SpreadSheetNotFoundException.class)
     public void SpreadSheetDoesNotExist() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,9999999,"1;1","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,9999999,"1;1","11");
     	alc.execute();
     	alc.getResult();
     }
@@ -133,7 +133,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = UnauthorizedOperationException.class)
     public void cellProtectionProtectedTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"1;2","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"1;2","11");
     	alc.execute();
     	alc.getResult();
     }
@@ -145,7 +145,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = OutOfSpreadsheetBoundariesException.class)
     public void cellLocationOutOfBoundariesTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"3;2","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"3;2","11");
     	alc.execute();
     	alc.getResult();
     }
@@ -158,7 +158,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = BadSpreadSheetValuesException.class)
     public void coordArgumentsFirstBadTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"22","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"22","11");
     	alc.execute();
     	alc.getResult();
     }
@@ -167,7 +167,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = BadSpreadSheetValuesException.class)
     public void coordArgumentsSecondBadTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"2;a","11");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"2;a","11");
     	alc.execute();
     	alc.getResult();
     }
@@ -180,7 +180,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     @Test(expected = InvalidLiteralException.class)
     public void AssignedCellHasContentTest() {
     	String tokenOwner = addUserToSession(USERNAMEOWNER);
-    	AssignLiteralCell alc = new AssignLiteralCell(tokenOwner,sheet.getId(),"0;0","shouldIbeH3r3");
+    	AssignLiteralCellIntegrator alc = new AssignLiteralCellIntegrator(tokenOwner,sheet.getId(),"0;0","shouldIbeH3r3");
     	alc.execute();
     	alc.getResult();
     }
