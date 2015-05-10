@@ -1,13 +1,9 @@
 package pt.ulisboa.tecnico.sdis.store.cli;
 
-import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
-
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.xml.ws.AsyncHandler;
-import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Response;
 
 import pt.ulisboa.tecnico.sdis.store.cli.frontend.FrontEnd;
@@ -19,7 +15,6 @@ import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.ListDocsResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.LoadResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
-import pt.ulisboa.tecnico.sdis.store.ws.SDStore_Service;
 import pt.ulisboa.tecnico.sdis.store.ws.StoreResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import util.kerberos.exception.KerberosException;
@@ -28,27 +23,19 @@ import util.uddi.UDDIClient;
 
 public class SDStoreClient extends UDDIClient implements SDStore{
 	
-	/**
-	 * Proxy for webService.
-	 */
-	SDStore storeRemote;
+	public static byte[] credentials;
+	
+	
 	FrontEnd frontend;
+	
 	public SDStoreClient(String uddiURL, String idName) throws Exception  {
 		super(uddiURL, idName);
-		//connectUDDI();
 		int rt = 2, wt = 2;
 		frontend = new FrontEnd(uddiURL,idName,3,rt,wt);
 	}
 
 	@Override
-	protected void getSpecificProxy(String endpoint) throws Exception {
-		SDStore_Service service = new SDStore_Service();
-		storeRemote = service.getSDStoreImplPort();
-		
-		BindingProvider bindingProvider = (BindingProvider) storeRemote;
-		Map<String, Object> requestContext = bindingProvider.getRequestContext();
-		requestContext.put(ENDPOINT_ADDRESS_PROPERTY, endpoint);
-	}
+	protected void getSpecificProxy(String endpoint){}
 	
 	/*=================== SD STORE WEB METHODS ================== */
 	

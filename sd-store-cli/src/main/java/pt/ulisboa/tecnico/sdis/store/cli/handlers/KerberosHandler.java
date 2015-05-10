@@ -14,6 +14,7 @@ import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.handler.MessageContext.Scope;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
@@ -97,10 +98,10 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
             SOAPHeaderElement ele = (SOAPHeaderElement) it.next();
         	String nodeName = ele.getLocalName();
         	if(nodeName.equals(TIMESTAMP_PROPERTY)){
-        		@SuppressWarnings("unused")
 				byte[] time;
         		time = DatatypeConverter.parseBase64Binary(ele.getTextContent());
-        		System.out.println(ele.getTextContent());
+        		context.put(TIMESTAMP_PROPERTY, time);
+        		context.setScope(TIMESTAMP_PROPERTY, Scope.APPLICATION);
         	}
         	else
         		return true;
