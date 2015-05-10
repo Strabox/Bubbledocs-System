@@ -141,7 +141,7 @@ public class FrontEnd {
 		}
 		int numberOfChecks = 0;
 		int maxChecks = 10;
-		System.out.println("\n\n\n\n\nWaiting for answers");
+		System.out.println("Waiting for answers");
 		while (numberOfResponses.intValue()<=quorumRT) {
 			System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
@@ -154,7 +154,7 @@ public class FrontEnd {
 	    	System.out.println(".");
 	    	System.out.flush();
 	    }
-	    System.out.println("\n\n\n\n\nStopping requests");
+	    System.out.println("Stopping requests");
 	    for(Future<?> response : responses){
     		response.cancel(false);
 		}
@@ -248,7 +248,7 @@ public class FrontEnd {
 		}
 		int numberOfChecks = 0;
 		int maxChecks = 10;
-		System.out.println("\n\n\n\n\nWaiting for answers");
+		System.out.println("Waiting for answers");
 		while (numberOfResponses.intValue()<=quorumRT) {
 			System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
@@ -261,7 +261,7 @@ public class FrontEnd {
 	    	System.out.println(".");
 	    	System.out.flush();
 	    }
-	    System.out.println("\n\n\n\n\nStopping requests");
+	    System.out.println("Stopping requests");
 	    for(Future<?> response : responses){
     		response.cancel(false);
 		}
