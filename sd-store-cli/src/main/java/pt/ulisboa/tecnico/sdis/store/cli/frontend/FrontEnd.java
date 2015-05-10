@@ -113,15 +113,15 @@ public class FrontEnd {
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-				System.out.println("\n\n\n\ngenerating an async call"+pair.getDocumentId());			 //check the test with document13
+				System.out.println("\n\n\n\ngenerating an async call "+pair.getDocumentId());
 				responses.add(clones[i-1].createDocAsync(pair, new AsyncHandler<CreateDocResponse>() {
 			        @Override
 			        public void handleResponse(Response<CreateDocResponse> response) {
 			            try {
 			                System.out.println("entered handler");
 			                numberOfResponses.increment();
-			                if(!processReply(response, credential,requestTime)){		// this if never happens because of the exception that shouldn't happen
-			                	System.out.println("GOT KERBEROS FAILURE");				// this happens if there is no exception from processreply, but there was an exception, andré!
+			                if(!processReply(response, credential,requestTime)){		// this "if" won't complete if there are problems with the handlers, check runtime exception
+			                	System.out.println("GOT KERBEROS FAILURE");				// this happens if there is no exception from processreply, but there was a hack
 			                	throw new ExecutionException(null);
 			                }
 			                System.out.println("Asynchronous call result arrived. checking if exception ");
@@ -130,12 +130,12 @@ public class FrontEnd {
 			            } catch (InterruptedException e) {
 			                System.out.println("Caught interrupted exception.");
 			                System.out.println(e.getCause());
-			            } catch (ExecutionException e) {								// this catches the exception that shouldn't happen but does!
+			            } catch (ExecutionException e) {
 			                System.out.println("Caught execution exception.  Incrementing!");
 			                numberOfFailures.increment();
 			                System.out.println(e.getCause());
 			            }
-			            catch (RuntimeException e) {
+			            catch (RuntimeException e) {									//this catches an exception from the handler
 			                System.out.println("GOT KERBEROS EXCEPTION");
 			                numberOfFailures.increment();
 			                System.out.println(e.getCause());
@@ -205,8 +205,10 @@ public class FrontEnd {
 			        public void handleResponse(Response<ListDocsResponse> response) {
 			            try {
 			                System.out.println("entered handler");
-			                if(!processReply(response, credential,requestTime))
+			                if(!processReply(response, credential,requestTime)){
+			                	System.out.println("GOT KERBEROS FAILURE");
 			                	throw new ExecutionException(null);
+			                }
 			                numberOfResponses.increment();
 			                System.out.println("Asynchronous call result arrived: ");
 			                ArrayList<String> aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
@@ -222,6 +224,10 @@ public class FrontEnd {
 			                System.out.println("Caught execution exception.");
 			                System.out.println(e.getCause());
 			            }
+			        	catch (RuntimeException e) {
+		                	System.out.println("Caught kerberos exception.");
+		                	System.out.println(e.getCause());
+		            	}
 			        }
 				}));
 			}
