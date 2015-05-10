@@ -1,60 +1,31 @@
-Planeamento da 3a semana de trabalho para a 4a entrega do projecto de ES+SDis
+Planeamento da 4a semana de trabalho para a 4a entrega do projecto de ES+SDis
 ###############################
-Group Member		Mon	Tue	Wed	Thu	Fri	Sat	Sun		Planned tasks	Implemented tasks
-Andre Pires		1	0	0	0	2	5	2		#85 #86		-
-Ricardo Pires		2	0	0	0	0	0	0		-		-
-Miguel Cruz		1	3	2	2	1	5	4		SD Issues	50% of SD
-Artur Fonseca		4	3	4	2	1	0	0		-		-
-Mauro Teles		0	1	0	2	1	2	0		#38 #74 #75 #76		#34 #71 #72 #73
+Group Member		Mon	Tue	Wed		Planned tasks	Implemented tasks
+Andre Pires		0	0	0		-		-
+Ricardo Pires		0	0	0		-		-
+Miguel Cruz		0	0	0		SD Issues	-
+Artur Fonseca		0	0	0		-		-
+Mauro Teles		0	0	0		-		-
 
 
 
-Retrospectiva de cada pessoa (2a semana)
+Retrospectiva de cada pessoa (3a semana)
 ###############################
 André Pires:
-> #80 Clean CreateUserService (teacher feedback) - feito dentro do tempo expectavel na issue (meia hora). 
-> #81 Add missing test to LoginUserService - feito em 15 minutos em vez da meia hora expectavel na issue.
-> #83 Create Kerberos Structures - Feito em 5 horas em vez das 4 horas expectaveis na issue.
 
-Logo, o tempo gasto é de cerca de 5:45 horas dentro das 6 horas alocadas para a semana.
 
 ###############################
 Ricardo Pires:
-
-> Delete User Service integration tests #57 - Acabou por levar mais tempo do que o previsto.
-> Delete User Service integration #56 - Foi rápido de implementar.
-Foi necessário corrigir alguns erros cometidos na #56, o que atrasou um pouco a conclusão das tarefas
 
 
 ###############################
 Miguel Cruz:
 
-> #77 Renew Password service - remake tests
-> #78 Renew Password service - new integration tests
-> #79 Renew Password service - refactor service
-A reformulacao das componentes deste serviço foi bastante mais simples do que o esperado, demorando menos do que as 2h30 previstas.
-
 
 ###############################
 Artur Fonseca:
-
-> #65 #66 #67
-	bugs da 1º parte de SD corrigidos na 2ª
-
-> Missing test case in ExportDocumentService #82 (teacher feedback)
-    teste adicionado na 5ª
-	
-	
-> Export Document new integrations tests #44
-> Export Document refactoring #43
-	Servico Export +tests terminado no Domingo
-	
-
-
 
 
 ###############################
 Mauro Teles:
 
-> #34 Login user service - terminado na 5ª feira
- #71 #72 #73
