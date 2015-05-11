@@ -66,8 +66,14 @@ public class FrontEnd {
 
 		}
 	}
-
-	private Date processRequest(byte[] credentials) throws KerberosException{
+	
+	/**
+	 * Used to pass kerberos structures to handlers.
+	 * @param credentials
+	 * @return Date used as nonce, to verify in server response.
+	 */
+	private Date processRequest(byte[] credentials){
+		try{
 		Date requestDate = new Date();
 		for(int i = 1; i<= numberClones; i++){
 			SDStore aux = clones [i-1];
@@ -80,9 +86,18 @@ public class FrontEnd {
 			requestContext.put("kcs", Base64.getEncoder().encodeToString(cred.getKcs().getEncoded()));
 		}
 		return requestDate;
+		}catch(KerberosException e){
+			throw new RuntimeException();
+		}
 	}
 
-	
+	/**
+	 * Used to verify if the server response is correct.
+	 * @param response
+	 * @param cred
+	 * @param d
+	 * @return true if the response is legit false otherwise.
+	 */
 	private boolean processReply(@SuppressWarnings("rawtypes") Response response,byte[] cred,Date d){
 		try{
 			KerberosCredential credential = KerberosCredential.deserialize(cred);
@@ -98,15 +113,13 @@ public class FrontEnd {
 		}
 	}
 	
-	/*===========================================================================*/
+	/*===================== REMOTE CALLS ==========================*/
+	
 	public void createDoc(DocUserPair pair,final byte[] credential) 
 	throws DocAlreadyExists_Exception{
 		final Date requestTime;
-		try {
-			requestTime = processRequest(credential);
-		} catch (KerberosException e1) {
-			throw new RuntimeException();
-		}
+		requestTime = processRequest(credential);
+
 
 		final MutableInt numberOfResponses = new MutableInt(0);
 		final MutableInt numberOfFailures = new MutableInt(0);
@@ -187,11 +200,8 @@ public class FrontEnd {
 	public List<String> listDocs(String userId,final byte[] credential) 
 	throws UserDoesNotExist_Exception{
 		final Date requestTime;
-		try {
-			requestTime = processRequest(credential);
-		} catch (KerberosException e1) {
-			throw new RuntimeException();
-		}
+		requestTime = processRequest(credential);
+	
 		
 		final MutableInt numberOfResponses = new MutableInt(0);
 		final MutableInt numberOfSuccesses = new MutableInt(0);
@@ -269,11 +279,8 @@ public class FrontEnd {
 	public void store(DocUserPair docUserPair, byte[] contents,byte[] credential) 
 	throws CapacityExceeded_Exception, DocDoesNotExist_Exception, 
 	UserDoesNotExist_Exception {
-		try {
-			Date requestRime = processRequest(credential);
-		} catch (KerberosException e1) {
-			throw new RuntimeException();
-		}
+		processRequest(credential);
+
 		for(int i=1;i<=numberClones;i++){
 			try{
 				clones[i-1].store(docUserPair,contents);
@@ -295,11 +302,8 @@ public class FrontEnd {
 
 	public byte[] load(DocUserPair docUserPair,byte[] credential) 
 	throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		try {
-			Date requestRime = processRequest(credential);
-		} catch (KerberosException e1) {
-			throw new RuntimeException();
-		}
+		processRequest(credential);
+
 		byte [] result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{
