@@ -108,7 +108,6 @@ public class KerberosManager {
 	 */
 	public byte[] processRequest(byte[] byteTicket,byte[] auth,
 	byte[] msgByte,byte[] mac) {
-		System.out.println("========PROCESSING REQUEST======"); 
 		try{
 		//================Validate Ticket=====================
 		KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
@@ -132,7 +131,6 @@ public class KerberosManager {
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(reqDate);
 		XMLGregorianCalendar t = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
-		System.out.println("========PROCESSING DONE======"); 
 		return Kerberos.cipherText(kcs, t.toXMLFormat().getBytes("UTF-8"));
 		}catch(Exception e){
 			throw new InvalidRequest();

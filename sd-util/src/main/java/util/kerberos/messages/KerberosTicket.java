@@ -145,6 +145,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	public byte[] serialize(Key serverKey) throws KerberosException{
 		XMLGregorianCalendar createTime;
 		XMLGregorianCalendar endTime;
+		if(serverKey == null) throw new KerberosException();
 		try{
 			GregorianCalendar gc = new GregorianCalendar();
 			gc.setTime(new Date()); 

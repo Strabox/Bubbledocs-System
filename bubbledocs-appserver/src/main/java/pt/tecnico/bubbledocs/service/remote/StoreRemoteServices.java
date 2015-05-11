@@ -24,6 +24,8 @@ public class StoreRemoteServices extends RemoteServices{
 			d.setDocumentId(docName);
 			d.setUserId(username);
 			storeClient.credentials = IDRemoteServices.credentials;
+			if(storeClient.credentials == null)
+				throw new RemoteInvocationException();
 			storeClient.store(d, document);
 		}catch(CapacityExceeded_Exception e){
 			throw new CannotStoreDocumentException();
@@ -44,6 +46,8 @@ public class StoreRemoteServices extends RemoteServices{
 			d.setDocumentId(docName);
 			d.setUserId(username);
 			storeClient.credentials = IDRemoteServices.credentials;
+			if(storeClient.credentials == null)
+				throw new RemoteInvocationException();
 			return storeClient.load(d);
 		}catch(DocDoesNotExist_Exception e){
 			throw new CannotLoadDocumentException();

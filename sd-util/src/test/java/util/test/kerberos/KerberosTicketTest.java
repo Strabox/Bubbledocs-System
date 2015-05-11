@@ -53,6 +53,11 @@ public class KerberosTicketTest {
 		assertEquals(ticket.getKcs().getFormat(), ticket2.getKcs().getFormat());
 	}
 	
+	@Test(expected = KerberosException.class)
+	public void serializeNull() throws KerberosException{
+		tick.serialize(null);
+	}
+	
 	@Test
 	public void validTicket(){
 		tick.isValidTicket(SERVER);
