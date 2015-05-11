@@ -12,9 +12,9 @@ import org.junit.Test;
 
 
 
-public class listDocsTest extends SDStoreTest {
+public class listDocsIT extends SDStoreIT {
 	
-	public listDocsTest() throws Exception {
+	public listDocsIT() throws Exception {
 		super();
 	}
 

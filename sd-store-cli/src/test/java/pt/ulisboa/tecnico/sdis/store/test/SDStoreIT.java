@@ -15,7 +15,7 @@ import util.kerberos.messages.KerberosCredential;
 import util.kerberos.messages.KerberosTicket;
 
 
-public class SDStoreTest {
+public class SDStoreIT {
 	
 	private static final String UDDI_URL = "http://localhost:8081";
 	
@@ -26,7 +26,7 @@ public class SDStoreTest {
 	
 	protected static SDStoreClient port;
 	
-	public SDStoreTest() throws Exception{
+	public SDStoreIT() throws Exception{
 		port = new SDStoreClient(UDDI_URL, SERVICE_NAME);
 	}
 	

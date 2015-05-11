@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 
-public class RemoveUserTest extends SdIdTest {
+public class RemoveUserIT extends SdIdIT {
 	
-	public RemoveUserTest() throws Exception {
+	public RemoveUserIT() throws Exception {
 		super();
 	}
 

@@ -10,9 +10,9 @@ import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosRequest;
 
-public class RequestAuthenticationTest extends SdIdTest{
+public class RequestAuthenticationIT extends SdIdIT{
 	
-	public RequestAuthenticationTest() throws Exception {
+	public RequestAuthenticationIT() throws Exception {
 		super();
 	}
 	

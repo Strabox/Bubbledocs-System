@@ -13,9 +13,9 @@ import pt.ulisboa.tecnico.sdis.id.ws.UserAlreadyExists_Exception;
 
 
 /* Test suit for CreateUser service. */
-public class CreateUserTest extends SdIdTest {
+public class CreateUserIT extends SdIdIT {
 
-	public CreateUserTest() throws Exception {
+	public CreateUserIT() throws Exception {
 		super();
 	}
 

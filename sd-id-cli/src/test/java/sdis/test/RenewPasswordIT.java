@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import pt.ulisboa.tecnico.sdis.id.ws.UserDoesNotExist_Exception;
 
-public class RenewPasswordTest extends SdIdTest {
+public class RenewPasswordIT extends SdIdIT {
 	
-	public RenewPasswordTest() throws Exception {
+	public RenewPasswordIT() throws Exception {
 		super();
 	}
 

@@ -15,9 +15,9 @@ import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 
 
 
-public class storeTest extends SDStoreTest {
+public class storeIT extends SDStoreIT {
 	
-	public storeTest() throws Exception {
+	public storeIT() throws Exception {
 		super();
 	}
 

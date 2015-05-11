@@ -9,9 +9,9 @@ import org.junit.Test;
 
 
 
-public class CreateDocTest extends SDStoreTest {
+public class CreateDocIT extends SDStoreIT {
 	
-	public CreateDocTest() throws Exception {
+	public CreateDocIT() throws Exception {
 		super();
 	}
 

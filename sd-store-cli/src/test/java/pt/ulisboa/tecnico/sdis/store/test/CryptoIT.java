@@ -10,9 +10,9 @@ import org.junit.Test;
 
 
 
-public class CryptoTest extends SDStoreTest {
+public class CryptoIT extends SDStoreIT {
 	
-	public CryptoTest() throws Exception {
+	public CryptoIT() throws Exception {
 		super();
 	}
 

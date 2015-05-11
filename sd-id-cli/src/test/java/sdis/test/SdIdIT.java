@@ -13,7 +13,7 @@ import sdis.cli.SdIdClient;
 import util.uddi.UDDINaming;
 
 
-public class SdIdTest {
+public class SdIdIT {
 
 	private static final String UDDI_URL = "http://localhost:8081";
 	
@@ -30,7 +30,7 @@ public class SdIdTest {
 	protected static SDId idRemote;
 	
 	
-	public SdIdTest() throws Exception{
+	public SdIdIT() throws Exception{
 		idClient = new SdIdClient(UDDI_URL, ID_NAME);
 		connectUDDITestOnly();
 	}
