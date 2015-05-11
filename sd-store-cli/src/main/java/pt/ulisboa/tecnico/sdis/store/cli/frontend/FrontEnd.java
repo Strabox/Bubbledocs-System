@@ -17,16 +17,12 @@ import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.BindingProvider;
 
 
-
-
-
-
-
 import javax.xml.ws.Response;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import pt.ulisboa.tecnico.sdis.store.cli.handlers.KerberosHandler;
+import pt.ulisboa.tecnico.sdis.store.cli.handlers.RelayClientHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
@@ -307,7 +303,15 @@ public class FrontEnd {
 		byte [] result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{
+				SDStore aux = clones [i-1];
+				BindingProvider bp = (BindingProvider) aux;		
+				Map<String, Object> requestContext = bp.getRequestContext();
+				String aa="123-456";
+				requestContext.put(RelayClientHandler.REQUEST_PROPERTY, aa);
 				result = clones[i-1].load(docUserPair);
+			 Map<String, Object> responseContext = bp.getResponseContext();
+				String finalValue = (String)responseContext.get(RelayClientHandler.RESPONSE_PROPERTY);
+				System.out.printf("OUT:%s\n",finalValue);
 			}
 			catch(DocDoesNotExist_Exception e){
 				DocDoesNotExist E = new DocDoesNotExist();

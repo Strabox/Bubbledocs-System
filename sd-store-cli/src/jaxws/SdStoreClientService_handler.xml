@@ -1,10 +1,16 @@
 <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
-    <handler-chain>
-   		<!-- <handler>
-            <handler-class>util.handlers.LoggingHandler</handler-class>
-        </handler> -->
-        <handler>
-            <handler-class>pt.ulisboa.tecnico.sdis.store.cli.handlers.KerberosHandler</handler-class>
-        </handler>
-    </handler-chain>
+	<handler-chain>
+		<!-- <handler> <handler-class>util.handlers.LoggingHandler</handler-class> 
+			</handler> -->
+		<handler>
+			<handler-class>pt.ulisboa.tecnico.sdis.store.cli.handlers.RelayClientHandler
+			</handler-class>
+		</handler>
+		<handler>
+			<handler-class>pt.ulisboa.tecnico.sdis.store.cli.handlers.KerberosHandler
+			</handler-class>
+		</handler>
+	</handler-chain>
 </handler-chains>
+
+

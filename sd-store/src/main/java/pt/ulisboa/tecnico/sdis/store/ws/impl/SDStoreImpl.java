@@ -8,6 +8,8 @@ import javax.jws.*;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
+
+import pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.RelayServerHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.KerberosHandler;
@@ -25,7 +27,9 @@ import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 public class SDStoreImpl implements SDStore {
 
 	public static final String SERVICE_ID = "SD-STORE";
-
+	
+	@Resource
+	WebServiceContext webServiceContext;
 	/**
 	 * Used to manage business logic.
 	 */
@@ -216,8 +220,16 @@ public class SDStoreImpl implements SDStore {
 		checkUserExistence(docUserPair.getUserId());
 		for (Storage s : storage) {
 			if(s.getUserId().equals(docUserPair.getUserId())){
+				
+				MessageContext messageContext = webServiceContext.getMessageContext();
 				s.getTemp_cid(); //PUT ON HANDLERS
 				s.getTemp_seq(); //PUT ON HANDLERS
+				String propertyValue = (String) messageContext.get(RelayServerHandler.REQUEST_PROPERTY);
+		        System.out.printf("HANDLER ANSWER:%s\n", propertyValue);
+
+		        String newValue ="789-321";
+		        messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, newValue);
+
 				return s.getContent(docUserPair.getDocumentId());
 			}
 		}
