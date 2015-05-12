@@ -3,8 +3,11 @@ package sdis.kerberos;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.security.Key;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -13,28 +16,25 @@ import org.apache.commons.lang3.SystemUtils;
 import util.kerberos.Kerberos;
 
 /**
- * Used to mange Kerberos in SD-ID server (Kerberos SAut).
+ * Used to manage Kerberos in SD-ID server (Kerberos SAut).
  * @author André
  *
  */
-public class KerberosManager {
+public class KerberosManager extends TimerTask{
 
 	public final String KEYS_FILE_WIN = "\\..\\sd-util\\src\\main\\resources\\serverKeys";
 	public final String KEYS_FILE_LINUX_MAC = "/../sd-util/src/main/resources/serverKeys";
 	
 	public String currentKeysFile;
 	
-	/**
-	 * Max nonces server maintain in record.
-	 */
-	private final int MAX_NONCES = 300;
+	public static final int TICKET_HOUR_DURATION = 5;
 	
-	private int currentNonce = 0;
+	private static final long TIME_GARBAGE_NONCE = 2;
 	
 	/**
-	 * Used to save all nonces server receive. 
+	 * Maintain nonces. 
 	 */
-	private ArrayList<String> nonces;	//FIXME !!!!!!!!!!!
+	private HashMap<String,Date> nonces;
 	
 	/**
 	 * Used do maintain pairs <servers service, secret keys>.
@@ -43,13 +43,15 @@ public class KerberosManager {
 	
 	
 	public KerberosManager() throws Exception{
-		nonces = new ArrayList<String>();
 		serverKeys = new HashMap<String,Key>();
+		nonces = new HashMap<String, Date>();
 		if(SystemUtils.IS_OS_WINDOWS)
 			currentKeysFile = System.getProperty("user.dir") + KEYS_FILE_WIN;
 		else if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC)
 			currentKeysFile =System.getProperty("user.dir") + KEYS_FILE_LINUX_MAC;
 		generateServerKeys();
+		Timer timer = new Timer();
+		timer.schedule(this, new Date(),TIME_GARBAGE_NONCE);
 	}
 	
 	/**
@@ -70,11 +72,8 @@ public class KerberosManager {
 	 * 
 	 * @param nonce Nonce to save in server.
 	 */
-	public void addNonce(String nonce){
-		nonces.add(currentNonce, nonce);
-		currentNonce++;
-		if(currentNonce == MAX_NONCES)
-			currentNonce = 0;
+	public void addNonce(String nonce,Date endTime){
+		nonces.put(nonce,endTime);
 	}
 	
 	/**
@@ -82,8 +81,18 @@ public class KerberosManager {
 	 * @param nonce
 	 * @return
 	 */
-	public boolean nonceExists(String nonce){
-		return nonces.contains(nonce);
+	public boolean nonceIsValid(String nonce){
+		if(!nonces.containsKey(nonce))
+			return true;
+		else{
+			Date endTime = nonces.get(nonce);
+			if(new Date().after(endTime)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 	}
 	
 	/**
@@ -93,6 +102,14 @@ public class KerberosManager {
 	 */
 	public Key getServerKey(String server){
 		return serverKeys.get(server);
+	}
+
+	@Override
+	public void run() {
+		for(Entry<String, Date> entry: nonces.entrySet()){
+			if(new Date().after(entry.getValue()))
+				nonces.remove(entry);
+		}
 	}
 	
 }

@@ -1,5 +1,7 @@
 package pt.tecnico.bubbledocs.service.remote;
 
+import java.util.HashMap;
+
 import pt.tecnico.bubbledocs.exceptions.DuplicateEmailException;
 import pt.tecnico.bubbledocs.exceptions.DuplicateUsernameException;
 import pt.tecnico.bubbledocs.exceptions.InvalidEmailException;
@@ -18,7 +20,7 @@ public class IDRemoteServices extends RemoteServices{
 	
 	private static final String ID_NAME = "SD-ID";
 	
-	public static byte[] credentials;
+	public static HashMap<String, byte[]> credentials;
 	
 	private SdIdClient idClient;
 	
@@ -49,7 +51,9 @@ public class IDRemoteServices extends RemoteServices{
 		
 		try {
 			idClient = new SdIdClient(UDDI_URL, ID_NAME);
-			credentials = idClient.requestAuthentication(username, password.getBytes());
+			byte[] credential;
+			credential = idClient.requestAuthentication(username, password.getBytes());
+			credentials.put(username, credential);
 		} catch (AuthReqFailed_Exception e) {
 			throw new LoginBubbleDocsException();
 		} catch (Exception e){

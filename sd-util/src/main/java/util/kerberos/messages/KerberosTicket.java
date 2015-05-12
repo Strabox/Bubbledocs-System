@@ -153,7 +153,8 @@ public class KerberosTicket extends KerberosCypheredMessage{
 			Calendar cal = Calendar.getInstance();
 		    cal.setTime(new Date());
 		    cal.add(Calendar.HOUR_OF_DAY, hourDuration);
-		 
+		    this.endTime = cal.getTime();
+		    
 		    gc.setTime(cal.getTime());
 		    endTime = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
 			

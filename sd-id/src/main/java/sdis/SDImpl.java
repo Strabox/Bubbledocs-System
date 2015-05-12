@@ -1,7 +1,6 @@
 package sdis;
 
 import java.security.Key;
-
 import javax.jws.WebService;
 
 import pt.ulisboa.tecnico.sdis.id.ws.AuthReqFailed;
@@ -32,8 +31,6 @@ import util.kerberos.messages.KerberosTicket;
     serviceName="SDId"
 )
 public class SDImpl implements SDId {
-
-	private static final int TICKET_HOUR_DURATION = 5;
 	
 	/**
 	 * Used to control business logic.
@@ -115,23 +112,25 @@ public class SDImpl implements SDId {
 
 	
 	public byte[] requestAuthentication(String userId, byte[] reserved)
-			throws AuthReqFailed_Exception {
+		throws AuthReqFailed_Exception {
 		try{		
 		if(userId != null && reserved != null) {
 			boolean userExists = userManager.usernameExists(userId);
 			if(userExists){
 				KerberosRequest r = KerberosRequest.deserialize(reserved);
-				if(!kerberosManager.nonceExists(r.getNonce()) && 
+				if(!kerberosManager.nonceIsValid(r.getNonce()) && 
 					kerberosManager.getServerKey(r.getServer()) != null){
 					
-					kerberosManager.addNonce(r.getNonce());
 					Key ks = kerberosManager.getServerKey(r.getServer());
 					Key kc = Kerberos.getKeyFromBytes(
 					Kerberos.digestPassword(userManager.getUserPassword(userId).getBytes(), Kerberos.MD5));
 					Key kcs = Kerberos.generateKerberosKey();
-					KerberosTicket ticket = new KerberosTicket(userId, r.getServer(),TICKET_HOUR_DURATION, kcs);
+					KerberosTicket ticket = new KerberosTicket(userId, r.getServer(),
+							KerberosManager.TICKET_HOUR_DURATION, kcs);
 					KerberosServerAuthentication ksa = new KerberosServerAuthentication(kcs, r.getNonce());
-					return new KerberosReply(ticket.serialize(ks), ksa.serialize(kc)).serialize();
+					KerberosReply rep = new KerberosReply(ticket.serialize(ks), ksa.serialize(kc));
+					kerberosManager.addNonce(r.getNonce(),ticket.getEndTime());
+					return rep.serialize();
 				}
 			}
 		}

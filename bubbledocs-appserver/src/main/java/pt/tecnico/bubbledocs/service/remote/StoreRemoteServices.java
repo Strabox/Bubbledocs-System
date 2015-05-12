@@ -17,13 +17,12 @@ public class StoreRemoteServices extends RemoteServices{
 	
 	public void storeDocument(String username, String docName, byte[] document)
 		throws CannotStoreDocumentException, RemoteInvocationException {
-
 		try {
 			storeClient = new SDStoreClient(UDDI_URL, STORE_NAME);
 			DocUserPair d = new DocUserPair();
 			d.setDocumentId(docName);
 			d.setUserId(username);
-			storeClient.credentials = IDRemoteServices.credentials;
+			storeClient.credentials = IDRemoteServices.credentials.get(username);
 			if(storeClient.credentials == null)
 				throw new RemoteInvocationException();
 			storeClient.store(d, document);
@@ -45,7 +44,7 @@ public class StoreRemoteServices extends RemoteServices{
 			DocUserPair d = new DocUserPair();
 			d.setDocumentId(docName);
 			d.setUserId(username);
-			storeClient.credentials = IDRemoteServices.credentials;
+			storeClient.credentials = IDRemoteServices.credentials.get(username);
 			if(storeClient.credentials == null)
 				throw new RemoteInvocationException();
 			return storeClient.load(d);
