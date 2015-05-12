@@ -10,7 +10,7 @@ import javax.xml.ws.BindingProvider;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId;
 import pt.ulisboa.tecnico.sdis.id.ws.SDId_Service;
 import sdis.cli.SdIdClient;
-import util.uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 
 public class SdIdIT {

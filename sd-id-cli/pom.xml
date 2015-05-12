@@ -29,6 +29,11 @@
 			<artifactId>sd-util</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>pt.ulisboa.tecnico.essd</groupId>
+			<artifactId>uddi-naming</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
         <!-- JAX-WS -->
         <dependency>
             <groupId>com.sun.xml.ws</groupId>

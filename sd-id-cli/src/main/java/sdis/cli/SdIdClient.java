@@ -22,7 +22,7 @@ import util.kerberos.messages.KerberosCredential;
 import util.kerberos.messages.KerberosReply;
 import util.kerberos.messages.KerberosRequest;
 import util.kerberos.messages.KerberosServerAuthentication;
-import util.uddi.UDDIClient;
+import example.ws.uddi.UDDIClient;
 
 
 public class SdIdClient extends UDDIClient implements SDId{

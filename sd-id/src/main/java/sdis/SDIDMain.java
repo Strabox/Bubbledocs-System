@@ -2,7 +2,7 @@ package sdis;
 
 import javax.xml.ws.Endpoint;
 
-import util.uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 
 public class SDIDMain {

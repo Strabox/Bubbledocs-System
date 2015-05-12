@@ -1,4 +1,4 @@
-package util.uddi;
+package example.ws.uddi;
 
 import javax.xml.registry.JAXRException;
 

@@ -9,7 +9,7 @@ import mockit.Mocked;
 import org.junit.Test;
 
 import sdis.SDIDMain;
-import util.uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 
 public class UDDITest {

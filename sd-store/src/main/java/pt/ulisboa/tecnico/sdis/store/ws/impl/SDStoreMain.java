@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.xml.registry.JAXRException;
 import javax.xml.ws.Endpoint;
 
-import util.uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 public class SDStoreMain {
 

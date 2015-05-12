@@ -28,7 +28,7 @@ import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
 import util.kerberos.messages.KerberosClientAuthentication;
 import util.kerberos.messages.KerberosCredential;
-import util.uddi.UDDINaming;
+import example.ws.uddi.UDDINaming;
 
 public class FrontEnd {
 	private SDStore[] clones;
