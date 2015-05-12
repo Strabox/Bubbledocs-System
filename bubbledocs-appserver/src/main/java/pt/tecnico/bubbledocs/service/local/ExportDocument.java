@@ -28,7 +28,7 @@ public class ExportDocument extends BubbleDocsService {
 		_docId=docId;
 	}
 
-	public byte[] getDocXMLBytes() {
+	public final byte[] getDocXMLBytes() {
 		return docXMLbytes;
 	}
 	public org.jdom2.Document getDocXML() {

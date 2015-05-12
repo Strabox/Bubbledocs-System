@@ -4,7 +4,7 @@ package pt.ulisboa.tecnico.sdis.store.ws.impl;
 public class Document{
 	private String docId;
 	private byte[] content;
-	private int cid=1;
+	private int cid=600;
 	private int seq=1;
 	
 	

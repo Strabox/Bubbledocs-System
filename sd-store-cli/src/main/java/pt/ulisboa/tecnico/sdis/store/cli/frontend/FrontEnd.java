@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -36,6 +37,9 @@ public class FrontEnd {
 	private int numberClones;
 	private int quorumRT;
 	private int quorumWT;
+	private int mycid;
+	int maxcid = -2;
+	int maxseq = -2;
 	//private int [] rt = new int[nservers];
 	//private int [] wt = new int[nservers];
 
@@ -60,6 +64,8 @@ public class FrontEnd {
 			clones[i-1]=port;
 
 		}
+		 Random rand = new Random();
+		 mycid = rand.nextInt(500);
 	}
 	
 	/**
@@ -275,10 +281,35 @@ public class FrontEnd {
 	throws CapacityExceeded_Exception, DocDoesNotExist_Exception, 
 	UserDoesNotExist_Exception {
 		processRequest(credential);
-
+		try{
+			load(docUserPair,credential,false);
+		}
+		catch(DocDoesNotExist_Exception e){
+			DocDoesNotExist E = new DocDoesNotExist();
+			throw new DocDoesNotExist_Exception("Doc does not exists", E);
+		}
+		catch(UserDoesNotExist_Exception e){
+			UserDoesNotExist E = new UserDoesNotExist();
+			throw new UserDoesNotExist_Exception("User does not exists", E);
+		}
+		catch(Exception e){
+			//SERVER DOWN
+		}
+		processRequest(credential);
+		String newtag=(maxseq+1)+";"+mycid;
+		maxcid=-2;
+		maxseq=-2;
 		for(int i=1;i<=numberClones;i++){
 			try{
+				SDStore aux = clones [i-1];
+				BindingProvider bp = (BindingProvider) aux;		
+				Map<String, Object> requestContext = bp.getRequestContext();
+				requestContext.put(RelayClientHandler.REQUEST_PROPERTY, newtag);
 				clones[i-1].store(docUserPair,contents);
+				Map<String, Object> responseContext = bp.getResponseContext();
+				String finalValue = (String)responseContext.get(RelayClientHandler.RESPONSE_PROPERTY);
+				if (finalValue.equals("0;0")==false)
+						throw new Exception (); //ack not received
 			}
 			catch(DocDoesNotExist_Exception e){
 				DocDoesNotExist E = new DocDoesNotExist();
@@ -295,22 +326,35 @@ public class FrontEnd {
 	}
 
 
-	public byte[] load(DocUserPair docUserPair,byte[] credential) 
+	public byte[] load(DocUserPair docUserPair,byte[] credential,boolean reset) 
 	throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
 		processRequest(credential);
-
+		
+		
+		byte[] maxresult=null;
 		byte [] result = null;
 		for(int i=1;i<=numberClones;i++){
 			try{
 				SDStore aux = clones [i-1];
 				BindingProvider bp = (BindingProvider) aux;		
 				Map<String, Object> requestContext = bp.getRequestContext();
-				String aa="123-456";
-				requestContext.put(RelayClientHandler.REQUEST_PROPERTY, aa);
+				String client="0-0";
+				requestContext.put(RelayClientHandler.REQUEST_PROPERTY, client);
 				result = clones[i-1].load(docUserPair);
-			 Map<String, Object> responseContext = bp.getResponseContext();
+				Map<String, Object> responseContext = bp.getResponseContext();
 				String finalValue = (String)responseContext.get(RelayClientHandler.RESPONSE_PROPERTY);
 				System.out.printf("OUT:%s\n",finalValue);
+				if (finalValue==null)
+					continue;
+				int seq = parseTag(finalValue)[0];
+				int cid = parseTag(finalValue)[1];
+				System.out.printf("Seq:%d   Cid:%d MAXS %d   MAXC %d Result: %s\n",seq,cid ,maxseq,maxcid,new String(result));
+				if(seq>maxseq ||(seq==maxseq && cid>maxcid)){
+					maxseq=seq;
+					maxcid=cid;
+					maxresult=result;
+					System.out.printf("INSIDE IF\n");
+				}
 			}
 			catch(DocDoesNotExist_Exception e){
 				DocDoesNotExist E = new DocDoesNotExist();
@@ -323,8 +367,15 @@ public class FrontEnd {
 			catch(Exception e){
 				//SERVER DOWN
 			}
-		}	
-		return result;
+		}
+		if(reset){
+			maxcid=-2;
+			maxseq=-2;
+			System.out.printf("reset done!");
+				
+		}
+		System.out.printf("FINAL%s  \n",new String(maxresult));
+		return maxresult;
 	}
 
 	private ArrayList<ArrayList<String>> makeStringsFromResponses(ArrayList<Response<ListDocsResponse>> responsesraw){
@@ -348,6 +399,13 @@ public class FrontEnd {
 				if(!result.contains(string)) result.add(string);
 			}
 		}
+		return result;
+	}
+	
+	private int[] parseTag (String s){
+		String[] parts = s.split(",");
+		String[] tags = parts[0].split(";");
+		int [] result = {Integer.parseInt(tags[0]),Integer.parseInt(tags[1])};
 		return result;
 	}
 

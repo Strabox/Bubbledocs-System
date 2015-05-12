@@ -9,6 +9,7 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 
+
 import pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.RelayServerHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
@@ -187,9 +188,18 @@ public class SDStoreImpl implements SDStore {
 			checkUserExistence(docUserPair.getUserId());
 			for (Storage s : storage) {
 				if(s.getUserId().equals(docUserPair.getUserId())){
-					s.setTemp_cid(111); //GET INFO FROM HANDLERS
-					s.setTemp_seq(222); //GET INFO FROM HANDLERS
+					MessageContext messageContext = webServiceContext.getMessageContext();
+					String propertyValue = (String) messageContext.get(RelayServerHandler.REQUEST_PROPERTY);
+			        System.out.printf("HANDLER ANSWER:%s\n", propertyValue);
+			        
+			        
+			        s.setTemp_seq(parseTag(propertyValue)[0]);
+					s.setTemp_cid(parseTag(propertyValue)[1]); //GET INFO FROM HANDLERS
+					
+					//GET INFO FROM HANDLERS
 					s.setContent(docUserPair.getDocumentId(), contents);
+			        String returnValue ="0;0";
+			       messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, returnValue);
 				}					
 			}
 		}
@@ -222,20 +232,22 @@ public class SDStoreImpl implements SDStore {
 			if(s.getUserId().equals(docUserPair.getUserId())){
 				
 				MessageContext messageContext = webServiceContext.getMessageContext();
-				s.getTemp_cid(); //PUT ON HANDLERS
-				s.getTemp_seq(); //PUT ON HANDLERS
 				String propertyValue = (String) messageContext.get(RelayServerHandler.REQUEST_PROPERTY);
 		        System.out.printf("HANDLER ANSWER:%s\n", propertyValue);
-
-		        String newValue ="789-321";
-		        messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, newValue);
+		        String returnValue =s.getTemp_seq()+";"+ s.getTemp_cid();
+		        messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, returnValue);
 
 				return s.getContent(docUserPair.getDocumentId());
 			}
 		}
 		return null;
 	}
-
+	private int[] parseTag (String s){
+		String[] parts = s.split(",");
+		String[] tags = parts[0].split(";");
+		int [] result = {Integer.parseInt(tags[0]),Integer.parseInt(tags[1])};
+		return result;
+	}
 }
 
 

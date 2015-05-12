@@ -62,7 +62,7 @@ public class SDStoreClient extends UDDIClient implements SDStore{
 	@Override
 	public byte[] load(DocUserPair docUserPair)
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		return frontend.load(docUserPair,credentials);
+		return frontend.load(docUserPair,credentials,true);
 	}
 	
  

@@ -98,14 +98,14 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 
 	}
 	
-	/*															Correct the mocked call to storecomment. withnotnull has to be in byte[]
+														
 	@Test
 	public void owner() {
 		String tokenOwner = addUserToSession(USERNAMEOWNER);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(tokenOwner,sheet.getId());
 		new Expectations(){
 			{
-				storeRemote.storeDocument(userOwner.getUsername(),sheet.getName(),withNotNull());
+				storeRemote.storeDocument(userOwner.getUsername(),sheet.getName(),(byte[]) withNotNull());
 
 			}
 		};
@@ -117,16 +117,16 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		importedSheet.importFromXML(tempDocXML, USERNAMEOWNER);
 		compareSpreadsheet();
 	}
-	*/
+	
 
-	/*															Correct the mocked call to storecomment. withnotnull has to be in byte[]
+															
 	@Test
 	public void canWrite() {
 		String token = addUserToSession(USERNAMEWRITE);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
 		new Expectations(){
 			{
-				storeRemote.storeDocument(userWrite.getUsername(),sheet.getName(),withNotNull());
+				storeRemote.storeDocument(userWrite.getUsername(),sheet.getName(),(byte[]) withNotNull());
 
 			}
 		};
@@ -137,16 +137,15 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		importedSheet.importFromXML(tempDocXML, USERNAMEWRITE);
 		compareSpreadsheet();
 	}
-	*/
 	
-	/*															Correct the mocked call to storecomment. withnotnull has to be in byte[]
+															
 	@Test
 	public void canRead() {
 		String token = addUserToSession(USERNAMEREAD);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
 		new Expectations(){
 			{
-				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),withNotNull());
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),(byte[]) withNotNull());
 
 			}
 		};
@@ -157,16 +156,14 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
 		compareSpreadsheet();
 	}
-	*/
-	
-	/*															Correct the mocked call to storecomment. withnotnull has to be in byte[]
+															
 	@Test (expected=UnavailableServiceException.class)
 	public void unavailableService() {
 		String token = addUserToSession(USERNAMEREAD);
 		ExportDocumentIntegrator expDoc = new ExportDocumentIntegrator(token,sheet.getId());
 		new Expectations(){
 			{
-				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),withNotNull());
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),(byte[]) withNotNull());
 				result = new RemoteInvocationException();
 
 			}
@@ -178,9 +175,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
 		compareSpreadsheet();
 	}
-	*/
 	
-	/*															Correct the mocked call to storecomment. withnotnull has to be in byte[]
 	@Test (expected=CannotStoreDocumentException.class)
 	public void cannotStoreDocumentException() {
 		String token = addUserToSession(USERNAMEREAD);
@@ -188,7 +183,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 
 		new Expectations(){
 			{
-				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),withNotNull());
+				storeRemote.storeDocument(userRead.getUsername(),sheet.getName(),(byte[]) withNotNull());
 				result = new CannotStoreDocumentException();
 
 			}
@@ -200,7 +195,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		importedSheet.importFromXML(tempDocXML, USERNAMEREAD);
 		compareSpreadsheet();
 	}
-	*/
+	
 	@Test (expected=UnauthorizedOperationException.class)
 	public void cantRead() {
 		String token = addUserToSession(USERNAMENOPERM);

@@ -2,14 +2,15 @@
 	<handler-chain>
 		<!-- <handler> <handler-class>util.handlers.LoggingHandler</handler-class> 
 			</handler> -->
-		<handler>
+			<handler>
 			<handler-class>pt.ulisboa.tecnico.sdis.store.cli.handlers.RelayClientHandler
 			</handler-class>
 		</handler>
-		<handler>
+			<handler>
 			<handler-class>pt.ulisboa.tecnico.sdis.store.cli.handlers.KerberosHandler
 			</handler-class>
 		</handler>
+				
 	</handler-chain>
 </handler-chains>
 
