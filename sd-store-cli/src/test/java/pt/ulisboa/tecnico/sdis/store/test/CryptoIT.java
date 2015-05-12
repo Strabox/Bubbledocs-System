@@ -15,7 +15,7 @@ public class CryptoIT extends SDStoreIT {
 	public CryptoIT() throws Exception {
 		super();
 	}
-
+/*
 	@Test
 	public void cypherSuccess() throws Exception {
 		String expectedString ="ABCDabcd123456";
@@ -27,6 +27,6 @@ public class CryptoIT extends SDStoreIT {
 	}
 	
 
-	
+	*/
 	
 }
