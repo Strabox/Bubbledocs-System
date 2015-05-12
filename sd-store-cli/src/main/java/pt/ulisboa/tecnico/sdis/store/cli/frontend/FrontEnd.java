@@ -108,11 +108,10 @@ public class FrontEnd {
 	 * @param d
 	 * @return true if the response is legit false otherwise.
 	 */
-	private boolean processReply(@SuppressWarnings("rawtypes") Response response,byte[] cred,Date d){
+	private boolean processReply(byte[] timeStamp,byte[] cred,Date d){
 		try{
 			KerberosCredential credential = KerberosCredential.deserialize(cred);
-			byte[] b = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
-			String date = new String(Kerberos.decipherText(credential.getKcs(), b));
+			String date = new String(Kerberos.decipherText(credential.getKcs(), timeStamp));
 			Calendar cal  = DatatypeConverter.parseDateTime(date);
 			Date requestTime = cal.getTime();
 			if(requestTime.equals(d))
@@ -122,14 +121,13 @@ public class FrontEnd {
 			throw new RuntimeException();
 		}
 	}
-
+	//(byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
 	/*===================== REMOTE CALLS ==========================*/
 
 	public void createDoc(DocUserPair pair,final byte[] credential) 
 			throws DocAlreadyExists_Exception{
 		final Date requestTime;
 		requestTime = processRequest(credential,pair.getUserId());
-
 
 		final MutableInt numberOfResponses = new MutableInt(0);
 		final MutableInt numberOfFailures = new MutableInt(0);
@@ -143,7 +141,8 @@ public class FrontEnd {
 						try {
 							System.out.println("entered handler");
 							numberOfResponses.increment();
-							if(!processReply(response, credential,requestTime)){		// this "if" won't complete if there are problems with the handlers, check runtime exception
+							byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+							if(!processReply(time, credential,requestTime)){		// this "if" won't complete if there are problems with the handlers, check runtime exception
 								System.out.println("GOT KERBEROS FAILURE");				// this happens if there is no exception from processreply, but there was a hack
 								throw new ExecutionException(null);
 							}
@@ -225,7 +224,8 @@ public class FrontEnd {
 					public void handleResponse(Response<ListDocsResponse> response) {
 						try {
 							System.out.println("entered handler");
-							if(!processReply(response, credential,requestTime)){
+							byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+							if(!processReply(time, credential,requestTime)){
 								System.out.println("GOT KERBEROS FAILURE");
 								throw new ExecutionException(null);
 							}
@@ -290,7 +290,7 @@ public class FrontEnd {
 	public void store(DocUserPair docUserPair, byte[] contents,byte[] credential) 
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception, 
 			UserDoesNotExist_Exception {
-		processRequest(credential,docUserPair.getUserId());
+		Date requestTime = processRequest(credential,docUserPair.getUserId());
 		try{
 			load(docUserPair,credential,false);
 		}
@@ -305,7 +305,7 @@ public class FrontEnd {
 		catch(Exception e){
 			//SERVER DOWN
 		}
-		processRequest(credential,docUserPair.getUserId());
+		requestTime = processRequest(credential,docUserPair.getUserId());
 		String newtag=(maxseq+1)+";"+mycid;
 		maxcid=-2;
 		maxseq=-2;
@@ -318,6 +318,10 @@ public class FrontEnd {
 				requestContext.put(RelayClientHandler.REQUEST_PROPERTY, newtag);
 				clones[i-1].store(docUserPair,contents);
 				Map<String, Object> responseContext = bp.getResponseContext();
+				byte[] time = (byte[]) responseContext.get(KerberosHandler.TIMESTAMP_PROPERTY);
+				if(!processReply(time, credential,requestTime)){
+					throw new Exception();	//Server response was compromised.
+				}
 				String finalValue = (String)responseContext.get(RelayClientHandler.RESPONSE_PROPERTY);
 				if (finalValue.equals("0;0")==false)
 					throw new Exception (); //ack not received
@@ -343,7 +347,7 @@ public class FrontEnd {
 
 	public byte[] load(DocUserPair docUserPair,byte[] credential,boolean reset) 
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		processRequest(credential,docUserPair.getUserId());
+		Date requestTime = processRequest(credential,docUserPair.getUserId());
 
 
 		byte[] maxresult=null;
@@ -358,6 +362,10 @@ public class FrontEnd {
 				requestContext.put(RelayClientHandler.REQUEST_PROPERTY, client);
 				result = clones[i-1].load(docUserPair);
 				Map<String, Object> responseContext = bp.getResponseContext();
+				byte[] time = (byte[]) responseContext.get(KerberosHandler.TIMESTAMP_PROPERTY);
+				if(!processReply(time, credential,requestTime)){
+					throw new Exception();	//Server response was compromised.
+				}
 				String finalValue = (String)responseContext.get(RelayClientHandler.RESPONSE_PROPERTY);
 				System.out.printf("OUT:%s\n",finalValue);
 				if (finalValue==null)
