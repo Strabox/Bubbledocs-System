@@ -56,6 +56,7 @@ public class RemoteSystemIT {
 		LoginUserIntegrator service = new LoginUserIntegrator(ROOT_USERNAME, ROOT_PASSWORD);
 		service.execute();
 		rootToken = service.getUserToken();
+		System.out.println("\n\n\n\n\n\n\n\n"+rootToken);
 
 		CreateUserIntegrator service1 = new CreateUserIntegrator(rootToken, USERNAME_01, USERNAME_01_EMAIL, NAME_01);
 		service1.execute();
