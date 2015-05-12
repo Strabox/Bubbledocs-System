@@ -37,4 +37,10 @@ public class RemoveUserIT extends SdIdIT {
 	public void removeNullUser() throws UserDoesNotExist_Exception{
 		idClient.removeUser(null);
 	}
+	
+	// Remove a user with an empty username. 
+	@Test(expected = UserDoesNotExist_Exception.class)
+	public void removeEmptyUser() throws UserDoesNotExist_Exception{
+		idClient.removeUser("");
+	}
 }

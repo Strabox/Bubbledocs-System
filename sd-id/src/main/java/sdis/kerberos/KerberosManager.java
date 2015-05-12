@@ -3,6 +3,7 @@ package sdis.kerberos;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.security.Key;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -29,7 +30,7 @@ public class KerberosManager extends TimerTask{
 	
 	public static final int TICKET_HOUR_DURATION = 5;
 	
-	private static final long TIME_GARBAGE_NONCE = 2;
+	private static final long TIME_GARBAGE_NONCE = 18000000;	//5 Hours
 	
 	/**
 	 * Maintain nonces. 
@@ -51,7 +52,10 @@ public class KerberosManager extends TimerTask{
 			currentKeysFile =System.getProperty("user.dir") + KEYS_FILE_LINUX_MAC;
 		generateServerKeys();
 		Timer timer = new Timer();
-		timer.schedule(this, new Date(),TIME_GARBAGE_NONCE);
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(new Date());
+	    cal.add(Calendar.HOUR_OF_DAY, TICKET_HOUR_DURATION);
+		timer.schedule(this, cal.getTime() ,TIME_GARBAGE_NONCE);
 	}
 	
 	/**

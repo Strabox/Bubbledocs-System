@@ -1,6 +1,7 @@
 package sdis.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,6 +48,12 @@ public class RequestAuthenticationIT extends SdIdIT{
 		idClient.requestAuthentication(INEXISTENT_USER,PASS.getBytes());
 	}
 	
+	/* Test with empty username. */
+	@Test(expected = AuthReqFailed_Exception.class)
+	public void emptyUserAuth() throws Exception{
+		idClient.requestAuthentication("",PASS.getBytes());
+	}
+	
 	/* Test with null username. */
 	@Test(expected = AuthReqFailed_Exception.class)
 	public void nullUsername() throws Exception{
@@ -63,6 +70,18 @@ public class RequestAuthenticationIT extends SdIdIT{
 	@Test(expected = AuthReqFailed_Exception.class)
 	public void nullPassword() throws Exception{
 		idClient.requestAuthentication(USER,null);
+	}
+	
+	/* Test with empty password. */ 
+	@Test(expected = AuthReqFailed_Exception.class)
+	public void emptyPassword() throws Exception{
+		idClient.requestAuthentication(USER,"".getBytes());
+	}
+	
+	/* Test with all null. */ 
+	@Test(expected = AuthReqFailed_Exception.class)
+	public void allNull() throws Exception{
+		idClient.requestAuthentication(null,null);
 	}
 	
 	/*========= TEST DIRECT TO SERVER INTERFACE WITHOUT CLIENT CLASS ======*/
@@ -96,5 +115,21 @@ public class RequestAuthenticationIT extends SdIdIT{
 		KerberosRequest req; 
 		req = new KerberosRequest(SERVICE, null);
 		idRemote.requestAuthentication(USER, req.serialize());
+	}
+	
+	/* Send duplicate request with same nonce. */
+	@Test(expected = AuthReqFailed_Exception.class)
+	public void duplicateNonce() throws AuthReqFailed_Exception, KerberosException{
+		String nonce = Kerberos.generateRandomNumber();
+
+		KerberosRequest req; 
+		req = new KerberosRequest(SERVICE, nonce);
+		try{
+			byte[] cred = idRemote.requestAuthentication(USER, req.serialize());
+			assertNotNull(cred);
+		}catch(Exception e){
+			fail();
+		}
+		 idRemote.requestAuthentication(USER, req.serialize());
 	}
 }

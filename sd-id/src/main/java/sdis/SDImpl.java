@@ -118,7 +118,8 @@ public class SDImpl implements SDId {
 			boolean userExists = userManager.usernameExists(userId);
 			if(userExists){
 				KerberosRequest r = KerberosRequest.deserialize(reserved);
-				if(!kerberosManager.nonceIsValid(r.getNonce()) && 
+
+				if(kerberosManager.nonceIsValid(r.getNonce()) && 
 					kerberosManager.getServerKey(r.getServer()) != null){
 					
 					Key ks = kerberosManager.getServerKey(r.getServer());

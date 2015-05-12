@@ -144,6 +144,20 @@ public class CreateUserIT extends SdIdIT {
 		}
 	}
 	
+	/* Try create a user with a invalid email (empty). */
+	@Test(expected = InvalidEmail_Exception.class)
+	public void createUserWithEMptyEmail4() throws InvalidEmail_Exception {
+		try {
+			idClient.createUser("afonso", "");
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
+	}
+	
 	/* Try create a user with a invalid email (null). */
 	@Test(expected = InvalidEmail_Exception.class)
 	public void createUserWithNullEmail4() throws InvalidEmail_Exception {
@@ -158,5 +172,18 @@ public class CreateUserIT extends SdIdIT {
 		}
 	}
 	
+	/* Try create a user with a invalid email */
+	@Test(expected = InvalidEmail_Exception.class)
+	public void createUserWithNullEmail5() throws InvalidEmail_Exception {
+		try {
+			idClient.createUser("Anabela", "@domain.net");
+		} catch (EmailAlreadyExists_Exception e) {
+			fail();
+		} catch (InvalidUser_Exception e) {
+			fail();
+		} catch (UserAlreadyExists_Exception e) {
+			fail();
+		}
+	}
 	
 }
