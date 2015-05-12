@@ -115,6 +115,7 @@ public class SDImpl implements SDId {
 		throws AuthReqFailed_Exception {
 		try{		
 		if(userId != null && reserved != null) {
+			System.out.println("HELLLO");
 			boolean userExists = userManager.usernameExists(userId);
 			if(userExists){
 				KerberosRequest r = KerberosRequest.deserialize(reserved);

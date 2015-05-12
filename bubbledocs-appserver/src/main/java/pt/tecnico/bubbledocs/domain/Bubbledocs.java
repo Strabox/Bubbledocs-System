@@ -21,6 +21,11 @@ public class Bubbledocs extends Bubbledocs_Base {
 		super.setUniqueId(0);
 		// 1st time Bubbledocs run creates a super user to it.
 		this.addUser(new User("Super User","root","root","root@email.pt"));
+		this.addUser(new User("Super User","alice","Aaa1","alice@tecnico.pt"));
+		this.addUser(new User("Super User","bruno","Bbb2","bruno@tecnico.pt"));
+		this.addUser(new User("Super User","carla","Ccc3","carla@tecnico.pt"));
+		this.addUser(new User("Super User","duarte","Ddd4","duarte@tecnico.pt"));
+		this.addUser(new User("Super User","eduardo","Eee5","eduardo@tecnico.pt"));
 	}
 
 	

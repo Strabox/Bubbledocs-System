@@ -20,7 +20,7 @@ public class IDRemoteServices extends RemoteServices{
 	
 	private static final String ID_NAME = "SD-ID";
 	
-	public static HashMap<String, byte[]> credentials;
+	public static HashMap<String, byte[]> credentials = new HashMap<String, byte[]>();
 	
 	private SdIdClient idClient;
 	
@@ -55,8 +55,12 @@ public class IDRemoteServices extends RemoteServices{
 			credential = idClient.requestAuthentication(username, password.getBytes());
 			credentials.put(username, credential);
 		} catch (AuthReqFailed_Exception e) {
+			System.out.println("aasdadsasdasd");
+			e.printStackTrace();
 			throw new LoginBubbleDocsException();
 		} catch (Exception e){
+			System.out.println("aghfghfghfghd");
+			e.printStackTrace();
 			throw new RemoteInvocationException();
 		}
 	}
