@@ -16,4 +16,8 @@ public class CreateSpreadSheetIntegrator extends BubbleDocsIntegrator {
 		localService.execute();
 	}
 	
+	public int getSheetId() {
+		return localService.getSheetId();
+	}
+	
 }
