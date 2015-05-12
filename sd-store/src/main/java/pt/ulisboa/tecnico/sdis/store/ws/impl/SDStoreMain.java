@@ -22,7 +22,7 @@ public class SDStoreMain {
 			String uddiURL = args[0];
 			UDDINaming uddiNaming = new UDDINaming(uddiURL);
 			Endpoint[] endpoints= new Endpoint[nservers];
-			for (int i=1;i<=nservers;i++){
+			for (int i=2;i<=nservers;i++){
 				endpoints[i-1]=Endpoint.create(new SDStoreImpl());
 				startup(uddiURL, "SD-STORE-"+i+"", "http://localhost:80"+(81+i)+""+"/store-ws/endpoint",uddiNaming,endpoints[i-1]);
 			}
