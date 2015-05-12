@@ -75,17 +75,6 @@ public class LocalSystemTest{
 		service1.execute();
 
 
-		/*
-        GetUserInfoService gis = new GetUserInfoService(USERNAME_01);
-		gis.execute();
-		UserDTO dto = gis.getUserData();
-
-		assertTrue(dto.getEmail() == USERNAME_01_EMAIL);
-		assertTrue(dto.getName() == NAME_01);
-		assertTrue(dto.getPassword() == USERNAME_01_PASSWORD);
-		assertTrue(dto.getUsername() == USERNAME_01);
-		 */
-
 
 		LoginUserIntegrator service2 = new LoginUserIntegrator(USERNAME_01, USERNAME_01_PASSWORD);
 		new Expectations(){
