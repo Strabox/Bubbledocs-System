@@ -27,7 +27,8 @@ The work is still in progress, as expected.
 
 ###############################
 Artur Fonseca:
-
+ES issues - terminadas
+SD issues - ainda não está terminado
 
 ###############################
 Mauro Teles:
