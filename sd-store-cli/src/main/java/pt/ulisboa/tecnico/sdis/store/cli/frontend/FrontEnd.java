@@ -80,7 +80,7 @@ public class FrontEnd {
 	 * @param credentials
 	 * @return Date used as nonce, to verify in server response.
 	 */
-	private Date processRequest(byte[] credentials){
+	private Date processRequest(byte[] credentials,String userId){
 		try{
 			Date requestDate = new Date();
 			for(int i = 1; i<= numberClones; i++){
@@ -90,7 +90,7 @@ public class FrontEnd {
 				BindingProvider bp = (BindingProvider) aux;		
 				Map<String, Object> requestContext = bp.getRequestContext();
 				KerberosCredential cred = KerberosCredential.deserialize(credentials);
-				KerberosClientAuthentication auth = new KerberosClientAuthentication(cred.getClient(),requestDate);
+				KerberosClientAuthentication auth = new KerberosClientAuthentication(userId,requestDate);
 				requestContext.put("auth",DatatypeConverter.printBase64Binary(auth.serialize(cred.getKcs())));
 				requestContext.put("ticket", DatatypeConverter.printBase64Binary(cred.getTicket()));
 				requestContext.put("kcs", DatatypeConverter.printBase64Binary(cred.getKcs().getEncoded()));
@@ -128,7 +128,7 @@ public class FrontEnd {
 	public void createDoc(DocUserPair pair,final byte[] credential) 
 			throws DocAlreadyExists_Exception{
 		final Date requestTime;
-		requestTime = processRequest(credential);
+		requestTime = processRequest(credential,pair.getUserId());
 
 
 		final MutableInt numberOfResponses = new MutableInt(0);
@@ -210,7 +210,7 @@ public class FrontEnd {
 	public List<String> listDocs(String userId,final byte[] credential) 
 			throws UserDoesNotExist_Exception{
 		final Date requestTime;
-		requestTime = processRequest(credential);
+		requestTime = processRequest(credential,userId);
 
 
 		final MutableInt numberOfResponses = new MutableInt(0);
@@ -290,7 +290,7 @@ public class FrontEnd {
 	public void store(DocUserPair docUserPair, byte[] contents,byte[] credential) 
 			throws CapacityExceeded_Exception, DocDoesNotExist_Exception, 
 			UserDoesNotExist_Exception {
-		processRequest(credential);
+		processRequest(credential,docUserPair.getUserId());
 		try{
 			load(docUserPair,credential,false);
 		}
@@ -305,7 +305,7 @@ public class FrontEnd {
 		catch(Exception e){
 			//SERVER DOWN
 		}
-		processRequest(credential);
+		processRequest(credential,docUserPair.getUserId());
 		String newtag=(maxseq+1)+";"+mycid;
 		maxcid=-2;
 		maxseq=-2;
@@ -343,7 +343,7 @@ public class FrontEnd {
 
 	public byte[] load(DocUserPair docUserPair,byte[] credential,boolean reset) 
 			throws DocDoesNotExist_Exception, UserDoesNotExist_Exception {
-		processRequest(credential);
+		processRequest(credential,docUserPair.getUserId());
 
 
 		byte[] maxresult=null;

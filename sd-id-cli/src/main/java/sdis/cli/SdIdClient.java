@@ -91,7 +91,7 @@ public class SdIdClient extends UDDIClient implements SDId{
 				AuthReqFailed auth = new AuthReqFailed();
 				throw new AuthReqFailed_Exception(userId, auth);
 			}
-			return new KerberosCredential(userId,serverReply.getTicket(), receivedAuth.getKcs()).serialize();				
+			return new KerberosCredential(serverReply.getTicket(), receivedAuth.getKcs()).serialize();				
 		}catch(KerberosException e){
 			AuthReqFailed auth = new AuthReqFailed();
 			throw new AuthReqFailed_Exception(userId, auth);

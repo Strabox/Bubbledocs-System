@@ -4,7 +4,6 @@
 	<!-- http://maven.apache.org/pom.html#Quick_Overview -->
 	<groupId>sd</groupId>
 	<artifactId>sd-util</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>${project.artifactId}</name>
@@ -47,7 +46,6 @@
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>jaxws-rt</artifactId>
-			<version>2.2.10</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.registry</groupId>
@@ -62,7 +60,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.3.2</version>
 				<executions>
 					<execution>
 						<goals>

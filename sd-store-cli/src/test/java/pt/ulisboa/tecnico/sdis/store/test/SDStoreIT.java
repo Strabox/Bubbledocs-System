@@ -43,7 +43,7 @@ public class SDStoreIT {
 		Key kcs = Kerberos.generateKerberosKey();
 		KerberosTicket ticket = new KerberosTicket(username,SERVICE_NAME,8,kcs);
 		Key ks = loadServerKey(SERVICE_NAME);
-		KerberosCredential cred = new KerberosCredential(username,ticket.serialize(ks), kcs);
+		KerberosCredential cred = new KerberosCredential(ticket.serialize(ks), kcs);
 		port.credentials = cred.serialize();
 	}
 	

@@ -140,6 +140,8 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 				System.out.println("ERROR Leaving " + e);
 			}
 		}
+		else
+			return false;
 		return true;
 	}
 

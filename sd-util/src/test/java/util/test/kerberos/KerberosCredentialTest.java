@@ -36,11 +36,10 @@ public class KerberosCredentialTest {
 	 */
 	@Test
 	public void successSerialize() throws KerberosException{
-		KerberosCredential cred = new KerberosCredential(CLIENT, ticket, kcs);
+		KerberosCredential cred = new KerberosCredential(ticket, kcs);
 		byte[] credByte = cred.serialize();
 		KerberosCredential cred2 = KerberosCredential.deserialize(credByte);
 		assertEquals(cred.getKcs(),cred2.getKcs());
-		assertEquals(cred.getClient(),cred2.getClient());
 		assertTrue(Arrays.equals(cred2.getTicket(), ticket));
 		assertTrue(Arrays.equals(cred.getTicket(), cred2.getTicket()));
 	}
