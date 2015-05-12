@@ -1,44 +1,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <!-- http://maven.apache.org/pom.html#Quick_Overview -->
-  <groupId>sd</groupId>
-  <artifactId>sd-util</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- http://maven.apache.org/pom.html#Quick_Overview -->
+	<groupId>sd</groupId>
+	<artifactId>sd-util</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>${project.artifactId}</name>
-  
-  <properties>
-   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-   <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-   <version.java>1.8</version.java>
-    <version.maven.build-helper-plugin>1.7</version.maven.build-helper-plugin>
-  </properties>
-  
-  <dependencies>
-	<dependency>
+	<name>${project.artifactId}</name>
+
+	<parent>
 		<groupId>pt.ulisboa.tecnico.essd</groupId>
-		<artifactId>uddi-naming</artifactId>
+		<artifactId>distributed-bubbledocs</artifactId>
 		<version>1.0-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.commons</groupId>
-		<artifactId>commons-lang3</artifactId>
-		<version>3.4</version>
-	</dependency>
-  	<dependency>
-     		<groupId>org.jmockit</groupId> 
-		   <artifactId>jmockit</artifactId>
-		   <version>1.16</version> 
-	   	   <scope>test</scope>
-  		 </dependency>
-	  <dependency>
-	      <groupId>junit</groupId>
-	      <artifactId>junit</artifactId>
-	      <version>4.12</version>
-	      <scope>test</scope>
-	    </dependency>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>pt.ulisboa.tecnico.essd</groupId>
+			<artifactId>uddi-naming</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>1.16</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>jaxws-rt</artifactId>
@@ -49,28 +54,28 @@
 			<artifactId>javax.xml.registry-api</artifactId>
 			<version>1.0.5</version>
 		</dependency>
-  </dependencies>
-  
-  <build>
-  	<plugins>
-  		  
-		<plugin>
-	        <groupId>org.codehaus.mojo</groupId>
-	        <artifactId>exec-maven-plugin</artifactId>
-	        <version>1.3.2</version>
-	        <executions>
-	            <execution>
-	                <goals>
-	                    <goal>java</goal>
-	                </goals>
-	            </execution>
-	        </executions>
-	        <configuration>
-	            <mainClass>util.UtilMain</mainClass>
-	            <killAfter>-1</killAfter>
-	        </configuration>
-	   </plugin>
-	   </plugins>
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>util.UtilMain</mainClass>
+					<killAfter>-1</killAfter>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
-	
+
 </project>

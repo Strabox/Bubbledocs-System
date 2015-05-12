@@ -1,8 +1,6 @@
 package util.kerberos.messages;
 
 import java.security.Key;
-import java.util.Base64;
-
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.SystemUtils;
@@ -117,7 +115,7 @@ public class KerberosServerAuthentication extends KerberosCypheredMessage{
 				k = node.getTextContent();
 			}
 		}
-		byte[] decodedKcs =  Base64.getDecoder().decode(k);
+		byte[] decodedKcs =  DatatypeConverter.parseBase64Binary(k);
 		Key key = Kerberos.getKeyFromBytes(decodedKcs);
 		return new KerberosServerAuthentication(key, n);
 	}

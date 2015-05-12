@@ -1,7 +1,6 @@
 package util.kerberos.messages;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -229,7 +228,7 @@ public class KerberosTicket extends KerberosCypheredMessage{
 				endTime = cal.getTime();
 			}
 		}
-		byte[] keyInBytes = Base64.getDecoder().decode(kcs);
+		byte[] keyInBytes = DatatypeConverter.parseBase64Binary(kcs);
 		Key key = Kerberos.getKeyFromBytes(keyInBytes);
 		return new KerberosTicket(client, server, key,beginTime,endTime);
 	}

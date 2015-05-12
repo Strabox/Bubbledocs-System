@@ -4,7 +4,6 @@ import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
 import java.security.Key;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -77,9 +76,9 @@ public class FrontEnd {
 			Map<String, Object> requestContext = bp.getRequestContext();
 			KerberosCredential cred = KerberosCredential.deserialize(credentials);
 			KerberosClientAuthentication auth = new KerberosClientAuthentication(cred.getClient(),requestDate);
-			requestContext.put("auth", Base64.getEncoder().encodeToString(auth.serialize(cred.getKcs())));
-			requestContext.put("ticket", Base64.getEncoder().encodeToString(cred.getTicket()));
-			requestContext.put("kcs", Base64.getEncoder().encodeToString(cred.getKcs().getEncoded()));
+			requestContext.put("auth",DatatypeConverter.printBase64Binary(auth.serialize(cred.getKcs())));
+			requestContext.put("ticket", DatatypeConverter.printBase64Binary(cred.getTicket()));
+			requestContext.put("kcs", DatatypeConverter.printBase64Binary(cred.getKcs().getEncoded()));
 		}
 		return requestDate;
 		}catch(KerberosException e){
