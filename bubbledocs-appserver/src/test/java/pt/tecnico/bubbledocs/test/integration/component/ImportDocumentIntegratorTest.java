@@ -100,12 +100,12 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 
 	}
 	
-	/*															correct this test. localexport has to be a final because it's accessed by the inner class (expectations?).
+																
 	@Test
 	public void owner() {
 		String tokenOwner = addUserToSession(USERNAMEOWNER);
 		ImportDocumentIntegrator impDoc = new ImportDocumentIntegrator(tokenOwner,sheet.getId());
-		ExportDocument localexport = new ExportDocument (tokenOwner,sheet.getId());
+		final ExportDocument localexport = new ExportDocument (tokenOwner,sheet.getId());
 		localexport.execute();
 		new Expectations(){
 			{
@@ -120,7 +120,7 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest {
 		importedSheet.importFromXML(impDoc.getDocXML(), USERNAMEOWNER);
 		compareSpreadsheet(sheet,importedSheet);
 	}
-	*/
+	
 	
 	@Test (expected=CannotLoadDocumentException.class)
 	public void cannotLoadDocument() {

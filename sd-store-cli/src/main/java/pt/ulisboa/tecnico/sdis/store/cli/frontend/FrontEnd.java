@@ -129,6 +129,10 @@ public class FrontEnd {
 
 	public void createDoc(DocUserPair pair,final byte[] credential) 
 			throws DocAlreadyExists_Exception{
+		if(pair.getUserId()==null ||pair.getUserId()=="" )
+			return;
+		if(pair.getDocumentId()==null ||pair.getDocumentId()=="" )
+			return;
 		final Date requestTime;
 		requestTime = processRequest(credential,pair.getUserId());
 

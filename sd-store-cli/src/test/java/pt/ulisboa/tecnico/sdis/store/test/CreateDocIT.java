@@ -77,8 +77,24 @@ public class CreateDocIT extends SDStoreIT {
 		assertEquals("...",1,1);
 		
 	}
+	//TEACHER TESTS
 	
+	/*
+    @Test
+    public void testCreateDoc() throws Exception {
+        final DocUserPair docUser = new DocUserPair();
+        docUser.setDocumentId("a11");
+        docUser.setUserId("alice");
+        try {
+			uploadKerberosInfo(port, null);
+		} catch (Exception e) {
+			fail("Erro");
+		}
+        port.createDoc(docUser);
+    }
 
+	
+*/
     @Test
     public void testCreateDocNullUser() throws Exception {
         final DocUserPair docUser = new DocUserPair();
