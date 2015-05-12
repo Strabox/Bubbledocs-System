@@ -20,6 +20,7 @@ import javax.xml.ws.Response;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 
+import pt.ulisboa.tecnico.sdis.store.cli.Crypto;
 import pt.ulisboa.tecnico.sdis.store.cli.handlers.KerberosHandler;
 import pt.ulisboa.tecnico.sdis.store.cli.handlers.RelayClientHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
@@ -43,6 +44,7 @@ public class FrontEnd {
 	private int [] wt ={1,1,1};
 	private double rq=0;
 	private double wq=0;
+	private Crypto crypto;
 
 
 	public FrontEnd(String _urluddi, String _name, int _numberClones, int _RT, int _WT) throws Exception{
@@ -51,6 +53,7 @@ public class FrontEnd {
 		this.numberClones = _numberClones;
 		this.quorumRT = _RT;
 		this.quorumWT = _WT;
+		this.crypto = new Crypto();
 		for (int i : rt)
 		    rq += i;
 		rq=rq/2;
@@ -330,7 +333,7 @@ public class FrontEnd {
 				wsum+=wt[i-1];
 				if (wsum>wq)
 					break;  //quorum reached
-						
+
 			}
 			catch(DocDoesNotExist_Exception e){
 				DocDoesNotExist E = new DocDoesNotExist();

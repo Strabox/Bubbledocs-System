@@ -26,9 +26,7 @@ public class ServerCrypto{
         return cipherDigest;
     }
 
-
-    /* auxiliary method to calculate new digest from text and compare it to the
-         to deciphered digest */
+	
     public final boolean verifyMAC(byte[] cipherDigest,
     								byte[] bytes,
                                     SecretKey key) throws Exception {

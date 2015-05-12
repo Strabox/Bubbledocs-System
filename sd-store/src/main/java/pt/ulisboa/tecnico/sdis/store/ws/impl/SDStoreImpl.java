@@ -40,6 +40,8 @@ public class SDStoreImpl implements SDStore {
 	 * kerberos manager - Used to manage kerberos protocol in server side.
 	 */
 	private KerberosManager kerberosManager;
+	
+	private ServerCrypto crypto;
 
 	@Resource
 	WebServiceContext wsc;
@@ -49,6 +51,7 @@ public class SDStoreImpl implements SDStore {
 		super();
 		this.kerberosManager = new KerberosManager(SERVICE_ID);
 		this.storage = new ArrayList<Storage>();
+		this.crypto = new ServerCrypto();
 		testSetup();
 	}
 
@@ -184,6 +187,12 @@ public class SDStoreImpl implements SDStore {
 			throw new DocDoesNotExist_Exception("Doc does not exist", E); 
 
 		}
+		/*
+		if(!crypto.verifyMAC(cipherDigest, contents, key)){
+			DocDoesNotExist E = new DocDoesNotExist();
+			throw new DocDoesNotExist_Exception("Cryptografy does not match!", E);
+		}
+		*/
 		if (contents!=null){
 			checkUserExistence(docUserPair.getUserId());
 			for (Storage s : storage) {
@@ -248,6 +257,7 @@ public class SDStoreImpl implements SDStore {
 		int [] result = {Integer.parseInt(tags[0]),Integer.parseInt(tags[1])};
 		return result;
 	}
+	
 }
 
 
