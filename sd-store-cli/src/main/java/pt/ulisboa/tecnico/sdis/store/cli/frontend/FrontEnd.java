@@ -39,8 +39,10 @@ public class FrontEnd {
 	private int mycid;
 	int maxcid = -2;
 	int maxseq = -2;
-	//private int [] rt = new int[nservers];
-	//private int [] wt = new int[nservers];
+	private int [] rt ={1,1,1};
+	private int [] wt ={1,1,1};
+	private double rq=0;
+	private double wq=0;
 
 
 	public FrontEnd(String _urluddi, String _name, int _numberClones, int _RT, int _WT) throws Exception{
@@ -49,6 +51,12 @@ public class FrontEnd {
 		this.numberClones = _numberClones;
 		this.quorumRT = _RT;
 		this.quorumWT = _WT;
+		for (int i : rt)
+		    rq += i;
+		rq=rq/2;
+		for (int i : wt)
+		    wq += i;
+		wq=wq/2;
 		clones = new SDStore[_numberClones];
 		UDDINaming uddiNaming = new UDDINaming(uddiURL);
 		for(int i = 1; i<= _numberClones; i++){
@@ -301,6 +309,7 @@ public class FrontEnd {
 		String newtag=(maxseq+1)+";"+mycid;
 		maxcid=-2;
 		maxseq=-2;
+		int wsum=0;
 		for(int i=1;i<=numberClones;i++){
 			try{
 				SDStore aux = clones [i-1];
@@ -312,6 +321,10 @@ public class FrontEnd {
 				String finalValue = (String)responseContext.get(RelayClientHandler.RESPONSE_PROPERTY);
 				if (finalValue.equals("0;0")==false)
 					throw new Exception (); //ack not received
+				wsum+=wt[i-1];
+				if (wsum>wq)
+					break;  //quorum reached
+						
 			}
 			catch(DocDoesNotExist_Exception e){
 				DocDoesNotExist E = new DocDoesNotExist();
@@ -335,6 +348,7 @@ public class FrontEnd {
 
 		byte[] maxresult=null;
 		byte [] result = null;
+		int rsum=0;
 		for(int i=1;i<=numberClones;i++){
 			try{
 				SDStore aux = clones [i-1];
@@ -357,6 +371,13 @@ public class FrontEnd {
 					maxresult=result;
 					System.out.printf("INSIDE IF\n");
 				}
+				rsum+=rt[i-1];
+				if (rsum>rq){
+					System.out.printf ("REACHED QUORUM!!!!!!!!!!!!!!!!!!!\n");
+					break;
+					
+				}
+					  //quorum reached
 			}
 			catch(DocDoesNotExist_Exception e){
 				DocDoesNotExist E = new DocDoesNotExist();
