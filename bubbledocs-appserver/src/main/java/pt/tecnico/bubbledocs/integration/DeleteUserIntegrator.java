@@ -52,8 +52,9 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 		}catch(Exception e){
 			/* Compensation if the remote call fails. */
 			GetUserInfoService Aux = new GetUserInfoService(username);
+			Aux.execute();
     		UserDTO userdto = Aux.getUserData();
-			new CreateUserService(this.token, userdto.getUsername(), userdto.getEmail(), userdto.getName());
+    		new CreateUserService(this.token, userdto.getUsername(), userdto.getEmail(), userdto.getName());
 			throw e;
 		}
 	}

@@ -22,6 +22,8 @@ public class ExportDocument extends BubbleDocsService {
 	private org.jdom2.Document docXML;
 	private SpreadSheet sheet;
 	private User user;
+	private String username;
+	private String sheetname;
 
 	public ExportDocument(String userToken, int docId) {
 		_token=userToken;
@@ -36,12 +38,12 @@ public class ExportDocument extends BubbleDocsService {
 	}
 
 	public String getUsername(){
-		return user.getUsername();
+		return this.username;
 
 	}
 
 	public String getSheetname(){
-		return sheet.getName();
+		return this.sheetname;
 
 	}
 
@@ -81,7 +83,9 @@ public class ExportDocument extends BubbleDocsService {
 	public void createXML() throws BubbleDocsException{
 		Bubbledocs bubbled = Bubbledocs.getInstance();
 		sheet = bubbled.getSpreadSheet(_docId);
+		this.sheetname = sheet.getName();
 		user = bubbled.getUserFromSession(_token);
+		this.username = user.getUsername();
 		boolean hasReadPermissions = false;
 		ArrayList<SpreadSheet> readable = user.listReadableSpreadSheets();
 		for(SpreadSheet ss : readable){
