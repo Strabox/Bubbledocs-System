@@ -32,7 +32,7 @@ public class SDStoreIT {
 	
 	
 	/**
-	 * Used to access SD-SOTRE this function simulates asking
+	 * Used to access SD-STORE this function simulates asking
 	 * Kerberos Authenticator Server for credentials.
 	 * @param client
 	 * @param username

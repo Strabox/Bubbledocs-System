@@ -102,12 +102,12 @@ public class KerberosManager {
 	 * @throws InvalidRequest
 	 *             (RunTimeException)
 	 */
-	public byte[] processRequest(byte[] byteTicket, byte[] auth,
+	public byte[] processRequest(String userId,byte[] byteTicket, byte[] auth,
 			byte[] msgByte, byte[] mac) {
 		try {
 			// ================Validate Ticket=====================
 			KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
-			if (!ticket.isValidTicket(serviceId))
+			if (!ticket.isValidTicket(serviceId,userId))
 				throw new InvalidRequest();
 			Key kcs = ticket.getKcs();
 			// ================Validate MAC =======================

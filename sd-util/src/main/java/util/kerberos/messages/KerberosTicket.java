@@ -127,8 +127,8 @@ public class KerberosTicket extends KerberosCypheredMessage{
 	 * validation.
 	 * @return true if Ticket is valid and false otherwise.
 	 */
-	public boolean isValidTicket(String serverID){
-		if(!getServer().equals(serverID))
+	public boolean isValidTicket(String serverID,String userId){
+		if(!getServer().equals(serverID) || !getClient().equals(userId))
 			return false;
 		Date beginTicket = getBeginTime();
 		Date endTime = getEndTime();

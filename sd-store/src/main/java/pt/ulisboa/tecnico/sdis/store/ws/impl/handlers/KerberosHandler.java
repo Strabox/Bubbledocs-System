@@ -122,21 +122,25 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
 		Boolean out = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 		if(out.booleanValue()){		//If message is LEAVING!!.
 			try{
-				byte[] timeByte = (byte[]) context.get(TIMESTAMP_PROPERTY);
-				String timeBase64 = DatatypeConverter.printBase64Binary(timeByte);
-				SOAPMessage msg = context.getMessage();
-				SOAPPart part = msg.getSOAPPart();
-				SOAPEnvelope env = part.getEnvelope();
-				SOAPHeader hdr = env.getHeader();
-				if(hdr == null){
-					hdr = env.addHeader();
+				byte[] timeByte;
+				timeByte = (byte[]) context.get(TIMESTAMP_PROPERTY);
+				if(timeByte != null){
+					String timeBase64 = DatatypeConverter.printBase64Binary(timeByte);
+					SOAPMessage msg = context.getMessage();
+					SOAPPart part = msg.getSOAPPart();
+					SOAPEnvelope env = part.getEnvelope();
+					SOAPHeader hdr = env.getHeader();
+					if(hdr == null){
+						hdr = env.addHeader();
+					}
+					Name name = env.createName(TIMESTAMP_PROPERTY, 
+					TIMESTAMP_PREFIX, TIMESTAMP_NAMESPACE);
+					SOAPElement n = hdr.addHeaderElement(name);
+					n.setTextContent(timeBase64);
 				}
-				Name name = env.createName(TIMESTAMP_PROPERTY, 
-				TIMESTAMP_PREFIX, TIMESTAMP_NAMESPACE);
-				SOAPElement n = hdr.addHeaderElement(name);
-				n.setTextContent(timeBase64);
 			}
 			catch(Exception e){
+				e.printStackTrace();
 				System.out.println("ERROR Leaving " + e);
 			}
 		}

@@ -60,18 +60,18 @@ public class KerberosTicketTest {
 	
 	@Test
 	public void validTicket(){
-		tick.isValidTicket(SERVER);
+		tick.isValidTicket(SERVER,CLIENT);
 	}
 	
 	@Test
 	public void invalidServer(){
-		assertFalse(tick.isValidTicket("wrongID"));
+		assertFalse(tick.isValidTicket("wrongID",CLIENT));
 	}
 
 	@Test
 	public void expiredTicket(){
 		tick.setEndTime(new Date());
-		assertFalse(tick.isValidTicket(SERVER));
+		assertFalse(tick.isValidTicket(SERVER,CLIENT));
 	}
 	
 	
