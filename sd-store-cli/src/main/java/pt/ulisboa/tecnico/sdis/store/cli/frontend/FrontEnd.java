@@ -171,8 +171,9 @@ public class FrontEnd {
 		}
 		int numberOfChecks = 0;
 		int maxChecks = 10;
+		int necessaryResponses = numberClones/2;
 		System.out.println("Waiting for answers");
-		while (numberOfResponses.intValue()<quorumRT) {
+		while (numberOfResponses.intValue()<=necessaryResponses) {
 			System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
 			if(numberOfChecks > maxChecks){
@@ -258,7 +259,8 @@ public class FrontEnd {
 		int numberOfChecks = 0;
 		int maxChecks = 10;
 		System.out.println("Waiting for answers");
-		while (numberOfResponses.intValue()<quorumRT) {
+		int necessaryResponses = numberClones/2;
+		while (numberOfResponses.intValue()<=necessaryResponses) {
 			System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
 			if(numberOfChecks>maxChecks) break;
