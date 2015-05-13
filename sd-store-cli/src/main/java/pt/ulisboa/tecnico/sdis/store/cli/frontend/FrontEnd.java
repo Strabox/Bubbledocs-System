@@ -138,41 +138,34 @@ public class FrontEnd {
 			return;
 		final Date requestTime;
 		requestTime = processRequest(credential,pair.getUserId());
-
+		
 		final MutableInt numberOfResponses = new MutableInt(0);
+		final MutableInt numberOfValidExceptions = new MutableInt(0);
 		final MutableInt numberOfFailures = new MutableInt(0);
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-				//System.out.println("\n\n\n\ngenerating an async call "+pair.getDocumentId());
 				responses.add(clones[i-1].createDocAsync(pair, new AsyncHandler<CreateDocResponse>() {
-					@Override
-					public void handleResponse(Response<CreateDocResponse> response) {
-						try {
-							//System.out.println("entered handler");
-							numberOfResponses.increment();
-							byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
-							if(!processReply(time, credential,requestTime)){		// this "if" won't complete if there are problems with the handlers, check runtime exception
-								//System.out.println("GOT KERBEROS FAILURE");				// this happens if there is no exception from processreply, but there was a hack
-								throw new ExecutionException(null);
-							}
-							//System.out.println("Asynchronous call result arrived. checking if exception ");
-							response.get();
-							//System.out.println("not exception - success");
-						} catch (InterruptedException e) {
-							//System.out.println("Caught interrupted exception.");
-							//System.out.println(e.getCause());
-						} catch (ExecutionException e) {
-							//System.out.println("Caught execution exception.  Incrementing!");
-							numberOfFailures.increment();
-							//System.out.println(e.getCause());
-						}
-						catch (RuntimeException e) {									//this catches an exception from the handler
-							//System.out.println("GOT KERBEROS EXCEPTION");
-							numberOfFailures.increment();
-							//System.out.println(e.getCause());
-						}
+				@Override
+				public void handleResponse(Response<CreateDocResponse> response) {
+					try {
+					//System.out.println("entered handler");
+					numberOfResponses.increment();
+					byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+					if(!processReply(time, credential,requestTime)){
+						//Kerberos Response Invalid
+						throw new ExecutionException(null);
 					}
+					response.get();
+					} catch (InterruptedException e) {
+						//Caught interrupted exception.
+					} catch (ExecutionException e) {
+						numberOfValidExceptions.increment();;
+					}
+					catch (RuntimeException e) {			//this catches an exception from the handler
+						numberOfFailures.increment();
+					}
+				}
 				}));
 			}
 			catch(Exception e){
@@ -182,111 +175,92 @@ public class FrontEnd {
 		int numberOfChecks = 0;
 		int maxChecks = 30;
 		int necessaryResponses = numberClones/2;
-		//System.out.println("Waiting for answers");
 		while (numberOfResponses.intValue()<=necessaryResponses) {
-			//System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
-			if(numberOfChecks > maxChecks){
-				//System.out.println("took too long to get responses");
+			if(numberOfChecks > maxChecks)
+				break;		
+			if(numberOfFailures.intValue()>0)
 				break;
-			}
-
-			if(numberOfFailures.intValue()>0){
-				//System.out.println("got a failure that stopped responses");
-				break;
-			}
-
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				//System.out.println("waiting...");
+				//Waiting
 			}
-			//System.out.println(".");
-			//System.out.flush();
 		}
-		//System.out.println("Stopping requests");
 		for(Future<?> response : responses){
 			response.cancel(false);
 		}
-
-		//System.out.println("number of failures: "+numberOfFailures.intValue());
+		if(numberOfValidExceptions.intValue() > necessaryResponses){
+			DocAlreadyExists dae = new DocAlreadyExists();
+			throw new DocAlreadyExists_Exception("Ups doesnt Exist", dae);
+		}
 		if(numberOfFailures.intValue()>0){
 			throw new KerberosInvalidRequestException();
 		}
 
 		return;
 	}
+	
+	
 	public List<String> listDocs(String userId,final byte[] credential) 
 			throws UserDoesNotExist_Exception{
 		final Date requestTime;
 		requestTime = processRequest(credential,userId);
 
-
 		final MutableInt numberOfResponses = new MutableInt(0);
 		final MutableInt numberOfSuccesses = new MutableInt(0);
+		final MutableInt numberOfValidExceptions = new MutableInt(0);
 		final ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-				//System.out.println("generating an async call");
 				responses.add(clones[i-1].listDocsAsync(userId, new AsyncHandler<ListDocsResponse>() {
 					@Override
 					public void handleResponse(Response<ListDocsResponse> response) {
 						try {
-							//System.out.println("entered handler");
 							byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
 							if(!processReply(time, credential,requestTime)){
-								//System.out.println("GOT KERBEROS FAILURE");
+								//Server response Invalid
 								throw new ExecutionException(null);
 							}
 							numberOfResponses.increment();
-							//System.out.println("Asynchronous call result arrived: ");
-							ArrayList<String> aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
-							//System.out.println("valid list from a server");
-							//System.out.println("not exception - success");
+							ArrayList<String> aListFromAServer;
+							aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
 							numberOfSuccesses.increment();
 							arrays.add(aListFromAServer);
-							//System.out.println("added list to TO-MERGE list");
 						} catch (InterruptedException e) {
-							//System.out.println("Caught interrupted exception.");
-							//System.out.println(e.getCause());
+							//Caught interrupted exception.
 						} catch (ExecutionException e) {
-							//System.out.println("Caught execution exception.");
-							//System.out.println(e.getCause());
+							numberOfValidExceptions.increment();
 						}
 						catch (RuntimeException e) {
-							//System.out.println("Caught kerberos exception.");
-							//System.out.println(e.getCause());
+							//Invalid Response
 						}
 					}
 				}));
 			}
 			catch(Exception e){
-
+				//.....
 			}
 		}
 		int numberOfChecks = 0;
 		int maxChecks = 30;
-		//System.out.println("Waiting for answers");
 		int necessaryResponses = numberClones/2;
 		while (numberOfResponses.intValue()<=necessaryResponses) {
-			//System.out.println("responses received before sleeping: "+numberOfResponses.intValue());
 			numberOfChecks++;
 			if(numberOfChecks>maxChecks) break;
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				//System.out.println("waiting...");
 			}
-			//System.out.println(".");
-			//System.out.flush();
 		}
-		//System.out.println("Stopping requests");
 		for(Future<?> response : responses){
 			response.cancel(false);
 		}
-
-		//System.out.println("number of successes: "+numberOfSuccesses.intValue());
+		if(numberOfValidExceptions.intValue() > necessaryResponses){
+			UserDoesNotExist udn = new UserDoesNotExist();
+			throw new UserDoesNotExist_Exception("Ups doesnt Exist", udn);
+		}
 		if(numberOfSuccesses.intValue()==0){
 			throw new KerberosInvalidRequestException();
 		}
