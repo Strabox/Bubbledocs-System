@@ -180,7 +180,7 @@ public class FrontEnd {
 			}
 		}
 		int numberOfChecks = 0;
-		int maxChecks = 20;
+		int maxChecks = 30;
 		int necessaryResponses = numberClones/2;
 		//System.out.println("Waiting for answers");
 		while (numberOfResponses.intValue()<=necessaryResponses) {
