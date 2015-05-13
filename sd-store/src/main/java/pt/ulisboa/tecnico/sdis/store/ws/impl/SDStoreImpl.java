@@ -29,7 +29,7 @@ import pt.ulisboa.tecnico.sdis.store.ws.impl.kerberos.KerberosManager;
 public class SDStoreImpl implements SDStore {
 
 	public static final String SERVICE_ID = "SD-STORE";
-	
+
 	@Resource
 	WebServiceContext webServiceContext;
 	/**
@@ -41,7 +41,7 @@ public class SDStoreImpl implements SDStore {
 	 * kerberos manager - Used to manage kerberos protocol in server side.
 	 */
 	private KerberosManager kerberosManager;
-	
+
 	@SuppressWarnings("unused")
 	private ServerCrypto crypto;
 
@@ -179,7 +179,7 @@ public class SDStoreImpl implements SDStore {
 	public void store(DocUserPair docUserPair, byte[] contents) throws UserDoesNotExist_Exception, 
 	DocDoesNotExist_Exception, CapacityExceeded_Exception {
 		kerberosProcessRequest(docUserPair.getUserId());
-				if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
+		if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 
 
@@ -194,23 +194,20 @@ public class SDStoreImpl implements SDStore {
 			DocDoesNotExist E = new DocDoesNotExist();
 			throw new DocDoesNotExist_Exception("Cryptografy does not match!", E);
 		}
-		*/
+		 */
 		if (contents!=null){
 			checkUserExistence(docUserPair.getUserId());
 			for (Storage s : storage) {
 				if(s.getUserId().equals(docUserPair.getUserId())){
 					MessageContext messageContext = webServiceContext.getMessageContext();
 					String propertyValue = (String) messageContext.get(RelayServerHandler.REQUEST_PROPERTY);
-			        System.out.printf("HANDLER ANSWER:%s\n", propertyValue);
-			        
-			        
-			        s.setTemp_seq(parseTag(propertyValue)[0]);
+					s.setTemp_seq(parseTag(propertyValue)[0]);
 					s.setTemp_cid(parseTag(propertyValue)[1]); //GET INFO FROM HANDLERS
-					
+
 					//GET INFO FROM HANDLERS
 					s.setContent(docUserPair.getDocumentId(), contents);
-			        String returnValue ="0;0";
-			       messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, returnValue);
+					String returnValue ="0;0";
+					messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, returnValue);
 				}					
 			}
 		}
@@ -241,12 +238,11 @@ public class SDStoreImpl implements SDStore {
 		checkUserExistence(docUserPair.getUserId());
 		for (Storage s : storage) {
 			if(s.getUserId().equals(docUserPair.getUserId())){
-				
+
 				MessageContext messageContext = webServiceContext.getMessageContext();
 				String propertyValue = (String) messageContext.get(RelayServerHandler.REQUEST_PROPERTY);
-		        System.out.printf("HANDLER ANSWER:%s\n", propertyValue);
-		        String returnValue =s.getTemp_seq()+";"+ s.getTemp_cid();
-		        messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, returnValue);
+				String returnValue =s.getTemp_seq()+";"+ s.getTemp_cid();
+				messageContext.put(RelayServerHandler.RESPONSE_PROPERTY, returnValue);
 
 				return s.getContent(docUserPair.getDocumentId());
 			}
@@ -259,7 +255,7 @@ public class SDStoreImpl implements SDStore {
 		int [] result = {Integer.parseInt(tags[0]),Integer.parseInt(tags[1])};
 		return result;
 	}
-	
+
 }
 
 

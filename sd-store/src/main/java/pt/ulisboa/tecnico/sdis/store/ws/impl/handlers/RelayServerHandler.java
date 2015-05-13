@@ -46,7 +46,7 @@ public class RelayServerHandler implements SOAPHandler<SOAPMessageContext> {
             // *** #8 ***
             // get token from response context
             String propertyValue = (String) smc.get(RESPONSE_PROPERTY);
-            System.out.printf("%s received '%s'%n", CLASS_NAME, propertyValue);
+            //System.out.printf("%s received '%s'%n", CLASS_NAME, propertyValue);
 
             // put token in response SOAP header
             try {
@@ -69,7 +69,7 @@ public class RelayServerHandler implements SOAPHandler<SOAPMessageContext> {
                 String newValue = propertyValue + "," + TOKEN;
                 element.addTextNode(newValue);
 
-                System.out.printf("%s put token '%s' on response message header%n", CLASS_NAME, TOKEN);
+              //  System.out.printf("%s put token '%s' on response message header%n", CLASS_NAME, TOKEN);
 
             } catch (SOAPException e) {
                 System.out.printf("Failed to add SOAP header because of %s%n", e);
@@ -106,18 +106,18 @@ public class RelayServerHandler implements SOAPHandler<SOAPMessageContext> {
                 // *** #4 ***
                 // get header element value
                 String headerValue = element.getValue();
-                System.out.printf("%s got '%s'%n", CLASS_NAME, headerValue);
+                //System.out.printf("%s got '%s'%n", CLASS_NAME, headerValue);
 
                 // *** #5 ***
                 // put token in request context
                 String newValue = headerValue + "," + TOKEN;
-                System.out.printf("%s put token '%s' on request context%n", CLASS_NAME, TOKEN);
+              //  System.out.printf("%s put token '%s' on request context%n", CLASS_NAME, TOKEN);
                 smc.put(REQUEST_PROPERTY, newValue);
                 // set property scope to application so that server class can access property
                 smc.setScope(REQUEST_PROPERTY, Scope.APPLICATION);
 
             } catch (SOAPException e) {
-                System.out.printf("Failed to get SOAP header because of %s%n", e);
+               // System.out.printf("Failed to get SOAP header because of %s%n", e);
             }
 
         }

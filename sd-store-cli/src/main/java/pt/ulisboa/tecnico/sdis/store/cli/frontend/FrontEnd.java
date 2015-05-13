@@ -52,10 +52,10 @@ public class FrontEnd {
 		this.numberClones = _numberClones;
 		this.crypto = new Crypto();
 		for (int i : rt)
-		    rq += i;
+			rq += i;
 		rq=rq/2;
 		for (int i : wt)
-		    wq += i;
+			wq += i;
 		wq=wq/2;
 		clones = new SDStore[_numberClones];
 		UDDINaming uddiNaming = new UDDINaming(uddiURL);
@@ -86,7 +86,7 @@ public class FrontEnd {
 			for(int i = 1; i<= numberClones; i++){
 				SDStore aux = clones [i-1];
 				if (aux==null)
-						continue;
+					continue;
 				BindingProvider bp = (BindingProvider) aux;		
 				Map<String, Object> requestContext = bp.getRequestContext();
 				KerberosCredential cred = KerberosCredential.deserialize(credentials);
@@ -132,7 +132,7 @@ public class FrontEnd {
 			return;
 		final Date requestTime;
 		requestTime = processRequest(credential,pair.getUserId());
-		
+
 		final MutableInt numberOfResponses = new MutableInt(0);
 		final MutableInt numberOfValidExceptions = new MutableInt(0);
 		final MutableInt numberOfFailures = new MutableInt(0);
@@ -140,26 +140,26 @@ public class FrontEnd {
 		for(int i=1;i<=numberClones;i++){
 			try{
 				responses.add(clones[i-1].createDocAsync(pair, new AsyncHandler<CreateDocResponse>() {
-				@Override
-				public void handleResponse(Response<CreateDocResponse> response) {
-					try {
-					//System.out.println("entered handler");
-					numberOfResponses.increment();
-					byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
-					if(!processReply(time, credential,requestTime)){
-						//Kerberos Response Invalid
-						throw new KerberosInvalidRequestException();
+					@Override
+					public void handleResponse(Response<CreateDocResponse> response) {
+						try {
+							//System.out.println("entered handler");
+							numberOfResponses.increment();
+							byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+							if(!processReply(time, credential,requestTime)){
+								//Kerberos Response Invalid
+								throw new KerberosInvalidRequestException();
+							}
+							response.get();
+						} catch (InterruptedException e) {
+							//Caught interrupted exception.
+						} catch (ExecutionException e) {
+							numberOfValidExceptions.increment();
+						}
+						catch (RuntimeException e) {			//this catches an exception from the handler
+							numberOfFailures.increment();
+						}
 					}
-					response.get();
-					} catch (InterruptedException e) {
-						//Caught interrupted exception.
-					} catch (ExecutionException e) {
-						numberOfValidExceptions.increment();
-					}
-					catch (RuntimeException e) {			//this catches an exception from the handler
-						numberOfFailures.increment();
-					}
-				}
 				}));
 			}
 			catch(Exception e){
@@ -193,8 +193,8 @@ public class FrontEnd {
 		}
 		return;
 	}
-	
-	
+
+
 	public List<String> listDocs(String userId,final byte[] credential) 
 			throws UserDoesNotExist_Exception{
 		final Date requestTime;
@@ -207,29 +207,29 @@ public class FrontEnd {
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-			responses.add(clones[i-1].listDocsAsync(userId, new AsyncHandler<ListDocsResponse>() {
-				@Override
-				public void handleResponse(Response<ListDocsResponse> response) {
-					try {
-						byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
-						if(!processReply(time, credential,requestTime)){
-							throw new KerberosInvalidRequestException();
+				responses.add(clones[i-1].listDocsAsync(userId, new AsyncHandler<ListDocsResponse>() {
+					@Override
+					public void handleResponse(Response<ListDocsResponse> response) {
+						try {
+							byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+							if(!processReply(time, credential,requestTime)){
+								throw new KerberosInvalidRequestException();
+							}
+							numberOfResponses.increment();
+							ArrayList<String> aListFromAServer;
+							aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
+							numberOfSuccesses.increment();
+							arrays.add(aListFromAServer);
+						} catch (InterruptedException e) {
+							//Caught interrupted exception.
+						} catch (ExecutionException e) {
+							numberOfValidExceptions.increment();
 						}
-						numberOfResponses.increment();
-						ArrayList<String> aListFromAServer;
-						aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
-						numberOfSuccesses.increment();
-						arrays.add(aListFromAServer);
-					} catch (InterruptedException e) {
-						//Caught interrupted exception.
-					} catch (ExecutionException e) {
-						numberOfValidExceptions.increment();
+						catch (RuntimeException e) {
+							//Invalid Response
+						}
 					}
-					catch (RuntimeException e) {
-						//Invalid Response
-					}
-				}
-			}));
+				}));
 			}
 			catch(Exception e){
 				//.....
@@ -286,6 +286,7 @@ public class FrontEnd {
 		maxcid=-2;
 		maxseq=-2;
 		int wsum=0;
+		/*
 		crypto.encrypt(contents);
 		try {
 			cypherdigest = crypto.makeMAC(contents);
@@ -294,6 +295,7 @@ public class FrontEnd {
 			e1.printStackTrace();
 		}
 		crypto.getSecretKey();
+		*/
 		for(int i=1;i<=numberClones;i++){
 			try{
 				// Send(cypherdigest, key); FIX ME
@@ -352,25 +354,21 @@ public class FrontEnd {
 					throw new Exception();	//Server response was compromised.
 				}
 				String finalValue = (String)responseContext.get(RelayClientHandler.RESPONSE_PROPERTY);
-				System.out.printf("OUT:%s\n",finalValue);
 				if (finalValue==null)
 					continue;
 				int seq = parseTag(finalValue)[0];
 				int cid = parseTag(finalValue)[1];
-				System.out.printf("Seq:%d   Cid:%d MAXS %d   MAXC %d Result: %s\n",seq,cid ,maxseq,maxcid,new String(result));
 				if(seq>maxseq ||(seq==maxseq && cid>maxcid)){
 					maxseq=seq;
 					maxcid=cid;
 					maxresult=result;
-					System.out.printf("INSIDE IF\n");
 				}
 				rsum+=rt[i-1];
 				if (rsum>rq){
-					System.out.printf ("REACHED QUORUM!!!!!!!!!!!!!!!!!!!\n");
 					break;
-					
+
 				}
-					  //quorum reached
+				//quorum reached
 			}
 			catch(DocDoesNotExist_Exception e){
 				DocDoesNotExist E = new DocDoesNotExist();
@@ -387,9 +385,9 @@ public class FrontEnd {
 		if(reset){
 			maxcid=-2;
 			maxseq=-2;
-			System.out.printf("reset done!");
 
 		}
+		/*
 		try {
 			if(!crypto.verifyMAC(cypherdigest, maxresult)){
 				DocDoesNotExist E = new DocDoesNotExist();
@@ -400,7 +398,7 @@ public class FrontEnd {
 			e.printStackTrace();
 		}
 		maxresult = crypto.getMessage();
-		System.out.printf("FINAL%s  \n",new String(maxresult));
+		*/
 		return maxresult;
 	}
 
