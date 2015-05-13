@@ -53,18 +53,9 @@ public class CreateDocIT extends SDStoreIT {
 	
 	@Test (expected=DocAlreadyExists_Exception.class)
 	public void docAlreadyExists () throws DocAlreadyExists_Exception {
-		String document ="document13";
-		String user = "User1";
+		String document ="alice";
+		String user = "a2";
 	
-		DocUserPair pair = new DocUserPair();
-		pair.setDocumentId(document);
-		pair.setUserId(user);
-		try {
-			uploadKerberosInfo(port, user);
-		} catch (Exception e) {
-			fail("Erro");
-		} 
-		port.createDoc(pair);
 		DocUserPair pair1 = new DocUserPair();
 		pair1.setDocumentId(document);
 		pair1.setUserId(user);
