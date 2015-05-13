@@ -63,11 +63,13 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 	}
 
 	public void execute() throws BubbleDocsException{
-		impDoc.accessControl();
+		impDoc.setJump(true);
+		impDoc.execute();
 		String username =impDoc.getUsername();
 		String sheetname = impDoc.getSheetname();
 		byte[] docXMLbytes = importDocumentRemote(username,sheetname);
 		impDoc.setDocXMLBytes(docXMLbytes);
+		impDoc.setJump(false);
 		impDoc.execute();
 				
 		

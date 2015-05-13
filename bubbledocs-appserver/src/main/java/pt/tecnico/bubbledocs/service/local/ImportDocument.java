@@ -55,6 +55,17 @@ public class ImportDocument extends BubbleDocsService {
 
 	}
 	
+	public boolean isJump() {
+		return jump;
+	}
+
+	public void setJump(boolean jump) {
+		this.jump = jump;
+	}
+
+	private boolean jump=false;
+
+	
 
 
 
@@ -104,6 +115,10 @@ public class ImportDocument extends BubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
+		
+		accessControl();
+		if(jump)
+			return;
 		createSpreadSheet();		
 	}
 
