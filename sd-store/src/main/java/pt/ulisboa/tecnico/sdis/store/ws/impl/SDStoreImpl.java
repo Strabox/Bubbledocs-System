@@ -124,9 +124,9 @@ public class SDStoreImpl implements SDStore {
 	 * @throws DocAlreadyExists_Exception 
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
+		kerberosProcessRequest(docUserPair.getUserId());
 		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" 
 				&& docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
-			kerberosProcessRequest(docUserPair.getUserId());
 			for (Storage storage2 : storage) {
 
 				if (storage2.getUserId().equals(docUserPair.getUserId())) {

@@ -17,6 +17,7 @@ public class CreateDocIT extends SDStoreIT {
 
 	@Test
 	public void createDocSuccess() throws DocAlreadyExists_Exception {
+		System.out.println(1);
 		String document ="document11";
 		String user = "User1";
 		try {
@@ -34,6 +35,7 @@ public class CreateDocIT extends SDStoreIT {
 	
 	@Test
 	public void createOtherDocSuccess() throws DocAlreadyExists_Exception {
+		System.out.println(2);
 		String document ="otherdocument12";
 		String user = "User1";
 		try {
@@ -53,8 +55,9 @@ public class CreateDocIT extends SDStoreIT {
 	
 	@Test (expected=DocAlreadyExists_Exception.class)
 	public void docAlreadyExists () throws DocAlreadyExists_Exception {
-		String document ="alice";
-		String user = "a2";
+		System.out.println(3);
+		String document ="a2";
+		String user = "alice";
 	
 		DocUserPair pair1 = new DocUserPair();
 		pair1.setDocumentId(document);
@@ -88,7 +91,8 @@ public class CreateDocIT extends SDStoreIT {
 */
     @Test
     public void testCreateDocNullUser() throws Exception {
-        final DocUserPair docUser = new DocUserPair();
+    	System.out.println(4);
+    	final DocUserPair docUser = new DocUserPair();
         docUser.setDocumentId("a1");
         docUser.setUserId(null);
         try {
@@ -101,7 +105,8 @@ public class CreateDocIT extends SDStoreIT {
 
     @Test
     public void testCreateDocEmptyUser() throws Exception {
-        final DocUserPair docUser = new DocUserPair();
+    	System.out.println(5);
+    	final DocUserPair docUser = new DocUserPair();
         docUser.setDocumentId("a1");
         docUser.setUserId("");
         try {
@@ -114,7 +119,8 @@ public class CreateDocIT extends SDStoreIT {
 
     @Test
     public void testCreateNullDoc() throws Exception {
-        final DocUserPair docUser = new DocUserPair();
+    	System.out.println(6);
+    	final DocUserPair docUser = new DocUserPair();
         docUser.setDocumentId(null);
         docUser.setUserId("alice");
         try {
