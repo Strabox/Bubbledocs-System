@@ -21,8 +21,8 @@ public class SDStoreIT {
 	
 	private static final String SERVICE_NAME = "SD-STORE";
 	
-	public final String KEYS_FILE_WIN = "\\..\\sd-util\\src\\main\\resources\\serverKeys";
-	public final String KEYS_FILE_LINUX_MAC = "/../sd-util/src/main/resources/serverKeys";
+	public final static String KEYS_FILE_WIN = "\\..\\sd-util\\src\\main\\resources\\serverKeys";
+	public final static String KEYS_FILE_LINUX_MAC = "/../sd-util/src/main/resources/serverKeys";
 	
 	protected static SDStoreClient port;
 	
@@ -47,7 +47,7 @@ public class SDStoreIT {
 		port.credentials = cred.serialize();
 	}
 	
-	public Key loadServerKey(String serverID) throws Exception{
+	public static Key loadServerKey(String serverID) throws Exception{
 		BufferedReader br;
 		String currentKeysFile = "";
 		if(SystemUtils.IS_OS_WINDOWS)

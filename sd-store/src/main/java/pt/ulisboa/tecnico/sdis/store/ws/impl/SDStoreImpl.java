@@ -101,7 +101,6 @@ public class SDStoreImpl implements SDStore {
 			byte[] time = kerberosManager.processRequest(userId,ticket, auth, ms, mac);
 			msg.put(KerberosHandler.TIMESTAMP_PROPERTY, time);
 		}catch(Exception e){
-			e.printStackTrace();
 			throw new InvalidRequest();
 		}
 	}
