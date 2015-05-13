@@ -110,7 +110,6 @@ public class KerberosHandler implements SOAPHandler<SOAPMessageContext> {
                 context.setScope(MSG_PROPERTY, Scope.APPLICATION);
                 context.setScope(MAC_PROPERTY, Scope.APPLICATION);
 			}catch(Exception e){
-				e.printStackTrace();
 				System.out.println("ERROR Processing Request Message!!");
 				throw new InvalidRequest();
 			}

@@ -2,11 +2,8 @@ package pt.ulisboa.tecnico.sdis.store.test;
 
 import java.security.Key;
 
-import javax.xml.soap.SOAPException;
-
 import org.junit.Test;
 
-import pt.ulisboa.tecnico.sdis.store.cli.SDStoreClient;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
 import util.kerberos.Kerberos;
 import util.kerberos.exception.KerberosException;
@@ -19,16 +16,7 @@ public class KerberosStoreIT extends SDStoreIT{
 		super();
 	}
 	
-	
-	public void uploadKerberoasdsInfo(SDStoreClient store, String username) 
-	throws Exception{
-		Key kcs = Kerberos.generateKerberosKey();
-		KerberosTicket ticket = new KerberosTicket(username,"SD-STORE",8,kcs);
-		Key ks = loadServerKey("SD-STORE");
-		KerberosCredential cred = new KerberosCredential(ticket.serialize(ks), kcs);
-		port.credentials = cred.serialize();
-	}
-	
+	/* =================== TESTS WITH STORE CLIENT ====================== */
 	
 	@Test(expected = RuntimeException.class)
 	public void invalidCredentials() throws UserDoesNotExist_Exception,
@@ -37,8 +25,8 @@ public class KerberosStoreIT extends SDStoreIT{
 		 port.listDocs("bruno");
 	}
 	
-	/*
-	@Test(expected = SOAPException.class)
+	
+	@Test(expected = RuntimeException.class)
 	public void invalidUsernameTicket() throws Exception{
 		Key kcs = Kerberos.generateKerberosKey();
 		Key ks = loadServerKey("SD-STORE");
@@ -46,6 +34,29 @@ public class KerberosStoreIT extends SDStoreIT{
 		KerberosCredential cred = new KerberosCredential(ticket.serialize(ks),kcs);
 		port.credentials = cred.serialize();
 	    port.listDocs("bruno");
-	} */
-
+	} 
+	
+	@Test(expected = RuntimeException.class)
+	public void wrongServiceTicket() throws Exception{
+		Key kcs = Kerberos.generateKerberosKey();
+		Key ks = loadServerKey("SD-STORE");
+		KerberosTicket ticket = new KerberosTicket("bruno","SD-SSTORE",8,kcs);
+		KerberosCredential cred = new KerberosCredential(ticket.serialize(ks),kcs);
+		port.credentials = cred.serialize();
+	    port.listDocs("bruno");
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void ticketWithWrongKS() throws Exception{
+		Key kcs = Kerberos.generateKerberosKey();
+		Key ks = Kerberos.generateKerberosKey();
+		KerberosTicket ticket = new KerberosTicket("bruno","SD-STORE",8,kcs);
+		KerberosCredential cred = new KerberosCredential(ticket.serialize(ks),kcs);
+		port.credentials = cred.serialize();
+	    port.listDocs("bruno");
+	}
+	
+	/* ======== TESTS WITHOUT CLIENTS DIRECT TO SERVER INTERFACE =========== */
+	
+	
 }

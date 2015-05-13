@@ -130,7 +130,7 @@ public class KerberosManager {
 			gc.setTime(reqDate);
 			XMLGregorianCalendar t = DatatypeFactory.newInstance()
 					.newXMLGregorianCalendar(gc);
-			return Kerberos.cipherText(kcs, t.toXMLFormat().getBytes("UTF-8"));
+			return Kerberos.cipherText(kcs, t.toXMLFormat().getBytes());
 		} catch (Exception e) {
 			throw new InvalidRequest();
 		}

@@ -10,6 +10,7 @@ import javax.xml.ws.handler.MessageContext;
 
 
 
+
 import pt.ulisboa.tecnico.sdis.store.ws.impl.handlers.RelayServerHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
 import pt.ulisboa.tecnico.sdis.store.ws.impl.exceptions.InvalidRequest;
@@ -41,6 +42,7 @@ public class SDStoreImpl implements SDStore {
 	 */
 	private KerberosManager kerberosManager;
 	
+	@SuppressWarnings("unused")
 	private ServerCrypto crypto;
 
 	@Resource
@@ -99,6 +101,7 @@ public class SDStoreImpl implements SDStore {
 			byte[] time = kerberosManager.processRequest(userId,ticket, auth, ms, mac);
 			msg.put(KerberosHandler.TIMESTAMP_PROPERTY, time);
 		}catch(Exception e){
+			e.printStackTrace();
 			throw new InvalidRequest();
 		}
 	}
@@ -122,9 +125,9 @@ public class SDStoreImpl implements SDStore {
 	 * @throws DocAlreadyExists_Exception 
 	 */
 	public void createDoc(DocUserPair docUserPair) throws DocAlreadyExists_Exception {
-		kerberosProcessRequest(docUserPair.getUserId());
 		if(docUserPair.getUserId() != null && docUserPair.getUserId() != "" 
 				&& docUserPair.getDocumentId() != null && docUserPair.getDocumentId() != ""){
+			kerberosProcessRequest(docUserPair.getUserId());
 			for (Storage storage2 : storage) {
 
 				if (storage2.getUserId().equals(docUserPair.getUserId())) {

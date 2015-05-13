@@ -208,8 +208,7 @@ public class FrontEnd {
 
 		//System.out.println("number of failures: "+numberOfFailures.intValue());
 		if(numberOfFailures.intValue()>0){
-			DocAlreadyExists E = new DocAlreadyExists();
-			throw new DocAlreadyExists_Exception("Failed to create doc on all servers", E);
+			throw new RuntimeException();
 		}
 
 		return;
@@ -286,8 +285,7 @@ public class FrontEnd {
 
 		//System.out.println("number of successes: "+numberOfSuccesses.intValue());
 		if(numberOfSuccesses.intValue()==0){
-			UserDoesNotExist E = new UserDoesNotExist();
-			throw new UserDoesNotExist_Exception("Failed to fetch list from servers", E);
+			throw new RuntimeException();
 		}
 
 		Collections.sort(mergeLists(arrays));
