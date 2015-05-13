@@ -106,7 +106,6 @@ public class KerberosManager {
 			byte[] msgByte, byte[] mac) {
 		if(userId == null)
 			userId = "null";
-		System.out.println(userId+ "  " +byteTicket+ "  " +auth+ "  " +msgByte+ "  " +  mac);
 		try {
 			// ================Validate Ticket=====================
 			KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
@@ -135,7 +134,6 @@ public class KerberosManager {
 					.newXMLGregorianCalendar(gc);
 			return Kerberos.cipherText(kcs, t.toXMLFormat().getBytes());
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new InvalidRequest();
 		}
 	}
