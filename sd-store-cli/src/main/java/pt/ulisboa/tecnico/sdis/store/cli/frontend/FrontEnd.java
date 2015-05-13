@@ -21,6 +21,7 @@ import javax.xml.ws.Response;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import pt.ulisboa.tecnico.sdis.store.cli.Crypto;
+import pt.ulisboa.tecnico.sdis.store.cli.exception.KerberosInvalidRequestException;
 import pt.ulisboa.tecnico.sdis.store.cli.handlers.KerberosHandler;
 import pt.ulisboa.tecnico.sdis.store.cli.handlers.RelayClientHandler;
 import pt.ulisboa.tecnico.sdis.store.ws.*;
@@ -124,7 +125,7 @@ public class FrontEnd {
 			throw new RuntimeException();
 		}
 	}
-	//(byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+
 	/*===================== REMOTE CALLS ==========================*/
 
 	public void createDoc(DocUserPair pair,final byte[] credential) 
@@ -208,7 +209,7 @@ public class FrontEnd {
 
 		//System.out.println("number of failures: "+numberOfFailures.intValue());
 		if(numberOfFailures.intValue()>0){
-			throw new RuntimeException();
+			throw new KerberosInvalidRequestException();
 		}
 
 		return;
@@ -285,7 +286,7 @@ public class FrontEnd {
 
 		//System.out.println("number of successes: "+numberOfSuccesses.intValue());
 		if(numberOfSuccesses.intValue()==0){
-			throw new RuntimeException();
+			throw new KerberosInvalidRequestException();
 		}
 
 		Collections.sort(mergeLists(arrays));
