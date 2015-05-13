@@ -42,15 +42,8 @@ public class DeleteUser extends BubbleDocsService {
     
     @Override
     protected void dispatch() throws BubbleDocsException {
-    	try{
-    		IDRemoteServices idrs = new IDRemoteServices();
-    		idrs.removeUser(usertodelete);
-    		Bubbledocs bubble = Bubbledocs.getInstance();
-    		bubble.delete(usertodelete);
-		}
-		catch(RemoteInvocationException e){
-			throw new UnavailableServiceException();
-		}
+    	Bubbledocs bubble = Bubbledocs.getInstance();
+    	bubble.delete(usertodelete);
     }
 
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import pt.tecnico.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.bubbledocs.domain.User;
+import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
 import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnauthorizedOperationException;
@@ -69,15 +70,9 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 
 	}
 
-	@Test(expected = LoginBubbleDocsException.class)
+	@Test(expected = InvalidUsernameException.class)
 	public void userDoesNotExist(){
 		DeleteUserIntegrator integrator0 = new DeleteUserIntegrator(root, USERNAME_DOES_NOT_EXIST);
-
-		new Expectations(){
-			{
-				idRemote.removeUser(USERNAME_DOES_NOT_EXIST);
-			}
-		};
 
 		integrator0.execute();
 	}
@@ -111,7 +106,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 			service.execute();
 			fail("UnavailableServiceException expected.");
 		}catch(UnavailableServiceException e){
-			assertNotNull(Bubbledocs.getInstance().getUserByName(USERNAME_01));
+			assertNotNull(Bubbledocs.getInstance().getUserByName(/*USERNAME_01*/"root"));
 		}
 	}
 

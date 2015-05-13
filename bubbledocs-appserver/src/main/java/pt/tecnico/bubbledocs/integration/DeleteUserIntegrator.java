@@ -1,6 +1,8 @@
 package pt.tecnico.bubbledocs.integration;
 
 import pt.tecnico.bubbledocs.exceptions.BubbleDocsException;
+import pt.tecnico.bubbledocs.exceptions.InvalidUsernameException;
+import pt.tecnico.bubbledocs.exceptions.LoginBubbleDocsException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.tecnico.bubbledocs.exceptions.UnavailableServiceException;
 import pt.tecnico.bubbledocs.service.dto.UserDTO;
@@ -21,15 +23,18 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 
 	/* Used to interact with remote id service. */
 	private IDRemoteServices idRemote;
-
 	
+	/*needed for compensation*/
+	private String usernameToDelete;
+	private String name;
+	private String email;
 
 
 	public DeleteUserIntegrator(String userToken, String toDeleteUsername) {
 		delUser = new DeleteUser(userToken,toDeleteUsername);
-		User = new GetUsername4TokenService(userToken);
 		idRemote = new IDRemoteServices();
 		this.token = userToken;
+		this.usernameToDelete = toDeleteUsername;
 	}
 
 	
@@ -45,16 +50,23 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 
 	@Override
 	public void execute() throws BubbleDocsException {
-		delUser.execute();
-		String username = User.getUsername();
+		GetUsername4TokenService u4t = new GetUsername4TokenService(token);
+		u4t.execute();
+		GetUserInfoService Aux = new GetUserInfoService(usernameToDelete);
 		try{
-			deleteUserRemote(username);
+			Aux.execute();
+		}catch(LoginBubbleDocsException e){
+			throw new InvalidUsernameException();
+		}
+		UserDTO userdto = Aux.getUserData();
+		this.email=userdto.getEmail();
+		this.name = userdto.getName();
+		delUser.execute();
+		try{
+			deleteUserRemote(usernameToDelete);
 		}catch(Exception e){
 			/* Compensation if the remote call fails. */
-			GetUserInfoService Aux = new GetUserInfoService(username);
-			Aux.execute();
-    		UserDTO userdto = Aux.getUserData();
-    		new CreateUserService(this.token, userdto.getUsername(), userdto.getEmail(), userdto.getName());
+    		new CreateUserService(this.token, this.usernameToDelete, this.email, this.name);
 			throw e;
 		}
 	}

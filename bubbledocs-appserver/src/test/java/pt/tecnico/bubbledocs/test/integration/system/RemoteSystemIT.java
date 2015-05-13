@@ -96,8 +96,8 @@ public class RemoteSystemIT {
 		RenewPasswordIntegrator service10 = new RenewPasswordIntegrator(userToken);
 		service10.execute();
 		
-		/*DeleteUserIntegrator integrator0 = new DeleteUserIntegrator(rootToken, USERNAME_01);
-		integrator0.execute();*/
+		DeleteUserIntegrator integrator0 = new DeleteUserIntegrator(rootToken, USERNAME_01);
+		integrator0.execute();
 	}
 	
 	@After
