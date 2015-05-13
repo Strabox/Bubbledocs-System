@@ -17,7 +17,6 @@ import pt.ulisboa.tecnico.sdis.store.ws.LoadResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.SDStore;
 import pt.ulisboa.tecnico.sdis.store.ws.StoreResponse;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
-import util.kerberos.exception.KerberosException;
 import example.ws.uddi.UDDIClient;
 
 

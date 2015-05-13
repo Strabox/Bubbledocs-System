@@ -152,7 +152,6 @@ public class SDStoreImpl implements SDStore {
 
 	public List<String> listDocs(String userId) throws UserDoesNotExist_Exception {
 		kerberosProcessRequest(userId);
-		System.out.println("HEREaaaaaaaaaaaaaaaaaaaaaaa");
 		if (userId==null || userId.equals("")==true){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception ("User does not exist", E); 
@@ -179,6 +178,7 @@ public class SDStoreImpl implements SDStore {
 
 	public void store(DocUserPair docUserPair, byte[] contents) throws UserDoesNotExist_Exception, 
 	DocDoesNotExist_Exception, CapacityExceeded_Exception {
+		kerberosProcessRequest(docUserPair.getUserId());
 				if (docUserPair.getUserId()==null || docUserPair.getUserId()==""){
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception("User does not exist", E); 
@@ -195,7 +195,6 @@ public class SDStoreImpl implements SDStore {
 			throw new DocDoesNotExist_Exception("Cryptografy does not match!", E);
 		}
 		*/
-		kerberosProcessRequest(docUserPair.getUserId());
 		if (contents!=null){
 			checkUserExistence(docUserPair.getUserId());
 			for (Storage s : storage) {

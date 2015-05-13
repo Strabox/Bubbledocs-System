@@ -2,7 +2,6 @@ package pt.ulisboa.tecnico.sdis.store.cli.frontend;
 
 import static javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -13,7 +12,6 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import javax.crypto.SecretKey;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.BindingProvider;
@@ -37,8 +35,6 @@ public class FrontEnd {
 	private String uddiURL;
 	private String baseEndpointName;
 	private int numberClones;
-	private int quorumRT;
-	private int quorumWT;
 	private int mycid;
 	int maxcid = -2;
 	int maxseq = -2;
@@ -54,8 +50,6 @@ public class FrontEnd {
 		this.uddiURL = _urluddi;
 		this.baseEndpointName = _name;
 		this.numberClones = _numberClones;
-		this.quorumRT = _RT;
-		this.quorumWT = _WT;
 		this.crypto = new Crypto();
 		for (int i : rt)
 		    rq += i;
@@ -154,13 +148,13 @@ public class FrontEnd {
 					byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
 					if(!processReply(time, credential,requestTime)){
 						//Kerberos Response Invalid
-						throw new ExecutionException(null);
+						throw new KerberosInvalidRequestException();
 					}
 					response.get();
 					} catch (InterruptedException e) {
 						//Caught interrupted exception.
 					} catch (ExecutionException e) {
-						numberOfValidExceptions.increment();;
+						numberOfValidExceptions.increment();
 					}
 					catch (RuntimeException e) {			//this catches an exception from the handler
 						numberOfFailures.increment();
@@ -194,10 +188,9 @@ public class FrontEnd {
 			DocAlreadyExists dae = new DocAlreadyExists();
 			throw new DocAlreadyExists_Exception("Ups doesnt Exist", dae);
 		}
-		if(numberOfFailures.intValue()>0){
+		if(numberOfFailures.intValue() > 0){
 			throw new KerberosInvalidRequestException();
 		}
-
 		return;
 	}
 	
@@ -214,30 +207,29 @@ public class FrontEnd {
 		ArrayList<Future<?>> responses = new ArrayList<Future<?>>(numberClones);
 		for(int i=1;i<=numberClones;i++){
 			try{
-				responses.add(clones[i-1].listDocsAsync(userId, new AsyncHandler<ListDocsResponse>() {
-					@Override
-					public void handleResponse(Response<ListDocsResponse> response) {
-						try {
-							byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
-							if(!processReply(time, credential,requestTime)){
-								//Server response Invalid
-								throw new ExecutionException(null);
-							}
-							numberOfResponses.increment();
-							ArrayList<String> aListFromAServer;
-							aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
-							numberOfSuccesses.increment();
-							arrays.add(aListFromAServer);
-						} catch (InterruptedException e) {
-							//Caught interrupted exception.
-						} catch (ExecutionException e) {
-							numberOfValidExceptions.increment();
+			responses.add(clones[i-1].listDocsAsync(userId, new AsyncHandler<ListDocsResponse>() {
+				@Override
+				public void handleResponse(Response<ListDocsResponse> response) {
+					try {
+						byte[] time = (byte[]) response.getContext().get(KerberosHandler.TIMESTAMP_PROPERTY);
+						if(!processReply(time, credential,requestTime)){
+							throw new KerberosInvalidRequestException();
 						}
-						catch (RuntimeException e) {
-							//Invalid Response
-						}
+						numberOfResponses.increment();
+						ArrayList<String> aListFromAServer;
+						aListFromAServer = (ArrayList<String>) response.get().getDocumentId();
+						numberOfSuccesses.increment();
+						arrays.add(aListFromAServer);
+					} catch (InterruptedException e) {
+						//Caught interrupted exception.
+					} catch (ExecutionException e) {
+						numberOfValidExceptions.increment();
 					}
-				}));
+					catch (RuntimeException e) {
+						//Invalid Response
+					}
+				}
+			}));
 			}
 			catch(Exception e){
 				//.....
@@ -301,7 +293,7 @@ public class FrontEnd {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		SecretKey key = crypto.getSecretKey();
+		crypto.getSecretKey();
 		for(int i=1;i<=numberClones;i++){
 			try{
 				// Send(cypherdigest, key); FIX ME
@@ -412,6 +404,7 @@ public class FrontEnd {
 		return maxresult;
 	}
 
+	@SuppressWarnings("unused")
 	private ArrayList<ArrayList<String>> makeStringsFromResponses(ArrayList<Response<ListDocsResponse>> responsesraw){
 		ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
 
