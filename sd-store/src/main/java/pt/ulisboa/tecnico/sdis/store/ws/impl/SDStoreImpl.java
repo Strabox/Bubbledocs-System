@@ -155,7 +155,6 @@ public class SDStoreImpl implements SDStore {
 			UserDoesNotExist E = new UserDoesNotExist();
 			throw new UserDoesNotExist_Exception ("User does not exist", E); 
 		}
-		System.out.println("User: "+userId);
 		kerberosProcessRequest(userId);
 		checkUserExistence(userId);
 		List<String> doclist = new ArrayList<String>();

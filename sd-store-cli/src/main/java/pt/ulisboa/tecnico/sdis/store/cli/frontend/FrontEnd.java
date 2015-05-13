@@ -321,7 +321,12 @@ public class FrontEnd {
 		maxseq=-2;
 		int wsum=0;
 		crypto.encrypt(contents);
-		cypherdigest = crypto.makeMAC(contents);
+		try {
+			cypherdigest = crypto.makeMAC(contents);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		SecretKey key = crypto.getSecretKey();
 		for(int i=1;i<=numberClones;i++){
 			try{
@@ -419,9 +424,14 @@ public class FrontEnd {
 			System.out.printf("reset done!");
 
 		}
-		if(!crypto.verifyMAC(cypherdigest, maxresult)){
-			DocDoesNotExist E = new DocDoesNotExist();
-			throw new DocDoesNotExist_Exception("MAC does not match", E);
+		try {
+			if(!crypto.verifyMAC(cypherdigest, maxresult)){
+				DocDoesNotExist E = new DocDoesNotExist();
+				throw new DocDoesNotExist_Exception("MAC does not match", E);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		maxresult = crypto.getMessage();
 		System.out.printf("FINAL%s  \n",new String(maxresult));

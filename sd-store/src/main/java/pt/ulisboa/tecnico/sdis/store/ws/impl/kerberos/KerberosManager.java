@@ -104,6 +104,8 @@ public class KerberosManager {
 	 */
 	public byte[] processRequest(String userId,byte[] byteTicket, byte[] auth,
 			byte[] msgByte, byte[] mac) {
+		if(userId == null)
+			userId = "null";
 		try {
 			// ================Validate Ticket=====================
 			KerberosTicket ticket = KerberosTicket.deserialize(byteTicket, ks);
@@ -136,6 +138,7 @@ public class KerberosManager {
 		}
 	}
 
+	
 	/**
 	 * Verify if the message integrity wasnt compromised between client and
 	 * server.
