@@ -87,12 +87,12 @@ public class RemoteSystemIT {
 		
 		ExportDocumentIntegrator service8 = new ExportDocumentIntegrator(userToken, service3.getSheetId());
 		service8.execute();
-		/*
+		
 		ImportDocumentIntegrator service9 = new ImportDocumentIntegrator(userToken, service3.getSheetId());
 		service9.execute();
-		assertTrue("spreadsheet owner's username different from expected",service9.getUsername().equals(USERNAME_01));
+		assertTrue("spreadsheet owner's username different from expected",service9.getUsername().equals("bruno"));
 		assertTrue("Spreadsheet name different from expected",service9.getSheetname().equals("folha"));
-		*/
+		
 		RenewPasswordIntegrator service10 = new RenewPasswordIntegrator(userToken);
 		service10.execute();
 		
