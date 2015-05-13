@@ -177,7 +177,7 @@ public class FrontEnd {
 			}
 		}
 		int numberOfChecks = 0;
-		int maxChecks = 10;
+		int maxChecks = 20;
 		int necessaryResponses = numberClones/2;
 		//System.out.println("Waiting for answers");
 		while (numberOfResponses.intValue()<=necessaryResponses) {
@@ -264,7 +264,7 @@ public class FrontEnd {
 			}
 		}
 		int numberOfChecks = 0;
-		int maxChecks = 10;
+		int maxChecks = 30;
 		//System.out.println("Waiting for answers");
 		int necessaryResponses = numberClones/2;
 		while (numberOfResponses.intValue()<=necessaryResponses) {
