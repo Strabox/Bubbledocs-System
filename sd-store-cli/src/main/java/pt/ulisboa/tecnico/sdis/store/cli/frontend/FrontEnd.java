@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.crypto.SecretKey;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.BindingProvider;
@@ -46,6 +47,7 @@ public class FrontEnd {
 	private double rq=0;
 	private double wq=0;
 	private Crypto crypto;
+	private byte[] cypherdigest;
 
 
 	public FrontEnd(String _urluddi, String _name, int _numberClones, int _RT, int _WT) throws Exception{
@@ -318,8 +320,12 @@ public class FrontEnd {
 		maxcid=-2;
 		maxseq=-2;
 		int wsum=0;
+		crypto.encrypt(contents);
+		cypherdigest = crypto.makeMAC(contents);
+		SecretKey key = crypto.getSecretKey();
 		for(int i=1;i<=numberClones;i++){
 			try{
+				// Send(cypherdigest, key); FIX ME
 				SDStore aux = clones [i-1];
 				BindingProvider bp = (BindingProvider) aux;		
 				Map<String, Object> requestContext = bp.getRequestContext();
@@ -413,6 +419,11 @@ public class FrontEnd {
 			System.out.printf("reset done!");
 
 		}
+		if(!crypto.verifyMAC(cypherdigest, maxresult)){
+			DocDoesNotExist E = new DocDoesNotExist();
+			throw new DocDoesNotExist_Exception("MAC does not match", E);
+		}
+		maxresult = crypto.getMessage();
 		System.out.printf("FINAL%s  \n",new String(maxresult));
 		return maxresult;
 	}

@@ -1,9 +1,12 @@
 package pt.ulisboa.tecnico.sdis.store.cli;
 
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -12,17 +15,18 @@ public class Crypto{
 	
 	private final SecretKey secretKey;
 	private byte[] message;
-	//private final Cipher cipher;
+	
+	private final Cipher cipher;
 	
 	
 	public Crypto() throws NoSuchAlgorithmException, NoSuchPaddingException{
 		KeyGenerator keyGen = KeyGenerator.getInstance("DES");
         keyGen.init(56);
         secretKey = keyGen.generateKey();
-        //cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 	}
 	
-	/*
+
 	public byte[] encrypt(byte[] file){
 		byte[] cipherFile = null;
 		try {
@@ -39,24 +43,6 @@ public class Crypto{
 		return cipherFile;
 	}
 	
-	
-	public byte[] decrypt(byte[] cipherFile){
-		byte[] file = null;
-		try {
-			cipher.init(Cipher.DECRYPT_MODE, secretKey);
-	        file = cipher.doFinal(cipherFile);
-		} catch (InvalidKeyException e) {
-			System.out.println("Key is invalid");
-		} catch (IllegalBlockSizeException e) {
-			System.out.println("Illegal Block Size");
-		} catch (BadPaddingException e) {
-			System.out.println("Bad Padding Exception");
-		}
-        
-		return file;
-	}
-	*/
-	
 	public final byte[] makeMAC(byte[] bytes) throws Exception {
 
         // get a message digest object using the MD5 algorithm
@@ -65,9 +51,6 @@ public class Crypto{
         // calculate the digest and print it out
         messageDigest.update(bytes);
         byte[] digest = messageDigest.digest();
-
-        // get a DES cipher object
-        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
         // encrypt the plaintext using the key
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -85,9 +68,6 @@ public class Crypto{
         // calculate the digest and print it out
         messageDigest.update(bytes);
         byte[] digest = messageDigest.digest();
-
-        // get a DES cipher object
-        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
         // decrypt the ciphered digest using the public key
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
