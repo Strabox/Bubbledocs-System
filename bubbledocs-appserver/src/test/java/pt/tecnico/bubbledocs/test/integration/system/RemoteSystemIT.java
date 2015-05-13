@@ -85,10 +85,10 @@ public class RemoteSystemIT {
 		assertTrue("Spreadsheet cell output different from expected",ssprint1[1][1].equals("11"));
 		assertTrue("Spreadsheet cell output different from expected",ssprint1[0][0].equals("2"));
 		
-		/*ExportDocumentIntegrator service8 = new ExportDocumentIntegrator(userToken, service3.getSheetId());
+		ExportDocumentIntegrator service8 = new ExportDocumentIntegrator(userToken, service3.getSheetId());
 		service8.execute();
 		
-		ImportDocumentIntegrator service9 = new ImportDocumentIntegrator(userToken, service3.getSheetId());
+		/*ImportDocumentIntegrator service9 = new ImportDocumentIntegrator(userToken, service3.getSheetId());
 		service9.execute();
 		assertTrue("spreadsheet owner's username different from expected",service9.getUsername().equals(USERNAME_01));
 		assertTrue("Spreadsheet name different from expected",service9.getSheetname().equals("folha"));

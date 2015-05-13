@@ -5,6 +5,7 @@ import pt.tecnico.bubbledocs.exceptions.CannotLoadDocumentException;
 import pt.tecnico.bubbledocs.exceptions.RemoteInvocationException;
 import pt.ulisboa.tecnico.sdis.store.cli.SDStoreClient;
 import pt.ulisboa.tecnico.sdis.store.ws.CapacityExceeded_Exception;
+import pt.ulisboa.tecnico.sdis.store.ws.DocAlreadyExists_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocDoesNotExist_Exception;
 import pt.ulisboa.tecnico.sdis.store.ws.DocUserPair;
 import pt.ulisboa.tecnico.sdis.store.ws.UserDoesNotExist_Exception;
@@ -29,7 +30,26 @@ public class StoreRemoteServices extends RemoteServices{
 		}catch(CapacityExceeded_Exception e){
 			throw new CannotStoreDocumentException();
 		}catch(DocDoesNotExist_Exception e){
-			throw new CannotStoreDocumentException();
+			try{
+				DocUserPair dup = new DocUserPair();
+				dup.setDocumentId(docName);
+				dup.setUserId(username);
+				storeClient.createDoc(dup);
+				storeClient.store(dup, document);
+			}
+			catch(DocAlreadyExists_Exception dae){
+				
+			}
+			catch(UserDoesNotExist_Exception udn){
+				
+			}
+			catch (CapacityExceeded_Exception e1) {
+			
+			}
+			catch (DocDoesNotExist_Exception e1) {
+				
+			}
+			//throw new CannotStoreDocumentException();
 		}catch(UserDoesNotExist_Exception e){
 			throw new CannotStoreDocumentException();
 		}catch (Exception e) {

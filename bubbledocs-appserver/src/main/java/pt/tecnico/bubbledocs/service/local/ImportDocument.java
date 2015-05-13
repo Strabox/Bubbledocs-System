@@ -22,6 +22,8 @@ public class ImportDocument extends BubbleDocsService {
 	private SpreadSheet sheet;
 	private User user;
 	private SpreadSheet importedSheet;
+	private String username;
+	private String sheetname;
 
 	public ImportDocument(String userToken, int docId) {
 		_token=userToken;
@@ -39,12 +41,12 @@ public class ImportDocument extends BubbleDocsService {
 	}
 
 	public String getUsername(){
-		return user.getUsername();
+		return this.username;
 
 	}
 
 	public String getSheetname(){
-		return sheet.getName();
+		return this.sheetname;
 
 	}
 	
@@ -84,6 +86,8 @@ public class ImportDocument extends BubbleDocsService {
 			throw new UserNotInSessionException();
 		sheet = bubbled.getSpreadSheet(_docId);
 		user = bubbled.getUserFromSession(_token);
+		this.username = user.getUsername();
+		this.sheetname = sheet.getName();
 		//IMPORTANT!! Resets the user session time.
 		bubbled.resetsSessionTime(_token);
 	}
@@ -91,7 +95,7 @@ public class ImportDocument extends BubbleDocsService {
 	public void createSpreadSheet() throws BubbleDocsException{
 		importedSheet= new SpreadSheet();
 		deserialize(docXMLbytes);
-		importedSheet.importFromXML(docXML, user.getUsername());
+		importedSheet.importFromXML(docXML, this.username);
 			
 
 	}
