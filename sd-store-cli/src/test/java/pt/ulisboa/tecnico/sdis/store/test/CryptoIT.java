@@ -15,18 +15,18 @@ public class CryptoIT extends SDStoreIT {
 	public CryptoIT() throws Exception {
 		super();
 	}
-/*
+
 	@Test
 	public void cypherSuccess() throws Exception {
 		String expectedString ="ABCDabcd123456";
 		Crypto crypto = new Crypto();
 		byte[] content= expectedString.getBytes();
-		byte[] encryptedContent=crypto.encrypt(content);
-		String resultString=new String(crypto.decrypt(encryptedContent));
+		byte[] encryptedContent = crypto.encrypt(content);
+		byte[] cipherdigest = crypto.makeMAC(encryptedContent);
+		
+		assertTrue(crypto.verifyMAC(cipherdigest, encryptedContent));
+		String resultString = new String(crypto.decrypt(encryptedContent));
 		assertEquals("crypto1",expectedString,resultString);
 	}
-	
-
-	*/
 	
 }

@@ -43,6 +43,22 @@ public class Crypto{
 		return cipherFile;
 	}
 	
+	public byte[] decrypt(byte[] file){
+		byte[] cipherFile = null;
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, secretKey);
+			cipherFile = cipher.doFinal(file);
+		} catch (InvalidKeyException e) {
+			System.out.println("Key is invalid");
+		} catch (IllegalBlockSizeException e) {
+			System.out.println("Illegal Block Size");
+		} catch (BadPaddingException e) {
+			System.out.println("Bad Padding Exception");
+		}
+        
+		return cipherFile;
+	}
+	
 	public final byte[] makeMAC(byte[] bytes) throws Exception {
 
         // get a message digest object using the MD5 algorithm
@@ -81,7 +97,6 @@ public class Crypto{
             if (digest[i] != decipheredDigest[i])
                 return false;
         
-        message = decipheredDigest;
         return true;
 
     }
