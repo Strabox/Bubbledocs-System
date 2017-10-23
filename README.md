@@ -1,6 +1,15 @@
 # Bubble Docs
 
-This is the main README file for the Bubble Docs project.
+Project to 2014/2015 Software Engineering and Distributed Systems courses of Bachelors Degree in Computer Science and Engineering 3rd Year @ Instituto Superior Técnico
+
+## Goals
+
+- Develop an application to manage users that create and manage documents
+- Integrate the above application with a distributed system of authentication (using kerberos) and a other of document storage
+
+## Project Group
+
+- https://github.com/carboned4
 
 The initial version of the repository contains the following structure:
 
